@@ -306,6 +306,12 @@ body{background:radial-gradient(900px 420px at 85% -80px,#dfe8ff 0,transparent 7
 @keyframes hslide{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.hs{animation:none}}
 /* ===== WordLinks ===== */
+.cn-board{position:relative}
+.cn-t.blank{color:transparent;background:#e6ebf5;border-color:transparent;box-shadow:none;filter:blur(1px);user-select:none;pointer-events:none}
+.cn-start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;background:rgba(244,247,253,.6);backdrop-filter:blur(3px);border-radius:14px;z-index:3;animation:rise .4s var(--ease-out) both}
+.cn-start p{margin:0;font-weight:600;max-width:26ch}
+.cn-start button{min-height:48px;padding:12px 36px;border:0;border-radius:12px;background:var(--pri);color:#fff;font:800 17px "Figtree",system-ui,sans-serif;cursor:pointer}
+
 #v-conn.in>*{animation:rise .4s var(--ease-out) both}
 @keyframes tilein{from{opacity:0;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
 @keyframes tilepop{0%{transform:scale(1)}50%{transform:scale(1.09)}100%{transform:scale(.97)}}
@@ -1458,25 +1464,26 @@ function cnBuild(mode){
   }
   if(groups.length<4)return null;
   const col=shuf([0,1,2,3]);groups.forEach((g,i)=>g.c=col[i]);
-  return{mode,groups,tiles:shuf(groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})))),sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,t0:0,ms:0,rec:0,fresh:1,conf:0};
+  return{mode,groups,tiles:shuf(groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})))),sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0};
 }
 function cnLoad(mode){
   const g=cnBuild(mode);if(!g)return null;
   const d=SV.cn&&SV.cn.d;
-  if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.ms=d.ms||0;g.solved=[0,1,2,3];g.tiles=[];g.fresh=0}
+  if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.go=1;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.ms=d.ms||0;g.solved=[0,1,2,3];g.tiles=[];g.fresh=0}
   return g;
 }
 function cnHomeSub(){const d=SV.cn&&SV.cn.d,b=SV.cn&&SV.cn.bt;return d&&d.date===ymd(new Date())&&d.done?'Dzisiejsza ukończona'+(d.won&&d.ms?' · '+cnFmt(d.ms):''):(b?'Rekord: '+cnFmt(b):'Dziś: nowa łamigłówka')}
+function cnStart(){if(!CN||CN.over||CN.go)return;CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
 function cnTap(i){
-  if(!CN||CN.over)return;if(!CN.t0)CN.t0=Date.now();
+  if(!CN||CN.over||!CN.go)return;
   const k=CN.sel.indexOf(i);
   if(k>=0)CN.sel.splice(k,1);else if(CN.sel.length<4)CN.sel.push(i);
   CN.msg='';CN.newG=[];renderConn();
 }
 function cnClear(){if(CN&&!CN.over){CN.sel=[];CN.msg='';renderConn()}}
-function cnShuffle(){if(!CN||CN.over)return;const t=CN.tiles.map((x,i)=>({x,sel:CN.sel.includes(i)}));for(let i=t.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[t[i],t[j]]=[t[j],t[i]]}CN.tiles=t.map(o=>o.x);CN.sel=t.map((o,i)=>o.sel?i:-1).filter(i=>i>=0);renderConn()}
+function cnShuffle(){if(!CN||CN.over||!CN.go)return;const t=CN.tiles.map((x,i)=>({x,sel:CN.sel.includes(i)}));for(let i=t.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[t[i],t[j]]=[t[j],t[i]]}CN.tiles=t.map(o=>o.x);CN.sel=t.map((o,i)=>o.sel?i:-1).filter(i=>i>=0);renderConn()}
 function cnSubmit(){
-  if(!CN||CN.over||CN.sel.length!==4)return;if(!CN.t0)CN.t0=Date.now();
+  if(!CN||CN.over||!CN.go||CN.sel.length!==4)return;
   const ts=CN.sel.map(i=>CN.tiles[i]),cnt={};ts.forEach(t=>cnt[t.g]=(cnt[t.g]||0)+1);
   const best=Math.max(...Object.values(cnt));
   CN.hist.push(ts.map(t=>CN.groups[t.g].c));
@@ -1527,7 +1534,8 @@ function renderConn(){
   const medalOf=CN.over&&CN.won?cnMedal(CN.ms):'';
   const chal='<div class="cn-chal">Wyzwanie czasowe:'+CNMED.map(m=>'<em class="'+(medalOf===m[1]?'got':'')+'">'+m[1]+' '+cnFmt(m[0])+'</em>').join('')+'<small>+10 s za każdy błąd</small></div>';
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+G.e+' '+G.n+'</b><span>'+G.w.join(', ')+'</span><small>'+G.pl.join(' · ')+'</small></div>'}).join('');
-  const tiles=CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+t.w+'</button>').join('');
+  const wait=!CN.over&&!CN.go;
+  const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+t.w+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
   let end='';
   if(CN.over){const c=SV.cn||{p:0,w:0,s:0,b:0};
@@ -1537,9 +1545,9 @@ function renderConn(){
      +'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre><div class="cn-act"><button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnNew()">Nowa łamigłówka</button></div>'
      +(CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'')+'</div>';
   }
-  root.innerHTML=head+chal+'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+'</div>'+(CN.over?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div>')+'</div>'
+  root.innerHTML=head+chal+'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button></div>':'')+'</div>'+(CN.over||wait?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div>')+'</div>'
    +'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div>'
-   +(CN.over?'':'<div class="cn-act"><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')+end;
+   +(CN.over||wait?'':'<div class="cn-act"><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')+end;
   CN.fresh=0;CN.conf=0;
 }
 show('home');initCloud();

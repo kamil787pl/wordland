@@ -8,12 +8,18 @@ with sync_playwright() as pw:
     pg.goto(URL);pg.wait_for_timeout(500);pg.evaluate("sessionStorage.clear();localStorage.clear()");pg.reload();pg.wait_for_timeout(500)
     res['karta na stronie glownej']='WordLinks' in pg.inner_text('#v-home')
     pg.evaluate("show('conn')");pg.wait_for_timeout(300)
+    words=pg.evaluate("CN.tiles.map(t=>t.w)")
+    res['przed startem slowa ukryte']=not any(w in pg.inner_text('#v-conn') for w in words) and not any(w in pg.inner_html('#v-conn') for w in words) and pg.locator('.cn-start').count()==1
+    res['przed startem czas stoi']=pg.evaluate("CN.t0")==0 and pg.evaluate("cnTap(0),cnSubmit(),CN.t0")==0 and pg.evaluate("CN.sel.length")==0
+    pg.wait_for_timeout(1200);res['przed startem czas 0:00']=pg.inner_text('#cn-time')=='0:00'
+    pg.click('text=Start');pg.wait_for_timeout(200)
+    res['po starcie slowa widoczne']=all(w in pg.inner_text('#v-conn') for w in words) and pg.evaluate("CN.t0")>0
     res['16 kafelkow']=pg.locator('.cn-t').count()==16
     res['unikalne slowa']=pg.evaluate("new Set(CN.tiles.map(t=>t.w.toLowerCase())).size")==16
     res['4 kategorie po 4']=pg.evaluate("CN.groups.length==4&&CN.groups.every(g=>g.w.length==4)")
     res['kolory 4 rozne']=pg.evaluate("new Set(CN.groups.map(g=>g.c)).size")==4
     # codzienna jest powtarzalna
-    a=pg.evaluate("CN.tiles.map(t=>t.w).join()");pg.evaluate("CN=null;renderConn()");b=pg.evaluate("CN.tiles.map(t=>t.w).join()")
+    a=pg.evaluate("CN.tiles.map(t=>t.w).join()");pg.evaluate("CN=null;renderConn()");b=pg.evaluate("CN.tiles.map(t=>t.w).join()");pg.evaluate("cnStart()")
     res['codzienna powtarzalna']=a==b
     # zły ruch: 4 kafelki z różnych grup
     pg.evaluate("CN.sel=[];[0,1,2,3].forEach(k=>{});")
@@ -39,11 +45,11 @@ with sync_playwright() as pw:
     pg.reload();pg.wait_for_timeout(400);pg.evaluate("show('conn')");pg.wait_for_timeout(200)
     res['codzienna zapamietana']=pg.evaluate("[CN.over,CN.won]")==[1,1] and pg.locator('.cn-row').count()==4
     # losowa: przegrana po 4 błędach ujawnia grupy
-    pg.evaluate("cnNew()");pg.wait_for_timeout(200)
+    pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(200)
     for _ in range(4):
         pg.evaluate(pick);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
     res['przegrana ujawnia grupy']=pg.evaluate("[CN.over,CN.won,CN.solved.length]")==[1,0,4]
-    pg.evaluate("cnLvl('A1')");pg.evaluate("(()=>{CN.t0=Date.now()-30000;})()")
+    pg.evaluate("cnLvl('A1');cnStart()");pg.evaluate("(()=>{CN.t0=Date.now()-30000;})()")
     for _ in range(4):
         pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
     res['rekord losowej per poziom']=pg.evaluate("SV.cn.br.A1>=29000&&SV.cn.br.A1<40000&&CN.rec===1")
