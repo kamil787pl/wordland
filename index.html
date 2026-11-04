@@ -1399,7 +1399,7 @@ let last=performance.now(),acc=0;
   }catch(e){console.error(e)}
   requestAnimationFrame(loop);
 })(last);
-show('home');initCloud();
+
 
 
 /* ===== WORDLINKS: 16 słówek, 4 kategorie, wyzwanie czasowe ===== */
@@ -1513,6 +1513,7 @@ function renderConn(){
    +(CN.over?'':'<div class="cn-act"><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')+end;
   CN.fresh=0;CN.conf=0;
 }
+show('home');initCloud();
 /* ekran startowy */
 (function(){const sp=$('splash');if(!sp)return;let seen=0;try{seen=sessionStorage.wlSplash;sessionStorage.wlSplash=1}catch(e){}
   if(seen||RM){sp.remove();return}
