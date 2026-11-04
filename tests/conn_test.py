@@ -58,6 +58,30 @@ with sync_playwright() as pw:
     res['mobile: brak poziomego przewijania']=pg.evaluate("document.documentElement.scrollWidth<=document.documentElement.clientWidth")
     # poziomy
     pg.evaluate("cnLvl('A2')");res['poziom A2']=pg.evaluate("CN.groups.length")==4
+    # wyzwanie przez link
+    pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(100)
+    for _ in range(4):
+        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+    link=pg.evaluate("cnChalLink(1)");mine=pg.evaluate("[CN.ms,CN.groups.map(g=>g.w.slice().sort().join()).sort().join('|')]")
+    recs=pg.evaluate("JSON.stringify(SV.cn)")
+    pg2=br.new_page(viewport={'width':420,'height':900});pg2.on('pageerror',lambda e:errs.append(str(e)))
+    pg2.goto(link);pg2.wait_for_timeout(700)
+    res['link: otwiera wyzwanie']=pg2.evaluate("[view,CN.mode,CN.go]")==['conn','chal',0] and 'pobij' in pg2.inner_text('#v-conn')
+    res['link: ta sama plansza']=pg2.evaluate("CN.groups.map(g=>g.w.slice().sort().join()).sort().join('|')")==mine[1] and pg2.evaluate("CN.t")==mine[0]
+    res['link: slowa ukryte do startu']=pg2.evaluate("CN.tiles[0].w") not in pg2.inner_text('#v-conn')
+    pg2.click('text=Start');pg2.wait_for_timeout(100)
+    for _ in range(4):
+        pg2.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg2.click('text=Zatwierdź');pg2.wait_for_timeout(100)
+    res['link: wynik porownany']='Pobiłeś' in pg2.inner_text('.cn-end') or 'Nie pobiłeś' in pg2.inner_text('.cn-end')
+    res['link: nie zmienia rekordow']=pg2.evaluate("JSON.stringify(SV.cn||null)")in('null',recs) or pg2.evaluate("(SV.cn&&SV.cn.p)||0")==0
+    res['link: hash wyczyszczony']=pg2.evaluate("location.hash")==''
+    # złośliwy link nie wstrzykuje HTML
+    import base64
+    bad=base64.urlsafe_b64encode(json.dumps({"g":[["<img src=x onerror=window.XSS=1>","e",["a<b>","b2","c3","d4"],[]],["n","e",["e5","f6","g7","h8"],[]],["n","e",["i9","j10","k11","l12"],[]],["n","e",["m13","n14","o15","p16"],[]]],"t":5000}).encode()).decode().rstrip('=')
+    pg3=br.new_page();pg3.on('pageerror',lambda e:errs.append(str(e)));pg3.goto(URL+'#wl='+bad);pg3.wait_for_timeout(600)
+    res['link zlosliwy: brak XSS']=pg3.evaluate("window.XSS")is None and pg3.locator('#v-conn img').count()==0
+    pg4=br.new_page();pg4.on('pageerror',lambda e:errs.append(str(e)));pg4.goto(URL+'#wl=zepsuty');pg4.wait_for_timeout(500)
+    res['link zepsuty: portal dziala']=pg4.evaluate("view")=='home'
     res['errors']=errs
 print(json.dumps(res,ensure_ascii=False,indent=1))
 bad=[k for k,v in res.items() if v is False]

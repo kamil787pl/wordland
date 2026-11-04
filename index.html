@@ -312,6 +312,7 @@ body{background:radial-gradient(900px 420px at 85% -80px,#dfe8ff 0,transparent 7
 .cn-t.blank{color:transparent;background:#e6ebf5;border-color:transparent;box-shadow:none;filter:blur(1px);user-select:none;pointer-events:none}
 .cn-start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;background:rgba(244,247,253,.6);backdrop-filter:blur(3px);border-radius:14px;z-index:3;animation:rise .4s var(--ease-out) both}
 .cn-start p{margin:0;font-weight:600;max-width:26ch}
+.cn-start button.g{background:transparent;color:var(--pri);min-height:40px;padding:6px 12px;font-size:14px}
 .cn-start button{min-height:48px;padding:12px 36px;border:0;border-radius:12px;background:var(--pri);color:#fff;font:800 17px "Figtree",system-ui,sans-serif;cursor:pointer}
 
 #v-conn.in>*{animation:rise .4s var(--ease-out) both}
@@ -1449,7 +1450,7 @@ const cnFmt=ms=>{const t=Math.floor(ms/1000);return Math.floor(t/60)+':'+String(
 const cnMedal=ms=>{const m=CNMED.find(x=>ms<=x[0]);return m?m[1]:''};
 const cnTotal=()=>CN.over?CN.ms:(CN.t0?Date.now()-CN.t0:0)+CN.miss*CNPEN;
 function cnBestKey(){return CN.mode==='daily'?'bt':CNlvl||'all'}
-function cnBest(){const c=SV.cn;if(!c)return 0;return CN.mode==='daily'?(c.bt||0):((c.br||{})[CNlvl||'all']||0)}
+function cnBest(){if(CN.mode==='chal')return CN.t;const c=SV.cn;if(!c)return 0;return CN.mode==='daily'?(c.bt||0):((c.br||{})[CNlvl||'all']||0)}
 function cnBuild(mode){
   const R=mode==='daily'?cnRng(cnHash('wl'+ymd(new Date()))):Math.random;
   const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -1502,7 +1503,8 @@ function cnSubmit(){
 function cnFinish(won){
   CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;
   const c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:'',bt:0,br:{}});c.br=c.br||{};
-  if(won){const k=cnBestKey(),prev=cnBest();if(!prev||CN.ms<prev){CN.rec=1;if(CN.mode==='daily')c.bt=CN.ms;else c.br[k]=CN.ms}}
+  if(won&&CN.mode!=='chal'){const k=cnBestKey(),prev=cnBest();if(!prev||CN.ms<prev){CN.rec=1;if(CN.mode==='daily')c.bt=CN.ms;else c.br[k]=CN.ms}}
+  if(CN.mode==='chal')return;
   if(CN.mode!=='daily'){save();return}
   const t=ymd(new Date());
   if(c.d&&c.d.date===t&&c.d.done)return;
@@ -1511,7 +1513,7 @@ function cnFinish(won){
   c.d={date:t,done:1,won,miss:CN.miss,hist:CN.hist,ms:CN.ms,rec:CN.rec};save();
 }
 function cnShareText(){
-  const d=new Date(),lab=CN.mode==='daily'?'codzienna '+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0'):'losowa';
+  const d=new Date(),lab=CN.mode==='daily'?'codzienna '+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0'):CN.mode==='chal'?'wyzwanie':'losowa';
   return 'WordLand WordLinks ('+lab+') '+(CN.won?'✔ '+cnFmt(CN.ms)+' '+cnMedal(CN.ms):'✘')+'\n'+CN.hist.map(r=>r.map(c=>CNE[c]).join('')).join('\n')+'\nwordland-vrp8.netlify.app';
 }
 async function cnShare(){
@@ -1523,6 +1525,35 @@ async function cnShare(){
 function cnMode(m){CNmode=m;CN=null;renderConn()}
 function cnLvl(l){CNlvl=l;CN=cnLoad('random');renderConn()}
 function cnNew(){CN=cnLoad('random');CNmode='random';renderConn()}
+/* wyzwanie: plansza zakodowana w linku (#wl=...), działa też z własnymi kategoriami nauczyciela */
+const cnClean=x=>typeof x==='string'?x.replace(/[<>&"'`\\]/g,'').slice(0,40):'';
+function cnChalLink(withTime){
+  const o={g:CN.groups.map(g=>[g.n,g.e,g.w,g.pl]),t:withTime&&CN.won?CN.ms:0,f:U?U.nick:''};
+  return location.href.split('#')[0]+'#wl='+btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function cnFromLink(h){
+  try{
+    const o=JSON.parse(decodeURIComponent(escape(atob(h.slice(4).replace(/-/g,'+').replace(/_/g,'/')))));
+    if(!Array.isArray(o.g)||o.g.length!==4)return null;
+    const groups=o.g.map((a,i)=>{
+      if(!Array.isArray(a)||!Array.isArray(a[2])||a[2].length!==4)return null;
+      const w=a[2].map(cnClean),pl=Array.isArray(a[3])?a[3].map(cnClean):[];
+      if(w.some(x=>!x))return null;
+      return{n:cnClean(a[0]),e:Array.from(cnClean(a[1])).slice(0,2).join(''),w,pl:w.map((_,k)=>pl[k]||'').filter(Boolean),c:i};
+    });
+    if(groups.some(g=>!g)||new Set(groups.flatMap(g=>g.w.map(x=>x.toLowerCase()))).size!==16)return null;
+    const tiles=groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})));
+    for(let i=15;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tiles[i],tiles[j]]=[tiles[j],tiles[i]]}
+    const t=+o.t;
+    return{mode:'chal',groups,tiles,sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0,t:t>0&&t<36e5?Math.round(t):0,f:cnClean(o.f).slice(0,20)};
+  }catch(e){return null}
+}
+async function cnChal(withTime){
+  const t='Pobijesz mój wynik w WordLinks? '+cnChalLink(withTime);
+  try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(t);CN.msg='Skopiowano link wyzwania.'}catch(e){CN.msg='Nie udało się skopiować.'}
+  renderConn();
+}
 setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal())}},250);
 function renderConn(){
   const root=$('v-conn');if(!root)return;
@@ -1534,6 +1565,7 @@ function renderConn(){
    +'<div class="cn-top"><div class="cn-seg" role="group" aria-label="Tryb"><button class="'+(CNmode==='daily'?'on':'')+'" onclick="cnMode(\'daily\')">Codzienna</button><button class="'+(CNmode==='random'?'on':'')+'" onclick="cnMode(\'random\')">Losowa</button></div>'
    +(CNmode==='random'?'<div class="cn-seg" role="group" aria-label="Poziom">'+[['','Wszystkie'],['A1','A1'],['A2','A2'],['B1','B1']].map(x=>'<button class="'+(CNlvl===x[0]?'on':'')+'" onclick="cnLvl(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>':'')+'</div>';
   if(!CN){root.innerHTML=head+'<div class="panel">Za mało kategorii, żeby ułożyć łamigłówkę. Potrzebne są co najmniej 4 kategorie z 4 słówkami.</div>';return}
+  const chb=CN.mode==='chal'?'<div class="cn-chal">🎯 Wyzwanie'+(CN.f?' od '+CN.f:'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'zagraj na czas')+'</div>':'';
   const medalOf=CN.over&&CN.won?cnMedal(CN.ms):'';
   const chal='<div class="cn-chal">Wyzwanie czasowe:'+CNMED.map(m=>'<em class="'+(medalOf===m[1]?'got':'')+'">'+m[1]+' '+cnFmt(m[0])+'</em>').join('')+'<small>+10 s za każdy błąd</small></div>';
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+G.e+' '+G.n+'</b><span>'+G.w.join(', ')+'</span><small>'+G.pl.join(' · ')+'</small></div>'}).join('');
@@ -1544,16 +1576,17 @@ function renderConn(){
   if(CN.over){const c=SV.cn||{p:0,w:0,s:0,b:0};
     end='<div class="cn-end">'+(CN.conf?'<div class="cn-conf" aria-hidden="true">'+Array.from({length:26},(_,i)=>'<i style="left:'+(i*3.9+Math.random()*3)+'%;background:'+CNC[i%4].replace(/^#/,'#')+';animation-delay:'+(Math.random()*.5)+'s"></i>').join('')+'</div>':'')
      +'<h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3>'
-     +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s).':'Bez żadnego błędu!')+'</div>':'<div>Odpowiedzi są powyżej, spróbuj jutro lub w trybie losowym.</div>')
-     +'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre><div class="cn-act"><button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnNew()">Nowa łamigłówka</button></div>'
+     +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+(CN.mode==='chal'&&CN.t?'<span class="cn-rec">'+(CN.ms<CN.t?'Pobiłeś wynik!':'Nie pobiłeś wyniku ('+cnFmt(CN.t)+')')+'</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s).':'Bez żadnego błędu!')+'</div>':'<div>Odpowiedzi są powyżej, spróbuj jutro lub w trybie losowym.</div>')
+     +'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre><div class="cn-act"><button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnChal(1)">Wyzwij znajomego</button><button onclick="cnNew()">Nowa łamigłówka</button></div>'
      +(CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'')+'</div>';
   }
-  root.innerHTML=head+chal+'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button></div>':'')+'</div>'+(CN.over||wait?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div>')+'</div>'
+  root.innerHTML=head+chb+chal+'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div>'+(CN.over||wait?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div>')+'</div>'
    +'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div>'
    +(CN.over||wait?'':'<div class="cn-act"><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')+end;
   CN.fresh=0;CN.conf=0;
 }
 show('home');initCloud();
+if(location.hash.startsWith('#wl=')){const g=cnFromLink(location.hash);if(g){CN=g;CNmode='chal';show('conn')}history.replaceState(null,'',location.pathname+location.search)}
 /* ekran startowy */
 (function(){const sp=$('splash');if(!sp)return;let seen=0;try{seen=sessionStorage.wlSplash;sessionStorage.wlSplash=1}catch(e){}
   if(seen||RM){sp.remove();return}
