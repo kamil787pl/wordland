@@ -191,7 +191,7 @@ body{background:var(--pg);color:var(--ink);font-family:"Figtree",system-ui,-appl
 .panel input[type=text],.panel input[type=password],.panel select{padding:10px 12px;font-size:16px}
 .panel textarea{font-family:ui-monospace,Menlo,Consolas,monospace}
 .panel input:focus,.panel textarea:focus,.panel select:focus{outline:0;border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-t)}
-#au-m,#tc-m{color:var(--red);font-weight:600}#au-m.ok,#tc-m.ok{color:var(--grn)}
+#au-m,#tc-m{color:var(--red);font-weight:600}#au-m.ok,#tc-m.ok,#rp-m.ok{color:var(--grn)}
 .crow{border-top:1px solid var(--line)}
 .tag2{border:0;border-radius:999px;padding:2px 9px;background:var(--pri-t);color:var(--pri-d);font-weight:700}
 .nb.dng{color:var(--red)}.nb.dng:hover{background:#fbe9eb;border-color:#f0c3c8}
@@ -1078,6 +1078,20 @@ async function delCatDB(id){try{await sb.from('categories').delete().eq('id',id)
 /* ===== PANEL NAUCZYCIELA (w portalu) ===== */
 let tEdit=null,tDel=null;
 
+/* reset hasła ucznia (funkcja serwerowa sprawdza rolę nauczyciela) */
+const RPE={nick:'Nick ma 3–16 znaków: małe litery, cyfry i _.',password:'Hasło musi mieć 6–72 znaków.',not_found:'Nie ma ucznia o takim nicku.',teacher_account:'Nie można zresetować hasła konta nauczyciela.',forbidden:'Tylko nauczyciel może zmieniać hasła.',auth:'Zaloguj się ponownie.'};
+function rmsg(t,ok){const e=$('rp-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
+function resetHTML(){return '<div class="panel"><h4>'+ic('user')+'Reset hasła ucznia</h4><p class="lg" style="margin:0 0 4px">Uczeń zapomniał hasła? Wpisz jego nick i ustaw nowe hasło, a potem mu je przekaż. Nie dotyczy kont nauczycieli.</p><div class="row2"><div><label for="rp-n">Nick ucznia</label><input id="rp-n" type="text" maxlength="16" autocomplete="off" autocapitalize="none" spellcheck="false"></div><div><label for="rp-p">Nowe hasło</label><input id="rp-p" type="text" maxlength="72" autocomplete="off" spellcheck="false"></div></div><p id="rp-m" style="min-height:20px;margin:8px 0;font-weight:600;color:var(--red)"></p><button class="gbtn" onclick="resetPw()">Zmień hasło</button></div>'}
+async function resetPw(){
+  const n=$('rp-n').value.trim().toLowerCase(),p=$('rp-p').value;
+  if(!nickOK(n))return rmsg(RPE.nick);
+  if(p.length<6)return rmsg('Nowe hasło musi mieć co najmniej 6 znaków.');
+  rmsg('Zmieniam hasło…',1);
+  try{const r=await sb.functions.invoke('reset-student-password',{body:{nick:n,password:p}});
+    if(r.error){let c='';try{c=(await r.error.context.json()).error}catch(e){}throw c}
+    $('rp-p').value='';rmsg('Hasło ucznia '+n+' zostało zmienione. Przekaż mu nowe hasło.',1)}
+  catch(c){rmsg(RPE[c]||'Nie udało się zmienić hasła. Spróbuj ponownie.')}
+}
 /* kreator kategorii */
 const EMO=['🐶','🍎','🏠','🎨','🧍','🏃','👪','🛒','✈️','📅','⚽','🎵','🌳','🏫','💼','📚'];
 const LVD={'':'Bez poziomu: kategoria pojawi się w grupie „Własne”.',A1:'A1: początkujący, krótkie i proste słówka.',A2:'A2: podstawowy, słówka z codziennych sytuacji.',B1:'B1: średnio zaawansowany, trudniejsze słownictwo.'};
@@ -1153,7 +1167,7 @@ function renderTeach(){
   if(!tRows){tRows=e?e.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})):[blankRow(),blankRow(),blankRow(),blankRow()];tLvl=e?(e.l||''):'';tDraft=e?{n:e.n,e:e.e,nh:!!e.nh}:null}
   root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'
   +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
-  +tFormHTML(e);
+  +tFormHTML(e)+resetHTML();
   if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}
   tCount();
 }
