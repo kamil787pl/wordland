@@ -5,6 +5,14 @@
 <script>try{if(sessionStorage.wlSplash)document.documentElement.classList.add("nosplash")}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WordLand – portal do nauki angielskiego</title>
+<meta name="description" content="WordLand – darmowy portal do nauki angielskiego przez gry: WordCraft i WordLinks. Poziomy A1–B1, codzienne łamigłówki i ranking.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="WordLand">
+<meta property="og:title" content="WordLand – ucz się angielskiego, grając">
+<meta property="og:description" content="Zbieraj słówka w WordCraft i układaj grupy w WordLinks. Pobij rekord i wyzwij znajomych!">
+<meta property="og:url" content="https://wordland-vrp8.netlify.app/">
+<meta property="og:image" content="https://wordland-vrp8.netlify.app/assets/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#2457d6">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#1b2430;--fg:#f4f1ea;--card:#fffdf5;--ink:#1b2430;--gold:#f2b632;--ok:#2e9d4f;--bad:#d64545}
@@ -459,6 +467,13 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .cn-over .cn-row{min-height:0}
 .gs-body{position:relative}.gs-body .cn-conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 @media(max-width:700px){.cn-over{grid-template-columns:1fr}}
+#pt button.fire{border:0;font:800 15px "Figtree",system-ui,sans-serif;cursor:pointer}
+#pt .fire .fd{display:none;font-weight:700}@media(min-width:760px){#pt .fire .fd{display:inline}}
+.hwtabs{display:inline-flex;gap:4px;padding:4px;margin:0 0 10px;background:var(--sf);border:1px solid var(--line);border-radius:12px}
+.hwtabs button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:6px 14px;border:0;border-radius:9px;background:transparent;color:var(--mut);font:700 14px "Figtree",system-ui,sans-serif;cursor:pointer}
+.hwtabs button.on{background:var(--pri);color:#fff}.hwtabs .i{width:16px;height:16px}
+.wlp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}.wlp .stat{display:block;padding:12px}
+@media(max-width:640px){.wlp{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -494,7 +509,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20zM12 10v5M12 18v.5"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="fire" id="pt-fire"></span></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
@@ -1177,17 +1192,31 @@ function heroGo(i){
   heroTick();
 }
 function heroTick(){clearTimeout(hT);if(!RM)hT=setTimeout(()=>{if(view==='home'&&!document.hidden&&!$('hero').matches(':hover'))heroGo((HI+1)%2);else heroTick()},6000)}
+const HOW=[
+ [['cube','Zbieraj','Uderzaj głową w złote bloki „?” i zbieraj słówka po drodze.'],['target','Odpowiadaj','Wybieraj tłumaczenie, wpisuj z pamięci lub układaj zdania.'],['trophy','Pokonaj bossa','Zdobywaj gwiazdki na każdym poziomie, od A1 do B1.']],
+ [['play','Kliknij Start','Dopiero wtedy pokażą się 16 słówek i ruszy czas. Każdego dnia jest nowa łamigłówka.'],['target','Połącz w grupy','Zaznacz 4 słówka z jednej kategorii i zatwierdź. Błąd to +10 s, masz 4 szanse.'],['trophy','Pobij rekord','Zdobywaj medale za czas, wspinaj się w rankingu i wyzywaj znajomych.']]];
+function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+ic(x[0])+'<h4>'+x[1]+'</h4><p>'+x[2]+'</p></div>').join('')}
+function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
   $('v-home').innerHTML='<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
-  +'<h3>Jak to działa</h3><h4 class="sh">'+ic('cube')+'WordCraft</h4><div class="steps"><div class="stp3"><b>1</b>'+ic('cube')+'<h4>Zbieraj</h4><p>Uderzaj głową w złote bloki „?” i zbieraj słówka po drodze.</p></div><div class="stp3"><b>2</b>'+ic('target')+'<h4>Odpowiadaj</h4><p>Wybieraj tłumaczenie, wpisuj z pamięci lub układaj zdania.</p></div><div class="stp3"><b>3</b>'+ic('trophy')+'<h4>Pokonaj bossa</h4><p>Zdobywaj gwiazdki na każdym poziomie, od A1 do B1.</p></div></div>'
-  +'<h4 class="sh">'+ic('grid')+'WordLinks</h4><div class="steps"><div class="stp3"><b>1</b>'+ic('play')+'<h4>Kliknij Start</h4><p>Dopiero wtedy pokażą się 16 słówek i ruszy czas. Każdego dnia jest nowa łamigłówka.</p></div><div class="stp3"><b>2</b>'+ic('target')+'<h4>Połącz w grupy</h4><p>Zaznacz 4 słówka z jednej kategorii i zatwierdź. Błąd to +10 s, masz 4 szanse.</p></div><div class="stp3"><b>3</b>'+ic('trophy')+'<h4>Pobij rekord</h4><p>Zdobywaj medale za czas, wspinaj się w rankingu i wyzywaj znajomych.</p></div></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
+}
+function cnProfile(){
+  const c=SV.cn||{},b=cnBestAll(),sp=(c.br||{}).sp;
+  return '<div class="panel"><h4>'+ic('grid')+'WordLinks</h4><div class="wlp">'
+   +'<div class="stat"><b>'+(b?cnFmt(b)+' '+cnMedal(b):'–')+'</b><span>najlepszy czas</span></div>'
+   +'<div class="stat"><b>'+(sp?cnFmt(sp)+' '+cnMedal(sp,1):'–')+'</b><span>rekord sprintu</span></div>'
+   +'<div class="stat"><b>'+cnStreak()+'</b><span>seria dni (rekord: '+(c.b||0)+')</span></div>'
+   +'<div class="stat"><b>'+(c.w||0)+'/'+(c.p||0)+'</b><span>wygrane puzzle dnia</span></div></div>'
+   +'<div class="cn-bd" style="margin:12px 0 0">'+Object.keys(CNBD).map(k=>'<span class="'+(c.bd&&c.bd[k]?'on':'')+'" title="'+CNBD[k][1]+': '+CNBD[k][2]+'">'+CNBD[k][0]+'</span>').join('')+'</div>'
+   +'<button class="nb" style="margin-top:12px" onclick="show(\'conn\')">Graj w WordLinks</button></div>';
 }
 function renderProf(){
   const st=SV.st||{n:0,best:0},tot=SV.tot||0,ok=SV.ok||0,acc=tot?Math.round(100*ok/tot):0,all=[];
@@ -1197,6 +1226,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
+  +cnProfile()
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +'<div class="panel"><h4>'+ic('trophy')+'Osiągnięcia</h4>'+Object.keys(ACH).map(k=>'<div class="chk'+(SV.a&&SV.a[k]?'':' no')+'">'+ic(SV.a&&SV.a[k]?'check':'circle')+'<span>'+ACH[k][0]+' – '+ACH[k][1]+'</span></div>').join('')+'</div>'
@@ -1206,7 +1236,7 @@ function renderProf(){
 function show(v){
   view=v;['home','prof','game','auth','teach','conn'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
-  clearKeys();{const f=$('pt-fire'),h=ic('flame')+streakNow();if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
+  clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
   if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='game'&&state==='menu')menu();
   window.scrollTo(0,0);
