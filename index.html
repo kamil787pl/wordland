@@ -505,6 +505,8 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
   .tw-man.go{animation:twright .8s var(--ease-out)}
   @keyframes twright{from{left:calc(var(--from)/var(--n)*100%)}}
 }
+.hvis.wl .fchip.c1{left:auto;right:-12px;top:42%;bottom:auto}
+.gc.feat.rev .gimg{object-fit:contain;background:linear-gradient(160deg,#16233b,#26427a)}
 </style>
 </head>
 <body>
@@ -1212,8 +1214,8 @@ function heroIn(i){
   const txt=wc?'<span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie nauczyciela</li></ul>'
    :'<span class="eyebrow">Nowa gra</span><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii. Puzzle dnia i wyzwanie na czas.</p><div class="hbtns"><button class="hbtn" onclick="show(\'conn\')">'+ic('grid')+'Graj w WordLinks</button></div><ul class="hchips"><li class="rec">'+(cnBestAll()?'🏆 Twój rekord: '+cnFmt(cnBestAll())+' '+cnMedal(cnBestAll()):'🏆 Pobij 1:30 i zdobądź 🥇')+'</li><li>'+(cnDailyDone()?'✅ Dzisiejsza ukończona':'⏰ Czeka puzzle dnia')+'</li>'+(cnStreak()?'<li>🔥 Seria: '+cnStreak()+' '+(cnStreak()===1?'dzień':'dni')+'</li>':'<li>⚡ Sprint na czas</li>')+'</ul>';
   const vis=wc?'<img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">Boss 👹</span>'
-   :'<img class="hshot" src="assets/wordlinks.webp" width="1000" height="570" alt="Plansza WordLinks z 16 słówekmi do pogrupowania"><span class="fchip c1">'+ic('check')+'Zwierzęta</span><span class="fchip c2">🥇</span><span class="fchip c3">⏱ '+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
-  return '<div class="hc hs">'+txt+'</div><div class="hvis hs">'+vis+'</div>';
+   :'<img class="hshot" src="assets/wordlinks.webp" width="960" height="458" alt="Plansza WordLinks z 16 słówekmi do pogrupowania"><span class="fchip c1">🏢 Piętro 5/12</span><span class="fchip c2">🥇</span><span class="fchip c3">⏱ '+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
+  return '<div class="hc hs">'+txt+'</div><div class="hvis hs'+(wc?'':' wl')+'">'+vis+'</div>';
 }
 function heroGo(i){
   HI=i;const h=$('hero');if(!h)return;
