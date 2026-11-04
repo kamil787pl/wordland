@@ -306,6 +306,8 @@ body{background:radial-gradient(900px 420px at 85% -80px,#dfe8ff 0,transparent 7
 @keyframes hslide{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.hs{animation:none}}
 /* ===== WordLinks ===== */
+.hchips li.rec{background:#fff;color:#a35f00;font-weight:800}
+
 .cn-board{position:relative}
 .cn-t.blank{color:transparent;background:#e6ebf5;border-color:transparent;box-shadow:none;filter:blur(1px);user-select:none;pointer-events:none}
 .cn-start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px;background:rgba(244,247,253,.6);backdrop-filter:blur(3px);border-radius:14px;z-index:3;animation:rise .4s var(--ease-out) both}
@@ -1104,9 +1106,9 @@ let HI=0,hT=0;
 function heroIn(i){
   const wc=i===0;
   const txt=wc?'<span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie nauczyciela</li></ul>'
-   :'<span class="eyebrow">Nowa gra</span><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii. Puzzle dnia i wyzwanie na czas.</p><div class="hbtns"><button class="hbtn" onclick="show(\'conn\')">'+ic('grid')+'Graj w WordLinks</button></div><ul class="hchips"><li>Puzzle dnia</li><li>Medale za czas</li><li>Rekordy</li></ul>';
+   :'<span class="eyebrow">Nowa gra</span><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii. Puzzle dnia i wyzwanie na czas.</p><div class="hbtns"><button class="hbtn" onclick="show(\'conn\')">'+ic('grid')+'Graj w WordLinks</button></div><ul class="hchips"><li class="rec">'+(cnBestAll()?'🏆 Twój rekord: '+cnFmt(cnBestAll())+' '+cnMedal(cnBestAll()):'🏆 Pobij 1:30 i zdobądź 🥇')+'</li><li>Puzzle dnia</li><li>Medale za czas</li></ul>';
   const vis=wc?'<img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">Boss 👹</span>'
-   :'<img class="hshot" src="assets/wordlinks.webp" width="1000" height="570" alt="Plansza WordLinks z 16 słówkami do pogrupowania"><span class="fchip c1">'+ic('check')+'Zwierzęta</span><span class="fchip c2">🥇</span><span class="fchip c3">⏱ 1:24</span>';
+   :'<img class="hshot" src="assets/wordlinks.webp" width="1000" height="570" alt="Plansza WordLinks z 16 słówkami do pogrupowania"><span class="fchip c1">'+ic('check')+'Zwierzęta</span><span class="fchip c2">🥇</span><span class="fchip c3">⏱ '+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
   return '<div class="hc hs">'+txt+'</div><div class="hvis hs">'+vis+'</div>';
 }
 function heroGo(i){
@@ -1472,7 +1474,8 @@ function cnLoad(mode){
   if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.go=1;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.ms=d.ms||0;g.solved=[0,1,2,3];g.tiles=[];g.fresh=0}
   return g;
 }
-function cnHomeSub(){const d=SV.cn&&SV.cn.d,b=SV.cn&&SV.cn.bt;return d&&d.date===ymd(new Date())&&d.done?'Dzisiejsza ukończona'+(d.won&&d.ms?' · '+cnFmt(d.ms):''):(b?'Rekord: '+cnFmt(b):'Dziś: nowa łamigłówka')}
+function cnBestAll(){const c=SV.cn||{},v=[c.bt].concat(Object.values(c.br||{})).filter(x=>x>0);return v.length?Math.min(...v):0}
+function cnHomeSub(){const b=cnBestAll(),d=SV.cn&&SV.cn.d,done=d&&d.date===ymd(new Date())&&d.done;return (b?'Twój rekord: '+cnFmt(b)+' '+cnMedal(b):'Pobij 1:30 i zdobądź 🥇')+' · '+(done?'dzisiejsza ukończona':'dziś nowa łamigłówka')}
 function cnStart(){if(!CN||CN.over||CN.go)return;CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
 function cnTap(i){
   if(!CN||CN.over||!CN.go)return;
