@@ -79,14 +79,20 @@ with sync_playwright() as pw:
     pg.route('**/*.supabase.co/**',handle)
     pg.goto('file://'+str(__import__('pathlib').Path(__file__).resolve().parent.parent/'index.html'));pg.wait_for_timeout(900)
     res['gosc: przycisk Nauczyciel ukryty']=pg.is_hidden('#nb-teach')
+    res['gosc: home bez bloku nauczyciela']='Dla nauczyciela' not in pg.inner_text('#v-home')
     pg.evaluate("show('teach')");res['gosc: komunikat']=pg.inner_text('#v-teach')[:70]
     # rejestracja ucznia
     pg.evaluate("goAuth(1)");pg.fill('#au-n','anna_nauczycielka');pg.fill('#au-p','haslo123');pg.fill('#au-p2','haslo123');pg.check('#au-ok');pg.click('#au-go');pg.wait_for_timeout(900)
     res['uczen: przycisk ukryty']=pg.is_hidden('#nb-teach')
+    pg.evaluate("show('home')");res['uczen: home bez bloku nauczyciela']='Dla nauczyciela' not in pg.inner_text('#v-home')
+    pg.evaluate("show('prof')");res['uczen: profil ma link z kodem']='mam kod' in pg.inner_text('#v-prof')
     pg.evaluate("show('teach')");res['uczen: widzi pole kodu']=pg.is_visible('#tc-code')
     pg.fill('#tc-code','ZLY');pg.click('text=Aktywuj');pg.wait_for_timeout(400);res['zly kod']=pg.inner_text('#tc-m')
     pg.fill('#tc-code',CODE);pg.click('text=Aktywuj');pg.wait_for_timeout(600)
     res['po dobrym kodzie']={'rola':pg.evaluate('ROLE'),'przycisk':pg.is_visible('#nb-teach'),'formularz':pg.is_visible('#tc-w')}
+    pg.evaluate("show('home')");res['nauczyciel: home ma blok']='Dla nauczyciela' in pg.inner_text('#v-home')
+    pg.evaluate("show('prof')");res['nauczyciel: profil bez linku']='mam kod' not in pg.inner_text('#v-prof')
+    pg.evaluate("show('teach')")
     # nowa kategoria (kreator)
     res['kreator: 4 puste wiersze']=pg.locator('#tc-rows .wr').count()
     pg.fill('#tc-n','Sport');pg.click('.emo button >> nth=10');res['ikona z listy']=pg.input_value('#tc-e')

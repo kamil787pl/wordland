@@ -917,7 +917,7 @@ function renderHome(){
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.on?'':' soon')+'"><span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">Ukończone poziomy: '+done+'/'+tot+'</small><button onclick="openGame()">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
-  +'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>';
+  +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>');
 }
 function renderProf(){
   const st=SV.st||{n:0,best:0},tot=SV.tot||0,ok=SV.ok||0,acc=tot?Math.round(100*ok/tot):0,all=[];
@@ -930,7 +930,8 @@ function renderProf(){
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +'<div class="panel"><h4>'+ic('trophy')+'Osiągnięcia</h4>'+Object.keys(ACH).map(k=>'<div class="chk'+(SV.a&&SV.a[k]?'':' no')+'">'+ic(SV.a&&SV.a[k]?'check':'circle')+'<span>'+ACH[k][0]+' – '+ACH[k][1]+'</span></div>').join('')+'</div>'
-  +'<div class="panel"><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek w WordCraft</button></div>';
+  +'<div class="panel"><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek w WordCraft</button></div>'
+  +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
 }
 function show(v){
   view=v;['home','prof','game','auth','teach'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
