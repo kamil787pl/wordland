@@ -204,6 +204,23 @@ canvas{border:1px solid #c5cfe1;border-radius:14px;box-shadow:0 8px 24px rgba(22
 kbd{background:#fff;border:1px solid #c5cfe1;border-bottom-width:2px;color:var(--ink);font-family:"Figtree",system-ui,sans-serif}
 #keys,small{color:var(--mut);opacity:1}
 @media(max-width:560px){#pt .nb .t{display:none}#pt .nb{padding:9px 11px}}
+/* kreator */
+.wiz .stp{padding:16px 0;border-top:1px solid var(--line)}.wiz .stp:first-of-type{border-top:0;padding-top:4px}
+.wiz h5{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:16px;font-weight:800}
+.wiz h5 b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--pri);color:#fff;font-size:13px}
+.wiz .nm{display:grid;grid-template-columns:1fr 110px;gap:12px}
+.wiz .nm input#tc-e{text-align:center;font-size:20px}
+.emo{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.emo button{width:38px;height:38px;font-size:20px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.emo button:hover{background:var(--pri-t);border-color:#c3d2f5}
+.seg{display:inline-flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}.seg button{font:700 14px "Figtree",system-ui,sans-serif;padding:8px 16px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.wh,.wr{display:grid;grid-template-columns:1fr 1fr 1.6fr 40px;gap:8px;align-items:center}
+.wh{margin:10px 0 4px;font-size:13px;font-weight:700;color:var(--mut)}
+.wr{margin-bottom:8px}.wr input{min-width:0;width:100%}
+.wr .x{padding:0;width:40px;height:40px;justify-content:center;color:var(--mut)}.wr .x:hover{color:var(--red)}
+.wa{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--mut)}.cnt.ok{color:var(--grn)}
+#tc-w{min-height:110px}
+@media(max-width:640px){.wh{display:none}.wr{grid-template-columns:1fr 1fr 40px;padding:10px;border:1px solid var(--line);border-radius:12px}.wr .s{grid-column:1/3}.wr .x{grid-row:1/3;grid-column:3}.wiz .nm{grid-template-columns:1fr 90px}}
 </style>
 </head>
 <body>
@@ -1035,6 +1052,57 @@ async function saveCatDB(c){
 async function delCatDB(id){try{await sb.from('categories').delete().eq('id',id);await loadBank();adm2('Usunięto kategorię')}catch(e){adm2('Błąd usuwania')}}
 /* ===== PANEL NAUCZYCIELA (w portalu) ===== */
 let tEdit=null,tDel=null;
+
+/* kreator kategorii */
+const EMO=['🐶','🍎','🏠','🎨','🧍','🏃','👪','🛒','✈️','📅','⚽','🎵','🌳','🏫','💼','📚'];
+const LVD={'':'Bez poziomu: kategoria pojawi się w grupie „Własne”.',A1:'A1: początkujący, krótkie i proste słówka.',A2:'A2: podstawowy, słówka z codziennych sytuacji.',B1:'B1: średnio zaawansowany, trudniejsze słownictwo.'};
+let tRows=null,tLvl='',tDraft=null,tPaste=false;
+const blankRow=()=>({pl:'',en:'',s:'',t:''});
+const esc=x=>String(x==null?'':x).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+function tSync(){
+  if(!$('tc-rows')||!tRows)return;
+  const old=tRows||[];
+  tRows=[...document.querySelectorAll('#tc-rows .wr')].map((r,i)=>({pl:r.querySelector('.p').value,en:r.querySelector('.e').value,s:r.querySelector('.s').value,t:(old[i]&&old[i].t)||''}));
+  tDraft={n:$('tc-n').value,e:$('tc-e').value,nh:$('tc-nh').checked};
+}
+function rowHTML(r,i){return '<div class="wr"><input class="p" type="text" maxlength="40" placeholder="po polsku" aria-label="Słówko po polsku, wiersz '+(i+1)+'" value="'+esc(r.pl)+'"><input class="e" type="text" maxlength="40" placeholder="po angielsku" aria-label="Słówko po angielsku, wiersz '+(i+1)+'" value="'+esc(r.en)+'"><input class="s" type="text" maxlength="90" placeholder="zdanie z luką ___ (opcjonalnie)" aria-label="Zdanie z luką, wiersz '+(i+1)+'" value="'+esc(r.s)+'"><button type="button" class="nb dng x" aria-label="Usuń wiersz '+(i+1)+'" title="Usuń wiersz" onclick="tRowDel('+i+')">'+ic('trash')+'</button></div>'}
+function drawRows(){$('tc-rows').innerHTML=tRows.map(rowHTML).join('');tCount()}
+function tAdd(n,focus){tSync();for(let k=0;k<(n||1);k++)tRows.push(blankRow());drawRows();if(focus){const a=document.querySelectorAll('#tc-rows .wr .p');a[a.length-1].focus()}}
+function tRowDel(i){tSync();tRows.splice(i,1);if(!tRows.length)tRows.push(blankRow());drawRows()}
+function tCount(){const e=$('tc-cnt');if(!e)return;const n=[...document.querySelectorAll('#tc-rows .wr')].filter(r=>r.querySelector('.p').value.trim()&&r.querySelector('.e').value.trim()).length;e.textContent=n+(n>=4?' słówek, wystarczy do zapisu':' z minimum 4');e.className='cnt'+(n>=4?' ok':'')}
+function tLvlSet(v){tSync();tLvl=v;document.querySelectorAll('#tc-seg button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('tc-lvd').textContent=LVD[v]}
+function tEmo(x){$('tc-e').value=x}
+function tPasteToggle(){tPaste=!tPaste;$('tc-pbox').hidden=!tPaste;if(tPaste)$('tc-w').focus()}
+function tImport(){
+  const pw=parseWords($('tc-w').value);if(!pw.w.length)return tmsg('Nie znalazłem słówek. Wklej wiersze: polskie, angielskie (i opcjonalnie zdanie).');
+  tSync();tRows=tRows.filter(r=>r.pl.trim()||r.en.trim()).concat(pw.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})));
+  drawRows();$('tc-w').value='';tPaste=false;$('tc-pbox').hidden=true;tmsg('Dodano '+pw.w.length+' słówek do listy'+(pw.bad?' (pominięto '+pw.bad+' błędnych wierszy)':'')+'.',1);
+}
+function tCollect(){
+  tSync();const w=[],seen=new Set();let bad=0,badS=0;
+  tRows.forEach((r,i)=>{
+    const pl=cl(r.pl,40),en=cl(r.en,40),z=cl(r.s,90);
+    if(!pl&&!en&&!z)return;
+    if(!pl||!en){bad++;return}
+    if(z&&!z.includes('___')&&!badS)badS=i+1;
+    const k=pl+'='+en;if(seen.has(k))return;seen.add(k);
+    w.push([pl,en,z.includes('___')?z:'',r.t?cl(r.t,40):'']);
+  });
+  return{w:w.slice(0,300),bad,badS};
+}
+function tFormHTML(e){
+  return '<div class="panel wiz"><h4>'+(e?ic('edit')+'Edycja kategorii: '+esc(e.n):ic('plus')+'Nowa kategoria')+'</h4>'
+  +'<section class="stp"><h5><b>1</b>Nazwa i ikona</h5><div class="nm"><div><label for="tc-n">Nazwa kategorii</label><input id="tc-n" type="text" maxlength="40" placeholder="np. Sport"></div><div><label for="tc-e">Ikona</label><input id="tc-e" type="text" maxlength="4" placeholder="📚"></div></div>'
+  +'<div class="emo" role="group" aria-label="Wybierz ikonę">'+EMO.map(x=>'<button type="button" onclick="tEmo(this.textContent)">'+x+'</button>').join('')+'</div></section>'
+  +'<section class="stp"><h5><b>2</b>Poziom</h5><div class="seg" id="tc-seg" role="group" aria-label="Poziom">'+L4.map(x=>'<button type="button" data-v="'+x[0]+'" class="'+(tLvl===x[0]?'on':'')+'" onclick="tLvlSet(this.dataset.v)">'+(x[0]||'Bez poziomu')+'</button>').join('')+'</div><p class="lg" id="tc-lvd">'+LVD[tLvl]+'</p>'
+  +'<label class="ck"><input type="checkbox" id="tc-nh"><span>Trudniej: ukryj polskie tłumaczenie w zdaniach z luką</span></label></section>'
+  +'<section class="stp"><h5><b>3</b>Słówka</h5><div class="wh"><span>Polski</span><span>Angielski</span><span>Zdanie z luką (opcjonalnie)</span><span></span></div>'
+  +'<div id="tc-rows" oninput="tCount()" onkeydown="if(event.key===\'Enter\'&&event.target.tagName===\'INPUT\'){event.preventDefault();const r=event.target.closest(\'.wr\');if(r===r.parentNode.lastElementChild)tAdd(1,1);else r.nextElementSibling.querySelector(\'.p\').focus()}">'+tRows.map(rowHTML).join('')+'</div>'
+  +'<div class="wa"><button type="button" class="nb" onclick="tAdd(1,1)">'+ic('plus')+'Dodaj słówko</button><button type="button" class="nb" onclick="tAdd(5,1)">+5 wierszy</button><button type="button" class="nb" onclick="tPasteToggle()">'+ic('book')+'Wklej z Excela</button><span id="tc-cnt" class="cnt"></span></div>'
+  +'<div id="tc-pbox" hidden><p class="lg" style="margin:10px 0 6px">Wklej kolumny skopiowane z Excela lub Arkuszy Google: polski, angielski i opcjonalnie zdanie z luką. Możesz też pisać w linii <b>polskie=angielskie</b>.</p><textarea id="tc-w" spellcheck="false" placeholder="samolot&#9;plane&#9;I travel by ___.&#10;statek&#9;ship"></textarea><button type="button" class="nb" style="margin-top:8px" onclick="tImport()">Dodaj do listy</button></div>'
+  +'<p class="lg" style="margin:10px 0 0">Wskazówka: Enter w ostatnim wierszu dodaje nowy. Zdanie z luką musi zawierać <b>___</b> w miejscu brakującego słowa.</p></section>'
+  +'<p id="tc-m"></p><div class="wa"><button class="gbtn" onclick="tSave()">'+(e?'Zapisz zmiany':'Zapisz kategorię')+'</button>'+(e?'<button class="nb" onclick="tCancel()">Anuluj edycję</button>':'')+'</div></div>';
+}
 const L4=[['','Własne (bez poziomu)'],['A1','A1'],['A2','A2'],['B1','B1']];
 function tmsg(t,ok){const e=$('tc-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
 function parseWords(txt){
@@ -1055,16 +1123,14 @@ function renderTeach(){
   if(!sb){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel">Brak połączenia z serwerem. Panel działa tylko po połączeniu z bazą.</div>';return}
   if(!U){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Zaloguj się, aby wejść do panelu nauczyciela.</p><button class="gbtn" onclick="goAuth(0)">Zaloguj się</button> <button class="nb" onclick="goAuth(1)">Załóż konto</button></div>';return}
   if(ROLE!=='teacher'){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Twoje konto (<b>'+U.nick+'</b>) nie ma jeszcze uprawnień nauczyciela. Wpisz kod nauczyciela, który dostałeś od administratora.</p><label for="tc-code">Kod nauczyciela</label><input id="tc-code" type="text" autocomplete="off" autocapitalize="characters" style="max-width:320px"><p id="tc-m"></p><button class="gbtn" onclick="claimTeacher()">Aktywuj</button></div>';return}
+  tSync();
   const mine=CATS.filter(c=>c.own&&c.own===U.id),e=tEdit&&mine.find(c=>c.id===tEdit);
+  if(!tRows){tRows=e?e.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})):[blankRow(),blankRow(),blankRow(),blankRow()];tLvl=e?(e.l||''):'';tDraft=e?{n:e.n,e:e.e,nh:!!e.nh}:null}
   root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'
   +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
-  +'<div class="panel"><h4>'+(e?ic('edit')+'Edycja: '+e.n:ic('plus')+'Nowa kategoria')+'</h4>'
-  +'<div class="row2"><div><label for="tc-n">Nazwa</label><input id="tc-n" type="text" maxlength="40"></div><div><label for="tc-e">Emoji</label><input id="tc-e" type="text" maxlength="4" placeholder="📚"></div></div>'
-  +'<div class="row2"><div><label for="tc-l">Poziom</label><select id="tc-l">'+L4.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('')+'</select></div><div><label class="ck" style="margin-top:34px"><input type="checkbox" id="tc-nh"><span>Ukryj tłumaczenie przy zdaniach z luką (trudniej)</span></label></div></div>'
-  +'<label for="tc-w">Słówka – jedno w linii</label><textarea id="tc-w" spellcheck="false" placeholder="polskie=angielskie=zdanie z luką ___ (opcjonalnie)&#10;samolot=plane=I travel by ___.&#10;statek=ship=A ___ sails across the sea."></textarea>'
-  +'<p class="lg" style="margin:6px 0">Format: <b>polskie = angielskie = zdanie</b> (zdanie jest opcjonalne i musi zawierać <b>___</b> w miejscu luki). Możesz też wkleić wiersze z Excela lub Arkuszy Google (kolumny rozdzielone tabulatorem lub średnikiem). Minimum 4 słówka.</p>'
-  +'<p id="tc-m"></p><button class="gbtn" onclick="tSave()">'+(e?'Zapisz zmiany':'Zapisz kategorię')+'</button> '+(e?'<button class="nb" onclick="tCancel()">Anuluj edycję</button>':'')+'</div>';
-  if(e){$('tc-n').value=e.n;$('tc-e').value=e.e;$('tc-l').value=e.l||'';$('tc-nh').checked=!!e.nh;$('tc-w').value=wordsToText(e)}
+  +tFormHTML(e);
+  if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}
+  tCount();
 }
 async function claimTeacher(){
   const code=$('tc-code').value.trim();if(!code)return tmsg('Wpisz kod.');
@@ -1073,17 +1139,18 @@ async function claimTeacher(){
     if(r.data===true){ROLE='teacher';show('teach')}else tmsg('Nieprawidłowy kod.')}
   catch(e){tmsg('Nie udało się. Spróbuj ponownie.')}
 }
-function tStart(id){tEdit=id;tDel=null;renderTeach();window.scrollTo(0,document.body.scrollHeight)}
-function tCancel(){tEdit=null;renderTeach()}
+function tStart(id){tSync();tEdit=id;tDel=null;tRows=null;tDraft=null;renderTeach();window.scrollTo(0,document.body.scrollHeight)}
+function tCancel(){tEdit=null;tRows=null;tDraft=null;renderTeach()}
 async function tPub(id){const c=CATS.find(x=>x.id===id);if(!c)return;try{await sb.from('categories').update({is_public:c.pub===false}).eq('id',id);await loadBank();renderTeach()}catch(e){}}
 async function tDelete(id){
   if(tDel!==id){tDel=id;renderTeach();return}
   try{await sb.from('categories').delete().eq('id',id);tDel=null;if(tEdit===id)tEdit=null;await loadBank();renderTeach()}catch(e){tmsg('Nie udało się usunąć.')}
 }
 async function tSave(){
-  const name=cl($('tc-n').value,40),emoji=cl($('tc-e').value,4)||'📚',level=$('tc-l').value||null,nh=$('tc-nh').checked,pw=parseWords($('tc-w').value);
+  const name=cl($('tc-n').value,40),emoji=cl($('tc-e').value,4)||'📚',level=tLvl||null,nh=$('tc-nh').checked,pw=tCollect();
   if(!name)return tmsg('Podaj nazwę kategorii.');
-  if(pw.w.length<4)return tmsg('Potrzeba co najmniej 4 poprawnych słówek (polskie=angielskie).');
+  if(pw.badS)return tmsg('Zdanie w wierszu '+pw.badS+' musi zawierać ___ w miejscu luki.');
+  if(pw.w.length<4)return tmsg('Potrzeba co najmniej 4 słówek: w każdym wierszu wypełnij pole polskie i angielskie.');
   tmsg('Zapisuję w bazie…',1);
   try{
     const old=tEdit&&CATS.find(c=>c.id===tEdit);
@@ -1100,7 +1167,7 @@ async function tSave(){
       const r=await sb.from('categories').insert({slug:'u-'+U.id.slice(0,6)+'-'+Date.now().toString(36),name,emoji,level,no_hint:nh,is_public:true,owner:U.id,sort:100}).select('id').single();if(r.error)throw r.error;
       const q=await sb.from('words').insert(pw.w.map(w=>({category_id:r.data.id,pl:w[0],en:w[1],sentence:w[2]||null,trap:w[3]||null})));if(q.error)throw q.error;
     }
-    await loadBank();renderTeach();tmsg('Zapisano w bazie: '+name+(pw.bad?' (pominięto '+pw.bad+' błędnych linii)':''),1);
+    tRows=null;tDraft=null;tLvl='';await loadBank();renderTeach();tmsg('Zapisano w bazie: '+name+(pw.bad?' (pominięto '+pw.bad+' niepełnych wierszy)':''),1);
   }catch(e){tmsg('Błąd zapisu: '+((e&&e.message)||'sieć'))}
 }
 start(0);menu();
