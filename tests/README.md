@@ -9,6 +9,7 @@ python3 tests/teacher_test.py   # panel nauczyciela, kreator, reset hasła
 python3 tests/stage_test.py     # etapy rundy, checkpointy, boss
 python3 tests/hard_test.py      # tryb Hard
 python3 tests/mobile_test.py    # telefon: pion/poziom, przyciski dotykowe
+python3 tests/conn_test.py      # Połączenia: łamigłówka, zasady, codzienna, udostępnianie
 ```
 
 Każdy test drukuje wynik jako JSON; pole `errors` powinno zawierać co najwyżej błąd ładowania czcionek Google.

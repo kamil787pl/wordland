@@ -295,6 +295,34 @@ body{background:radial-gradient(900px 420px at 85% -80px,#dfe8ff 0,transparent 7
 @media (hover:hover) and (pointer:fine) and (not (any-pointer:coarse)){#ctl:not(.fsc) #bl,#ctl:not(.fsc) #bj,#ctl:not(.fsc) #br{display:none}}
 @media(max-width:640px){.hero{padding:24px 20px}.hero h2{font-size:30px}.hvis{width:100%;margin-top:6px}.fchip.c1{left:-6px}.fchip.c2{right:-4px}.steps{grid-template-columns:1fr}#ignore{}
 .gc.feat{display:flex;grid-column:auto}.gc.feat .gimg{height:170px;min-height:0}.gc.feat>:not(.gimg):not(.tag){margin-left:18px;margin-right:18px}.cards{grid-template-columns:1fr}}
+/* ===== Połączenia ===== */
+#v-conn.in>*{animation:rise .4s var(--ease-out) both}
+.cn-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 12px}
+.cn-seg{display:inline-flex;gap:4px;padding:4px;background:var(--sf);border:1px solid var(--line);border-radius:12px}
+.cn-seg button{min-height:38px;padding:6px 14px;border:0;border-radius:9px;background:transparent;color:var(--mut);font:700 14px "Figtree",system-ui,sans-serif;cursor:pointer}
+.cn-seg button.on{background:var(--pri);color:#fff}
+.cn-lead{margin:0 0 12px;color:var(--mut);font-size:15px}
+.cn-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cn-row{grid-column:1/-1;padding:12px 10px;border-radius:14px;text-align:center;color:#16233b}
+.cn-row.new{animation:rise .35s var(--ease-out) both}
+.cn-row b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px}
+.cn-row span{display:block;margin-top:3px;font-size:14px;font-weight:600}
+.cn-row small{display:block;margin-top:2px;font-size:12px;opacity:.75}
+.cn-t{min-height:68px;padding:6px;border:0;border-radius:12px;background:#e9eef8;color:var(--ink);font:800 clamp(13px,3.6vw,18px) "Figtree",system-ui,sans-serif;cursor:pointer;overflow-wrap:anywhere;hyphens:auto;transition:background .15s var(--ease-out),color .15s var(--ease-out),transform .12s var(--ease-out)}
+.cn-t.sel{background:#16233b;color:#fff;transform:scale(.96)}
+@media (hover:hover){.cn-t:not(.sel):hover{background:#dbe5f7}}
+.cn-t:active{transform:scale(.94)}
+.cn-board.shake{animation:shake .4s var(--ease-out)}
+.cn-info{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 6px;color:var(--mut);font-size:14px;font-weight:600}
+.cn-dots i{display:inline-block;width:12px;height:12px;margin:0 3px;border-radius:50%;background:#16233b;transition:transform .2s var(--ease-out),background .2s}
+.cn-dots i.off{background:#cbd5e6;transform:scale(.7)}
+.cn-msg{min-height:24px;text-align:center;font-weight:700;color:var(--ink)}
+.cn-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.cn-act button{min-height:46px;padding:10px 18px;border-radius:999px;border:1.5px solid var(--ink);background:var(--sf);color:var(--ink);font:700 15px "Figtree",system-ui,sans-serif;cursor:pointer}
+.cn-act button.pri{background:var(--ink);color:#fff}.cn-act button:disabled{opacity:.4;cursor:default}
+.cn-end{margin-top:18px;padding:18px;text-align:center;background:var(--sf);border:1px solid var(--line);border-radius:16px;animation:rise .4s var(--ease-out) both}
+.cn-end h3{margin:0 0 6px}.cn-end pre{margin:10px auto;font:20px/1.25 system-ui,"Apple Color Emoji","Segoe UI Emoji",sans-serif;letter-spacing:2px}
+.cn-stats{display:flex;justify-content:center;gap:22px;margin-top:10px;color:var(--mut);font-size:13px}.cn-stats b{display:block;font-size:20px;color:var(--ink)}
 /* ===== animacje ===== */
 :root{--ease-out:cubic-bezier(.23,1,.32,1)}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -349,6 +377,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
 <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
 <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
 <symbol id="i-cards" viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4"/></symbol>
 <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
@@ -366,11 +395,12 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20zM12 10v5M12 18v.5"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="fire" id="pt-fire"></span></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="Połączenia"><svg class="i"><use href="#i-grid"/></svg><span class="t">Połączenia</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="fire" id="pt-fire"></span></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
 <main id="v-teach" class="pv" hidden></main>
+<main id="v-conn" class="pv" hidden></main>
 <section id="v-game" hidden>
 <div id="wrap"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div>
 <p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
@@ -1025,17 +1055,17 @@ function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate
 function wod(){const all=[];CATS.forEach(c=>{if(c.l)c.w.forEach(w=>all.push(w))});const d=new Date(),n=Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return all[(n*7919)%all.length]}
 function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(!x||(!x.r&&!x.w))n++;else if(x.b>=4)m++;else l++});return{m,l,n,t:ws.length}}
 const GAMES=[
- {n:'WordCraft',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1},
- {n:'Memory',e:'cards',d:'Dopasowuj pary: polskie i angielskie słowo.'},
- {n:'Wisielec',e:'type',d:'Zgaduj angielskie słowo literka po literce.'},
- {n:'Szukanie słów',e:'search',d:'Znajdź ukryte słowa w siatce liter.'}];
+ {n:'WordCraft',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,go:'openGame()'},
+ {n:'Połączenia',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka.',on:1,go:"show('conn')"},
+ {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
+ {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
   $('v-home').innerHTML='<div class="hero"><div class="hc"><span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie nauczyciela</li></ul></div><div class="hvis"><img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">Boss 👹</span></div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Jak to działa</h3><div class="steps"><div class="stp3"><b>1</b>'+ic('cube')+'<h4>Zbieraj</h4><p>Uderzaj głową w złote bloki „?” i zbieraj słówka po drodze.</p></div><div class="stp3"><b>2</b>'+ic('target')+'<h4>Odpowiadaj</h4><p>Wybieraj tłumaczenie, wpisuj z pamięci lub układaj zdania.</p></div><div class="stp3"><b>3</b>'+ic('trophy')+'<h4>Pokonaj bossa</h4><p>Zdobywaj gwiazdki na każdym poziomie, od A1 do B1.</p></div></div>'
-  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.on?' feat':' soon')+'">'+(g.on?'<img class="gimg" src="assets/hero-game.webp" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">Ukończone poziomy: '+done+'/'+tot+'</small><button onclick="openGame()">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat':g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="assets/hero-game.webp" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.feat?'Ukończone poziomy: '+done+'/'+tot:cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
 }
@@ -1054,11 +1084,11 @@ function renderProf(){
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
 }
 function show(v){
-  view=v;['home','prof','game','auth','teach'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  view=v;['home','prof','game','auth','teach','conn'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   clearKeys();{const f=$('pt-fire'),h=ic('flame')+streakNow();if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
-  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='game'&&state==='menu')menu();
+  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='game'&&state==='menu')menu();
   window.scrollTo(0,0);
 }
 function openGame(){show('game')}
@@ -1347,6 +1377,98 @@ let last=performance.now(),acc=0;
 })(last);
 show('home');initCloud();
 
+
+/* ===== POŁĄCZENIA: 16 słówek, 4 kategorie ===== */
+const CNC=['#fde9a9','#c6ebd7','#cfdcfb','#e2d6fb'],CNE=['🟨','🟩','🟦','🟪'];
+let CN=null,CNmode='daily',CNlvl='';
+const cnRng=a=>()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+const cnHash=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+function cnBuild(mode){
+  const R=mode==='daily'?cnRng(cnHash('wl'+ymd(new Date()))):Math.random;
+  const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  const ok=c=>!c.tmp&&c.w.length>=4;
+  let pool=CATS.filter(c=>ok(c)&&(mode==='daily'?(!c.own&&c.l):(!CNlvl||c.l===CNlvl)));
+  if(pool.length<4)pool=CATS.filter(ok);
+  if(pool.length<4)return null;
+  const used=new Set(),groups=[];
+  for(const c of shuf(pool)){
+    if(groups.length===4)break;
+    const ws=[];for(const w of shuf(c.w)){const k=w[1].toLowerCase();if(!used.has(k)&&w[1].length<=14){ws.push(w);if(ws.length===4)break}}
+    if(ws.length<4)continue;
+    ws.forEach(w=>used.add(w[1].toLowerCase()));groups.push({n:c.n,e:c.e,w:ws.map(w=>w[1]),pl:ws.map(w=>w[0])});
+  }
+  if(groups.length<4)return null;
+  const col=shuf([0,1,2,3]);groups.forEach((g,i)=>g.c=col[i]);
+  return{mode,groups,tiles:shuf(groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})))),sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0};
+}
+function cnLoad(mode){
+  const g=cnBuild(mode);if(!g)return null;
+  const d=SV.cn&&SV.cn.d;
+  if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.solved=[0,1,2,3];g.tiles=[]}
+  return g;
+}
+function cnHomeSub(){const d=SV.cn&&SV.cn.d;return d&&d.date===ymd(new Date())&&d.done?'Dzisiejsza ukończona':'Dziś: nowa łamigłówka'}
+function cnTap(i){
+  if(!CN||CN.over)return;const k=CN.sel.indexOf(i);
+  if(k>=0)CN.sel.splice(k,1);else if(CN.sel.length<4)CN.sel.push(i);
+  CN.msg='';CN.newG=[];renderConn();
+}
+function cnClear(){if(CN&&!CN.over){CN.sel=[];CN.msg='';renderConn()}}
+function cnShuffle(){if(!CN||CN.over)return;const t=CN.tiles.map((x,i)=>({x,sel:CN.sel.includes(i)}));for(let i=t.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[t[i],t[j]]=[t[j],t[i]]}CN.tiles=t.map(o=>o.x);CN.sel=t.map((o,i)=>o.sel?i:-1).filter(i=>i>=0);renderConn()}
+function cnSubmit(){
+  if(!CN||CN.over||CN.sel.length!==4)return;
+  const ts=CN.sel.map(i=>CN.tiles[i]),cnt={};ts.forEach(t=>cnt[t.g]=(cnt[t.g]||0)+1);
+  const best=Math.max(...Object.values(cnt));
+  CN.hist.push(ts.map(t=>CN.groups[t.g].c));
+  if(best===4){
+    const g=ts[0].g;CN.solved.push(g);CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;touchDay(true);
+    if(CN.solved.length===4)cnFinish(1);
+  }else{
+    CN.miss++;CN.shake=1;CN.msg=best===3?'Prawie! Jedno słówko nie pasuje.':'To nie jest jedna grupa.';touchDay(false);
+    if(CN.miss>=CN.max){CN.newG=[];[0,1,2,3].forEach(g=>{if(!CN.solved.includes(g)){CN.solved.push(g);CN.newG.push(g)}});CN.tiles=[];CN.sel=[];cnFinish(0)}
+  }
+  renderConn();CN.shake=0;
+}
+function cnFinish(won){
+  CN.over=1;CN.won=won;if(CN.mode!=='daily')return;
+  const c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:''}),t=ymd(new Date());
+  if(c.d&&c.d.date===t&&c.d.done)return;
+  const y=new Date();y.setDate(y.getDate()-1);
+  c.p++;if(won){c.w++;c.s=c.last===ymd(y)?c.s+1:1;c.b=Math.max(c.b,c.s)}else c.s=0;c.last=t;
+  c.d={date:t,done:1,won,miss:CN.miss,hist:CN.hist};save();
+}
+function cnShareText(){
+  const d=new Date(),lab=CN.mode==='daily'?'codzienna '+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0'):'losowa';
+  return 'WordLand Połączenia ('+lab+') '+(CN.won?'✔':'✘')+'\n'+CN.hist.map(r=>r.map(c=>CNE[c]).join('')).join('\n')+'\nwordland-vrp8.netlify.app';
+}
+async function cnShare(){
+  const t=cnShareText();
+  try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(t);CN.msg='Skopiowano wynik do schowka.'}catch(e){CN.msg='Nie udało się skopiować.'}
+  renderConn();
+}
+function cnMode(m){CNmode=m;CN=null;renderConn()}
+function cnLvl(l){CNlvl=l;CN=cnLoad('random');renderConn()}
+function cnNew(){CN=cnLoad('random');CNmode='random';renderConn()}
+function renderConn(){
+  const root=$('v-conn');if(!root)return;
+  if(!CN||CN.mode!==CNmode)CN=cnLoad(CNmode);
+  const head='<h2>'+ic('grid')+'Połączenia</h2><p class="cn-lead">Znajdź 4 grupy po 4 słówka z tej samej kategorii.</p>'
+   +'<div class="cn-top"><div class="cn-seg" role="group" aria-label="Tryb"><button class="'+(CNmode==='daily'?'on':'')+'" onclick="cnMode(\'daily\')">Codzienna</button><button class="'+(CNmode==='random'?'on':'')+'" onclick="cnMode(\'random\')">Losowa</button></div>'
+   +(CNmode==='random'?'<div class="cn-seg" role="group" aria-label="Poziom">'+[['','Wszystkie'],['A1','A1'],['A2','A2'],['B1','B1']].map(x=>'<button class="'+(CNlvl===x[0]?'on':'')+'" onclick="cnLvl(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>':'')+'</div>';
+  if(!CN){root.innerHTML=head+'<div class="panel">Za mało kategorii, żeby ułożyć łamigłówkę. Potrzebne są co najmniej 4 kategorie z 4 słówkami.</div>';return}
+  const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+'"><b>'+G.e+' '+G.n+'</b><span>'+G.w.join(', ')+'</span><small>'+G.pl.join(' · ')+'</small></div>'}).join('');
+  const tiles=CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+t.w+'</button>').join('');
+  const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
+  let end='';
+  if(CN.over){const c=SV.cn||{p:0,w:0,s:0,b:0};
+    end='<div class="cn-end"><h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3><div>'+(CN.won?'Wszystkie grupy znalezione, błędy: '+CN.miss+'.':'Odpowiedzi są powyżej, spróbuj jutro lub w trybie losowym.')+'</div><pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre><div class="cn-act"><button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnNew()">Nowa łamigłówka</button></div>'
+     +(CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord</span></div>':'')+'</div>';
+  }
+  root.innerHTML=head+'<div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+'</div>'
+   +(CN.over?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div><div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div><div class="cn-act"><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')
+   +(CN.over&&CN.msg?'<div class="cn-msg" role="status">'+CN.msg+'</div>':'')+end;
+}
 /* ekran startowy */
 (function(){const sp=$('splash');if(!sp)return;let seen=0;try{seen=sessionStorage.wlSplash;sessionStorage.wlSplash=1}catch(e){}
   if(seen||RM){sp.remove();return}
