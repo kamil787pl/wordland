@@ -6,7 +6,7 @@ res={};errs=[]
 with sync_playwright() as pw:
     br=pw.chromium.launch();pg=br.new_page(viewport={'width':420,'height':900});pg.on('pageerror',lambda e:errs.append(str(e)))
     pg.goto(URL);pg.wait_for_timeout(500);pg.evaluate("sessionStorage.clear();localStorage.clear()");pg.reload();pg.wait_for_timeout(500)
-    res['karta na stronie glownej']='Połączenia' in pg.inner_text('#v-home')
+    res['karta na stronie glownej']='WordLinks' in pg.inner_text('#v-home')
     pg.evaluate("show('conn')");pg.wait_for_timeout(300)
     res['16 kafelkow']=pg.locator('.cn-t').count()==16
     res['unikalne slowa']=pg.evaluate("new Set(CN.tiles.map(t=>t.w.toLowerCase())).size")==16
@@ -28,6 +28,11 @@ with sync_playwright() as pw:
     for _ in range(3):
         pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(120)
     res['wygrana']=pg.evaluate("[CN.over,CN.won]")==[1,1]
+    res['czas i medal po wygranej']=pg.evaluate("CN.ms>=CN.miss*10000&&cnMedal(CN.ms)==='🥇'")
+    res['kara 10 s za blad']=pg.evaluate("CN.ms>=10000")  # w tescie jest 1 blad
+    res['rekord zapisany']=pg.evaluate("SV.cn.bt===CN.ms&&CN.rec===1")
+    res['ekran koncowy: czas i rekord']='Nowy rekord' in pg.inner_text('.cn-end') and '⏱' in pg.inner_text('.cn-end')
+    res['udostepnianie z czasem']='⏱' not in pg.evaluate("cnShareText()") and ':' in pg.evaluate("cnShareText()")
     res['statystyki zapisane']=pg.evaluate("SV.cn.p==1&&SV.cn.w==1&&SV.cn.s==1")
     res['share ma kwadraciki']='🟨' in pg.evaluate("cnShareText()") or '🟩' in pg.evaluate("cnShareText()")
     # po odświeżeniu codzienna jest ukończona
@@ -38,6 +43,10 @@ with sync_playwright() as pw:
     for _ in range(4):
         pg.evaluate(pick);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
     res['przegrana ujawnia grupy']=pg.evaluate("[CN.over,CN.won,CN.solved.length]")==[1,0,4]
+    pg.evaluate("cnLvl('A1')");pg.evaluate("(()=>{CN.t0=Date.now()-30000;})()")
+    for _ in range(4):
+        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+    res['rekord losowej per poziom']=pg.evaluate("SV.cn.br.A1>=29000&&SV.cn.br.A1<40000&&CN.rec===1")
     res['losowa nie zmienia serii dziennej']=pg.evaluate("SV.cn.p")==1
     pg.set_viewport_size({'width':360,'height':740});pg.evaluate("cnNew()");pg.wait_for_timeout(300)
     res['mobile: brak poziomego przewijania']=pg.evaluate("document.documentElement.scrollWidth<=document.documentElement.clientWidth")
