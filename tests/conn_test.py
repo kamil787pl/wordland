@@ -58,6 +58,43 @@ with sync_playwright() as pw:
     res['mobile: brak poziomego przewijania']=pg.evaluate("document.documentElement.scrollWidth<=document.documentElement.clientWidth")
     # poziomy
     pg.evaluate("cnLvl('A2')");res['poziom A2']=pg.evaluate("CN.groups.length")==4
+    # podpowiedź, powtórki, sprint, odznaki, ranking
+    solve="(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()"
+    pg.evaluate("localStorage.clear();SV.cn=null;SV.m={};cnNew();cnStart()");pg.wait_for_timeout(100)
+    pg.click('button:has-text("Podpowiedź")');pg.wait_for_timeout(100)
+    res['podpowiedz: kafelek i kara']=pg.locator('.cn-t.hint').count()==1 and pg.evaluate("CN.hints")==1 and 'Podpowiedź' in pg.inner_text('.cn-msg') and pg.evaluate("CN.t0=Date.now()-1000,cnTotal()>=15000")
+    pg.click('button:has-text("Podpowiedź")');pg.wait_for_timeout(100);res['podpowiedz: max 2']=pg.is_disabled('button:has-text("Podpowiedź (0)")')
+    pg.evaluate(pick);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+    res['zle slowa zapamietane']=pg.evaluate("CN.bad.length")>=1
+    for _ in range(3):
+        pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(80)
+    pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+    res['koniec: podpowiedzi w opisie']='Podpowiedzi: 2' in pg.inner_text('.cn-end')
+    n=pg.evaluate("CN.bad.length");pg.click('text=Dodaj trudne słówka');pg.wait_for_timeout(100)
+    res['powtorki: wpisane do SV.m']=pg.evaluate("Object.values(SV.m).filter(m=>m.w>0).length")==n and n>0
+    # sprint
+    pg.evaluate("cnMode('sprint')");pg.wait_for_timeout(100)
+    res['sprint: slowa ukryte']=pg.locator('.cn-t.blank').count()==16
+    pg.click('text=Start');pg.wait_for_timeout(100)
+    for k in range(3):
+        for _ in range(4):
+            pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(60)
+        if k<2:res[f'sprint: kolejna lamiglowka {k+2}']=pg.evaluate("[SPN.n,CN.over,CN.tiles.length]")==[k+2,0,16]
+    res['sprint: wygrana i rekord']=pg.evaluate("[CN.over,CN.won,SV.cn.br.sp>0,CN.nb.includes('p')]")==[1,1,True,True]
+    res['sprint: nie psuje rekordow zwyklych']=pg.evaluate("cnBestAll()")==0 or pg.evaluate("cnBestAll()")>0
+    res['odznaka zapisana']=pg.evaluate("SV.cn.bd.p")==1
+    # seria i odznaka tygodnia
+    pg.evaluate("(()=>{const y=new Date();y.setDate(y.getDate()-1);const c=SV.cn;c.s=6;c.last=ymd(y);c.d=null;CNmode='daily';CN=null;renderConn()})()");pg.click('text=Start');pg.wait_for_timeout(100)
+    for _ in range(4):
+        pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(60)
+    res['seria 7 dni: odznaka']=pg.evaluate("[SV.cn.s,!!SV.cn.bd.s]")==[7,True]
+    res['seria na ekranie']='Seria: 7' in ' '.join(pg.text_content('.cn-bd').split())
+    res['ranking: gosc widzi zaproszenie']='Zaloguj' in pg.inner_text('.cn-lbp')
+    pg.evaluate("show('home');heroGo(1)");pg.wait_for_timeout(300)
+    res['home: seria i rekord']='Seria: 7' in pg.inner_text('.hchips') and 'rekord' in pg.inner_text('.hchips')
+    # ranking z zalogowanym
+    pg.evaluate("sb={rpc:async()=>({data:[]})};U={id:'u1',nick:'Ja'};CNB.t=Date.now();CNB.rows=[{nick:'Ala<b>',ms:61000,miss:0,me:false},{nick:'Ja',ms:75000,miss:1,me:true}];show('conn')");pg.wait_for_timeout(200)
+    res['ranking: wiersze i escape']=pg.locator('.cn-lb li').count()==2 and pg.locator('.cn-lb b').first.inner_text()=='Ala<b>' and pg.locator('.cn-lb li.me').count()==1
     # wyzwanie przez link
     pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(100)
     for _ in range(4):
