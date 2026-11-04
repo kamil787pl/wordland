@@ -415,6 +415,29 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .nosplash #splash{display:none}
 @media (max-width:420px){#splash .tl i{width:36px;height:36px;font-size:19px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}#splash{display:none}}
+
+/* ===== wspólna ramka gier: .gstage (okno 5:3, max 960 px), .gbar (przyciski), .gtips (opis) – używaj w każdej nowej grze ===== */
+.gstage{position:relative;width:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid #c5cfe1;border-radius:14px;box-shadow:0 8px 24px rgba(22,35,59,.12)}
+@media(min-width:700px){.gstage{aspect-ratio:5/3}}
+.gs-hud{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;background:rgba(8,14,28,.6);color:#fff;font:700 14px "Figtree",system-ui,sans-serif}
+.gs-t{display:inline-flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.2px}
+.gs-t .cn-mark{width:22px;height:22px;padding:3px;gap:2px;border-radius:7px;box-shadow:none;background:#0b1426}.gs-t .cn-mark i{border-radius:2px}
+.gs-m{flex:1;text-align:center;color:#c9d6f2;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gs-s{display:inline-flex;align-items:center;gap:10px;font-variant-numeric:tabular-nums}.gs-s i{font-style:normal;color:#ffd978}
+.gs-body{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:14px}
+.gs-foot{flex:none;display:flex;align-items:center;gap:12px;min-height:44px;padding:6px 14px;background:rgba(8,14,28,.6);color:#c9d6f2}
+.gs-foot .cn-info{margin:0;min-width:92px;justify-content:flex-start}
+.gs-foot .cn-msg{flex:1;min-height:0;margin:0;color:#fff;font-size:14px}
+.gbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;margin-top:10px}
+.gbar button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:54px;height:46px;padding:0 18px;border:1px solid var(--line);border-radius:12px;background:var(--sf);color:var(--ink);font:700 15px "Figtree",system-ui,sans-serif;cursor:pointer;touch-action:manipulation}
+.gbar button:active{background:var(--pri-t)}.gbar button:disabled{opacity:.4;cursor:default}
+.gbar button.pri{background:var(--pri);border-color:var(--pri);color:#fff}
+.gtips{margin:10px 0 12px;text-align:center;color:var(--mut);font-size:13px}
+.cn-stage{background:linear-gradient(160deg,#16233b,#26427a)}
+.cn-wrap{width:min(100%,560px);padding:0;background:none;box-shadow:none;border-radius:0}
+.cn-top{margin:0 0 10px}
+@media(min-width:700px){.cn-t,.cn-row{min-height:84px}.cn-row{display:flex;flex-direction:column;justify-content:center}}
+@media(max-width:480px){.gbar button{flex:1 1 40%;height:48px;padding:0 10px}.gs-t{font-size:0;gap:0}.gs-s{gap:6px}}
 </style>
 </head>
 <body>
@@ -1656,17 +1679,18 @@ function renderConn(){
   if(!CN||CN.mode!==CNmode)CN=cnLoad(CNmode);
   const mark='<div class="cn-mark" aria-hidden="true">'+CNC.map(c=>'<i style="--c:'+c+'"></i>').join('')+'</div>';
   const bestMs=CN?cnBest():0;
-  const head='<div class="cn-hero"><div class="cn-logo">'+mark+'<div><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii.</p></div></div>'
-   +'<div class="cn-stat"><span>Czas<b id="cn-time">'+(CN?cnFmt(cnTotal()):'0:00')+'</b></span><span>Rekord<b>'+(bestMs?cnFmt(bestMs):'–')+'</b></span></div></div>'
+  const head=''
    +'<div class="cn-top"><div class="cn-seg" role="group" aria-label="Tryb"><button class="'+(CNmode==='daily'?'on':'')+'" onclick="cnMode(\'daily\')">Codzienna</button><button class="'+(CNmode==='random'?'on':'')+'" onclick="cnMode(\'random\')">Losowa</button><button class="'+(CNmode==='sprint'?'on':'')+'" onclick="cnMode(\'sprint\')">⚡ Sprint</button></div>'
    +'<button class="cn-snd" onclick="cnSnd()" aria-label="Dźwięk i wibracje" title="Dźwięk i wibracje">'+(snd?'🔊':'🔇')+'</button>'+(CNmode==='random'?'<div class="cn-seg" role="group" aria-label="Poziom">'+[['','Wszystkie'],['A1','A1'],['A2','A2'],['B1','B1']].map(x=>'<button class="'+(CNlvl===x[0]?'on':'')+'" onclick="cnLvl(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>':'')+'</div>';
   const cc=SV.cn||{},bd='<div class="cn-bd"><span class="cn-streak">🔥 Seria: <b>'+cnStreak()+'</b> '+(cnStreak()===1?'dzień':'dni')+'</span>'+Object.keys(CNBD).map(k=>'<span class="'+(cc.bd&&cc.bd[k]?'on':'')+'" title="'+CNBD[k][1]+': '+CNBD[k][2]+'">'+CNBD[k][0]+'</span>').join('')+'</div>';
   if(!CN){root.innerHTML=head+'<div class="panel">Za mało kategorii, żeby ułożyć łamigłówkę. Potrzebne są co najmniej 4 kategorie z 4 słówkami.</div>';return}
-  const sp=CN.mode==='sprint',chb=sp?'<div class="cn-chal">⚡ Sprint: łamigłówka '+SPN.n+' z 3, jeden łączny czas</div>':CN.mode==='chal'?'<div class="cn-chal">🎯 Wyzwanie'+(CN.f?' od '+CN.f:'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'zagraj na czas')+'</div>':'';
+  const sp=CN.mode==='sprint';
   const medalOf=CN.over&&CN.won?cnMedal(CN.ms,sp):'';
   const chal='<div class="cn-chal">Wyzwanie czasowe:'+cnMeds(sp).map(m=>'<em class="'+(medalOf===m[1]?'got':'')+'">'+m[1]+' '+cnFmt(m[0])+'</em>').join('')+'<small>+10 s za błąd, +15 s za podpowiedź</small></div>';
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+esc(G.e)+' '+esc(G.n)+'</b><span>'+G.w.map(esc).join(', ')+'</span><small>'+G.pl.map(esc).join(' · ')+'</small></div>'}).join('');
   const wait=!CN.over&&!CN.go;
+  const lab=sp?'⚡ Sprint '+SPN.n+'/3':CN.mode==='chal'?'🎯 Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
+  const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b><i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
   let end='';
@@ -1678,9 +1702,12 @@ function renderConn(){
      +(CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'')+'</div>';
   }
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
-  root.innerHTML=head+bd+chb+chal+'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div>'+(CN.over||wait?'':'<div class="cn-info">Pozostałe błędy '+dots+'</div>')+'</div>'
-   +'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div>'
-   +(CN.over||wait?'':'<div class="cn-act"><button onclick="cnHint()"'+((CN.hints||0)>=2?' disabled':'')+'>💡 Podpowiedź ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()">Przetasuj</button><button onclick="cnClear()"'+(CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>')+end+(!CN.go||CN.over?cnBoardHtml():'');
+  const act=!CN.over&&!wait;
+  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body"><div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div></div>'
+   +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div></div>'
+   +'<div class="gbar"><button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡 Podpowiedź ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>'
+   +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
+   +chal+bd+end+(!CN.go||CN.over?cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;
 }
 show('home');initCloud();
