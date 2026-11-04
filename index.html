@@ -48,7 +48,6 @@ details.grp .lv{margin:0;border:0;border-top:1px solid #ddd;border-radius:0;font
 #ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 #ctl button{font:inherit;font-size:20px;min-width:54px;height:46px;border-radius:8px;border:2px solid #0c1015;background:#33465c;color:var(--fg);cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none}
 #ctl button:active{background:#4b6684}
-#ctl #mode{font-size:15px;padding:0 12px;background:var(--gold);color:var(--ink)}
 kbd{display:inline-block;min-width:22px;padding:2px 6px;margin:0 2px;border:1px solid #0c1015;border-bottom-width:3px;border-radius:5px;background:#f4f1ea;color:#1b2430;font:700 12px/1.2 "Trebuchet MS",system-ui,sans-serif;text-align:center}
 #keys{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;max-width:900px;font-size:13px}
 #keys span{white-space:nowrap}
@@ -158,7 +157,11 @@ body{background:var(--pg);color:var(--ink);font-family:"Figtree",system-ui,-appl
 .tiles{display:flex;align-items:flex-end;gap:7px;flex:none}
 .tiles i{display:grid;place-items:center;width:46px;height:46px;border-radius:10px;background:#fff;color:var(--pri);font:800 24px/1 "Figtree",system-ui,sans-serif;font-style:normal;border-bottom:5px solid #b9c9f3}
 .tiles i:nth-child(2){margin-bottom:12px}.tiles i:nth-child(3){margin-bottom:24px}.tiles i:nth-child(4){margin-bottom:36px;background:var(--amb);color:#4a2f00;border-bottom-color:#c98100}
-@media(max-width:640px){.hero{padding:22px 20px}.tiles{display:none}}
+.hero .hc{flex:1;min-width:0}
+.hbtn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 20px;min-height:44px;border:0;border-radius:12px;background:#fff;color:var(--pri);font:800 15px "Figtree",system-ui,sans-serif;cursor:pointer;box-shadow:0 3px 0 #b9c9f3;transition:transform .12s}
+.hbtn:active{transform:translateY(2px) scale(.98);box-shadow:0 1px 0 #b9c9f3}
+.hshot{flex:none;width:min(46%,400px);height:auto;border-radius:16px;border:3px solid #fff;box-shadow:0 10px 30px rgba(10,30,90,.35);transform:rotate(1.5deg)}
+@media(max-width:640px){.hero{padding:22px 20px;flex-direction:column;align-items:stretch}.hshot{width:100%;transform:none}}
 .stat,.wod,.gc,.panel{background:var(--sf);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:none}
 .stats3{gap:12px;margin-top:12px}
 .stat{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;align-content:center;padding:14px 16px;text-align:left}
@@ -200,7 +203,6 @@ body{background:var(--pg);color:var(--ink);font-family:"Figtree",system-ui,-appl
 canvas{border:1px solid #c5cfe1;border-radius:14px;box-shadow:0 8px 24px rgba(22,35,59,.12)}
 #ctl button{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:700 15px "Figtree",system-ui,sans-serif;border:1px solid var(--line);border-radius:12px;background:var(--sf);color:var(--ink)}
 #ctl button:active{background:var(--pri-t)}
-#ctl #mode{background:var(--amb-t);color:#6b4500;border-color:#f0d9a0}
 kbd{background:#fff;border:1px solid #c5cfe1;border-bottom-width:2px;color:var(--ink);font-family:"Figtree",system-ui,sans-serif}
 #keys,small{color:var(--mut);opacity:1}
 @media(max-width:560px){#pt .nb .t{display:none}#pt .nb{padding:9px 11px}}
@@ -240,7 +242,6 @@ button,.nb,.gbtn,a{-webkit-tap-highlight-color:transparent;touch-action:manipula
 #ctl{gap:8px;width:100%;padding:0 2px}
 #ctl button{min-height:48px;height:48px}
 #ctl #bl,#ctl #br,#ctl #bj{flex:1 1 28%;height:68px;font-size:30px;min-width:0}
-#ctl #mode{flex:2 1 0;min-width:0}
 #ctl #snd,#ctl #cr,#ctl #mn,#ctl #fs{flex:1 1 0;min-width:0;padding:0}
 #pt .nb,.nb,.gbtn,.gc button{min-height:44px}
 #pt .nb{min-width:44px;justify-content:center}
@@ -250,7 +251,6 @@ button,.nb,.gbtn,a{-webkit-tap-highlight-color:transparent;touch-action:manipula
 #ctl.fsc #bl{left:calc(10px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));width:72px;height:72px}
 #ctl.fsc #br{left:calc(92px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));width:72px;height:72px}
 #ctl.fsc #bj{right:calc(10px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));width:80px;height:80px}
-#ctl.fsc #mode{right:calc(100px + env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));width:auto;height:52px}
 #ctl.fsc #snd,#ctl.fsc #cr,#ctl.fsc #mn,#ctl.fsc #fs{right:calc(8px + env(safe-area-inset-right));width:44px;height:44px;padding:0}
 #wrap:has(.ov.on) #ctl.fsc{display:none!important}
 #ctl.fsc #snd{top:36px}#ctl.fsc #cr{top:84px}#ctl.fsc #mn{top:132px}#ctl.fsc #fs{top:180px}
@@ -301,7 +301,6 @@ button,.nb,.gbtn,a{-webkit-tap-highlight-color:transparent;touch-action:manipula
   <button id="bl" aria-label="Lewo">◀ <kbd>A</kbd></button>
   <button id="bj" aria-label="Skok">▲ <kbd>␣</kbd></button>
   <button id="br" aria-label="Prawo">▶ <kbd>D</kbd></button>
-  <button id="mode" title="Zmień tryb (E)">⛏ Kopanie <kbd>E</kbd></button>
   <button id="snd" aria-label="Dźwięk">🔊</button>
   <button id="cr" aria-label="Rzemiosło" title="Rzemiosło (C)">🔨 <kbd>C</kbd></button>
   <button id="mn" aria-label="Menu">☰</button>
@@ -310,8 +309,7 @@ button,.nb,.gbtn,a{-webkit-tap-highlight-color:transparent;touch-action:manipula
 <div id="keys">
   <span><kbd>←</kbd><kbd>→</kbd> lub <kbd>A</kbd><kbd>D</kbd> ruch</span>
   <span><kbd>Spacja</kbd> skok</span>
-  <span>🖱 <kbd>LPM</kbd> kop · <kbd>PPM</kbd> buduj</span>
-  <span><kbd>E</kbd> tryb</span>
+  <span>🖱 <kbd>LPM</kbd> kop</span>
   <span><kbd>C</kbd> rzemiosło</span>
   <span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> odpowiedź</span>
   <span><kbd>Enter</kbd> dalej</span>
@@ -438,7 +436,7 @@ function drawBoss(){
   ctx.restore();
 }
 let state='menu',lvl=0,map=[],hs=[],ens=[],trees=[],parts=[],deck=[],got=[],cur=null,qb=1,qo=[],tgt=null,bump=null,answered=false,
-score=0,hearts=3,inv=0,streak=0,asked=0,right=0,gems=0,qm='mc',bdl=0,torches=0,pick=0,jb=0,sh=0,dark=0,dayT=0,bats=[],glow=[],bq=[],bhp=0,bmax=0,bflash=0,bhit=0,mode='mine',msg='',msgT=0,invT=0,walk=0,hx=-1,hy=-1,tick=0,snd=true,AC=null;
+score=0,hearts=3,inv=0,streak=0,asked=0,right=0,gems=0,qm='mc',bdl=0,torches=0,pick=0,jb=0,sh=0,dark=0,dayT=0,bats=[],glow=[],bq=[],bhp=0,bmax=0,bflash=0,bhit=0,msg='',msgT=0,invT=0,walk=0,hx=-1,hy=-1,tick=0,snd=true,AC=null;
 const keys={},cam={x:0,y:0},p={x:0,y:0,w:22,h:28,vx:0,vy:0,on:false,face:1};
 const rnd=n=>Math.floor(Math.random()*n);
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -710,6 +708,7 @@ function drawFluff(e,X,Y,s){
   ctx.restore();
 }
 /* samouczek i strzałka */
+const TOUCH=matchMedia('(pointer:coarse)').matches;
 let tut=-1,tutInv=0,tutT=0,tg=null,hint=true;
 function tutStep(){
   if(tut<0)return;
@@ -742,10 +741,10 @@ function drawArrow(){
 }
 function drawTut(){
   if(tut<0||state!=='play')return;
-  const L=['1/4  Idź w prawo: ← → lub A D','2/4  Skocz: Spacja (lub przycisk ▲)','3/4  Uderz głową w złoty blok „?” – skocz pod nim','4/4  Kliknij blok ziemi, żeby go wykopać','Świetnie! Zbierz słówka, dobiegnij do flagi 🚩 i pokonaj bossa'],w=Math.min(W-40,620);
+  const L=TOUCH?['1/4  Idź w prawo: ◀ ▶','2/4  Skocz: ▲','3/4  Uderz głową w złoty blok „?”','4/4  Dotknij blok ziemi, by go wykopać','Dobiegnij do flagi 🚩 i pokonaj bossa']:['1/4  Idź w prawo: ← → lub A D','2/4  Skocz: Spacja','3/4  Uderz głową w złoty blok „?”','4/4  Kliknij blok ziemi, by go wykopać','Dobiegnij do flagi 🚩 i pokonaj bossa'],w=Math.min(W-40,520);
   ctx.fillStyle='rgba(20,30,45,.88)';ctx.fillRect(W/2-w/2,42,w,42);ctx.strokeStyle='#f2b632';ctx.lineWidth=2;ctx.strokeRect(W/2-w/2,42,w,42);
   ctx.fillStyle='#fff';ctx.font='bold 16px Trebuchet MS';ctx.textAlign='center';ctx.fillText(L[tut],W/2,65);
-  ctx.font='11px Trebuchet MS';ctx.fillStyle='#cfd8e3';ctx.textAlign='right';ctx.fillText('pomiń: T',W/2+w/2-8,79);
+  ctx.font='11px Trebuchet MS';ctx.fillStyle='#cfd8e3';ctx.textAlign='right';if(!TOUCH)ctx.fillText('pomiń: T',W/2+w/2-8,79);
 }
 /* pełny ekran */
 const FW=document.getElementById('wrap'),FC=document.getElementById('ctl');
@@ -793,11 +792,8 @@ function act(cx,cy,btn){
   const r=cv.getBoundingClientRect(),tx=Math.floor(((cx-r.left)*W/r.width+cam.x)/T),ty=Math.floor(((cy-r.top)*H/r.height+cam.y)/T);
   if(tx<0||tx>=MW||ty<0||ty>=MH||!reach(tx,ty))return;
   const t=map[ty][tx];
-  if(btn===2||mode==='build'){
-    const o=tx*T<p.x+p.w&&tx*T+T>p.x&&ty*T<p.y+p.h&&ty*T+T>p.y;
-    if(t===0&&inv>0&&!o){map[ty][tx]=5;inv--;beep(200,.06,'square',.04)}
-    else if(t===0&&inv<1)toast('Brak bloków – najpierw wykop kilka');
-  }else if(t===4)ask(tx,ty);
+  if(btn===2)return;
+  if(t===4)ask(tx,ty);
   else if(t===7)ask(tx,ty);else if(t>0&&t<8){map[ty][tx]=0;inv+=pick?2:1;if(t===6){gems++;cnt('gems');beep(880,.12,'triangle',.06,1320);if(gems%3===0&&hearts<3){hearts++;toast('💎 3 diamenty = +1 serce!')}else toast('💎 Diament!')}burst(tx*T+16,ty*T+16,t===1?'#5bbf3a':t===3?'#8a8f98':'#8b5a2b');beep(140,.05,'square',.04)}
 }
 function update(){
@@ -891,7 +887,7 @@ function draw(){
   for(const q of parts){ctx.globalAlpha=q.l/30;ctx.fillStyle=q.c;ctx.fillRect(q.x-cam.x,q.y-cam.y,4,4)}
   ctx.globalAlpha=1;
   ctx.globalAlpha=1;ctx.drawImage(VIG,0,0);if(state==='boss')drawBoss();drawArrow();drawTut();
-  if(state==='play'&&hx>=0&&hy>=0&&hx<MW&&hy<MH&&reach(hx,hy)){ctx.strokeStyle=mode==='build'?'#7ee0ff':'#fff';ctx.lineWidth=2;ctx.strokeRect(hx*T-cam.x+1,hy*T-cam.y+1,T-2,T-2)}
+  if(state==='play'&&hx>=0&&hy>=0&&hx<MW&&hy<MH&&reach(hx,hy)){ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(hx*T-cam.x+1,hy*T-cam.y+1,T-2,T-2)}
   if(state!=='menu'){
     ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(0,0,W,34);ctx.font='bold 16px Trebuchet MS';ctx.textAlign='left';
     ctx.fillStyle='#ff6b6b';ctx.fillText('♥'.repeat(Math.max(0,hearts))+'♡'.repeat(Math.max(0,3-hearts)),10,23);
@@ -911,7 +907,6 @@ addEventListener('keydown',e=>{
   if(view!=='game')return;
   if(e.code==='Space'||e.code.startsWith('Arrow'))e.preventDefault();
   keys[e.code]=true;
-  if(e.code==='KeyE')toggleMode();
   if(e.code==='KeyH')hint=!hint;
   if(e.code==='KeyT'&&tut>=0){tut=-1;SV.tut=1;save()}
   if(e.code==='KeyC'){if(state==='play')craft();else if(state==='craft')uncraft()}
@@ -927,8 +922,6 @@ function hold(id,code){const b=document.getElementById(id);
   b.addEventListener('pointerdown',e=>{e.preventDefault();keys[code]=true});
   ['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[code]=false))}
 hold('bl','ArrowLeft');hold('br','ArrowRight');hold('bj','Space');
-function toggleMode(){mode=mode==='mine'?'build':'mine';document.getElementById('mode').innerHTML=mode==='mine'?'⛏ Kopanie <kbd>E</kbd>':'🧱 Budowanie <kbd>E</kbd>'}
-document.getElementById('mode').onclick=e=>{toggleMode();e.currentTarget.blur()};
 document.getElementById('snd').onclick=e=>{snd=!snd;e.currentTarget.textContent=snd?'🔊':'🔇';e.currentTarget.blur();beep(440,.08)};
 document.getElementById('mn').onclick=e=>{e.currentTarget.blur();clearKeys();menu()};
 /* pętla */
@@ -954,7 +947,7 @@ const GAMES=[
  {n:'Szukanie słów',e:'search',d:'Znajdź ukryte słowa w siatce liter.'}];
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
-  $('v-home').innerHTML='<div class="hero"><div><h2>'+(U?'Cześć, '+U.nick+'!':'Cześć! Czas na angielski')+'</h2><p>Wybierz grę i zbieraj słówka. Postępy liczą się w całym portalu.</p></div><div class="tiles" aria-hidden="true"><i>W</i><i>O</i><i>R</i><i>D</i></div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
+  $('v-home').innerHTML='<div class="hero"><div class="hc"><h2>'+(U?'Cześć, '+U.nick+'!':'Cześć! Czas na angielski')+'</h2><p>Wybierz grę i zbieraj słówka. Postępy liczą się w całym portalu.</p><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button></div><img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.on?'':' soon')+'"><span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">Ukończone poziomy: '+done+'/'+tot+'</small><button onclick="openGame()">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
