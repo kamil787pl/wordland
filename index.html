@@ -474,6 +474,9 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .hwtabs button.on{background:var(--pri);color:#fff}.hwtabs .i{width:16px;height:16px}
 .wlp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}.wlp .stat{display:block;padding:12px}
 @media(max-width:640px){.wlp{grid-template-columns:repeat(2,1fr)}}
+.gph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}.gph h4{margin:0;display:flex;align-items:center;gap:8px}.gpb{display:flex;flex-wrap:wrap;gap:8px}
+.cn-bd span[title]{cursor:help}
+.cn-bd.lab span{flex-direction:column;height:auto;min-width:78px;padding:8px 10px;gap:2px}.cn-bd.lab small{font-size:11px;font-weight:700;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1208,15 +1211,22 @@ function renderHome(){
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
 }
+function gpanel(ic_,name,stats,badges,btns){
+  return '<div class="panel gpn"><div class="gph"><h4>'+ic(ic_)+name+'</h4><div class="gpb">'+btns+'</div></div><div class="wlp">'
+   +stats.map(x=>'<div class="stat"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>'
+   +'<div class="cn-bd lab" style="margin:12px 0 0">'+badges.map(x=>'<span class="'+(x[2]?'on':'')+'" title="'+x[1]+'">'+x[0]+'<small>'+x[1].split(':')[0].replace(/^[^\p{L}\s]+\s*/u,'')+'</small></span>').join('')+'</div></div>';
+}
+function wcProfile(){
+  const S=SV.s||[],H=SV.h||[],tot=CATS.filter(c=>!c.tmp).length,done=S.filter(x=>x>0).length,sum=a=>a.reduce((x,y)=>x+(y||0),0),ak=Object.keys(ACH),got=ak.filter(k=>SV.a&&SV.a[k]).length;
+  return gpanel('cube','WordCraft',[[done+'/'+tot,'ukończone poziomy'],[sum(S)+' ★','gwiazdki'],[sum(H)+' ★','gwiazdki Hard'],[got+'/'+ak.length,'osiągnięcia']],
+   ak.map(k=>[Array.from(ACH[k][0])[0],ACH[k][0]+': '+ACH[k][1],SV.a&&SV.a[k]]),
+   '<button class="nb" onclick="openGame()">Graj</button><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek</button>');
+}
 function cnProfile(){
   const c=SV.cn||{},b=cnBestAll(),sp=(c.br||{}).sp;
-  return '<div class="panel"><h4>'+ic('grid')+'WordLinks</h4><div class="wlp">'
-   +'<div class="stat"><b>'+(b?cnFmt(b)+' '+cnMedal(b):'–')+'</b><span>najlepszy czas</span></div>'
-   +'<div class="stat"><b>'+(sp?cnFmt(sp)+' '+cnMedal(sp,1):'–')+'</b><span>rekord sprintu</span></div>'
-   +'<div class="stat"><b>'+cnStreak()+'</b><span>seria dni (rekord: '+(c.b||0)+')</span></div>'
-   +'<div class="stat"><b>'+(c.w||0)+'/'+(c.p||0)+'</b><span>wygrane puzzle dnia</span></div></div>'
-   +'<div class="cn-bd" style="margin:12px 0 0">'+Object.keys(CNBD).map(k=>'<span class="'+(c.bd&&c.bd[k]?'on':'')+'" title="'+CNBD[k][1]+': '+CNBD[k][2]+'">'+CNBD[k][0]+'</span>').join('')+'</div>'
-   +'<button class="nb" style="margin-top:12px" onclick="show(\'conn\')">Graj w WordLinks</button></div>';
+  return gpanel('grid','WordLinks',[[b?cnFmt(b)+' '+cnMedal(b):'–','najlepszy czas'],[sp?cnFmt(sp)+' '+cnMedal(sp,1):'–','rekord sprintu'],[(c.w||0)+'/'+(c.p||0),'wygrane puzzle dnia'],[cnStreak(),'seria dni (rekord: '+(c.b||0)+')']],
+   Object.keys(CNBD).map(k=>[CNBD[k][0],CNBD[k][1]+': '+CNBD[k][2],c.bd&&c.bd[k]]),
+   '<button class="nb" onclick="show(\'conn\')">Graj</button>');
 }
 function renderProf(){
   const st=SV.st||{n:0,best:0},tot=SV.tot||0,ok=SV.ok||0,acc=tot?Math.round(100*ok/tot):0,all=[];
@@ -1226,11 +1236,9 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +cnProfile()
+  +wcProfile()+cnProfile()
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
-  +'<div class="panel"><h4>'+ic('trophy')+'Osiągnięcia</h4>'+Object.keys(ACH).map(k=>'<div class="chk'+(SV.a&&SV.a[k]?'':' no')+'">'+ic(SV.a&&SV.a[k]?'check':'circle')+'<span>'+ACH[k][0]+' – '+ACH[k][1]+'</span></div>').join('')+'</div>'
-  +'<div class="panel"><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek w WordCraft</button></div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
 }
 function show(v){
