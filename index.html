@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WordLand – portal do nauki angielskiego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#1b2430;--fg:#f4f1ea;--card:#fffdf5;--ink:#1b2430;--gold:#f2b632;--ok:#2e9d4f;--bad:#d64545}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#10161e}}
@@ -133,10 +134,110 @@ details.grp .lv{padding:7px 12px;font-size:16px}
 .tag2{font-size:11px;font-weight:800;border:2px solid #2a1a0e;border-radius:9px;padding:1px 6px;background:#ffe28a;margin-left:6px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.row2{grid-template-columns:1fr}}
 #tc-m{min-height:20px;margin:8px 0;font-weight:700;color:#c0392b}#tc-m.ok{color:#2e7d32}
+/* ===== portal v2: jasny, szkolny, nowoczesny ===== */
+:root{color-scheme:light;--pg:#eef2f8;--ink:#16233b;--mut:#5a6784;--line:#dbe2ee;--pri:#2457d6;--pri-d:#1b44ab;--pri-t:#e6edfc;--amb:#f2a516;--amb-t:#fdf1d6;--grn:#178a5b;--grn-t:#dff3ea;--red:#cf3f4b;--sf:#fff}
+body{background:var(--pg);color:var(--ink);font-family:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;gap:12px;padding:12px 12px 28px}
+.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.2em}
+.i.f{fill:currentColor;stroke:none}
+#pt{background:var(--sf);border:1px solid var(--line);border-radius:16px;padding:8px 10px;gap:4px}
+#pt .brand{display:flex;align-items:center;gap:10px;font:800 21px/1 "Figtree",system-ui,sans-serif;color:var(--ink);-webkit-text-stroke:0;text-shadow:none;letter-spacing:-.3px;margin-right:auto}
+#pt .brand b{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--pri);color:#fff;font-size:18px}
+.nb{display:inline-flex;align-items:center;gap:7px;font:700 14px "Figtree",system-ui,sans-serif;padding:8px 13px;border:1px solid var(--line);border-radius:10px;background:var(--sf);color:var(--ink);box-shadow:none;cursor:pointer;transition:background .15s,border-color .15s}
+.nb:hover{transform:none;background:var(--pri-t);border-color:#c3d2f5}
+.nb.on{background:var(--pri-t);border-color:#c3d2f5;color:var(--pri-d)}
+#pt .nb{border-color:transparent;background:transparent;color:var(--mut)}
+#pt .nb:hover{background:var(--pg);color:var(--ink)}
+#pt .nb.on{background:var(--pri-t);color:var(--pri-d)}
+#pt .fire{display:inline-flex;align-items:center;gap:5px;font-weight:800;background:var(--amb-t);color:#8a5a00;border-radius:10px;padding:7px 11px;margin-left:4px}
+.pv{color:var(--ink);font-family:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+.pv h2{display:flex;align-items:center;gap:10px;margin:18px 0 10px;font-size:24px;font-weight:800;letter-spacing:-.4px}
+.pv h3{margin:26px 0 10px;font-size:17px;font-weight:800}
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:6px;background:var(--pri);border:0;border-radius:20px;box-shadow:none;padding:28px 30px;color:#fff}
+.hero h2{display:block;margin:0 0 6px;font-size:30px;letter-spacing:-.6px;color:#fff}
+.hero p{margin:0;max-width:34ch;font-weight:500;font-size:16px;line-height:1.5;color:#dbe6ff}
+.tiles{display:flex;align-items:flex-end;gap:7px;flex:none}
+.tiles i{display:grid;place-items:center;width:46px;height:46px;border-radius:10px;background:#fff;color:var(--pri);font:800 24px/1 "Figtree",system-ui,sans-serif;font-style:normal;border-bottom:5px solid #b9c9f3}
+.tiles i:nth-child(2){margin-bottom:12px}.tiles i:nth-child(3){margin-bottom:24px}.tiles i:nth-child(4){margin-bottom:36px;background:var(--amb);color:#4a2f00;border-bottom-color:#c98100}
+@media(max-width:640px){.hero{padding:22px 20px}.tiles{display:none}}
+.stat,.wod,.gc,.panel{background:var(--sf);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:none}
+.stats3{gap:12px;margin-top:12px}
+.stat{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;align-content:center;padding:14px 16px;text-align:left}
+.stat .ib{grid-row:1/3;display:grid;place-items:center;width:42px;height:42px;border-radius:12px;font-size:21px}
+.stat .ib.a{background:var(--amb-t);color:#b87400}.stat .ib.p{background:var(--pri-t);color:var(--pri)}.stat .ib.g{background:var(--grn-t);color:var(--grn)}
+.stat b{display:block;font-size:24px;font-weight:800;line-height:1.1}.stat span{font-size:13px;color:var(--mut);opacity:1}
+.stat .bar2{grid-column:1/3;margin:8px 0 0}
+.wod{padding:16px 20px;margin-top:12px;gap:6px 16px}
+.wod h3{margin:0;width:100%;font-size:13px;font-weight:700;color:var(--mut);opacity:1}
+.wod .wd{font-size:24px}.wod .wd b{color:var(--pri)}.wod i{color:var(--mut)}
+.wod button{display:grid;place-items:center;width:42px;height:42px;font-size:19px;border:1px solid var(--line);border-radius:12px;background:var(--pri-t);color:var(--pri);cursor:pointer;box-shadow:none;padding:0}
+.wod button:hover{background:#d5e1fb}
+.cards{gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.gc{padding:18px;gap:8px}
+.gc .em{display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:var(--pri-t);color:var(--pri);font-size:26px;margin-bottom:4px}
+.gc h4{font-size:18px;font-weight:800}.gc p{font-size:14px;line-height:1.5;color:var(--mut)}
+.gc.soon{opacity:1;filter:none}.gc.soon .em{background:var(--pg);color:#8a95ad}.gc.soon h4{color:#6b7791}
+.gc .tag{top:16px;right:16px;font-size:12px;font-weight:700;background:var(--grn-t);color:var(--grn);border:0;border-radius:999px;padding:3px 10px}
+.gc.soon .tag{background:var(--pg);color:var(--mut)}
+.gc button,.gbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px "Figtree",system-ui,sans-serif;padding:11px 18px;border:0;border-radius:10px;background:var(--pri);color:#fff;box-shadow:none;cursor:pointer;transition:background .15s}
+.gc button:hover,.gbtn:hover{transform:none;background:var(--pri-d)}
+.gc button:disabled{background:var(--pg);color:#8a95ad;box-shadow:none}
+.gbtn:disabled{opacity:.6}
+.panel{padding:18px 20px;margin-top:12px}.panel h4{margin:0 0 10px;font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.bar2{height:8px;background:#e6ebf4;border:0;border-radius:4px;margin:6px 0 12px}
+.bar2 i{background:var(--grn)}.bar2 u{background:var(--amb)}
+.lg{font-size:13px;color:var(--mut);opacity:1}
+.panel label{margin:12px 0 4px;font-weight:700;font-size:14px}
+.panel input[type=text],.panel input[type=password],.panel textarea,.panel select{border:1px solid #c5cfe1;border-radius:10px;background:#fff;color:var(--ink);font-family:inherit}
+.panel input[type=text],.panel input[type=password],.panel select{padding:10px 12px;font-size:16px}
+.panel textarea{font-family:ui-monospace,Menlo,Consolas,monospace}
+.panel input:focus,.panel textarea:focus,.panel select:focus{outline:0;border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-t)}
+#au-m,#tc-m{color:var(--red);font-weight:600}#au-m.ok,#tc-m.ok{color:var(--grn)}
+.crow{border-top:1px solid var(--line)}
+.tag2{border:0;border-radius:999px;padding:2px 9px;background:var(--pri-t);color:var(--pri-d);font-weight:700}
+.nb.dng{color:var(--red)}.nb.dng:hover{background:#fbe9eb;border-color:#f0c3c8}
+.chk{display:flex;gap:10px;align-items:center;padding:3px 0}.chk .i{color:var(--grn)}.chk.no .i{color:#a9b3c8}.chk.no{color:var(--mut)}
+/* pod grą */
+canvas{border:1px solid #c5cfe1;border-radius:14px;box-shadow:0 8px 24px rgba(22,35,59,.12)}
+#ctl button{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:700 15px "Figtree",system-ui,sans-serif;border:1px solid var(--line);border-radius:12px;background:var(--sf);color:var(--ink)}
+#ctl button:active{background:var(--pri-t)}
+#ctl #mode{background:var(--amb-t);color:#6b4500;border-color:#f0d9a0}
+kbd{background:#fff;border:1px solid #c5cfe1;border-bottom-width:2px;color:var(--ink);font-family:"Figtree",system-ui,sans-serif}
+#keys,small{color:var(--mut);opacity:1}
+@media(max-width:560px){#pt .nb .t{display:none}#pt .nb{padding:9px 11px}}
 </style>
 </head>
 <body>
-<header id="pt"><span class="brand">🎓 WordLand</span><button class="nb" id="nb-home" onclick="show('home')">🏠 Portal</button><button class="nb" id="nb-prof" onclick="show('prof')">👤 Profil</button><button class="nb" id="nb-game" onclick="openGame()">⛏️ WordCraft</button><button class="nb" id="nb-teach" onclick="show('teach')" hidden>🛠 Nauczyciel</button><button class="nb" id="nb-user" onclick="userBtn()">🔑 Zaloguj</button><span class="fire" id="pt-fire"></span></header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v6"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+<symbol id="i-userplus" viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.6-7 8-7 1.4 0 2.7.3 3.8.9"/><path d="M19 14v6M16 17h6"/></symbol>
+<symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></symbol>
+<symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></symbol>
+<symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+<symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+<symbol id="i-cards" viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-4"/></symbol>
+<symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M6.5 17H20v4H6.5A2.5 2.5 0 0 1 4 19.5"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4v1a3 3 0 0 0 4 3M16 6h4v1a3 3 0 0 1-4 3M12 13v4M8 20h8"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2l4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 10a4 4 0 0 1-.5 8z"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20zM12 10v5M12 18v.5"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+</defs></svg>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="fire" id="pt-fire"></span></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
@@ -752,6 +853,7 @@ document.getElementById('mn').onclick=e=>{e.currentTarget.blur();clearKeys();men
 /* ===== PORTAL: wspólny postęp, strona główna, profil ===== */
 let view='home';
 const $=id=>document.getElementById(id);
+const ic=(n,c)=>'<svg class="i'+(c?' '+c:'')+'"><use href="#i-'+n+'"/></svg>';
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function touchDay(ok){
   const t=ymd(new Date());if(!SV.d||SV.d.date!==t)SV.d={date:t,n:0};SV.d.n++;if(ok)SV.d.c=(SV.d.c||0)+1;
@@ -764,17 +866,17 @@ function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate
 function wod(){const all=[];CATS.forEach(c=>{if(c.l)c.w.forEach(w=>all.push(w))});const d=new Date(),n=Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return all[(n*7919)%all.length]}
 function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(!x||(!x.r&&!x.w))n++;else if(x.b>=4)m++;else l++});return{m,l,n,t:ws.length}}
 const GAMES=[
- {n:'WordCraft',e:'⛏️',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1},
- {n:'Memory',e:'🃏',d:'Dopasowuj pary: polskie i angielskie słowo.'},
- {n:'Wisielec',e:'🔤',d:'Zgaduj angielskie słowo literka po literce.'},
- {n:'Szukanie słów',e:'🔎',d:'Znajdź ukryte słowa w siatce liter.'}];
+ {n:'WordCraft',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1},
+ {n:'Memory',e:'cards',d:'Dopasowuj pary: polskie i angielskie słowo.'},
+ {n:'Wisielec',e:'type',d:'Zgaduj angielskie słowo literka po literce.'},
+ {n:'Szukanie słów',e:'search',d:'Znajdź ukryte słowa w siatce liter.'}];
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
-  $('v-home').innerHTML='<div class="hero"><h2>'+(U?'Cześć, '+U.nick+'! 👋':'Cześć! Czas na angielski 👋')+'</h2><p>Wybierz grę i zbieraj słówka. Postępy liczą się w całym portalu.</p></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px">☁️ Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
-  +'<div class="stats3"><div class="stat"><b>🔥 '+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><b>🎯 '+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><b>⭐ '+stars+'</b><span>gwiazdek w grach</span></div></div>'
-  +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj">🔊</button></div>'
-  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.on?'':' soon')+'"><span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+g.e+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="opacity:.7">Ukończone poziomy: '+done+'/'+tot+'</small><button onclick="openGame()">Graj ▶</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
-  +'<h3>Dla nauczyciela</h3><div class="panel"><b>🛠 Własne kategorie słówek</b><p style="margin:6px 0 10px;font-size:13px">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>';
+  $('v-home').innerHTML='<div class="hero"><div><h2>'+(U?'Cześć, '+U.nick+'!':'Cześć! Czas na angielski')+'</h2><p>Wybierz grę i zbieraj słówka. Postępy liczą się w całym portalu.</p></div><div class="tiles" aria-hidden="true"><i>W</i><i>O</i><i>R</i><i>D</i></div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
+  +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
+  +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
+  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.on?'':' soon')+'"><span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">Ukończone poziomy: '+done+'/'+tot+'</small><button onclick="openGame()">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>';
 }
 function renderProf(){
   const st=SV.st||{n:0,best:0},tot=SV.tot||0,ok=SV.ok||0,acc=tot?Math.round(100*ok/tot):0,all=[];
@@ -782,16 +884,16 @@ function renderProf(){
   CATS.forEach(c=>c.w.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(x&&x.w>0)all.push({p:w[0],e:w[1],r:x.r,w:x.w})}));
   const hard=all.sort((a,b)=>(b.w-b.r*.5)-(a.w-a.r*.5)).slice(0,8);
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
-  $('v-prof').innerHTML='<h2>👤 Twój profil</h2>'
-  +'<div class="stats3"><div class="stat"><b>🔥 '+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><b>✅ '+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><b>📚 '+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
+  $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
+  +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
-  +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">('+x.r+'✓ '+x.w+'✗)</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
-  +'<div class="panel"><h4>🏆 Osiągnięcia</h4>'+Object.keys(ACH).map(k=>(SV.a&&SV.a[k]?'✅ ':'⬜ ')+ACH[k][0]+' – '+ACH[k][1]).join('<br>')+'</div>'
-  +'<div class="panel"><button class="nb" onclick="openGame();stats()">🔁 Powtórka trudnych słówek w WordCraft</button></div>';
+  +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
+  +'<div class="panel"><h4>'+ic('trophy')+'Osiągnięcia</h4>'+Object.keys(ACH).map(k=>'<div class="chk'+(SV.a&&SV.a[k]?'':' no')+'">'+ic(SV.a&&SV.a[k]?'check':'circle')+'<span>'+ACH[k][0]+' – '+ACH[k][1]+'</span></div>').join('')+'</div>'
+  +'<div class="panel"><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek w WordCraft</button></div>';
 }
 function show(v){
-  view=v;['home','prof','game','auth','teach'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').textContent=U?'🚪 Wyloguj ('+U.nick+')':'🔑 Zaloguj';
-  clearKeys();$('pt-fire').textContent='🔥 '+streakNow();
+  view=v;['home','prof','game','auth','teach'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  clearKeys();$('pt-fire').innerHTML=ic('flame')+streakNow();
   if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='game'&&state==='menu')menu();
   window.scrollTo(0,0);
 }
@@ -873,7 +975,7 @@ function errPL(e){const m=String(e&&e.message||'').toLowerCase();
 function amsg(t,ok){const e=$('au-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
 function renderAuth(){
   const reg=authTab==='reg';
-  $('v-auth').innerHTML='<div class="panel" style="max-width:460px;margin:18px auto"><h2 style="margin:0 0 10px">'+(reg?'✨ Nowe konto':'🔑 Logowanie')+'</h2>'
+  $('v-auth').innerHTML='<div class="panel" style="max-width:460px;margin:18px auto"><h2 style="margin:0 0 12px">'+ic(reg?'userplus':'login')+(reg?'Nowe konto':'Logowanie')+'</h2>'
   +'<div style="display:flex;gap:8px;margin-bottom:6px"><button class="nb'+(reg?'':' on')+'" onclick="setTab(\'login\')">Mam konto</button><button class="nb'+(reg?' on':'')+'" onclick="setTab(\'reg\')">Załóż konto</button></div>'
   +(sb?'':'<p style="color:#c0392b;font-weight:700">Brak połączenia z serwerem. Możesz grać bez konta – postępy zapiszą się w tej przeglądarce.</p>')
   +'<label for="au-n">Nick</label><input id="au-n" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="16">'
@@ -950,13 +1052,13 @@ function parseWords(txt){
 function wordsToText(c){return c.w.map(w=>w.slice(0,4).join('=').replace(/=+$/,'')).join('\n')}
 function renderTeach(){
   const root=$('v-teach');
-  if(!sb){root.innerHTML='<h2>🛠 Panel nauczyciela</h2><div class="panel">Brak połączenia z serwerem. Panel działa tylko po połączeniu z bazą.</div>';return}
-  if(!U){root.innerHTML='<h2>🛠 Panel nauczyciela</h2><div class="panel"><p>Zaloguj się, aby wejść do panelu nauczyciela.</p><button class="gbtn" onclick="goAuth(0)">Zaloguj się</button> <button class="nb" onclick="goAuth(1)">Załóż konto</button></div>';return}
-  if(ROLE!=='teacher'){root.innerHTML='<h2>🛠 Panel nauczyciela</h2><div class="panel"><p>Twoje konto (<b>'+U.nick+'</b>) nie ma jeszcze uprawnień nauczyciela. Wpisz kod nauczyciela, który dostałeś od administratora.</p><label for="tc-code">Kod nauczyciela</label><input id="tc-code" type="text" autocomplete="off" autocapitalize="characters" style="max-width:320px"><p id="tc-m"></p><button class="gbtn" onclick="claimTeacher()">Aktywuj</button></div>';return}
+  if(!sb){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel">Brak połączenia z serwerem. Panel działa tylko po połączeniu z bazą.</div>';return}
+  if(!U){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Zaloguj się, aby wejść do panelu nauczyciela.</p><button class="gbtn" onclick="goAuth(0)">Zaloguj się</button> <button class="nb" onclick="goAuth(1)">Załóż konto</button></div>';return}
+  if(ROLE!=='teacher'){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Twoje konto (<b>'+U.nick+'</b>) nie ma jeszcze uprawnień nauczyciela. Wpisz kod nauczyciela, który dostałeś od administratora.</p><label for="tc-code">Kod nauczyciela</label><input id="tc-code" type="text" autocomplete="off" autocapitalize="characters" style="max-width:320px"><p id="tc-m"></p><button class="gbtn" onclick="claimTeacher()">Aktywuj</button></div>';return}
   const mine=CATS.filter(c=>c.own&&c.own===U.id),e=tEdit&&mine.find(c=>c.id===tEdit);
-  root.innerHTML='<h2>🛠 Panel nauczyciela</h2>'
-  +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">✏️ Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?'👁 Pokaż uczniom':'🙈 Ukryj')+'</button><button class="nb" onclick="tDelete('+c.id+')">'+(tDel===c.id?'❗ Na pewno usunąć?':'🗑 Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
-  +'<div class="panel"><h4>'+(e?'✏️ Edycja: '+e.n:'➕ Nowa kategoria')+'</h4>'
+  root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'
+  +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
+  +'<div class="panel"><h4>'+(e?ic('edit')+'Edycja: '+e.n:ic('plus')+'Nowa kategoria')+'</h4>'
   +'<div class="row2"><div><label for="tc-n">Nazwa</label><input id="tc-n" type="text" maxlength="40"></div><div><label for="tc-e">Emoji</label><input id="tc-e" type="text" maxlength="4" placeholder="📚"></div></div>'
   +'<div class="row2"><div><label for="tc-l">Poziom</label><select id="tc-l">'+L4.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('')+'</select></div><div><label class="ck" style="margin-top:34px"><input type="checkbox" id="tc-nh"><span>Ukryj tłumaczenie przy zdaniach z luką (trudniej)</span></label></div></div>'
   +'<label for="tc-w">Słówka – jedno w linii</label><textarea id="tc-w" spellcheck="false" placeholder="polskie=angielskie=zdanie z luką ___ (opcjonalnie)&#10;samolot=plane=I travel by ___.&#10;statek=ship=A ___ sails across the sea."></textarea>'
