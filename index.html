@@ -450,6 +450,15 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .gstage .gbar button:disabled{opacity:.35;box-shadow:none}
 @media(max-width:480px){.gstage .gbar{flex-wrap:wrap}.gstage .gbar button{flex:1 1 28%;height:48px}.gstage .gbar button.pri{order:-1;flex:1 1 100%;height:54px}}
 @media(max-width:480px){.gbar .hl{display:none}}
+
+/* wynik w oknie gry */
+.cn-over{width:min(100%,780px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:14px;align-items:center}
+.gstage .cn-end{margin:0;padding:14px;background:rgba(255,255,255,.96);border-radius:16px;animation:none}
+.gstage .cn-end h3{font-size:20px}.gstage .cn-end pre{margin:6px auto 0;font-size:16px}
+.cn-over .cn-board{display:flex;flex-direction:column;gap:8px}
+.cn-over .cn-row{min-height:0}
+.gs-body{position:relative}.gs-body .cn-conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+@media(max-width:700px){.cn-over{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1574,7 +1583,7 @@ function cnFinish(won){
     SPN.acc=cnTotal();SPN.n++;SPN.miss+=CN.miss;SPN.hints+=CN.hints||0;
     const g=cnBuild('sprint');if(g){g.go=1;g.t0=Date.now();g.msg='Łamigłówka '+SPN.n+' z 3 – czas leci dalej!';CN=g;cnFx('win');return}
   }
-  CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;
+  CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';
   if(CN.mode==='sprint'){CN.miss+=SPN.miss;CN.hints=(CN.hints||0)+SPN.hints}
   if(won)cnFx('win');
   if(CN.mode==='chal')return;
@@ -1706,21 +1715,22 @@ function renderConn(){
   const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b><i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
-  let end='';
+  let end='',conf='',acts='',stats='';
   if(CN.over){const c=SV.cn||{p:0,w:0,s:0,b:0};
-    end='<div class="cn-end">'+(CN.conf?'<div class="cn-conf" aria-hidden="true">'+Array.from({length:26},(_,i)=>'<i style="left:'+(i*3.9+Math.random()*3)+'%;background:'+CNC[i%4].replace(/^#/,'#')+';animation-delay:'+(Math.random()*.5)+'s"></i>').join('')+'</div>':'')
-     +'<h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3>'
-     +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+(CN.mode==='chal'&&CN.t?'<span class="cn-rec">'+(CN.ms<CN.t?'Pobiłeś wynik!':'Nie pobiłeś wyniku ('+cnFmt(CN.t)+')')+'</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s). ':'Bez żadnego błędu! ')+(CN.hints?'Podpowiedzi: '+CN.hints+' (+'+CN.hints*15+' s).':'')+'</div>':'<div>Odpowiedzi są powyżej, spróbuj jutro lub w trybie losowym.</div>')
-     +''+(CN.nb&&CN.nb.length?'<div class="cn-newbd">'+CN.nb.map(k=>'<span>'+CNBD[k][0]+' Nowa odznaka: <b>'+CNBD[k][1]+'</b></span>').join('')+'</div>':'')+'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre><div class="cn-act"><button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnChal(1)">Wyzwij znajomego</button>'+(CN.bad&&CN.bad.length?'<button onclick="cnReview()">📌 Dodaj trudne słówka do powtórek ('+CN.bad.length+')</button>':'')+'<button onclick="cnNew()">Nowa łamigłówka</button></div>'
-     +(CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'')+'</div>';
+    conf=CN.conf?'<div class="cn-conf" aria-hidden="true">'+Array.from({length:26},(_,i)=>'<i style="left:'+(i*3.9+Math.random()*3)+'%;background:'+CNC[i%4]+';animation-delay:'+(Math.random()*.5)+'s"></i>').join('')+'</div>':'';
+    end='<div class="cn-end"><h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3>'
+     +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+(CN.mode==='chal'&&CN.t?'<span class="cn-rec">'+(CN.ms<CN.t?'Pobiłeś wynik!':'Nie pobiłeś wyniku ('+cnFmt(CN.t)+')')+'</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s). ':'Bez żadnego błędu! ')+(CN.hints?'Podpowiedzi: '+CN.hints+' (+'+CN.hints*15+' s).':'')+'</div>':'<div>Odpowiedzi widzisz obok. Spróbuj jutro lub w trybie losowym.</div>')
+     +(CN.nb&&CN.nb.length?'<div class="cn-newbd">'+CN.nb.map(k=>'<span>'+CNBD[k][0]+' Nowa odznaka: <b>'+CNBD[k][1]+'</b></span>').join('')+'</div>':'')+'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre></div>';
+    acts='<button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnChal(1)">Wyzwij znajomego</button>'+(CN.bad&&CN.bad.length?'<button onclick="cnReview()">📌 Powtórki ('+CN.bad.length+')</button>':'')+'<button onclick="cnNew()">Nowa łamigłówka</button>';
+    stats=CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'';
   }
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
   const act=!CN.over&&!wait;
-  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body"><div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div></div>'
+  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+conf+(CN.over?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
    +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div>'
-   +'<div class="gbar"><button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div></div>'
+   +'<div class="gbar">'+(CN.over?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
-   +chal+bd+end+(!CN.go||CN.over?cnBoardHtml():'');
+   +chal+stats+bd+(!CN.go||CN.over?cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;
 }
 show('home');initCloud();

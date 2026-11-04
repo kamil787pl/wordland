@@ -70,7 +70,7 @@ with sync_playwright() as pw:
         pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(80)
     pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(100)
     res['koniec: podpowiedzi w opisie']='Podpowiedzi: 2' in pg.inner_text('.cn-end')
-    n=pg.evaluate("CN.bad.length");pg.click('text=Dodaj trudne słówka');pg.wait_for_timeout(100)
+    n=pg.evaluate("CN.bad.length");pg.click('text=Powtórki');pg.wait_for_timeout(100)
     res['powtorki: wpisane do SV.m']=pg.evaluate("Object.values(SV.m).filter(m=>m.w>0).length")==n and n>0
     # sprint
     pg.evaluate("cnMode('sprint')");pg.wait_for_timeout(100)
