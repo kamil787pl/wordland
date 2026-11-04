@@ -439,6 +439,17 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .cn-top{margin:0 0 10px}
 @media(min-width:700px){.cn-t,.cn-row{min-height:84px}.cn-row{display:flex;flex-direction:column;justify-content:center}}
 @media(max-width:480px){.gbar button{flex:1 1 40%;height:48px;padding:0 10px}.gs-t{font-size:0;gap:0}.gs-s{gap:6px}}
+
+/* przyciski wewnątrz okna gry */
+.gstage .gbar{flex:none;gap:8px;margin:0;padding:8px 14px 12px;background:rgba(8,14,28,.6);flex-wrap:nowrap}
+.gstage .gs-foot{padding-bottom:0}
+.gstage .gbar button{flex:1 1 0;height:50px;padding:0 8px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff;font-size:15px}
+.gstage .gbar button:active{background:rgba(255,255,255,.24)}
+.gstage .gbar button.pri{flex:1.6 1 0;background:var(--amb);border-color:var(--amb);color:#3a2600;font-weight:800;font-size:16px;box-shadow:0 3px 0 #c98100}
+.gstage .gbar button.pri:active{transform:translateY(2px);box-shadow:0 1px 0 #c98100}
+.gstage .gbar button:disabled{opacity:.35;box-shadow:none}
+@media(max-width:480px){.gstage .gbar{flex-wrap:wrap}.gstage .gbar button{flex:1 1 28%;height:48px}.gstage .gbar button.pri{order:-1;flex:1 1 100%;height:54px}}
+@media(max-width:480px){.gbar .hl{display:none}}
 </style>
 </head>
 <body>
@@ -1706,8 +1717,8 @@ function renderConn(){
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
   const act=!CN.over&&!wait;
   root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body"><div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div></div>'
-   +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div></div>'
-   +'<div class="gbar"><button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡 Podpowiedź ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div>'
+   +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div>'
+   +'<div class="gbar"><button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button></div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
    +chal+bd+end+(!CN.go||CN.over?cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;

@@ -12,7 +12,7 @@ with sync_playwright() as pw:
     res['przed startem slowa ukryte']=not any(w in pg.inner_text('#v-conn') for w in words) and not any(w in pg.inner_html('#v-conn') for w in words) and pg.locator('.cn-start').count()==1
     res['przed startem czas stoi']=pg.evaluate("CN.t0")==0 and pg.evaluate("cnTap(0),cnSubmit(),CN.t0")==0 and pg.evaluate("CN.sel.length")==0
     pg.wait_for_timeout(1200);res['przed startem czas 0:00']=pg.inner_text('#cn-time')=='0:00'
-    pg.click('text=Start');pg.wait_for_timeout(200)
+    pg.click('.cn-start .pri');pg.wait_for_timeout(200)
     res['po starcie slowa widoczne']=all(w in pg.inner_text('#v-conn') for w in words) and pg.evaluate("CN.t0")>0
     res['16 kafelkow']=pg.locator('.cn-t').count()==16
     res['unikalne slowa']=pg.evaluate("new Set(CN.tiles.map(t=>t.w.toLowerCase())).size")==16
@@ -24,15 +24,15 @@ with sync_playwright() as pw:
     # zły ruch: 4 kafelki z różnych grup
     pg.evaluate("CN.sel=[];[0,1,2,3].forEach(k=>{});")
     pick="(()=>{const used={};const idx=[];CN.tiles.forEach((t,i)=>{if(!used[t.g]&&idx.length<4){used[t.g]=1;idx.push(i)}});CN.sel=idx;renderConn()})()"
-    pg.evaluate(pick);res['zatwierdz aktywny przy 4']=not pg.is_disabled('text=Zatwierdź')
-    pg.click('text=Zatwierdź');pg.wait_for_timeout(200)
+    pg.evaluate(pick);res['zatwierdz aktywny przy 4']=not pg.is_disabled('.gbar .pri')
+    pg.click('.gbar .pri');pg.wait_for_timeout(200)
     res['blad liczy sie']=pg.evaluate("CN.miss")==1;res['komunikat']=pg.inner_text('.cn-msg')
     # dobry ruch
-    pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(200)
+    pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('.gbar .pri');pg.wait_for_timeout(200)
     res['grupa rozwiazana']=pg.evaluate("CN.solved.length")==1 and pg.locator('.cn-row').count()==1 and pg.locator('.cn-t').count()==12
     # wygrana: rozwiąż resztę
     for _ in range(3):
-        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(120)
+        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('.gbar .pri');pg.wait_for_timeout(120)
     res['wygrana']=pg.evaluate("[CN.over,CN.won]")==[1,1]
     res['czas i medal po wygranej']=pg.evaluate("CN.ms>=CN.miss*10000&&cnMedal(CN.ms)==='🥇'")
     res['kara 10 s za blad']=pg.evaluate("CN.ms>=10000")  # w tescie jest 1 blad
@@ -47,11 +47,11 @@ with sync_playwright() as pw:
     # losowa: przegrana po 4 błędach ujawnia grupy
     pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(200)
     for _ in range(4):
-        pg.evaluate(pick);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+        pg.evaluate(pick);pg.click('.gbar .pri');pg.wait_for_timeout(100)
     res['przegrana ujawnia grupy']=pg.evaluate("[CN.over,CN.won,CN.solved.length]")==[1,0,4]
     pg.evaluate("cnLvl('A1');cnStart()");pg.evaluate("(()=>{CN.t0=Date.now()-30000;})()")
     for _ in range(4):
-        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('.gbar .pri');pg.wait_for_timeout(100)
     res['rekord losowej per poziom']=pg.evaluate("SV.cn.br.A1>=29000&&SV.cn.br.A1<40000&&CN.rec===1")
     res['losowa nie zmienia serii dziennej']=pg.evaluate("SV.cn.p")==1
     pg.set_viewport_size({'width':360,'height':740});pg.evaluate("cnNew()");pg.wait_for_timeout(300)
@@ -63,30 +63,30 @@ with sync_playwright() as pw:
     pg.evaluate("localStorage.clear();SV.cn=null;SV.m={};cnNew();cnStart()");pg.wait_for_timeout(100)
     pg.click('button:has-text("Podpowiedź")');pg.wait_for_timeout(100)
     res['podpowiedz: kafelek i kara']=pg.locator('.cn-t.hint').count()==1 and pg.evaluate("CN.hints")==1 and 'Podpowiedź' in pg.inner_text('.cn-msg') and pg.evaluate("CN.t0=Date.now()-1000,cnTotal()>=15000")
-    pg.click('button:has-text("Podpowiedź")');pg.wait_for_timeout(100);res['podpowiedz: max 2']=pg.is_disabled('button:has-text("Podpowiedź (0)")')
-    pg.evaluate(pick);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+    pg.click('button:has-text("Podpowiedź")');pg.wait_for_timeout(100);res['podpowiedz: max 2']=pg.is_disabled('button:has-text("(0)")')
+    pg.evaluate(pick);pg.click('.gbar .pri');pg.wait_for_timeout(100)
     res['zle slowa zapamietane']=pg.evaluate("CN.bad.length")>=1
     for _ in range(3):
-        pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(80)
-    pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+        pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(80)
+    pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(100)
     res['koniec: podpowiedzi w opisie']='Podpowiedzi: 2' in pg.inner_text('.cn-end')
     n=pg.evaluate("CN.bad.length");pg.click('text=Dodaj trudne słówka');pg.wait_for_timeout(100)
     res['powtorki: wpisane do SV.m']=pg.evaluate("Object.values(SV.m).filter(m=>m.w>0).length")==n and n>0
     # sprint
     pg.evaluate("cnMode('sprint')");pg.wait_for_timeout(100)
     res['sprint: slowa ukryte']=pg.locator('.cn-t.blank').count()==16
-    pg.click('text=Start');pg.wait_for_timeout(100)
+    pg.click('.cn-start .pri');pg.wait_for_timeout(100)
     for k in range(3):
         for _ in range(4):
-            pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(60)
+            pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(60)
         if k<2:res[f'sprint: kolejna lamiglowka {k+2}']=pg.evaluate("[SPN.n,CN.over,CN.tiles.length]")==[k+2,0,16]
     res['sprint: wygrana i rekord']=pg.evaluate("[CN.over,CN.won,SV.cn.br.sp>0,CN.nb.includes('p')]")==[1,1,True,True]
     res['sprint: nie psuje rekordow zwyklych']=pg.evaluate("cnBestAll()")==0 or pg.evaluate("cnBestAll()")>0
     res['odznaka zapisana']=pg.evaluate("SV.cn.bd.p")==1
     # seria i odznaka tygodnia
-    pg.evaluate("(()=>{const y=new Date();y.setDate(y.getDate()-1);const c=SV.cn;c.s=6;c.last=ymd(y);c.d=null;CNmode='daily';CN=null;renderConn()})()");pg.click('text=Start');pg.wait_for_timeout(100)
+    pg.evaluate("(()=>{const y=new Date();y.setDate(y.getDate()-1);const c=SV.cn;c.s=6;c.last=ymd(y);c.d=null;CNmode='daily';CN=null;renderConn()})()");pg.click('.cn-start .pri');pg.wait_for_timeout(100)
     for _ in range(4):
-        pg.evaluate(solve);pg.click('text=Zatwierdź');pg.wait_for_timeout(60)
+        pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(60)
     res['seria 7 dni: odznaka']=pg.evaluate("[SV.cn.s,!!SV.cn.bd.s]")==[7,True]
     res['seria na ekranie']='Seria: 7' in ' '.join(pg.text_content('.cn-bd').split())
     res['ranking: gosc widzi zaproszenie']='Zaloguj' in pg.inner_text('.cn-lbp')
@@ -98,7 +98,7 @@ with sync_playwright() as pw:
     # wyzwanie przez link
     pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(100)
     for _ in range(4):
-        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('text=Zatwierdź');pg.wait_for_timeout(100)
+        pg.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg.click('.gbar .pri');pg.wait_for_timeout(100)
     link=pg.evaluate("cnChalLink(1)");mine=pg.evaluate("[CN.ms,CN.groups.map(g=>g.w.slice().sort().join()).sort().join('|')]")
     recs=pg.evaluate("JSON.stringify(SV.cn)")
     pg2=br.new_page(viewport={'width':420,'height':900});pg2.on('pageerror',lambda e:errs.append(str(e)))
@@ -106,9 +106,9 @@ with sync_playwright() as pw:
     res['link: otwiera wyzwanie']=pg2.evaluate("[view,CN.mode,CN.go]")==['conn','chal',0] and 'pobij' in pg2.inner_text('#v-conn')
     res['link: ta sama plansza']=pg2.evaluate("CN.groups.map(g=>g.w.slice().sort().join()).sort().join('|')")==mine[1] and pg2.evaluate("CN.t")==mine[0]
     res['link: slowa ukryte do startu']=pg2.evaluate("CN.tiles[0].w") not in pg2.inner_text('#v-conn')
-    pg2.click('text=Start');pg2.wait_for_timeout(100)
+    pg2.click('.cn-start .pri');pg2.wait_for_timeout(100)
     for _ in range(4):
-        pg2.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg2.click('text=Zatwierdź');pg2.wait_for_timeout(100)
+        pg2.evaluate("(()=>{const g=CN.tiles[0].g;CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);renderConn()})()");pg2.click('.gbar .pri');pg2.wait_for_timeout(100)
     res['link: wynik porownany']='Pobiłeś' in pg2.inner_text('.cn-end') or 'Nie pobiłeś' in pg2.inner_text('.cn-end')
     res['link: nie zmienia rekordow']=pg2.evaluate("JSON.stringify(SV.cn||null)")in('null',recs) or pg2.evaluate("(SV.cn&&SV.cn.p)||0")==0
     res['link: hash wyczyszczony']=pg2.evaluate("location.hash")==''
