@@ -477,6 +477,34 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .gph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}.gph h4{margin:0;display:flex;align-items:center;gap:8px}.gpb{display:flex;flex-wrap:wrap;gap:8px}
 .cn-bd span[title]{cursor:help}
 .cn-bd.lab span{flex-direction:column;height:auto;min-width:78px;padding:8px 10px;gap:2px}.cn-bd.lab small{font-size:11px;font-weight:700;color:var(--ink)}
+
+/* wieżowiec */
+.cn-tower{flex:none;width:104px;align-self:stretch;display:flex;flex-direction:column;align-items:center;color:#fff}
+.tw-top{height:26px;display:flex;align-items:center}.tw-top span{padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);font:800 13px "Figtree",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tw-roof{font-size:22px;line-height:1;height:26px;filter:grayscale(.6);opacity:.7;transition:filter .3s,opacity .3s}.cn-tower.top .tw-roof{filter:none;opacity:1;animation:floaty 1.2s ease-in-out infinite}
+.tw-fl{position:relative;flex:1;width:84px;display:flex;flex-direction:column;border:2px solid #7f97cf;border-bottom:4px solid #0b1426;border-radius:8px 8px 0 0;background:#0d1830;overflow:visible}
+.tw-fl i{flex:1;min-height:0;border-top:1px solid rgba(255,255,255,.1);background:repeating-linear-gradient(90deg,transparent 0 9px,rgba(127,151,207,.3) 9px 19px);background-size:100% 55%;background-repeat:repeat-x;background-position:center;transition:background-color .4s}
+.tw-fl i:first-child{border-top:0}
+.tw-fl i.on{background-image:repeating-linear-gradient(90deg,transparent 0 9px,rgba(255,200,70,.95) 9px 19px)}
+.tw-man{position:absolute;left:50%;bottom:calc(var(--up)/var(--n)*100%);margin-left:-18px;width:36px;text-align:center;font-size:28px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.tw-man.go{animation:twup .8s var(--ease-out)}
+@keyframes twup{from{bottom:calc(var(--from)/var(--n)*100%)}}
+.cn-tower.slip .tw-man{animation:shake .4s var(--ease-out)}
+@media(prefers-reduced-motion:reduce){.tw-man.go{animation:none}}
+.gs-body>.cn-wrap,.gs-body>.cn-over{flex:1 1 auto;margin:0 auto}
+.gs-body{gap:14px}
+@media(max-width:700px){
+  .gs-body{flex-direction:column;align-items:stretch}
+  .cn-tower{width:100%;height:46px;flex-direction:row;align-self:auto;gap:10px;align-items:center}
+  .tw-top{height:auto;order:1}.tw-fl{order:2;flex:1;width:auto;height:20px;flex-direction:row;border:2px solid #7f97cf;border-bottom:2px solid #7f97cf;border-radius:8px}
+  .tw-roof{order:3;height:auto;font-size:20px}
+  .tw-fl i{border-top:0;border-left:1px solid rgba(255,255,255,.14);background-size:55% 100%;background-image:repeating-linear-gradient(0deg,transparent 0 5px,rgba(127,151,207,.3) 5px 9px)}
+  .tw-fl i:first-child{border-left:0}
+  .tw-fl i.on{background-image:repeating-linear-gradient(0deg,transparent 0 5px,rgba(255,200,70,.95) 5px 9px);background-color:rgba(255,200,70,.12)}
+  .tw-man{bottom:auto;top:-14px;left:calc(var(--up)/var(--n)*100%);margin-left:-14px;font-size:22px}
+  .tw-man.go{animation:twright .8s var(--ease-out)}
+  @keyframes twright{from{left:calc(var(--from)/var(--n)*100%)}}
+}
 </style>
 </head>
 <body>
@@ -1566,12 +1594,12 @@ function cnBuild(mode){
   }
   if(groups.length<4)return null;
   const col=shuf([0,1,2,3]);groups.forEach((g,i)=>g.c=col[i]);
-  return{mode,groups,tiles:shuf(groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})))),sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0,hints:0,hl:null,bad:[]};
+  return{mode,groups,tiles:shuf(groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})))),sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0,hints:0,hl:null,bad:[],up:0};
 }
 function cnLoad(mode){
   const g=cnBuild(mode);if(!g)return null;
   const d=SV.cn&&SV.cn.d;
-  if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.go=1;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.ms=d.ms||0;g.solved=[0,1,2,3];g.tiles=[];g.fresh=0}
+  if(mode==='daily'&&d&&d.date===ymd(new Date())&&d.done){g.over=1;g.go=1;g.up=d.won?4:0;g.won=d.won;g.hist=d.hist||[];g.miss=d.miss||0;g.ms=d.ms||0;g.solved=[0,1,2,3];g.tiles=[];g.fresh=0}
   return g;
 }
 function cnBestAll(){const c=SV.cn||{},v=[c.bt].concat(Object.entries(c.br||{}).filter(e=>e[0]!=='sp').map(e=>e[1])).filter(x=>x>0);return v.length?Math.min(...v):0}
@@ -1606,7 +1634,7 @@ function cnSubmit(){
   const best=Math.max(...Object.values(cnt));
   CN.hist.push(ts.map(t=>CN.groups[t.g].c));
   if(best===4){
-    const g=ts[0].g;CN.solved.push(g);CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
+    const g=ts[0].g;CN.solved.push(g);CN.up++;CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
     if(CN.solved.length===4)cnFinish(1);
   }else{
     const mg=+Object.keys(cnt).find(k=>cnt[k]===best);
@@ -1724,7 +1752,7 @@ function cnFromLink(h){
     const tiles=groups.flatMap((g,i)=>g.w.map(w=>({w,g:i})));
     for(let i=15;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tiles[i],tiles[j]]=[tiles[j],tiles[i]]}
     const t=+o.t;
-    return{mode:'chal',groups,tiles,sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0,hints:0,hl:null,bad:[],t:t>0&&t<36e5?Math.round(t):0,f:cnClean(o.f).slice(0,20)};
+    return{mode:'chal',groups,tiles,sel:[],solved:[],newG:[],miss:0,max:4,hist:[],over:0,won:0,msg:'',shake:0,go:0,t0:0,ms:0,rec:0,fresh:1,conf:0,hints:0,hl:null,bad:[],up:0,t:t>0&&t<36e5?Math.round(t):0,f:cnClean(o.f).slice(0,20)};
   }catch(e){return null}
 }
 async function cnChal(withTime){
@@ -1733,7 +1761,16 @@ async function cnChal(withTime){
   try{await navigator.clipboard.writeText(t);CN.msg='Skopiowano link wyzwania.'}catch(e){CN.msg='Nie udało się skopiować.'}
   renderConn();
 }
-setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal())}},250);
+setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
+function cnPaceTxt(){const t=cnTotal(),m=cnMeds(CN.mode==='sprint').find(x=>t<x[0]);return m?m[1]+' '+cnFmt(m[0]-t):'🏁'}
+/* wspinaczka: każda odgadnięta grupa to jedno piętro wyżej (sprint: 12 pięter) */
+function cnTower(wait){
+  const sp=CN.mode==='sprint',N=sp?12:4,base=sp?(SPN.n-1)*4:0,up=wait?0:CN.over&&CN.won?N:base+CN.up,prev=CN.ush==null?up:CN.ush;
+  CN.ush=up;
+  return '<div class="cn-tower'+(CN.shake?' slip':'')+(up===N?' top':'')+'" role="img" aria-label="Piętro '+up+' z '+N+'" style="--n:'+N+';--up:'+up+';--from:'+prev+'">'
+   +'<div class="tw-top"><span id="cn-pace">'+(CN.over?(CN.won?cnMedal(CN.ms,sp)||'🏁':'—'):cnPaceTxt())+'</span></div><div class="tw-roof">🏁</div>'
+   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+(up===N?'🎉':'🧗')+'</b></div></div>';
+}
 function renderConn(){
   const root=$('v-conn');if(!root)return;
   if(!CN||CN.mode!==CNmode)CN=cnLoad(CNmode);
@@ -1764,7 +1801,7 @@ function renderConn(){
   }
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
   const act=!CN.over&&!wait;
-  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+conf+(CN.over?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
+  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+cnTower(wait)+conf+(CN.over?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
    +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div>'
    +'<div class="gbar">'+(CN.over?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
