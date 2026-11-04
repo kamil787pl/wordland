@@ -228,6 +228,34 @@ kbd{background:#fff;border:1px solid #c5cfe1;border-bottom-width:2px;color:var(-
 #ov .card .lvr .lv.hd:hover:not(:disabled){background:#ffc9c1}
 details.grp .lvr .lv{border-top:0}
 .lv u{text-decoration:none;color:#d8d0b8;-webkit-text-stroke:0}
+/* ===== mobile ===== */
+button,.nb,.gbtn,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#ctl button{touch-action:none}
+#rot{display:none;margin:8px 0 0;text-align:center;font-size:13px;color:var(--mut)}
+#wrap.fsx.px{width:auto;height:auto}
+#wrap.fsx.px canvas{width:min(100vw,calc(100dvh*5/3))}
+@media (pointer:coarse){
+#keys,#ctl kbd{display:none}
+#wrap{max-width:none}
+#ctl{gap:8px;width:100%;padding:0 2px}
+#ctl button{min-height:48px;height:48px}
+#ctl #bl,#ctl #br,#ctl #bj{flex:1 1 28%;height:68px;font-size:30px;min-width:0}
+#ctl #mode{flex:2 1 0;min-width:0}
+#ctl #snd,#ctl #cr,#ctl #mn,#ctl #fs{flex:1 1 0;min-width:0;padding:0}
+#pt .nb,.nb,.gbtn,.gc button{min-height:44px}
+#pt .nb{min-width:44px;justify-content:center}
+.card button{min-height:44px}
+#wrap.fsx.px #ctl.fsc{inset:0;bottom:0;display:block}
+#ctl.fsc button{position:absolute;margin:0;min-width:0;opacity:.72}
+#ctl.fsc #bl{left:calc(10px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));width:72px;height:72px}
+#ctl.fsc #br{left:calc(92px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));width:72px;height:72px}
+#ctl.fsc #bj{right:calc(10px + env(safe-area-inset-right));bottom:calc(10px + env(safe-area-inset-bottom));width:80px;height:80px}
+#ctl.fsc #mode{right:calc(100px + env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));width:auto;height:52px}
+#ctl.fsc #snd,#ctl.fsc #cr,#ctl.fsc #mn,#ctl.fsc #fs{right:calc(8px + env(safe-area-inset-right));width:44px;height:44px;padding:0}
+#wrap:has(.ov.on) #ctl.fsc{display:none!important}
+#ctl.fsc #snd{top:36px}#ctl.fsc #cr{top:84px}#ctl.fsc #mn{top:132px}#ctl.fsc #fs{top:180px}
+}
+@media (pointer:coarse) and (orientation:portrait){#rot{display:block}}
 </style>
 </head>
 <body>
@@ -268,6 +296,7 @@ details.grp .lvr .lv{border-top:0}
 <main id="v-teach" class="pv" hidden></main>
 <section id="v-game" hidden>
 <div id="wrap"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div>
+<p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
 <div id="ctl">
   <button id="bl" aria-label="Lewo">◀ <kbd>A</kbd></button>
   <button id="bj" aria-label="Skok">▲ <kbd>␣</kbd></button>
@@ -728,6 +757,18 @@ function toggleFS(){
   try{const r=rq&&rq.call(FW);if(r&&r.catch)r.catch(()=>fsOn(true,true));else if(!rq)fsOn(true,true)}catch(e){fsOn(true,true)}
 }
 document.addEventListener('fullscreenchange',()=>fsOn(!!document.fullscreenElement));
+/* telefon poziomo: gra na cały ekran (przyciski dotykowe na planszy) */
+let wasLand=null;
+const isLand=()=>screen.orientation&&screen.orientation.type?screen.orientation.type.startsWith('landscape'):Math.abs(window.orientation||0)===90;
+function autoFs(force){
+  if(!matchMedia('(pointer:coarse)').matches)return;
+  const land=isLand();
+  if(view==='game'&&land&&(force||wasLand!==true))fsOn(true,true);
+  else if(!land&&FW.classList.contains('px'))fsOn(false);
+  wasLand=land;
+}
+addEventListener('orientationchange',()=>setTimeout(()=>autoFs(),150));
+if(screen.orientation&&screen.orientation.addEventListener)screen.orientation.addEventListener('change',()=>autoFs());
 document.addEventListener('webkitfullscreenchange',()=>fsOn(!!document.webkitFullscreenElement));
 document.getElementById('fs').onclick=e=>{e.currentTarget.blur();toggleFS()};
 /* świat */
@@ -935,6 +976,7 @@ function renderProf(){
 }
 function show(v){
   view=v;['home','prof','game','auth','teach'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   clearKeys();$('pt-fire').innerHTML=ic('flame')+streakNow();
   if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='game'&&state==='menu')menu();
   window.scrollTo(0,0);
