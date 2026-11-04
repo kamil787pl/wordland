@@ -221,6 +221,13 @@ kbd{background:#fff;border:1px solid #c5cfe1;border-bottom-width:2px;color:var(-
 .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--mut)}.cnt.ok{color:var(--grn)}
 #tc-w{min-height:110px}
 @media(max-width:640px){.wh{display:none}.wr{grid-template-columns:1fr 1fr 40px;padding:10px;border:1px solid var(--line);border-radius:12px}.wr .s{grid-column:1/3}.wr .x{grid-row:1/3;grid-column:3}.wiz .nm{grid-template-columns:1fr 90px}}
+/* wiersz kategorii z przyciskiem Hard */
+#ov .card .lvr{display:flex;border-top:2px solid rgba(42,26,14,.25)}
+#ov .card .lvr .lv{width:auto;flex:1;border-top:0;margin:0}
+#ov .card .lvr .lv.hd{flex:none;width:118px;gap:8px;background:#ffe3df;border-left:2px solid rgba(42,26,14,.25);font-size:15px}
+#ov .card .lvr .lv.hd:hover:not(:disabled){background:#ffc9c1}
+details.grp .lvr .lv{border-top:0}
+.lv u{text-decoration:none;color:#d8d0b8;-webkit-text-stroke:0}
 </style>
 </head>
 <body>
@@ -436,9 +443,9 @@ SPR[6]=mk(T,T,k=>{k.drawImage(SPR[3],0,0);[[9,10],[21,18],[12,22]].forEach(c=>{c
 let clouds=[[100,60,1],[400,40,1.3],[700,95,.9],[1000,50,1.1],[1300,85,1.2]];
 /* poziom */
 /* runda w etapach: długość zależy od liczby słówek w kategorii (z bazy) */
-let stage=0,needs=[8],cp=null;
+let stage=0,needs=[8],cp=null,HARD=false,tyv='pl';
 function plan(n){const tot=n<=9?Math.max(1,n-1):Math.min(24,Math.max(8,Math.round(n*.75))),st=tot<=8?1:tot<=16?2:3,per=Math.ceil(tot/st);return Array.from({length:st},(_,k)=>Math.min(tot,per*(k+1)))}
-function start(i){lvl=i;needs=plan(CATS[i].w.length);stage=0;NEED=needs[0];deck=prio(CATS[i].w.slice());seen=[];torches=0;pick=0;jb=0;sh=0;got=[];score=0;hearts=3;inv=0;gems=0;streak=0;asked=right=0;build(i)}
+function start(i,h){HARD=!!h;lvl=i;needs=plan(CATS[i].w.length);stage=0;NEED=needs[0];deck=prio(CATS[i].w.slice());seen=[];torches=0;pick=0;jb=0;sh=0;got=[];score=0;hearts=3;inv=0;gems=0;streak=0;asked=right=0;build(i)}
 function stageDone(){
   state='end';clearKeys();[523,659,784].forEach((f,k)=>setTimeout(()=>beep(f,.15,'square',.05),k*120));
   card('<h2>Etap '+(stage+1)+' z '+needs.length+' ukończony! ⭐</h2><p>Zebrane słówka: <b>'+got.length+'/'+needs[needs.length-1]+'</b>. Dostajesz dodatkowe serce, a postęp jest zapisany (checkpoint).</p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div><button class="g" onclick="nextStage()">Następny etap ▶</button>');
@@ -471,7 +478,7 @@ function build(i){
   for(let n=0,np=3+rnd(3);n<np;n++){const x0=14+rnd(MW-34),w=3+rnd(3),y=hs[x0]-6-rnd(2);for(let dx=0;dx<w;dx++){const xx=x0+dx;if(!map[y]||map[y][xx]!==0||hs[xx]<=y+2)continue;if([0,1,2].some(r=>[-1,0,1].some(d=>map[y+r]&&map[y+r][xx+d]===4)))continue;map[y][xx]=5}}
   p.x=2*T;p.y=hs[2]*T-p.h;p.vx=p.vy=0;
   parts=[];invT=0;bump=null;clearKeys();cp={got:got.slice(),score,right,asked,seen:seen.slice(),inv,gems};
-  tut=SV.tut?-1:0;tg=null;state='play';hide();if(tut<0)toast((needs.length>1?'Etap '+(stage+1)+'/'+needs.length+' · ':'')+TH[th].n+' · uderz głową w złote bloki „?”');
+  tut=SV.tut?-1:0;tg=null;state='play';hide();if(tut<0)toast((HARD?'HARD · ':'')+(needs.length>1?'Etap '+(stage+1)+'/'+needs.length+' · ':'')+TH[th].n+' · uderz głową w złote bloki „?”');
 }
 function card(h){ov.innerHTML='<div class="card">'+h+'</div>';ov.classList.remove('b');ov.classList.add('on')}
 function hide(){ov.classList.remove('on')}
@@ -486,15 +493,15 @@ function menu(){
   card(mhead()+'<p class="sub">Kop, skacz i zbieraj angielskie słówka</p>'+gr.map(g=>{
     const st=g.a.reduce((n,i)=>n+(S[i]||0),0),done=g.a.filter(i=>S[i]>0).length;
     return '<details class="grp" data-l="'+g.L+'" '+(g.L===open?'open':'')+' ontoggle="mT(this)"><summary><b>'+(g.L==='Własne'?'Własne kategorie':'Poziom '+g.L)+'</b><span>'+done+'/'+g.a.length+' ukończone · ★ '+st+'</span></summary>'
-      +g.a.map(i=>{const c=CATS[i],s=S[i]||0;return '<button class="lv" onclick="start('+i+')"><span>'+c.e+' '+c.n+'</span><span>'+'★'.repeat(s)+'☆'.repeat(3-s)+'</span></button>'}).join('')+'</details>';
-  }).join('')+'<button class="g" onclick="SV.tut=0;start(0)">❓ Samouczek</button> <button class="g" onclick="stats()">📊 Postępy</button>');
+      +g.a.map(i=>{const c=CATS[i],s=S[i]||0;const hs=(SV.h||[])[i]||0;return '<div class="lvr"><button class="lv" onclick="start('+i+')"><span>'+c.e+' '+c.n+'</span><span>'+'★'.repeat(s)+'<u>'+'★'.repeat(3-s)+'</u></span></button><button class="lv hd" onclick="start('+i+',1)" title="Hard: bez podpowiedzi, wpisywanie i słuchanie"><span>Hard</span><span>'+'★'.repeat(hs)+'<u>'+'★'.repeat(3-hs)+'</u></span></button></div>'}).join('')+'</details>';
+  }).join('')+'<p class="wl" style="font-size:12px;margin:6px 0">Hard: te same słówka, ale bez podpowiedzi – wpisujesz, słuchasz i układasz zdania.</p><button class="g" onclick="SV.tut=0;start(0)">❓ Samouczek</button> <button class="g" onclick="stats()">📊 Postępy</button>');
 }
-function fail(){const wb=state==='boss';state='end';card('<h2>Koniec serc 💔</h2><p>Spokojnie – każda próba to powtórka słówek.'+(wb?' Zebrane słówka zostają, wracasz do bossa.':needs.length>1?' Wracasz na początek tego etapu ('+(stage+1)+'/'+needs.length+'), a zebrane wcześniej słówka zostają.':'')+'</p><button class="g" onclick="'+(wb?'retryBoss()':'retryStage()')+'">'+(wb?'Do bossa':needs.length>1?'Spróbuj etap ponownie':'Spróbuj ponownie')+'</button> '+(wb||needs.length>1?'<button class="g" onclick="start(lvl)">Od początku</button> ':'')+'<button class="g" onclick="menu()">Menu</button>')}
+function fail(){const wb=state==='boss';state='end';card('<h2>Koniec serc 💔</h2><p>Spokojnie – każda próba to powtórka słówek.'+(wb?' Zebrane słówka zostają, wracasz do bossa.':needs.length>1?' Wracasz na początek tego etapu ('+(stage+1)+'/'+needs.length+'), a zebrane wcześniej słówka zostają.':'')+'</p><button class="g" onclick="'+(wb?'retryBoss()':'retryStage()')+'">'+(wb?'Do bossa':needs.length>1?'Spróbuj etap ponownie':'Spróbuj ponownie')+'</button> '+(wb||needs.length>1?'<button class="g" onclick="start(lvl,HARD)">Od początku</button> ':'')+'<button class="g" onclick="menu()">Menu</button>')}
 function win(){
   state='end';const acc=asked?Math.round(100*right/asked):100,st=acc>=90?3:acc>=70?2:1;
-  SV.s=SV.s||[];SV.s[lvl]=Math.max(SV.s[lvl]||0,st);save();pushStars(lvl);
+  if(HARD){SV.h=SV.h||[];SV.h[lvl]=Math.max(SV.h[lvl]||0,st);save();pushHard(lvl)}else{SV.s=SV.s||[];SV.s[lvl]=Math.max(SV.s[lvl]||0,st);save();pushStars(lvl)}
   [523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'square',.05),i*140));
-  card('<h2>Boss pokonany! 🏆<br>Poziom ukończony! '+'★'.repeat(st)+'☆'.repeat(3-st)+'</h2><p>Trafność: '+acc+'% ('+right+'/'+asked+')</p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div>'+(lvl<CATS.length-1?'<button class="g" onclick="start(lvl+1)">Następny poziom ▶</button> ':'')+'<button class="g" onclick="start(lvl)">Jeszcze raz</button> <button class="g" onclick="menu()">Menu</button>');
+  card('<h2>Boss pokonany! 🏆<br>'+(HARD?'Hard ukończony! ':'Poziom ukończony! ')+' '+'★'.repeat(st)+'☆'.repeat(3-st)+'</h2><p>Trafność: '+acc+'% ('+right+'/'+asked+')</p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div>'+(lvl<CATS.length-1?'<button class="g" onclick="start(lvl+1,HARD)">Następna kategoria ▶</button> ':'')+'<button class="g" onclick="start(lvl,HARD)">Jeszcze raz</button> <button class="g" onclick="menu()">Menu</button>');
 }
 /* quiz */
 function ask(tx,ty){
@@ -527,7 +534,7 @@ function lev(a,b){const d=[];for(let i=0;i<=a.length;i++){d[i]=[i];for(let j=1;j
 function chk(i){
   if(qm==='sb')return n2(sbc.map(k=>sbs[k]).join(' '))===n2(sbT);if(qm!=='ty')return qo[i]===cur[qb];
   const t=document.getElementById('ti');if(!t)return false;t.disabled=true;
-  const v=n2(t.value),c=n2(cur[1]);return v===c||(c.length>=5&&lev(v,c)<=1);
+  const v=n2(t.value),c=n2(cur[1]);return v===c||(c.length>=(HARD?8:5)&&lev(v,c)<=1);
 }
 let sbT='',sbs=[],sbc=[],seen=[];
 function sbP(k){if(answered||sbc.includes(k))return;sbc.push(k);sbR()}
@@ -535,7 +542,10 @@ function sbU(){if(answered)return;sbc.pop();sbR()}
 function sbR(){document.getElementById('sba').textContent=sbc.map(k=>sbs[k]).join(' ')||'…';document.querySelectorAll('#ov .t').forEach((b,k)=>b.disabled=sbc.includes(k))}
 function qcard(fn){
   const m=(SV.m[cur[0]+'='+cur[1]]||{b:0}).b,S=cur[2];
-  qm=m>=4?(S&&rnd(3)===0?'sb':'ty'):m>=2?(S&&rnd(2)?'sb':(rnd(2)?'ls':'mc')):(S&&rnd(2)?'gp':'mc');if(force){qm=force;force=''}
+  const lv=CATS[lvl].l,t4=lv==='A1'||!lv?4:lv==='A2'?3:2,t2=lv==='B1'?1:2,tts=typeof speechSynthesis!=='undefined';tyv='pl';
+  if(HARD){const r=rnd(100);if(S){if(r<40){qm='ty';tyv='gap'}else if(r<65)qm='sb';else if(r<85&&tts){qm='ty';tyv='dic'}else qm='ty'}else{qm='ty';if(r>=60&&tts)tyv='dic'}}
+  else qm=m>=t4?(S&&rnd(3)===0?'sb':'ty'):m>=t2?(S&&rnd(2)?'sb':(rnd(2)?'ls':'mc')):(S&&rnd(2)?'gp':'mc');
+  if(force){qm=force;force='';tyv='pl'}
   const a=qm==='mc'&&rnd(2)?1:0;qb=qm==='mc'?1-a:(qm==='ls'?0:1);
   let h,body;
   if(qm==='sb'){
@@ -544,9 +554,12 @@ function qcard(fn){
     body='<div id="sba" class="sba">…</div>'+sbs.map((w,k)=>'<button class="o t" onclick="sbP('+k+')">'+w+'</button>').join('')+'<p><button class="g" onclick="sbU()">↩ Cofnij</button> <button class="o" onclick="'+fn+'(-1)">Sprawdź</button></p>';
   }else if(qm==='ty'){
     h=state==='boss'&&bsh?'🛡 Tarcza! Wpisz po angielsku – podwójne obrażenia:':'Wpisz po angielsku:';
-    body='<div class="q">'+cur[0]+'</div><input id="ti" autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="event.stopPropagation();if(event.keyCode===13)'+fn+'(-1)"><button class="o" onclick="'+fn+'(-1)">Sprawdź</button>';
+    if(tyv==='gap'){h='Wpisz brakujące słowo:';body='<div class="q" style="font-size:22px">'+S+'</div>'}
+    else if(tyv==='dic'){h='Posłuchaj i wpisz po angielsku:';body='<p><button class="g" onclick="speak(cur[1])">🔊 Odtwórz ponownie</button></p>';setTimeout(()=>speak(cur[1]),250)}
+    else body='<div class="q">'+cur[0]+'</div>';
+    body+='<input id="ti" autocomplete="off" autocapitalize="none" spellcheck="false" onkeydown="event.stopPropagation();if(event.keyCode===13)'+fn+'(-1)"><button class="o" onclick="'+fn+'(-1)">Sprawdź</button>';
   }else{
-    const cp=w=>/^[A-Z]/.test(w[qb]),pl=CATS[lvl].w.filter(w=>w!==cur),sm=pl.filter(w=>cp(w)===cp(cur)),ot=shuffle(sm.length>=2?sm:pl).slice(0,2).map(w=>w[qb]);
+    const cp=w=>/^[A-Z]/.test(w[qb]),pl=CATS[lvl].w.filter(w=>w!==cur),sm=pl.filter(w=>cp(w)===cp(cur)),pool=(sm.length>=2?sm:pl).map(w=>w[qb]),ot=lv==='A2'||lv==='B1'?pool.sort((x,y)=>lev(n2(x),n2(cur[qb]))-lev(n2(y),n2(cur[qb]))+Math.random()-.5).slice(0,2):shuffle(pool).slice(0,2);
     qo=shuffle([cur[qb],...(qb===1&&cur[3]?[cur[3],ot[0]]:ot)]);
     h=qm==='gp'?'Uzupełnij zdanie:':qm==='ls'?'Posłuchaj i wybierz tłumaczenie:':(a?'Co to znaczy po polsku?':'Jak to będzie po angielsku?');
     body=(qm==='ls'?'<p><button class="g" onclick="speak(cur[1])">🔊 Odtwórz</button> <button class="g" onclick="this.textContent=cur[1]">👁 Pokaż</button></p>':qm==='gp'?'<div class="q" style="font-size:22px">'+S+(CATS[lvl].nh?'':'<br><small>('+cur[0]+')</small>')+'</div>':'<div class="q">'+cur[a]+'</div>')+qo.map((o,i)=>'<button class="o" onclick="'+fn+'('+i+')">'+(i+1)+'. '+o+'</button>').join('');
@@ -843,7 +856,7 @@ function draw(){
     ctx.fillStyle='#ff6b6b';ctx.fillText('♥'.repeat(Math.max(0,hearts))+'♡'.repeat(Math.max(0,3-hearts)),10,23);
     ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(110,11,150,12);ctx.fillStyle='#f2b632';ctx.fillRect(110,11,150*Math.min(1,got.length/NEED),12);
     ctx.fillStyle='#fff';ctx.fillText((needs.length>1?'Etap '+(stage+1)+'/'+needs.length+' · '+got.length+'/'+NEED:'Słówka '+got.length+'/'+NEED),272,23);ctx.fillText('🧱 '+inv+'  💎 '+gems+(pick?' ⛏':'')+(sh?' 🛡':'')+(jb>0?' 🥾':'')+(streak>1?'  🔥'+streak:''),430,23);
-    ctx.textAlign='right';ctx.fillText(CATS[lvl].n,W-10,23);
+    ctx.textAlign='right';ctx.fillText(CATS[lvl].n+(HARD?' · HARD':''),W-10,23);
     if(msgT>0){ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.65)';ctx.fillRect(60,H-52,W-120,34);ctx.fillStyle='#fff';ctx.fillText(msg,W/2,H-30)}
   }
 }
@@ -951,14 +964,14 @@ async function loadBank(){
 async function loadUser(u,prev){
   U={id:u.id,nick:(u.user_metadata&&u.user_metadata.nickname)||String(u.email).split('@')[0]};
   SKEY='wc2_'+U.id;let loc={};try{loc=JSON.parse(localStorage.getItem(SKEY)||'{}')}catch(e){}
-  SV=loc;SV.m={};SV.s=[];SV.a={};SV.d=null;SV.st=null;if(prev&&prev.tut&&!SV.tut)SV.tut=prev.tut;if(prev&&prev.c&&!SV.c)SV.c=prev.c;
+  SV=loc;SV.m={};SV.s=[];SV.h=[];SV.a={};SV.d=null;SV.st=null;if(prev&&prev.tut&&!SV.tut)SV.tut=prev.tut;if(prev&&prev.c&&!SV.c)SV.c=prev.c;
   try{
     const p=await sb.from('profiles').select('role,nickname').eq('id',U.id).maybeSingle();
     ROLE=(p.data&&p.data.role)||'student';if(p.data&&p.data.nickname)U.nick=p.data.nickname;
-    const [pr,ds,ac,cs]=await Promise.all([sb.from('progress').select('word_id,box,right_n,wrong_n').limit(5000),sb.from('daily_stats').select('day,answers,correct').order('day',{ascending:false}).limit(800),sb.from('achievements').select('key'),sb.from('category_stars').select('category_id,stars')]);
+    const [pr,ds,ac,cs]=await Promise.all([sb.from('progress').select('word_id,box,right_n,wrong_n').limit(5000),sb.from('daily_stats').select('day,answers,correct').order('day',{ascending:false}).limit(800),sb.from('achievements').select('key'),sb.from('category_stars').select('category_id,stars,hard_stars')]);
     (pr.data||[]).forEach(r=>{const k=WKEY[r.word_id];if(k)SV.m[k]={b:r.box,r:r.right_n,w:r.wrong_n}});
     (ac.data||[]).forEach(r=>{SV.a[r.key]=1});
-    (cs.data||[]).forEach(r=>{const i=CATS.findIndex(c=>c.id===r.category_id);if(i>=0)SV.s[i]=r.stars});
+    (cs.data||[]).forEach(r=>{const i=CATS.findIndex(c=>c.id===r.category_id);if(i>=0){SV.s[i]=r.stars;SV.h[i]=r.hard_stars||0}});
     const days=ds.data||[],t=ymd(new Date());
     SV.tot=days.reduce((a,x)=>a+x.answers,0);SV.ok=days.reduce((a,x)=>a+x.correct,0);
     const td=days.find(x=>x.day===t);SV.d=td?{date:t,n:td.answers,c:td.correct}:null;
@@ -974,13 +987,14 @@ async function importGuest(g){
   try{
     if(rows.length)await sb.from('progress').upsert(rows);
     const ac=Object.keys(g.a||{}).map(k=>({user_id:U.id,key:k}));if(ac.length)await sb.from('achievements').upsert(ac);
-    const st=[];(g.s||[]).forEach((v,i)=>{if(v&&CATS[i]&&CATS[i].id)st.push({user_id:U.id,category_id:CATS[i].id,stars:v})});if(st.length)await sb.from('category_stars').upsert(st);
+    const st=[];CATS.forEach((c,i)=>{const v=(g.s||[])[i]||0,h=(g.h||[])[i]||0;if((v||h)&&c.id)st.push({user_id:U.id,category_id:c.id,stars:v,hard_stars:h})});if(st.length)await sb.from('category_stars').upsert(st);
     if(g.d&&g.d.date)await sb.from('daily_stats').upsert({user_id:U.id,day:g.d.date,answers:g.d.n,correct:g.d.c||0});
   }catch(e){}
 }
 async function pushWord(k){if(!live()||!WID[k])return;const m=SV.m[k];try{await sb.from('progress').upsert({user_id:U.id,word_id:WID[k],box:m.b,right_n:m.r,wrong_n:m.w,updated_at:new Date().toISOString()})}catch(e){}}
 async function pushDay(){if(!live()||!SV.d)return;try{await sb.from('daily_stats').upsert({user_id:U.id,day:SV.d.date,answers:SV.d.n,correct:SV.d.c||0})}catch(e){}}
 async function pushAch(id){if(!live())return;try{await sb.from('achievements').upsert({user_id:U.id,key:id})}catch(e){}}
+async function pushHard(i){const c=CATS[i];if(!live()||!c||!c.id)return;try{await sb.from('category_stars').upsert({user_id:U.id,category_id:c.id,hard_stars:(SV.h||[])[i]||0})}catch(e){}}
 async function pushStars(i){const c=CATS[i];if(!live()||!c||!c.id)return;try{await sb.from('category_stars').upsert({user_id:U.id,category_id:c.id,stars:SV.s[i]||0})}catch(e){}}
 async function initCloud(){
   if(!sb)return;
