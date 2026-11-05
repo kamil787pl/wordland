@@ -35,6 +35,7 @@ with sync_playwright() as pw:
     res['rekordy zapisane']=pg.evaluate("Object.keys(SV.elf.r3).length")==3
     pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof') and 'Ranga WordElf' in pg.inner_text('#v-prof')
     pg.evaluate("show('home')");pg.wait_for_timeout(200);res['ranking na glownej ma WordElf']='WordElf' in pg.locator('.cn-lbp').first.inner_text()
+    res['pokoj z trofeami']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==15 and pg.evaluate("document.querySelectorAll('#v-prof .rm-t.on').length")>=0
     res['punkty lokalne']=pg.evaluate("SV.elf.pts")>0
     pg.evaluate("show('elf');elNewR()");pg.click('.el-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
     print({k:v for k,v in res.items() if v is not True});print('OK',errs)
