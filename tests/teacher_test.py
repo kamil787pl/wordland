@@ -9,7 +9,7 @@ cats=[{'id':1,'name':'Zwierzęta','emoji':'🐶','level':'A1','no_hint':False,'i
  {'id':3,'name':'Dom','emoji':'🏠','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':2,'words':[W(21,'okno','window'),W(22,'drzwi','door'),W(23,'stół','table'),W(24,'łóżko','bed')]},
  {'id':4,'name':'Kolory','emoji':'🎨','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':3,'words':[W(31,'czerwony','red'),W(32,'niebieski','blue'),W(33,'zielony','green'),W(34,'żółty','yellow')]}]
 users={};profiles={};nid=[100];wid=[1000];CODE='WL-TEST'
-CL=[];MEM={};ASG=[];RES=[]
+CL=[];MEM={};ASG=[];RES=[];AW=[]
 log=[]
 CORS={'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*','access-control-expose-headers':'*'}
 def jr(route,obj,st=200):route.fulfill(status=st,headers={'content-type':'application/json',**CORS},body=json.dumps(obj))
@@ -94,6 +94,9 @@ def handle(route):
             c=next((c for c in CL if c['code']==b['p_code'].upper()),None)
             if not c:return jr(route,{'message':'code'},400)
             MEM[c['id']].append(u_);return jr(route,[{'class_id':c['id'],'name':c['name']}])
+        if fn=='wl_award':AW.append(b['p_pts']);return jr(route,b['p_pts'])
+        if fn=='wl_my_points':return jr(route,40)
+        if fn=='wl_pts_board':return jr(route,[{'nick':'lacznik','pts':900,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
         if fn=='wc_board':return jr(route,[{'nick':'mistrz','pts':1200,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
         if fn=='leave_class':MEM[b['p_class']].remove(u_);return jr(route,None)
         if fn=='my_classes':return jr(route,[{'class_id':c['id'],'name':c['name'],'teacher':'anna'} for c in CL if u_ in MEM[c['id']]])
@@ -246,8 +249,13 @@ with sync_playwright() as pw:
     pg.evaluate("show('home')");pg.wait_for_timeout(300);res['uczen: po zadaniu']=pg.inner_text('#v-home .my-asg')[:200]
     pg.locator('#v-home .my-asg .crow').filter(has_text='Zwierzaki').locator('.gbtn').click();pg.wait_for_timeout(400);res['uczen: zadanie kategoria otwiera gre']=pg.evaluate('view')
     pg.evaluate("show('home')");pg.wait_for_timeout(500);hb=pg.inner_text('#v-home .cn-lbp');res['ranking: home']={'wiersze':pg.locator('#v-home .cn-lbp li').count(),'ja':pg.locator('#v-home .cn-lbp li.me b').inner_text(),'pkt':'1\xa0200 pkt' in hb}
-    pg.click('#v-home .cn-lbp button:has-text("Ogółem")');pg.wait_for_timeout(400);res['ranking: zakladka']=pg.locator('#v-home .cn-lbp button.on').inner_text()
+    pg.click('#v-home .cn-lbp button:has-text("Ogółem")');pg.wait_for_timeout(400);res['ranking: zakladka']=pg.locator('#v-home .cn-lbp button.on').all_inner_texts()
     pg.evaluate("show('game')");pg.evaluate("touchDay(true)");pg.wait_for_timeout(100);res['punkty: efekt +10']=pg.locator('.ptsfx').count()
+    pg.evaluate("show('conn');cnMode('random')");pg.wait_for_timeout(300);pg.click('.cn-start .pri');pg.evaluate("CN.t0=Date.now()-70000;for(let g=0;g<4;g++){CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);cnSubmit()}");pg.wait_for_timeout(600)
+    res['wl: punkty wyslane na serwer']=AW
+    res['wl: ranking w widoku gry']={'wiersze':pg.locator('#v-conn .cn-lbp li').count(),'ja':'ola_u' in pg.inner_text('#v-conn .cn-lbp'),'tytul':'Ranking punktów WordLinks' in pg.inner_text('#v-conn')}
+    pg.screenshot(path=S+'/wl-rank.png',full_page=True)
+    pg.evaluate("show('home')");pg.wait_for_timeout(300);pg.click('#v-home .cn-lbp button:has-text("WordLinks")');pg.wait_for_timeout(500);res['home: przelacznik gier']=pg.inner_text('#v-home .cn-lbp').count('lacznik')
     pg.evaluate("show('prof')");pg.wait_for_timeout(500);res['profil: punkty i ranga']={'ranga':'Ranga:' in pg.inner_text('#v-prof'),'ranking':pg.locator('#v-prof .cn-lbp li').count()}
     pg.screenshot(path=S+'/panel-rank.png',full_page=True)
     pg.evaluate("show('prof')");res['uczen: zadania w profilu']=pg.locator('#v-prof .my-asg .crow').count();pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])

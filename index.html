@@ -531,6 +531,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .tp-sl{margin-top:8px}.tp-sh,.tp-st{display:grid;grid-template-columns:34px minmax(110px,1.4fr) repeat(7,minmax(70px,1fr));gap:6px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--line);font-size:14px}.tp-sh{font-size:12px;color:var(--mut);font-weight:700}.tp-st.on{background:var(--pri-t)}
 .tp-ck{display:flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin:0!important}.tp-ck input{width:18px;height:18px}
 @media(max-width:760px){.tp-sh{display:none}.tp-st{grid-template-columns:34px 1fr 1fr;row-gap:4px;padding:10px 6px}.tp-st .tp-nm{grid-column:2/4}.tp-st span[data-l]{grid-column:span 1;font-size:13px}.tp-st span[data-l]::before{content:attr(data-l)": ";color:var(--mut);font-size:12px}.tp-st .tp-ck{grid-row:1/span 5;align-self:start}.tp-bulk{top:130px}}
+.cn-pts{margin:6px 0;font-size:15px;color:var(--ink)}.cn-pts small{color:var(--mut)}
 </style>
 </head>
 <body>
@@ -1280,7 +1281,7 @@ function wcProfile(){
 }
 function cnProfile(){
   const c=SV.cn||{},b=cnBestAll(),sp=(c.br||{}).sp;
-  return gpanel('grid','WordLinks',[[b?cnFmt(b)+' '+cnMedal(b):'–','najlepszy czas'],[sp?cnFmt(sp)+' '+cnMedal(sp,1):'–','rekord sprintu'],[(c.w||0)+'/'+(c.p||0),'wygrane puzzle dnia'],[cnStreak(),'seria dni (rekord: '+(c.b||0)+')']],
+  return gpanel('grid','WordLinks',[[b?cnFmt(b)+' '+cnMedal(b):'–','najlepszy czas'],[sp?cnFmt(sp)+' '+cnMedal(sp,1):'–','rekord sprintu'],[wcFmtP(c.pts||0),'punkty · '+wcRank(c.pts||0,WLR).t],[cnStreak(),'seria dni (rekord: '+(c.b||0)+')']],
    Object.keys(CNBD).map(k=>[CNBD[k][0],CNBD[k][1]+': '+CNBD[k][2],c.bd&&c.bd[k]]),
    '<button class="nb" onclick="show(\'conn\')">Graj</button>');
 }
@@ -1292,7 +1293,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+wcProfile()+wcNext()+wbHtml()+cnProfile()
+  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty: 25 za grupę, do 100 za ukończenie (minus 10 za błąd) i do 100 za medal czasowy.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1575,34 +1576,39 @@ const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'
 function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
 function wcPts(){return (SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150}
 var ptsB=0,runPts=0;
-function wcRank(p){let i=0;WCR.forEach((r,k)=>{if(p>=r[0])i=k});const n=WCR[i+1];return{t:WCR[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-WCR[i][0])/(n[0]-WCR[i][0])):100}}
+const WLR=[[0,'Nowicjusz'],[300,'Łącznik'],[1000,'Detektyw'],[2500,'Mistrz powiązań'],[5000,'Wizjoner'],[10000,'Legenda']];
+function wcRank(p,R){R=R||WCR;let i=0;R.forEach((r,k)=>{if(p>=r[0])i=k});const n=R[i+1];return{t:R[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-R[i][0])/(n[0]-R[i][0])):100}}
 function wcFmtP(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}
 function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
-let WB={scope:'week',rows:null,t:0,l:0,err:0};
-async function wbLoad(){
-  if(!live()||ROLE==='teacher'||WB.l)return;WB.l=1;WB.t=Date.now();
-  try{const r=await sb.rpc('wc_board',{p_scope:WB.scope});WB.err=r.error?1:0;WB.rows=r.error?null:(r.data||[])}catch(e){WB.err=1}
-  WB.l=0;if(view==='home')renderHome();if(view==='prof')renderProf();
+let WB={game:'wc',scope:'week',data:{},t:{},l:0,err:0};
+function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn()}
+async function wbLoad(g){
+  g=g||WB.game;if(!live()||ROLE==='teacher'||WB.l)return;const k=g+':'+WB.scope;WB.l=1;WB.t[k]=Date.now();
+  try{const r=await sb.rpc(g==='wl'?'wl_pts_board':'wc_board',{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
+  WB.l=0;wbRefresh();
 }
-function wbTab(s){WB.scope=s;WB.rows=null;WB.t=0;wbLoad();if(view==='home')renderHome();if(view==='prof')renderProf()}
-function wbHtml(){
+function wbTab(sc,g){WB.scope=sc;WB.err=0;wbLoad(g);wbRefresh()}
+function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
+function wbHtml(fixed){
   if(ROLE==='teacher')return '';
-  const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>';
+  const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
+  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['wc','WordCraft'],['wl','WordLinks']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
+  const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
-    if(!WB.rows&&!WB.l&&!WB.err||Date.now()-WB.t>60000)setTimeout(wbLoad,0);
-    const cap={week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'}[WB.scope];
-    if(!WB.rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
-    else if(!WB.rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
-    else b='<ol class="cn-lb">'+WB.rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
+    if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
+    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za łamigłówki z ostatnich 7 dni.',all:'Wszystkie punkty zdobyte w WordLinks.',class:'Punkty uczniów z Twojej klasy w WordLinks.'}}[g][WB.scope];
+    if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
+    else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
+    else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
     b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
   }
-  return '<div class="panel cn-lbp"><h4>🏆 Ranking punktów</h4>'+tabs+b+'</div>';
+  return '<div class="panel cn-lbp"><h4>🏆 Ranking punktów'+(fixed?' WordLinks':'')+'</h4>'+sw+tabs+b+'</div>';
 }
-function wcNext(){const r=wcRank(wcPts());return '<div class="panel"><h4>⭐ Ranga: '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.</p>':'<p class="lg" style="margin:0">Najwyższa ranga! 🎉</p>')+'</div>'}
+function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel"><h4>⭐ Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga! 🎉</p>')+'</div>'}
 /* ===== UCZEŃ: klasa i zadania od nauczyciela ===== */
 let MY={cls:null,asg:null,del:null};
 async function myLoad(){
@@ -1930,7 +1936,12 @@ const cnHash=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i)
 const cnFmt=ms=>{const t=Math.floor(ms/1000);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 const CNHINT=15000,cnMeds=sp=>sp?CNMED.map(m=>[m[0]*2.5,m[1]]):CNMED;
 const cnMedal=(ms,sp)=>{const m=cnMeds(sp).find(x=>ms<=x[0]);return m?m[1]:''};
-let SPN={n:1,acc:0,miss:0,hints:0};
+let SPN={n:1,acc:0,miss:0,hints:0},CNP=0;
+function cnBonus(ms,sp){const i=cnMeds(sp).findIndex(x=>ms<=x[0]);return i<0?0:[100,60,30][i]}
+function cnAwardPts(p){
+  const c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:'',bt:0,br:{}});c.pts=(c.pts||0)+p;save();
+  if(live()&&p>0)sb.rpc('wl_award',{p_pts:p}).then(r=>{if(!r.error&&typeof r.data==='number'&&r.data<p){c.pts-=p-r.data;save()}WB.t={};if(view==='conn')renderConn()}).catch(()=>{});
+}
 const cnTotal=()=>CN.over?CN.ms:(CN.t0?Date.now()-CN.t0:0)+CN.miss*CNPEN+(CN.hints||0)*CNHINT+(CN.mode==='sprint'?SPN.acc:0);
 function cnBestKey(){return CN.mode==='daily'?'bt':CN.mode==='sprint'?'sp':CNlvl||'all'}
 function cnBest(){if(CN.mode==='chal'||CN.mode==='asg')return CN.t;const c=SV.cn;if(!c)return 0;return CN.mode==='daily'?(c.bt||0):((c.br||{})[CN.mode==='sprint'?'sp':CNlvl||'all']||0)}
@@ -1960,7 +1971,7 @@ function cnLoad(mode){
 }
 function cnBestAll(){const c=SV.cn||{},v=[c.bt].concat(Object.entries(c.br||{}).filter(e=>e[0]!=='sp').map(e=>e[1])).filter(x=>x>0);return v.length?Math.min(...v):0}
 function cnHomeSub(){const b=cnBestAll(),d=SV.cn&&SV.cn.d,done=d&&d.date===ymd(new Date())&&d.done;return (b?'Twój rekord: '+cnFmt(b)+' '+cnMedal(b):'Pobij 1:30 i zdobądź 🥇')+' · '+(done?'dzisiejsza ukończona':'dziś nowa łamigłówka')}
-function cnStart(){if(!CN||CN.over||CN.go)return;if(CN.mode==='sprint')SPN={n:1,acc:0,miss:0,hints:0};CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
+function cnStart(){if(!CN||CN.over||CN.go)return;CNP=0;if(CN.mode==='sprint')SPN={n:1,acc:0,miss:0,hints:0};CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
 function cnTap(i){
   if(!CN||CN.over||!CN.go)return;
   const k=CN.sel.indexOf(i);
@@ -1990,7 +2001,7 @@ function cnSubmit(){
   const best=Math.max(...Object.values(cnt));
   CN.hist.push(ts.map(t=>CN.groups[t.g].c));
   if(best===4){
-    const g=ts[0].g;CN.solved.push(g);CN.up++;CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
+    const g=ts[0].g;CN.solved.push(g);CNP+=25;CN.up++;CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
     if(CN.solved.length===4)cnFinish(1);
   }else{
     const mg=+Object.keys(cnt).find(k=>cnt[k]===best);
@@ -2007,6 +2018,8 @@ function cnFinish(won){
   }
   CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';
   if(CN.mode==='sprint'){CN.miss+=SPN.miss;CN.hints=(CN.hints||0)+SPN.hints}
+  if(won)CNP+=Math.max(0,100-10*CN.miss)+cnBonus(CN.ms,CN.mode==='sprint');
+  if(CN.mode==='chal')CN.pts=null;else{CN.pts=CNP;cnAwardPts(CNP)}
   if(won)cnFx('win');
   if(CN.mode==='asg'){asgSubmit();return}
   if(CN.mode==='chal')return;
@@ -2061,6 +2074,7 @@ async function cnSync(){
     const r=await sb.from('wl_records').select('key,ms'),rows=r.data||[],have=new Set(rows.map(x=>x.key+':'+x.ms));
     rows.forEach(x=>{if(x.key==='bt'){if(!c.bt||x.ms<c.bt)c.bt=x.ms}else if(!c.br[x.key]||x.ms<c.br[x.key])c.br[x.key]=x.ms});
     for(const [k,v] of [['bt',c.bt]].concat(Object.entries(c.br)))if(v>0&&!have.has(k+':'+v))await sb.rpc('wl_submit_record',{p_key:k,p_ms:Math.max(8000,v)});
+    {const mp=await sb.rpc('wl_my_points');if(typeof mp.data==='number')c.pts=mp.data}
     const d=await sb.from('wl_daily').select('day,ms,miss,won').eq('day',ymd(new Date())).maybeSingle();
     if(d.data&&!cnDailyDone())c.d={date:d.data.day,done:1,won:d.data.won?1:0,miss:d.data.miss,hist:[],ms:d.data.ms,rec:0};
     c.bd=c.bd||{};Object.keys(SV.a||{}).forEach(k=>{if(k.startsWith('wl_'))c.bd[k.slice(3)]=1});
@@ -2146,7 +2160,7 @@ function renderConn(){
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+esc(G.e)+' '+esc(G.n)+'</b><span>'+G.w.map(esc).join(', ')+'</span><small>'+G.pl.map(esc).join(' · ')+'</small></div>'}).join('');
   const wait=!CN.over&&!CN.go;
   const lab=sp?'⚡ Sprint '+SPN.n+'/3':CN.mode==='asg'?'📚 Zadanie: '+esc(CN.title):CN.mode==='chal'?'🎯 Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
-  const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b><i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b>'+(CN.over?(CN.pts!=null?'<i>⭐ '+CN.pts+'</i>':''):'<i>⭐ '+(CN.go?CNP:0)+'</i>')+'<i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
   let end='',conf='',acts='',stats='';
@@ -2154,6 +2168,7 @@ function renderConn(){
     conf=CN.conf?'<div class="cn-conf" aria-hidden="true">'+Array.from({length:26},(_,i)=>'<i style="left:'+(i*3.9+Math.random()*3)+'%;background:'+CNC[i%4]+';animation-delay:'+(Math.random()*.5)+'s"></i>').join('')+'</div>':'';
     end='<div class="cn-end"><h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3>'
      +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+(CN.mode==='chal'&&CN.t?'<span class="cn-rec">'+(CN.ms<CN.t?'Pobiłeś wynik!':'Nie pobiłeś wyniku ('+cnFmt(CN.t)+')')+'</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s). ':'Bez żadnego błędu! ')+(CN.hints?'Podpowiedzi: '+CN.hints+' (+'+CN.hints*15+' s).':'')+'</div>':'<div>Odpowiedzi widzisz obok. Spróbuj jutro lub w trybie losowym.</div>')
+     +(CN.pts?'<div class="cn-pts">⭐ Punkty: <b>'+CN.pts+'</b> <small>(25 za grupę'+(CN.won?', ukończenie'+(cnBonus(CN.ms,CN.mode==="sprint")?', medal':''):'')+')</small></div>':'')
      +(CN.nb&&CN.nb.length?'<div class="cn-newbd">'+CN.nb.map(k=>'<span>'+CNBD[k][0]+' Nowa odznaka: <b>'+CNBD[k][1]+'</b></span>').join('')+'</div>':'')+'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre></div>';
     acts='<button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnChal(1)">Wyzwij znajomego</button>'+(CN.bad&&CN.bad.length?'<button onclick="cnReview()">📌 Powtórki ('+CN.bad.length+')</button>':'')+'<button onclick="cnNew()">Nowa łamigłówka</button>';
     stats=CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'';
@@ -2164,7 +2179,7 @@ function renderConn(){
    +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div>'
    +'<div class="gbar">'+(CN.over?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>💡<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
-   +chal+stats+bd+(!CN.go||CN.over?cnBoardHtml():'');
+   +chal+stats+bd+(!CN.go||CN.over?wbHtml('wl')+cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;
 }
 show('home');initCloud();
