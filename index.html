@@ -535,6 +535,22 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .i.ok{color:var(--grn)}.i.bad{color:var(--red)}.i.wait,.i.warn,.i.pt{color:var(--amb)}.gs-hud .i.pt,.cn-stage .i.pt{color:#ffd978}
 /* styl: w interfejsie portalu i paneli używamy ikon SVG (ic('nazwa')), emoji tylko jako treść: kategorie, medale, odznaki, plansza gry */
 .i.ok,.i.bad,.i.wait,.i.warn,.i.pt{margin-right:.3em}.cn-stage .gs-s .i.pt{margin-right:0}
+
+.el-wrap{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr) 110px;gap:14px;width:100%;align-items:start}
+.el-list{background:#fffdf5;color:#2a1a0e;border-radius:10px;padding:10px 12px;font:600 14px "Figtree",system-ui,sans-serif;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.el-list h4{margin:0 0 6px;font-size:14px;display:flex;align-items:center;gap:6px}.el-list>div{display:flex;align-items:center;gap:6px;padding:4px 0;border-top:1px dashed #d9ccb0}.el-list>div.ok span{text-decoration:line-through;opacity:.55}.el-list b{margin-left:auto;font-size:12px}
+.el-shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 8px;padding:8px;background:#6b4a2b;border-radius:10px;box-shadow:inset 0 0 0 3px #4d3219}
+.el-it{display:flex;align-items:center;justify-content:center;aspect-ratio:1;max-height:72px;font-size:34px;border:0;border-radius:10px;background:rgba(255,255,255,.14);border-bottom:4px solid #4d3219;cursor:pointer;transition:transform .12s,opacity .2s;color:#fff}
+.el-it:not(:disabled):active{transform:scale(.92)}.el-it.used{opacity:0;pointer-events:none}.el-it.shake{animation:elsh .35s;background:rgba(220,60,60,.45)}.el-shelf.blank .el-it{opacity:.5;font-weight:800}
+@keyframes elsh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.el-santa{text-align:center;color:#c9d6f2}.el-sack{margin:0 auto 4px;width:96px;height:96px;border-radius:44% 44% 38% 38%;background:#9a6a3a;border:3px solid #6b4a2b;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:30px;color:#fff}.el-sack b{font-size:16px}
+.el-fly1{position:fixed;z-index:50;display:flex;align-items:center;justify-content:center;font-size:34px;pointer-events:none;transition:transform .45s ease-in,opacity .45s}
+.el-sky{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#0b1530,#26427a);z-index:3}.el-sky i{position:absolute;font-style:normal;animation:eltw 1.2s infinite alternate}.el-sl{position:absolute;top:35%;font-size:44px;white-space:nowrap;animation:elfl 2.8s ease-in forwards}
+@keyframes elfl{from{left:-40%;transform:translateY(40px)}to{left:105%;transform:translateY(-90px)}}@keyframes eltw{to{opacity:.2}}
+.el-stars{display:flex;justify-content:center;gap:4px}.el-stars .i{width:30px;height:30px}.el-stars .dim{color:#5a6a8c}.el-words{margin-top:8px;font-size:13px;text-align:left;display:inline-block}
+.gs-body{position:relative}
+@media(max-width:700px){.el-wrap{grid-template-columns:1fr 84px}.el-list{grid-column:1/3}.el-shelf{grid-column:1}.el-santa{grid-column:2}.el-sack{width:76px;height:76px;font-size:22px}.el-it{font-size:28px}}
+@media(prefers-reduced-motion:reduce){.el-sl,.el-sky i{animation:none}}
 </style>
 </head>
 <body>
@@ -572,18 +588,19 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
 <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></symbol>
 <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
-<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.5 1.1.5 1.6V16h6v-.5c0-.5 0-1.2.5-1.6A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14M12 7C10 3 6 4 7.5 6.5 8 7 10 7 12 7zM12 7c2-4 6-3 4.5-.5C16 7 14 7 12 7z"/></symbol><symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.5 1.1.5 1.6V16h6v-.5c0-.5 0-1.2.5-1.6A6 6 0 0 0 12 3z"/></symbol>
 <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM17 9l5 6M22 9l-5 6"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
 <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
 <main id="v-teach" class="pv" hidden></main>
 <main id="v-conn" class="pv" hidden></main>
+<main id="v-elf" class="pv" hidden></main>
 <section id="v-game" hidden>
 <div id="wrap"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div>
 <p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
@@ -1242,6 +1259,7 @@ function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if
 const GAMES=[
  {n:'WordCraft',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/hero-game.webp',go:'openGame()'},
  {n:'WordLinks',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/wordlinks.webp',go:"show('conn')"},
+ {n:'WordElf',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,go:"show('elf')"},
  {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
  {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
 
@@ -1266,6 +1284,7 @@ function heroTick(){clearTimeout(hT);if(!RM)hT=setTimeout(()=>{if(view==='home'&
 const HOW=[
  [['cube','Zbieraj','Uderzaj głową w złote bloki „?” i zbieraj słówka po drodze.'],['target','Odpowiadaj','Wybieraj tłumaczenie, wpisuj z pamięci lub układaj zdania.'],['trophy','Pokonaj bossa','Zdobywaj gwiazdki na każdym poziomie, od A1 do B1.']],
  [['play','Kliknij Start','Dopiero wtedy pokażą się 16 słówek i ruszy czas. Każdego dnia jest nowa łamigłówka.'],['target','Połącz w grupy','Zaznacz 4 słówka z jednej kategorii i zatwierdź. Błąd to +10 s, masz 4 szanse.'],['trophy','Pobij rekord','Zdobywaj medale za czas, wspinaj się w rankingu i wyzywaj znajomych.']]];
+HOW.push([['book','Czytaj listę','Sprawdź, jakie prezenty ma spakować skrzat. Na wyższych poziomach są liczby albo opisy.'],['gift','Klikaj prezenty','Wybierz na półce właściwe rzeczy, a polecą do worka. Błąd to +5 s.'],['trophy','Wyślij sanie','Spakuj wszystko, a Mikołaj odleci. Im szybciej i bez błędów, tym lepiej.']]);
 function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+ic(x[0])+'<h4>'+x[1]+'</h4><p>'+x[2]+'</p></div>').join('')}
 function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
 function renderHome(){
@@ -1273,8 +1292,8 @@ function renderHome(){
   $('v-home').innerHTML=myAsgHTML()+'<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
-  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
-  +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
+  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
@@ -1304,17 +1323,17 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
+  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
 }
 function show(v){
-  view=v;['home','prof','game','auth','teach','conn'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  view=v;['home','prof','game','auth','teach','conn','elf'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
-  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='game'&&state==='menu')menu();
+  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='game'&&state==='menu')menu();
   if((v==='home'||v==='prof')&&live()&&ROLE!=='teacher'&&Date.now()-(MY.t||0)>30000)myLoad();
   window.scrollTo(0,0);
 }
@@ -2197,6 +2216,59 @@ function renderConn(){
    +chal+stats+bd+(!CN.go||CN.over?wbHtml('wl')+cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;
 }
+/* ===== WORDELF: skrzat pakuje prezenty ===== */
+const ELI=[['🧸','teddy bear','miś','teddy bears','a soft toy bear that you hug in bed'],['⚽','ball','piłka','balls','a round toy you kick or throw'],['🎸','guitar','gitara','guitars','a musical instrument with strings'],['🧣','scarf','szalik','scarves','you wear it around your neck when it is cold'],['🧤','gloves','rękawiczki','gloves','you wear them on your hands in winter'],['🎩','hat','kapelusz','hats','you wear it on your head'],['👟','shoes','buty','shoes','you wear them on your feet'],['📚','book','książka','books','you read it and it has many pages'],['🚂','train','pociąg','trains','a toy that runs on tracks'],['🪁','kite','latawiec','kites','it flies in the wind on a string'],['🎨','paints','farby','paints','you use them to make a colourful picture'],['🚲','bicycle','rower','bicycles','it has two wheels and pedals'],['🍬','candy','cukierek','candies','a small sweet thing to eat'],['🍪','cookie','ciasteczko','cookies','a sweet, round biscuit'],['🍎','apple','jabłko','apples','a red or green fruit'],['🎹','piano','pianino','pianos','you play it with black and white keys'],['🎧','headphones','słuchawki','headphones','you wear them on your ears to listen to music'],['⌚','watch','zegarek','watches','it shows you the time on your wrist'],['👓','glasses','okulary','glasses','you wear them on your nose to see better'],['🎒','backpack','plecak','backpacks','you carry your books in it on your back'],['☂️','umbrella','parasol','umbrellas','it keeps you dry when it rains'],['🔔','bell','dzwonek','bells','it rings: ding-dong'],['🕯️','candle','świeca','candles','it gives light and melts when it burns'],['🎲','dice','kostka','dice','you throw it in board games'],['🧩','puzzle','puzzle','puzzles','a game with many small pieces you put together'],['🚀','rocket','rakieta','rockets','a toy that flies to space'],['🤖','robot','robot','robots','a toy machine that can move and talk'],['📷','camera','aparat','cameras','you take photos with it']];
+let EL=null,ELlvl='A1';
+const elShuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function elNew(l){
+  const n=l==='A1'?6:5,P=elShuf(ELI.map((_,i)=>i)),list=P.slice(0,n).map(k=>({k,need:l==='A2'?1+Math.floor(Math.random()*3):1,got:0})),sh=[];
+  list.forEach(e=>{for(let i=0;i<e.need;i++)sh.push({k:e.k})});
+  P.slice(n,n+(l==='A2'?5:12-n)).forEach(k=>sh.push({k}));
+  return{lvl:l,list,shelf:elShuf(sh),miss:0,t0:0,ms:0,over:0,go:0,msg:'',shake:-1}
+}
+const elTotal=()=>EL.over?EL.ms:EL.t0?Date.now()-EL.t0+EL.miss*5000:0;
+function elTxt(e){const x=ELI[e.k];return EL.lvl==='B1'?x[4]:EL.lvl==='A2'?e.need+' '+(e.need>1?x[3]:x[1]):x[1]}
+function elLvl(l){ELlvl=l;EL=elNew(l);renderElf()}
+function elNewR(){EL=elNew(ELlvl);renderElf()}
+function elSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderElf()}
+function elStart(){if(!EL||EL.go||EL.over)return;EL.go=1;EL.t0=Date.now();renderElf()}
+function elTap(i,b){
+  if(!EL||!EL.go||EL.over)return;const s=EL.shelf[i];if(!s||s.used)return;
+  const e=EL.list.find(e=>e.k===s.k&&e.got<e.need);EL.shake=-1;
+  if(e){
+    s.used=1;e.got++;EL.msg='Dobrze! '+ELI[s.k][1]+' = '+ELI[s.k][2];cnFx('ok');
+    const sk=$('el-sack');if(b&&sk&&!RM){const r=b.getBoundingClientRect(),q=sk.getBoundingClientRect(),f=document.createElement('span');f.className='el-fly1';f.textContent=ELI[s.k][0];f.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px';document.body.appendChild(f);requestAnimationFrame(()=>{f.style.transform='translate('+(q.left+q.width/2-r.left-r.width/2)+'px,'+(q.top+q.height/2-r.top-r.height/2)+'px) scale(.4)';f.style.opacity='.2'});setTimeout(()=>f.remove(),500)}
+    if(EL.list.every(e=>e.got>=e.need))elFinish();
+  }else{EL.miss++;EL.shake=i;EL.msg='Ups, tego nie ma na liście. +5 s';cnFx('bad')}
+  renderElf();
+}
+function elFinish(){
+  EL.ms=elTotal();EL.over=1;const c=SV.elf||(SV.elf={p:0,perf:0,br:{}});c.p++;if(!EL.miss)c.perf++;
+  if(!c.br[EL.lvl]||EL.ms<c.br[EL.lvl]){c.br[EL.lvl]=EL.ms;EL.rec=1}
+  save();cnFx('win');if(!RM){EL.fly=1;setTimeout(()=>{if(EL){EL.fly=0;if(view==='elf')renderElf()}},2900)}
+}
+function elHomeSub(){const b=(SV.elf||{}).br||{},k=Object.keys(b);return k.length?'Rekordy: '+k.sort().map(l=>l+' '+cnFmt(b[l])).join(' · '):'Twój rekord pojawi się po pierwszej rundzie'}
+function elProfile(){
+  const c=SV.elf||{p:0,perf:0,br:{}},f=l=>c.br[l]?cnFmt(c.br[l]):'–';
+  return gpanel('gift','WordElf',[[f('A1'),'rekord A1'],[f('A2'),'rekord A2'],[f('B1'),'rekord B1'],[c.p,'zapakowane sanie']],
+   [['🎅','Pierwszy lot: wyślij sanie Mikołaja',c.p>0],['⭐','Bez błędu: zapakuj wszystko bez pomyłki',c.perf>0],['🦌','Cała załoga: rekord na każdym poziomie',!!(c.br.A1&&c.br.A2&&c.br.B1)]],
+   '<button class="nb" onclick="show(\'elf\')">Graj</button>');
+}
+function renderElf(){
+  const root=$('v-elf');if(!root)return;if(!EL)EL=elNew(ELlvl);
+  const c=SV.elf||{br:{}},best=c.br[EL.lvl],wait=!EL.go&&!EL.over,done=EL.list.reduce((a,e)=>a+e.got,0),all=EL.list.reduce((a,e)=>a+e.need,0);
+  const head='<div class="cn-top"><div class="cn-seg" role="group" aria-label="Poziom">'+['A1','A2','B1'].map(l=>'<button class="'+(ELlvl===l?'on':'')+'" onclick="elLvl(\''+l+'\')">'+l+'</button>').join('')+'</div><button class="cn-snd" onclick="elSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+ic('gift')+'WordElf</span><span class="gs-m">'+({A1:'Nazwy prezentów',A2:'Liczby i liczba mnoga',B1:'Opisy zamiast nazw'})[EL.lvl]+'</span><span class="gs-s">'+ic('clock')+'<b id="el-time">'+cnFmt(elTotal())+'</b>'+(best?'<i title="Twój rekord">'+ic('trophy','f pt')+cnFmt(best)+'</i>':'')+'</span></div>';
+  const list='<div class="el-list"><h4>'+ic('book')+'List Mikołaja</h4>'+EL.list.map(e=>{const ok=e.got>=e.need;return'<div class="'+(ok?'ok':'')+'">'+(ok?ic('check','ok'):ic('circle'))+'<span>'+esc(elTxt(e))+'</span>'+(e.need>1&&!ok?'<b>'+e.got+'/'+e.need+'</b>':'')+'</div>'}).join('')+'</div>';
+  const shelf='<div class="el-shelf'+(wait?' blank':'')+'">'+EL.shelf.map((s,i)=>wait?'<span class="el-it" aria-hidden="true">?</span>':'<button class="el-it'+(s.used?' used':'')+(EL.shake===i?' shake':'')+'" '+(s.used?'disabled ':'')+'onclick="elTap('+i+',this)" aria-label="'+(s.used?'spakowane':'prezent '+(i+1))+'">'+ELI[s.k][0]+'</button>').join('')+'</div>';
+  const sack='<div class="el-santa"><div class="el-sack" id="el-sack"><span>🎅</span><b>'+done+'/'+all+'</b></div><small>Worek Mikołaja</small></div>';
+  const sky=EL.fly?'<div class="el-sky" aria-hidden="true"><span class="el-sl">🎅🛷🦌🦌</span>'+Array.from({length:14},(_,i)=>'<i style="left:'+(i*7+Math.random()*5)+'%;top:'+(Math.random()*70)+'%;animation-delay:'+(i*.18)+'s">✨</i>').join('')+'</div>':'';
+  const st=EL.miss===0?3:EL.miss<=2?2:1;
+  const end='<div class="cn-over"><div class="cn-end"><h3>Sanie odleciały! 🎅</h3><div class="cn-time2">'+ic('clock')+cnFmt(EL.ms)+'</div>'+(EL.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+'<div class="el-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=st?'pt':'dim'))).join('')+'</div><div>'+(EL.miss?'Błędy: '+EL.miss+' (+'+EL.miss*5+' s).':'Bez żadnego błędu!')+'</div><div class="el-words">'+EL.list.map(e=>esc(ELI[e.k][0]+' '+ELI[e.k][1]+' = '+ELI[e.k][2])).join('<br>')+'</div></div></div>';
+  const body=EL.over&&!EL.fly?end:'<div class="el-wrap">'+list+shelf+sack+'</div>'+(wait?'<div class="cn-start"><p>Pomóż skrzatowi spakować prezenty z listy. Półka pokaże się po starcie. Błąd to +5 s.</p><button class="pri" onclick="elStart()">Start</button></div>':'');
+  root.innerHTML=head+'<div class="gstage cn-stage el-stage">'+hud+'<div class="gs-body">'+body+sky+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(EL.msg)+'</div></div><div class="gbar">'+(EL.over?'<button class="pri" onclick="elNewR()">Nowa lista</button>':'<button onclick="elNewR()">Inna lista</button>')+'</div></div><p class="gtips">Cel: kliknij na półce prezenty z listy, a trafią do worka. Gdy spakujesz wszystko, Mikołaj odleci.</p>';
+}
+setInterval(()=>{if(view==='elf'&&EL&&!EL.over&&EL.t0){const e=document.getElementById('el-time');if(e)e.textContent=cnFmt(elTotal())}},250);
 show('home');initCloud();
 if(location.hash.startsWith('#wl=')){const g=cnFromLink(location.hash);if(g){CN=g;CNmode='chal';show('conn')}history.replaceState(null,'',location.pathname+location.search)}
 /* ekran startowy */
