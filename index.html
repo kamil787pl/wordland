@@ -1168,6 +1168,7 @@ function draw(){
     ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(110,11,150,12);ctx.fillStyle=wordP>0?'#ffe9a3':'#f2b632';ctx.fillRect(110,11,150*Math.min(1,got.length/NEED),12);
     ctx.fillStyle='#fff';ctx.fillText((needs.length>1?'Etap '+(stage+1)+'/'+needs.length+' · '+got.length+'/'+NEED:'Słówka '+got.length+'/'+NEED),272,23);ctx.save();ctx.translate(430,23);const gs=1+.3*gemP/18;ctx.scale(gs,gs);ctx.fillText('🧱 '+inv+'  💎 '+gems+(pick?' ⛏':'')+(sh?' 🛡':'')+(jb>0?' 🥾':'')+(streak>1?'  🔥'+streak:''),0,0);ctx.restore();
     ctx.textAlign='right';ctx.fillText(CATS[lvl].n+(HARD?' · HARD':''),W-10,23);
+    {const t='⭐ '+wcFmtP(wcPts())+' pkt',w=ctx.measureText(t).width+20;ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(W-w-6,38,w,26);ctx.fillStyle=ptsB>0?'#ffe9a3':'#fff';ctx.fillText(t,W-16,56);if(ptsB>0)ptsB--}
     if(msgT>0){ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.65)';ctx.fillRect(60,H-52,W-120,34);ctx.fillStyle='#fff';ctx.fillText(msg,W/2,H-30)}
   }
   if(fadeT>0){ctx.fillStyle='rgba(20,30,45,'+(fadeT/30)+')';ctx.fillRect(0,0,W,H);fadeT--}
@@ -1210,7 +1211,7 @@ function touchDay(ok){
   SV.tot=(SV.tot||0)+1;if(ok)SV.ok=(SV.ok||0)+1;
   const st=SV.st||(SV.st={last:'',n:0,best:0});
   if(st.last!==t){const y=new Date();y.setDate(y.getDate()-1);st.n=st.last===ymd(y)?st.n+1:1;st.last=t;st.best=Math.max(st.best,st.n)}
-  if(ok&&view==='game')ptsFx();
+  if(ok&&view==='game'){ptsFx();ptsB=24}
   save();pushDay();
 }
 function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate(y.getDate()-1);return st.last===ymd(new Date())||st.last===ymd(y)?st.n:0}
@@ -1561,10 +1562,11 @@ async function tSave(){
 
 /* ===== PUNKTY i ranking: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard ===== */
 const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'],[7000,'Mistrz słówek'],[15000,'Legenda']];
-const wcSum=a=>(a||[]).reduce((x,y)=>x+(y||0),0);
-const wcPts=()=>(SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150;
+function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
+function wcPts(){return (SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150}
+var ptsB=0;
 function wcRank(p){let i=0;WCR.forEach((r,k)=>{if(p>=r[0])i=k});const n=WCR[i+1];return{t:WCR[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-WCR[i][0])/(n[0]-WCR[i][0])):100}}
-const wcFmtP=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+function wcFmtP(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}
 function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
