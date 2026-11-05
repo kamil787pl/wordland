@@ -19,3 +19,6 @@ Każda gra w WordLand używa tej samej ramki, żeby portal wyglądał spójnie:
 - Kolory statusów tylko klasami: `.ok` (zielony), `.bad` (czerwony), `.wait`/`.warn`/`.pt` (bursztyn).
 - Emoji zostają wyłącznie jako treść: emoji kategorii, medale 🥇🥈🥉, odznaki, grafika gier (kafelki, wieża, karty WordCraft), tekst udostępniania.
 - Ukończone zadania nauczyciela znikają ze strony głównej (widać je w profilu).
+
+## Każda nowa gra ma ranking (obowiązkowe)
+Nowa gra jest skończona dopiero z: punktami i rangami, rankingiem (przełącznik gry w `wbHtml`: tydzień/ogółem/moja klasa) na stronie głównej, w profilu i pod grą, panelem `gpanel` i `rankPanel` w profilu, kartą z grafiką na stronie głównej, slajdem w karuzeli i opisem w „Jak to działa”. Wzór: WordElf (elf_award, elf_my_points, elf_pts_board).

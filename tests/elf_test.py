@@ -31,7 +31,10 @@ with sync_playwright() as pw:
         res[lvl+' wygrana']=pg.evaluate("EL.over")==1
         pg.wait_for_timeout(3900)
         res[lvl+' ekran koncowy']='Sanie odleciały' in pg.inner_text('#v-elf')
+        res[lvl+' punkty']=pg.evaluate("EL.pts>=10&&EL.pts<=elPtsMax(EL.lvl)") and 'Punkty:' in pg.inner_text('#v-elf') and pg.locator('#v-elf .cn-lbp').count()==1
     res['rekordy zapisane']=pg.evaluate("Object.keys(SV.elf.r3).length")==3
-    pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof')
+    pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof') and 'Ranga WordElf' in pg.inner_text('#v-prof')
+    pg.evaluate("show('home')");pg.wait_for_timeout(200);res['ranking na glownej ma WordElf']='WordElf' in pg.locator('.cn-lbp').first.inner_text()
+    res['punkty lokalne']=pg.evaluate("SV.elf.pts")>0
     pg.evaluate("show('elf');elNewR()");pg.click('.el-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
     print({k:v for k,v in res.items() if v is not True});print('OK',errs)

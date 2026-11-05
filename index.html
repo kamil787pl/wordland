@@ -1349,7 +1349,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
+  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1403,7 +1403,7 @@ async function loadUser(u,prev){
     const asc=days.map(x=>x.day).sort();let run=0,best=0,prevD=null;
     asc.forEach(d=>{run=prevD&&(Date.parse(d)-Date.parse(prevD))/864e5===1?run+1:1;best=Math.max(best,run);prevD=d});
     SV.st=asc.length?{last:asc[asc.length-1],n:run,best}:null;
-    myLoad();await cnSync();
+    myLoad();await cnSync();elSync();
   }catch(e){}
   save();
 }
@@ -1639,10 +1639,10 @@ function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
 let WB={game:'wc',scope:'week',data:{},t:{},l:0,err:0};
-function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn()}
+function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn();if(view==='elf')renderElf()}
 async function wbLoad(g){
   g=g||WB.game;if(!live()||ROLE==='teacher'||WB.l)return;const k=g+':'+WB.scope;WB.l=1;WB.t[k]=Date.now();
-  try{const r=await sb.rpc(g==='wl'?'wl_pts_board':'wc_board',{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
+  try{const r=await sb.rpc(({wc:'wc_board',wl:'wl_pts_board',el:'elf_pts_board'})[g],{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
   WB.l=0;wbRefresh();
 }
 function wbTab(sc,g){WB.scope=sc;WB.err=0;wbLoad(g);wbRefresh()}
@@ -1650,19 +1650,19 @@ function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
 function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
-  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['wc','WordCraft'],['wl','WordLinks']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
+  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
   const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
-    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'}}[g][WB.scope];
+    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej klasy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
     else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
     else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
     b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
   }
-  return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' WordLinks':'')+'</h4>'+sw+tabs+b+'</div>';
+  return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
 }
 function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div>'}
 /* ===== UCZEŃ: klasa i zadania od nauczyciela ===== */
@@ -2256,6 +2256,17 @@ function elRound(l,r,used){
 }
 function elNew(l){return{lvl:l,round:0,rounds:3,acc:0,prev:0,words:[],miss:0,t0:0,ms:0,over:0,go:0,between:0,msg:'',shake:-1,...elRound(l,0,[])}}
 const elTotal=()=>EL.over?EL.ms:(EL.acc||0)+(EL.t0?Date.now()-EL.t0:0)+EL.miss*5000;
+const ELR=[[0,'Skrzat-uczeń'],[500,'Pomocnik'],[2000,'Pakowacz'],[5000,'Mistrz warsztatu'],[12000,'Główny skrzat'],[25000,'Legenda Bieguna']];
+const elPtsMax=l=>({A1:300,A2:400,B1:500})[l],elPtsT=l=>l==='A1'?240000:300000;
+const elPtsOf=(ms,l)=>Math.max(10,Math.round(elPtsMax(l)*(1-Math.min(ms,elPtsT(l))/elPtsT(l))));
+function elAwardPts(e,l,pts,ms){
+  const c=SV.elf||(SV.elf={p:0,perf:0}),t=ymd(new Date());
+  if(!c.pd||c.pd.d!==t)c.pd={d:t,m:{}};
+  const loc=Math.max(0,pts-(c.pd.m[l]||0));c.pd.m[l]=Math.max(c.pd.m[l]||0,pts);
+  const done=g=>{e.gain=g;c.pts=(c.pts||0)+g;save();WB.t={};if(view==='elf'&&EL===e)renderElf()};
+  if(live())sb.rpc('elf_award',{p_mode:l,p_ms:Math.round(ms),p_won:true}).then(r=>done(!r.error&&typeof r.data==='number'?r.data:loc)).catch(()=>done(loc));else done(loc);
+}
+async function elSync(){if(!live())return;try{const r=await sb.rpc('elf_my_points');if(typeof r.data==='number'){const c=SV.elf||(SV.elf={p:0,perf:0});c.pts=r.data;save()}}catch(e){}}
 function elNext(){
   if(!EL||!EL.between)return;const used=EL.words.map(k=>k);EL.round++;Object.assign(EL,elRound(EL.lvl,EL.round,used),{between:0,t0:Date.now(),mood:'',shake:-1,msg:''});renderElf()
 }
@@ -2277,7 +2288,8 @@ function elTap(i,b){
 function elFinish(){
   EL.ms=elTotal();EL.over=1;const c=SV.elf||(SV.elf={p:0,perf:0,br:{}});c.r3=c.r3||{};c.p++;if(!EL.miss)c.perf++;
   if(!c.r3[EL.lvl]||EL.ms<c.r3[EL.lvl]){c.r3[EL.lvl]=EL.ms;EL.rec=1}
-  save();cnFx('win');if(!RM){EL.fly=1;setTimeout(()=>{if(EL){EL.fly=0;if(view==='elf')renderElf()}},2900)}
+  EL.pts=elPtsOf(EL.ms,EL.lvl);elAwardPts(EL,EL.lvl,EL.pts,EL.ms);
+  save();cnFx('win');if(!RM){EL.fly=1;setTimeout(()=>{if(EL){EL.fly=0;if(view==='elf')renderElf()}},3500)}
 }
 function elHomeSub(){const b=(SV.elf||{}).r3||{},k=Object.keys(b);return k.length?'Rekordy: '+k.sort().map(l=>l+' '+cnFmt(b[l])).join(' · '):'Twój rekord pojawi się po pierwszej rundzie'}
 function villageSvg(){
@@ -2286,7 +2298,7 @@ function villageSvg(){
 }
 function elProfile(){
   const c=SV.elf||{p:0,perf:0},r=c.r3||{},f=l=>r[l]?cnFmt(r[l]):'–';
-  return gpanel('gift','WordElf',[[f('A1'),'rekord A1'],[f('A2'),'rekord A2'],[f('B1'),'rekord B1'],[c.p,'wysłane sanie']],
+  return gpanel('gift','WordElf',[[f('A1'),'rekord A1'],[f('A2'),'rekord A2'],[f('B1'),'rekord B1'],[wcFmtP(c.pts||0),'punkty · '+wcRank(c.pts||0,ELR).t],[c.p,'wysłane sanie']],
    [['🎅','Pierwszy lot: ukończ 3 rundy i wyślij sanie',c.p>0],['⭐','Bez błędu: 3 rundy bez pomyłki',c.perf>0],['🦌','Cała załoga: rekord na każdym poziomie',!!(r.A1&&r.A2&&r.B1)]],
    '<button class="nb" onclick="show(\'elf\')">Graj</button>');
 }
@@ -2300,21 +2312,21 @@ function renderElf(){
   const root=$('v-elf');if(!root)return;if(!EL)EL=elNew(ELlvl);
   const c=SV.elf||{},best=(c.r3||{})[EL.lvl],wait=!EL.go&&!EL.over,done=EL.list.reduce((a,e)=>a+e.got,0),all=EL.list.reduce((a,e)=>a+e.need,0);
   const head='<div class="cn-top"><div class="cn-seg" role="group" aria-label="Poziom">'+['A1','A2','B1'].map(l=>'<button class="'+(ELlvl===l?'on':'')+'" onclick="elLvl(\''+l+'\')">'+l+'</button>').join('')+'</div><button class="cn-snd" onclick="elSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
-  const hud='<div class="gs-hud"><span class="gs-t">'+ic('gift')+'WordElf</span><span class="gs-m">'+'Runda '+(EL.round+1)+'/'+EL.rounds+' · '+({A1:'nazwy',A2:'liczby',B1:'opisy'})[EL.lvl]+'</span><span class="gs-s">'+ic('clock')+'<b id="el-time">'+cnFmt(elTotal())+'</b>'+(best?'<i title="Twój rekord">'+ic('trophy','f pt')+cnFmt(best)+'</i>':'')+'</span></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+ic('gift')+'WordElf</span><span class="gs-m">'+'Runda '+(EL.round+1)+'/'+EL.rounds+' · '+({A1:'nazwy',A2:'liczby',B1:'opisy'})[EL.lvl]+'</span><span class="gs-s">'+ic('clock')+'<b id="el-time">'+cnFmt(elTotal())+'</b>'+(best?'<i title="Twój rekord">'+ic('trophy','f pt')+cnFmt(best)+'</i>':'')+'<i title="Tyle punktów dostaniesz, jeśli skończysz teraz. Maleje z czasem.">'+ic('star','f pt')+'<span id="el-pts">'+(EL.over?EL.pts:elPtsOf(elTotal(),EL.lvl))+'</span></i></span></div>';
   const list='<div class="el-list"><i class="el-pin"></i><h4>'+ic('book')+'List Mikołaja</h4>'+EL.list.map(e=>{const ok=e.got>=e.need;return'<div class="'+(ok?'ok':'')+'">'+(ok?ic('check','ok'):ic('circle'))+'<span>'+esc(elTxt(e))+'</span>'+(e.need>1&&!ok?'<b>'+e.got+'/'+e.need+'</b>':'')+'</div>'}).join('')+'<small>'+done+' z '+all+' w worku</small></div>';
   const shelf='<div class="el-shelf'+(wait?' blank':'')+'">'+EL.shelf.map((s,i)=>wait?'<span class="el-it" aria-hidden="true"><em>🎁</em></span>':'<button class="el-it'+(s.used?' used':'')+(EL.shake===i?' shake':'')+'" '+(s.used?'disabled ':'')+'onclick="elTap('+i+',this)" aria-label="'+(s.used?'spakowane':'prezent '+(i+1))+'"><em>'+ELI[s.k][0]+'</em></button>').join('')+'</div>';
   const bub=EL.mood==='ok'?'Super!':EL.mood==='bad'?'Ups!':'Pomóż mi!';
   const side='<div class="el-side"><div class="el-bub">'+bub+'</div><div class="el-cast m-'+(EL.mood||'')+'">'+ELF_SVG+'</div><div class="el-sack'+(EL.pop?' pop':'')+'" id="el-sack">'+sackSvg(done+EL.prev)+'<b>'+done+'/'+all+'</b></div></div>';
   const sky=EL.fly?'<div class="el-sky" aria-hidden="true"><i class="el-moon"></i><i class="el-cl" style="top:14%;--d:14s"></i><i class="el-cl" style="top:44%;--d:20s;opacity:.5"></i><i class="el-cl" style="top:28%;--d:26s;opacity:.35"></i>'+Array.from({length:26},(_,i)=>'<u style="left:'+((i*37)%100)+'%;top:'+((i*53)%65)+'%;animation-delay:'+(i%7)*.2+'s"></u>').join('')+'<div class="el-sl">'+SLEIGH_SVG+Array.from({length:7},(_,i)=>'<u class="sp" style="left:'+(-4-i*9)+'%;top:'+(48+(i%3)*8)+'%;animation-delay:'+i*.15+'s"></u>').join('')+['🎁','🍬','🎁'].map((g,i)=>'<b style="left:'+(14+i*14)+'%;animation-delay:'+(.5+i*.7)+'s">'+g+'</b>').join('')+'</div>'+villageSvg()+'</div>':'';
   const st=EL.miss===0?3:EL.miss<=3?2:1;
-  const end='<div class="cn-over"><div class="cn-end"><h3>Sanie odleciały! 🎅</h3><div class="cn-time2">'+ic('clock')+cnFmt(EL.ms)+'</div>'+(EL.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+'<div class="el-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=st?'pt':'dim'))).join('')+'</div><div>'+(EL.miss?'Błędy: '+EL.miss+' (+'+EL.miss*5+' s).':'Bez żadnego błędu!')+'</div><div class="el-words">'+EL.words.map(k=>esc(ELI[k][0]+' '+ELI[k][1]+' = '+ELI[k][2])).join('<br>')+'</div></div></div>';
+  const end='<div class="cn-over"><div class="cn-end"><h3>Sanie odleciały! 🎅</h3><div class="cn-time2">'+ic('clock')+cnFmt(EL.ms)+'</div>'+(EL.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+'<div class="cn-pts">'+ic('star','f pt')+'Punkty: <b>'+EL.pts+'</b> <small>'+(EL.gain==null?'(liczę…)':EL.gain>0?'(+'+EL.gain+' do rankingu dziś)':'(masz dziś już lepszy wynik na tym poziomie)')+'</small></div><div class="el-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=st?'pt':'dim'))).join('')+'</div><div>'+(EL.miss?'Błędy: '+EL.miss+' (+'+EL.miss*5+' s).':'Bez żadnego błędu!')+'</div><div class="el-words">'+EL.words.map(k=>esc(ELI[k][0]+' '+ELI[k][1]+' = '+ELI[k][2])).join('<br>')+'</div></div></div>';
   const start=EL.between?'<div class="el-start"><div class="el-cast m-ok">'+ELF_SVG+'</div><p><b>Runda '+(EL.round+1)+' z '+EL.rounds+' gotowa!</b> Worek się zapełnia. Następna lista ma '+ELN[EL.lvl][EL.round+1]+' pozycji i większą półkę.</p><button class="pri" onclick="elNext()">Dalej</button></div>':wait?'<div class="el-start"><div class="el-cast m-ok">'+ELF_SVG+'</div><p><b>Pomóż skrzatowi!</b> Spakuj prezenty z listy Mikołaja w 3 rundach, zanim sanie odlecą. Błąd to +5 s.</p><button class="pri" onclick="elStart()">Start</button></div>':'';
   const body=EL.over&&!EL.fly?end:'<div class="el-wrap">'+list+shelf+side+'</div>'+start;
   const lights='<svg class="el-lights" viewBox="0 0 400 22" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3Q50 22 100 3T200 3T300 3T400 3" fill="none" stroke="#2a1a0e" stroke-width="1.2" vector-effect="non-scaling-stroke"/>'+Array.from({length:16},(_,i)=>'<circle cx="'+(i*25+12)+'" cy="'+(i%2?13:12)+'" r="3.4" fill="'+['#ff5252','#ffd740','#69f0ae','#40c4ff'][i%4]+'" style="animation-delay:'+(i%4)*.35+'s"/>').join('')+'</svg>';
-  root.innerHTML=head+'<div class="gstage cn-stage el-stage">'+hud+'<div class="gs-body">'+lights+body+sky+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(EL.msg)+'</div></div><div class="gbar">'+(EL.over?'<button class="pri" onclick="elNewR()">Nowa lista</button>':'<button onclick="elNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: w 3 rundach pakuj prezenty z listy do worka. Każda runda jest trudniejsza. Po trzeciej Mikołaj odleci.</p>';
+  root.innerHTML=head+'<div class="gstage cn-stage el-stage">'+hud+'<div class="gs-body">'+lights+body+sky+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(EL.msg)+'</div></div><div class="gbar">'+(EL.over?'<button class="pri" onclick="elNewR()">Nowa lista</button>':'<button onclick="elNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: w 3 rundach pakuj prezenty z listy do worka. Każda runda jest trudniejsza. Po trzeciej Mikołaj odleci.</p>'+((wait||(EL.over&&!EL.fly))?wbHtml('el'):'');
   EL.pop=0;
 }
-setInterval(()=>{if(view==='elf'&&EL&&!EL.over&&EL.t0){const e=document.getElementById('el-time');if(e)e.textContent=cnFmt(elTotal())}},250);
+setInterval(()=>{if(view==='elf'&&EL&&!EL.over&&EL.t0){const e=document.getElementById('el-time');if(e)e.textContent=cnFmt(elTotal());const q=document.getElementById('el-pts');if(q)q.textContent=elPtsOf(elTotal(),EL.lvl)}},250);
 show('home');initCloud();
 if(location.hash.startsWith('#wl=')){const g=cnFromLink(location.hash);if(g){CN=g;CNmode='chal';show('conn')}history.replaceState(null,'',location.pathname+location.search)}
 /* ekran startowy */
