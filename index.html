@@ -644,7 +644,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="pchips"><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button><button class="fire pts" id="pt-pts" onclick="show('prof')" aria-label="Suma punktów"></button></span></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel korepetytora" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Korepetytor</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="pchips"><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button><button class="fire pts" id="pt-pts" onclick="show('prof')" aria-label="Suma punktów"></button></span></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
@@ -725,7 +725,7 @@ function addCat(){
   SV.c.push(c);CATS.push(c);save();adm2('Zapisano: '+c.n);
 }
 function delCat(i){SV.c.splice(i,1);CATS.splice(BASE+i,1);if(SV.s)SV.s.splice(BASE+i,1);save();adm2('Usunięto kategorię')}
-function impl(){state='menu';card('<h2>Wczytaj kategorię</h2><p>Wklej kod od nauczyciela:</p><textarea id="ci" rows="5"></textarea><p id="am"></p><button class="g" onclick="impCat(1)">Wczytaj</button> <button class="g" onclick="menu()">Wróć</button>')}
+function impl(){state='menu';card('<h2>Wczytaj kategorię</h2><p>Wklej kod od korepetytora:</p><textarea id="ci" rows="5"></textarea><p id="am"></p><button class="g" onclick="impCat(1)">Wczytaj</button> <button class="g" onclick="menu()">Wróć</button>')}
 function impCat(b){
   try{const a=JSON.parse(document.getElementById('ci').value);let n=0;
     (Array.isArray(a)?a:[]).forEach(x=>{const c=norm(x);if(c&&!CATS.some(y=>y.n===c.n)){SV.c.push(c);CATS.push(c);n++}});save();
@@ -1317,7 +1317,7 @@ const GAMES=[
 let HI=0,hT=0;
 function heroIn(i){
   const wc=i===0,el=i===2;
-  const txt=wc?'<span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie nauczyciela</li></ul>'
+  const txt=wc?'<span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie korepetytora</li></ul>'
    :el?'<span class="eyebrow">Nowa gra na święta</span><h2>WordElf</h2><p>Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!</p><div class="hbtns"><button class="hbtn" onclick="show(\'elf\')">'+ic('gift')+'Graj w WordElf</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+elHomeSub()+'</li><li>'+ic('book')+'Poziomy A1–B1</li><li>'+ic('clock')+'Gra na czas</li></ul>'
    :'<span class="eyebrow">Nowa gra</span><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii. Puzzle dnia i wyzwanie na czas.</p><div class="hbtns"><button class="hbtn" onclick="show(\'conn\')">'+ic('grid')+'Graj w WordLinks</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+(cnBestAll()?'Twój rekord: '+cnFmt(cnBestAll())+' '+cnMedal(cnBestAll()):'Pobij 1:30 i zdobądź złoty medal')+'</li><li>'+(cnDailyDone()?ic('check','ok')+'Dzisiejsza ukończona':ic('clock')+'Czeka puzzle dnia')+'</li>'+(cnStreak()?'<li>'+ic('flame')+'Seria: '+cnStreak()+' '+(cnStreak()===1?'dzień':'dni')+'</li>':'<li>'+ic('bolt')+'Sprint na czas</li>')+'</ul>';
   const vis=wc?'<img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">'+ic('flag')+'Boss</span>'
@@ -1346,7 +1346,7 @@ function renderHome(){
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
   +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
-  +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
+  +(ROLE!=='teacher'?'':'<h3>Dla korepetytora</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel korepetytora</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
 }
@@ -1378,7 +1378,7 @@ function renderProf(){
   +myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
-  +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
+  +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem korepetytorem i mam kod</a></p>':'');
 }
 function show(v){
   view=v;['home','prof','game','auth','teach','conn','elf'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
@@ -1462,7 +1462,7 @@ const nickOK=n=>/^[a-z0-9_]{3,16}$/.test(n),mailOf=n=>n+'@'+MAILDOM;
 function errPL(e){const m=String(e&&e.message||'').toLowerCase();
   if(m.includes('already')||m.includes('registered'))return'Ten nick jest zajęty. Wybierz inny.';
   if(m.includes('invalid login')||m.includes('invalid_credentials'))return'Zły nick lub hasło.';
-  if(m.includes('confirm'))return'Konto wymaga potwierdzenia e-mail. Poproś nauczyciela o wyłączenie tej opcji w ustawieniach logowania.';
+  if(m.includes('confirm'))return'Konto wymaga potwierdzenia e-mail. Poproś korepetytora o wyłączenie tej opcji w ustawieniach logowania.';
   if(m.includes('rate')||m.includes('too many'))return'Za dużo prób. Spróbuj za chwilę.';
   if(m.includes('password'))return'Hasło musi mieć co najmniej 6 znaków.';
   return'Nie udało się. Sprawdź internet i spróbuj ponownie.'}
@@ -1474,7 +1474,7 @@ function renderAuth(){
   +(sb?'':'<p style="color:#c0392b;font-weight:700">Brak połączenia z serwerem. Możesz grać bez konta – postępy zapiszą się w tej przeglądarce.</p>')
   +'<label for="au-n">Nick</label><input id="au-n" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="16">'
   +'<label for="au-p">Hasło</label><input id="au-p" type="password" autocomplete="'+(reg?'new-password':'current-password')+'">'
-  +(reg?'<label for="au-p2">Powtórz hasło</label><input id="au-p2" type="password" autocomplete="new-password"><label class="ck"><input type="checkbox" id="au-ok"><span>Nie podaję imienia i nazwiska. Jeśli mam mniej niż 16 lat, mam zgodę rodzica lub opiekuna.</span></label><p class="lg" style="margin:8px 0">Nick: 3–16 znaków (małe litery, cyfry i _). Hasło: co najmniej 6 znaków. Zapamiętaj je – gdy je zapomnisz, poproś nauczyciela o reset. Postępy zrobione bez konta w tej przeglądarce zostaną przeniesione na nowe konto.</p>':'')
+  +(reg?'<label for="au-p2">Powtórz hasło</label><input id="au-p2" type="password" autocomplete="new-password"><label class="ck"><input type="checkbox" id="au-ok"><span>Nie podaję imienia i nazwiska. Jeśli mam mniej niż 16 lat, mam zgodę rodzica lub opiekuna.</span></label><p class="lg" style="margin:8px 0">Nick: 3–16 znaków (małe litery, cyfry i _). Hasło: co najmniej 6 znaków. Zapamiętaj je – gdy je zapomnisz, poproś korepetytora o reset. Postępy zrobione bez konta w tej przeglądarce zostaną przeniesione na nowe konto.</p>':'')
   +'<p id="au-m"></p><button class="gbtn" id="au-go" onclick="'+(reg?'doRegister()':'doLogin()')+'">'+(reg?'Utwórz konto':'Zaloguj się')+'</button> <button class="nb" onclick="show(\'home\')">Graj bez konta</button></div>';
   const f=$('au-p'+(reg?'2':''));if(f)f.onkeydown=e=>{if(e.keyCode===13)(reg?doRegister:doLogin)()};
 }
@@ -1512,7 +1512,7 @@ async function logout(){
   await loadBank();start(0);menu();show('home');
 }
 function dbList(){
-  if(!U||ROLE!=='teacher')return'<p class="lg" style="font-size:12px;margin:10px 0">'+(U?'':'Zaloguj się kontem nauczyciela, aby zapisywać kategorie w bazie dla wszystkich uczniów.')+'</p>';
+  if(!U||ROLE!=='teacher')return'<p class="lg" style="font-size:12px;margin:10px 0">'+(U?'':'Zaloguj się kontem korepetytora, aby zapisywać kategorie w bazie dla wszystkich uczniów.')+'</p>';
   const mine=CATS.filter(c=>c.own&&c.own===U.id);
   return'<h2>☁️ Moje kategorie w bazie</h2>'+(mine.length?mine.map(c=>'<p>'+c.e+' '+c.n+' ('+c.w.length+') <button class="g" onclick="delCatDB('+c.id+')">Usuń</button></p>').join(''):'<p>Brak – dodaj pierwszą powyżej (zapisze się w bazie dla wszystkich uczniów).</p>');
 }
@@ -1527,11 +1527,11 @@ async function saveCatDB(c){
   }catch(e){adm2('Błąd zapisu: '+(e&&e.message||'sieć'))}
 }
 async function delCatDB(id){try{await sb.from('categories').delete().eq('id',id);await loadBank();adm2('Usunięto kategorię')}catch(e){adm2('Błąd usuwania')}}
-/* ===== PANEL NAUCZYCIELA (w portalu) ===== */
+/* ===== PANEL KOREPETYTORA (w portalu) ===== */
 let tEdit=null,tDel=null;
 
-/* reset hasła ucznia (funkcja serwerowa sprawdza rolę nauczyciela) */
-const RPE={nick:'Nick ma 3–16 znaków: małe litery, cyfry i _.',password:'Hasło musi mieć 6–72 znaków.',not_found:'Nie ma ucznia o takim nicku.',teacher_account:'Nie można zresetować hasła konta nauczyciela.',forbidden:'Tylko nauczyciel może zmieniać hasła.',auth:'Zaloguj się ponownie.'};
+/* reset hasła ucznia (funkcja serwerowa sprawdza rolę korepetytora) */
+const RPE={nick:'Nick ma 3–16 znaków: małe litery, cyfry i _.',password:'Hasło musi mieć 6–72 znaków.',not_found:'Nie ma ucznia o takim nicku.',teacher_account:'Nie można zresetować hasła konta korepetytora.',forbidden:'Tylko korepetytor może zmieniać hasła.',auth:'Zaloguj się ponownie.'};
 /* kreator kategorii */
 const EMO=['🐶','🍎','🏠','🎨','🧍','🏃','👪','🛒','✈️','📅','⚽','🎵','🌳','🏫','💼','📚'];
 const LVD={'':'Bez poziomu: kategoria pojawi się w grupie „Własne”.',A1:'A1: początkujący, krótkie i proste słówka.',A2:'A2: podstawowy, słówka z codziennych sytuacji.',B1:'B1: średnio zaawansowany, trudniejsze słownictwo.'};
@@ -1599,9 +1599,9 @@ function parseWords(txt){
 function wordsToText(c){return c.w.map(w=>w.slice(0,4).join('=').replace(/=+$/,'')).join('\n')}
 function renderTeach(){
   const root=$('v-teach');
-  if(!sb){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel">Brak połączenia z serwerem. Panel działa tylko po połączeniu z bazą.</div>';return}
-  if(!U){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Zaloguj się, aby wejść do panelu nauczyciela.</p><button class="gbtn" onclick="goAuth(0)">Zaloguj się</button> <button class="nb" onclick="goAuth(1)">Załóż konto</button></div>';return}
-  if(ROLE!=='teacher'){root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2><div class="panel"><p>Twoje konto (<b>'+U.nick+'</b>) nie ma jeszcze uprawnień nauczyciela. Wpisz kod nauczyciela, który dostałeś od administratora.</p><label for="tc-code">Kod nauczyciela</label><input id="tc-code" type="text" autocomplete="off" autocapitalize="characters" style="max-width:320px"><p id="tc-m"></p><button class="gbtn" onclick="claimTeacher()">Aktywuj</button></div>';return}
+  if(!sb){root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2><div class="panel">Brak połączenia z serwerem. Panel działa tylko po połączeniu z bazą.</div>';return}
+  if(!U){root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2><div class="panel"><p>Zaloguj się, aby wejść do panelu korepetytora.</p><button class="gbtn" onclick="goAuth(0)">Zaloguj się</button> <button class="nb" onclick="goAuth(1)">Załóż konto</button></div>';return}
+  if(ROLE!=='teacher'){root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2><div class="panel"><p>Twoje konto (<b>'+U.nick+'</b>) nie ma jeszcze uprawnień korepetytora. Wpisz kod korepetytora, który dostałeś od administratora.</p><label for="tc-code">Kod korepetytora</label><input id="tc-code" type="text" autocomplete="off" autocapitalize="characters" style="max-width:320px"><p id="tc-m"></p><button class="gbtn" onclick="claimTeacher()">Aktywuj</button></div>';return}
   tSync();
   const mine=CATS.filter(c=>c.own&&c.own===U.id),e=tEdit&&mine.find(c=>c.id===tEdit);
   if(!tRows){tRows=e?e.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})):[blankRow(),blankRow(),blankRow(),blankRow()];tLvl=e?(e.l||''):'';tDraft=e?{n:e.n,e:e.e,nh:!!e.nh}:null}
@@ -1610,8 +1610,8 @@ function renderTeach(){
   +tFormHTML(e);
   if(TP.cls===null)tpInit();
   const c=tpCur(),cat=TP.tab==='cat';
-  const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz klasę powyżej. Uczniowie dołączą kodem klasy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
-  root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'+tpShell(body);
+  const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz grupę powyżej. Uczniowie dołączą kodem grupy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
+  root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2>'+tpShell(body);
   if(cat){if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
 }
 async function claimTeacher(){
@@ -1681,21 +1681,21 @@ function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
   const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
-  const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
+  const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja grupa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
-    const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf).',class:'Suma punktów uczniów z Twojej klasy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej klasy.'}}[g][WB.scope];
+    const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf).',class:'Suma punktów uczniów z Twojej grupy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej grupy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej grupy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej grupy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
-    else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
+    else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej grupie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod grupy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
     else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
     b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
   }
   return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
 }
 function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div>'}
-/* ===== UCZEŃ: klasa i zadania od nauczyciela ===== */
+/* ===== UCZEŃ: grupa i zadania od korepetytora ===== */
 let MY={cls:null,asg:null,del:null};
 async function myLoad(){
   MY.t=Date.now();
@@ -1706,7 +1706,7 @@ async function myLoad(){
 function myAsgHTML(all){
   const a=(MY.asg||[]).filter(x=>all||!x.done);if(!live()||!a.length)return '';
   const open=a.filter(x=>!x.done).length;
-  return '<div class="panel my-asg"><h4>'+ic('target')+'Zadania od nauczyciela'+(open?' <span class="tag2">do zrobienia: '+open+'</span>':'')+'</h4>'+a.slice(0,all?30:8).map(x=>{
+  return '<div class="panel my-asg"><h4>'+ic('target')+'Zadania od korepetytora'+(open?' <span class="tag2">do zrobienia: '+open+'</span>':'')+'</h4>'+a.slice(0,all?30:8).map(x=>{
     const late=!x.done&&x.due&&x.due<ymd(new Date());
     return '<div class="crow"><span class="ct"><b>'+esc(x.title)+'</b> <span class="lg">'+esc(x.class_name)+' · '+(x.kind==='category'?'kategoria':'WordLinks')+(x.due?' · termin: '+tpDue(x.due):'')+'</span>'+(late?' <span class="tag2" style="background:#fbe9eb;color:var(--red)">po terminie</span>':'')+'</span>'
      +(x.done?'<span class="tag2">'+(x.kind==='wordlinks'?(x.won?ic('check','ok')+cnFmt(x.ms):ic('x','bad')+'nieudane'):ic('check','ok')+'zrobione')+'</span>':'<button class="gbtn" style="padding:7px 14px;font-size:14px" onclick="asgGo(\''+x.id+'\')">Zrób zadanie</button>')+'</div>'}).join('')+'</div>';
@@ -1724,10 +1724,10 @@ async function asgSubmit(){
 }
 function myMsg(t,ok){const e=$('my-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
 async function myJoin(){
-  const c=cl($('my-code').value,12).toUpperCase().replace(/\s/g,'');if(c.length<4)return myMsg('Wpisz kod klasy od nauczyciela.');
+  const c=cl($('my-code').value,12).toUpperCase().replace(/\s/g,'');if(c.length<4)return myMsg('Wpisz kod grupy od korepetytora.');
   myMsg('Dołączam…',1);
-  try{const r=await sb.rpc('join_class',{p_code:c});if(r.error)throw r.error;await myLoad();myMsg('Dołączono do klasy.',1)}
-  catch(e){myMsg(/teacher/i.test(e&&e.message||'')?'Konto nauczyciela nie może dołączyć do klasy.':'Nie ma takiej klasy. Sprawdź kod.')}
+  try{const r=await sb.rpc('join_class',{p_code:c});if(r.error)throw r.error;await myLoad();myMsg('Dołączono do grupy.',1)}
+  catch(e){myMsg(/teacher/i.test(e&&e.message||'')?'Konto korepetytora nie może dołączyć do grupy.':'Nie ma takiej grupy. Sprawdź kod.')}
 }
 async function myLeave(id){
   if(MY.del!==id){MY.del=id;return renderProf()}
@@ -1737,12 +1737,12 @@ async function myLeave(id){
 function myClassHTML(){
   if(!live()||ROLE==='teacher')return '';
   const c=MY.cls||[];
-  return '<div class="panel"><h4>'+ic('cap')+'Moja klasa</h4>'+(c.length?c.map(x=>'<div class="crow"><span class="ct"><b>'+esc(x.name)+'</b> <span class="lg">nauczyciel: '+esc(x.teacher)+'</span></span><button class="nb dng" onclick="myLeave(\''+x.class_id+'\')">'+(MY.del===x.class_id?'Na pewno opuścić?':'Opuść klasę')+'</button></div>').join('')+'<p class="lg">Nauczyciel widzi Twoje postępy w nauce i wyniki zadań.</p>':'<p class="lg" style="margin:0">Masz kod od nauczyciela? Wpisz go, aby dołączyć do klasy i dostawać zadania. Nauczyciel zobaczy wtedy Twoje postępy.</p>')
-   +'<div class="tp-row" style="margin-top:8px"><input id="my-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Kod klasy" placeholder="Kod klasy, np. K7M2QX" onkeydown="if(event.key===\'Enter\')myJoin()"><button class="nb" onclick="myJoin()">Dołącz</button></div><p id="my-m" role="status" style="min-height:20px;margin:6px 0 0;font-weight:600;color:var(--red)"></p></div>';
+  return '<div class="panel"><h4>'+ic('cap')+'Moja grupa</h4>'+(c.length?c.map(x=>'<div class="crow"><span class="ct"><b>'+esc(x.name)+'</b> <span class="lg">korepetytor: '+esc(x.teacher)+'</span></span><button class="nb dng" onclick="myLeave(\''+x.class_id+'\')">'+(MY.del===x.class_id?'Na pewno opuścić?':'Opuść grupę')+'</button></div>').join('')+'<p class="lg">Korepetytor widzi Twoje postępy w nauce i wyniki zadań.</p>':'<p class="lg" style="margin:0">Masz kod od korepetytora? Wpisz go, aby dołączyć do grupy i dostawać zadania. Korepetytor zobaczy wtedy Twoje postępy.</p>')
+   +'<div class="tp-row" style="margin-top:8px"><input id="my-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Kod grupy" placeholder="Kod grupy, np. K7M2QX" onkeydown="if(event.key===\'Enter\')myJoin()"><button class="nb" onclick="myJoin()">Dołącz</button></div><p id="my-m" role="status" style="min-height:20px;margin:6px 0 0;font-weight:600;color:var(--red)"></p></div>';
 }
-/* ===== PANEL NAUCZYCIELA: klasy, uczniowie, zadania ===== */
+/* ===== PANEL KOREPETYTORA: grupy, uczniowie, zadania ===== */
 const TP={tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,tg:null,open:null,del:null,busy:0,ast:{},q:'',sort:'nick',fil:'all',sel:new Set(),delSel:0,hmsg:''};
-const TPE={forbidden:'Brak uprawnień do tej klasy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit klas.',targets:'Wybrani uczniowie nie są w tej klasie.'};
+const TPE={forbidden:'Brak uprawnień do tej grupy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit grup.',targets:'Wybrani uczniowie nie są w tej grupie.'};
 const tpGen=()=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(const x of crypto.getRandomValues(new Uint8Array(8)))s+=a[x%a.length];return s};
 const tpCur=()=>(TP.cls||[]).find(c=>c.id===TP.cur);
 const tpSum=(a,k)=>a.reduce((s,x)=>s+(x[k]||0),0);
@@ -1771,25 +1771,25 @@ async function tpReload(){TP.cls=null;TP.d=null;renderTeach()}
 function tpPick(v){TP.cur=v;tpLoad();renderTeach()}
 function tpTab(t){tSync();TP.tab=t;TP.del=null;renderTeach()}
 async function tpNewClass(){
-  const n=cl($('tp-nn').value,40);if(!n)return tpMsg('Podaj nazwę klasy.');
+  const n=cl($('tp-nn').value,40);if(!n)return tpMsg('Podaj nazwę grupy.');
   tpMsg('Tworzę…',1);
   try{const r=await sb.rpc('class_create',{p_name:n});if(r.error)throw r.error;const row=Array.isArray(r.data)?r.data[0]:r.data;TP.cur=row&&row.id;TP.new=0;TP.tab='ov';await tpReload()}
-  catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się utworzyć klasy.')}
+  catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się utworzyć grupy.')}
 }
-async function tpRename(){const n=cl($('tp-rn').value,40);if(!n)return tpMsg('Podaj nazwę klasy.');
+async function tpRename(){const n=cl($('tp-rn').value,40);if(!n)return tpMsg('Podaj nazwę grupy.');
   try{const r=await sb.rpc('class_update',{p_class:TP.cur,p_name:n,p_archived:!!tpCur().archived});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się zmienić nazwy.')}}
 async function tpArch(){const c=tpCur();
-  try{const r=await sb.rpc('class_update',{p_class:c.id,p_name:c.name,p_archived:!c.archived});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się zmienić stanu klasy.')}}
+  try{const r=await sb.rpc('class_update',{p_class:c.id,p_name:c.name,p_archived:!c.archived});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się zmienić stanu grupy.')}}
 async function tpNewCode(){try{const r=await sb.rpc('class_new_code',{p_class:TP.cur});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się wygenerować kodu.')}}
 async function tpDelClass(){
   if(TP.del!=='class'){TP.del='class';return renderTeach()}
-  try{const r=await sb.rpc('class_delete',{p_class:TP.cur});if(r.error)throw r.error;TP.cur=null;await tpReload()}catch(e){tpMsg('Nie udało się usunąć klasy.')}
+  try{const r=await sb.rpc('class_delete',{p_class:TP.cur});if(r.error)throw r.error;TP.cur=null;await tpReload()}catch(e){tpMsg('Nie udało się usunąć grupy.')}
 }
 async function tpCopy(t,msg){try{await navigator.clipboard.writeText(t);tpMsg(msg||'Skopiowano.',1)}catch(e){tpMsg('Nie udało się skopiować.')}}
 function tpSettings(c){
-  return '<details class="panel tp-set"><summary>'+ic('tool')+'Ustawienia klasy'+(c.archived?' <span class="tag2">archiwum</span>':'')+'</summary>'
-   +'<div class="wa"><button class="nb" onclick="tpNewCode()">Nowy kod klasy</button><button class="nb" onclick="tpArch()">'+(c.archived?'Przywróć klasę':'Archiwizuj')+'</button><button class="nb dng" onclick="tpDelClass()">'+ic('trash')+(TP.del==='class'?'Kliknij jeszcze raz, aby usunąć':'Usuń klasę')+'</button></div>'
-   +'<label for="tp-rn">Nazwa klasy</label><div class="tp-row"><input id="tp-rn" type="text" maxlength="40" value="'+esc(c.name)+'"><button class="nb" onclick="tpRename()">Zapisz nazwę</button></div></details>';
+  return '<details class="panel tp-set"><summary>'+ic('tool')+'Ustawienia grupy'+(c.archived?' <span class="tag2">archiwum</span>':'')+'</summary>'
+   +'<div class="wa"><button class="nb" onclick="tpNewCode()">Nowy kod grupy</button><button class="nb" onclick="tpArch()">'+(c.archived?'Przywróć grupę':'Archiwizuj')+'</button><button class="nb dng" onclick="tpDelClass()">'+ic('trash')+(TP.del==='class'?'Kliknij jeszcze raz, aby usunąć':'Usuń grupę')+'</button></div>'
+   +'<label for="tp-rn">Nazwa grupy</label><div class="tp-row"><input id="tp-rn" type="text" maxlength="40" value="'+esc(c.name)+'"><button class="nb" onclick="tpRename()">Zapisz nazwę</button></div></details>';
 }
 /* uczniowie, którzy mają niezrobione zadania po terminie */
 function tpOverdue(){
@@ -1815,11 +1815,11 @@ function tpOv(c){
   const days=[];for(let i=13;i>=0;i--){const t=new Date();t.setDate(t.getDate()-i);days.push(ymd(t))}
   const bars=days.map(k=>{const x=by[k]||{answers:0,active:0};return '<i style="height:'+Math.max(3,Math.round(100*x.answers/mx))+'%" title="'+k.slice(5).replace('-','.')+': '+x.answers+' odp., '+x.active+' uczn."></i>'}).join('');
   const open=d.as.filter(a=>!a.due||a.due>=ymd(new Date())).length;
-  return '<div class="panel tp-top"><span class="tp-ci"><span class="lg">Kod klasy</span><b class="tp-code" id="tp-code">'+esc(c.code)+'</b></span><button class="nb" onclick="tpCopy(tpCur().code,\'Kod skopiowany.\')">Kopiuj kod</button><button class="nb" onclick="TP.tab=\'stu\';TP.add={};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button><span id="tp-m" role="status"></span></div>'
+  return '<div class="panel tp-top"><span class="tp-ci"><span class="lg">Kod grupy</span><b class="tp-code" id="tp-code">'+esc(c.code)+'</b></span><button class="nb" onclick="tpCopy(tpCur().code,\'Kod skopiowany.\')">Kopiuj kod</button><button class="nb" onclick="TP.tab=\'stu\';TP.add={};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button><span id="tp-m" role="status"></span></div>'
    +'<div class="tp-tiles"><div class="tp-t"><b>'+s.length+'</b>uczniów</div><div class="tp-t"><b>'+act.length+'</b>aktywnych (7 dni)</div><div class="tp-t"><b>'+tpSum(s,'answers_7d')+'</b>odpowiedzi (7 dni)</div><div class="tp-t"><b>'+tpPct(tpSum(s,'correct'),tpSum(s,'answers'))+'</b>skuteczność</div></div>'
-   +'<div class="panel tp-att"><h4>'+ic('alert')+'Wymaga uwagi ('+att.length+')</h4>'+(att.length?att.map(([x,r])=>'<div class="crow"><button class="tp-nm" onclick="tpOpen(\''+x.user_id+'\')">'+esc(x.nick)+'</button><span class="ct lg">'+r.join(' · ')+'</span></div>').join(''):'<p class="lg" style="margin:0">'+(s.length?'Wszystko w porządku: nikt nie odstaje od klasy.':'Klasa nie ma jeszcze uczniów.')+'</p>')+'</div>'
-   +'<div class="panel"><h4>'+ic('target')+'Aktywność klasy (14 dni)</h4>'+(d.a.length?'<div class="tp-bars" role="img" aria-label="Odpowiedzi dziennie">'+bars+'</div><div class="tp-ax"><span>'+days[0].slice(5).replace('-','.')+'</span><span>dziś</span></div>':'<p class="lg">Brak aktywności w ostatnich 14 dniach.</p>')+'</div>'
-   +'<div class="panel"><h4>'+ic('book')+'Najtrudniejsze słówka klasy</h4>'+(d.h.length?d.h.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span><span class="lg">'+tpPct(w.hit,w.hit+w.wrong)+' trafnych</span></div>').join('')+'<div class="wa"><button class="gbtn" id="tp-hard" onclick="tpHardTask()"'+(d.h.length<4||c.archived?' disabled':'')+'>'+ic('target')+'Zadaj te słówka klasie</button></div><p class="lg" style="margin:4px 0 0">'+(d.h.length<4?'Potrzeba co najmniej 4 trudnych słówek.':'Powstanie prywatna kategoria z tych słówek i zadanie dla całej klasy.')+'</p>':'<p class="lg">Jeszcze brak błędów do pokazania.</p>')+'<p class="lg" id="tp-hm">'+esc(TP.hmsg)+'</p></div>'
+   +'<div class="panel tp-att"><h4>'+ic('alert')+'Wymaga uwagi ('+att.length+')</h4>'+(att.length?att.map(([x,r])=>'<div class="crow"><button class="tp-nm" onclick="tpOpen(\''+x.user_id+'\')">'+esc(x.nick)+'</button><span class="ct lg">'+r.join(' · ')+'</span></div>').join(''):'<p class="lg" style="margin:0">'+(s.length?'Wszystko w porządku: nikt nie odstaje od grupy.':'Grupa nie ma jeszcze uczniów.')+'</p>')+'</div>'
+   +'<div class="panel"><h4>'+ic('target')+'Aktywność grupy (14 dni)</h4>'+(d.a.length?'<div class="tp-bars" role="img" aria-label="Odpowiedzi dziennie">'+bars+'</div><div class="tp-ax"><span>'+days[0].slice(5).replace('-','.')+'</span><span>dziś</span></div>':'<p class="lg">Brak aktywności w ostatnich 14 dniach.</p>')+'</div>'
+   +'<div class="panel"><h4>'+ic('book')+'Najtrudniejsze słówka grupy</h4>'+(d.h.length?d.h.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span><span class="lg">'+tpPct(w.hit,w.hit+w.wrong)+' trafnych</span></div>').join('')+'<div class="wa"><button class="gbtn" id="tp-hard" onclick="tpHardTask()"'+(d.h.length<4||c.archived?' disabled':'')+'>'+ic('target')+'Zadaj te słówka grupie</button></div><p class="lg" style="margin:4px 0 0">'+(d.h.length<4?'Potrzeba co najmniej 4 trudnych słówek.':'Powstanie prywatna kategoria z tych słówek i zadanie dla całej grupy.')+'</p>':'<p class="lg">Jeszcze brak błędów do pokazania.</p>')+'<p class="lg" id="tp-hm">'+esc(TP.hmsg)+'</p></div>'
    +tpSettings(c);
 }
 function tpOpen(id){TP.tab='stu';TP.q='';TP.fil='all';renderTeach();tpDetail(id)}
@@ -1831,7 +1831,7 @@ async function tpHardTask(){
     const r=await sb.from('categories').insert({slug:'u-'+U.id.slice(0,6)+'-'+Date.now().toString(36),name:cl('Trudne: '+c.name,40),emoji:'🎯',level:null,no_hint:false,is_public:false,owner:U.id,sort:100}).select('id').single();if(r.error)throw r.error;
     const q=await sb.from('words').insert(w.map(x=>({category_id:r.data.id,pl:cl(x.pl,40),en:cl(x.en,40)})));if(q.error)throw q.error;
     const a=await sb.rpc('assignment_create',{p_class:c.id,p_kind:'category',p_title:'Trudne słówka '+lab,p_category:r.data.id,p_groups:null,p_due:null,p_targets:null});if(a.error)throw a.error;
-    await loadBank();TP.hmsg='Zadanie utworzone: '+w.length+' słówek dla całej klasy.';TP.tab='asg';await tpLoad();
+    await loadBank();TP.hmsg='Zadanie utworzone: '+w.length+' słówek dla całej grupy.';TP.tab='asg';await tpLoad();
   }catch(e){TP.hmsg='Nie udało się utworzyć zadania.';if(b)b.disabled=false;const h=$('tp-hm');if(h)h.textContent=TP.hmsg}
 }
 /* uczniowie */
@@ -1843,8 +1843,8 @@ function tpFiltered(){
 }
 function tpRows(){
   const a=tpFiltered(),n=TP.sel.size,od=tpOverdue();
-  const bulk=n?'<div class="tp-bulk" role="region" aria-label="Akcje dla zaznaczonych"><b>Zaznaczono: '+n+'</b><button class="nb" onclick="tpAssignSel()">'+ic('target')+'Zadaj zadanie wybranym</button><button class="nb" onclick="tpCsv()">Eksport CSV</button><button class="nb dng" onclick="tpRemoveSel()">'+ic('trash')+(TP.delSel?'Kliknij jeszcze raz: usunąć '+n+'?':'Usuń z klasy')+'</button><button class="nb" onclick="TP.sel=new Set();TP.delSel=0;tpList()">Odznacz</button></div>':'';
-  if(!a.length)return bulk+'<p class="lg">'+(TP.d.s.length?'Nikt nie pasuje do filtra.':'Brak uczniów. Dodaj ich albo podaj im kod klasy.')+'</p>';
+  const bulk=n?'<div class="tp-bulk" role="region" aria-label="Akcje dla zaznaczonych"><b>Zaznaczono: '+n+'</b><button class="nb" onclick="tpAssignSel()">'+ic('target')+'Zadaj zadanie wybranym</button><button class="nb" onclick="tpCsv()">Eksport CSV</button><button class="nb dng" onclick="tpRemoveSel()">'+ic('trash')+(TP.delSel?'Kliknij jeszcze raz: usunąć '+n+'?':'Usuń z grupy')+'</button><button class="nb" onclick="TP.sel=new Set();TP.delSel=0;tpList()">Odznacz</button></div>':'';
+  if(!a.length)return bulk+'<p class="lg">'+(TP.d.s.length?'Nikt nie pasuje do filtra.':'Brak uczniów. Dodaj ich albo podaj im kod grupy.')+'</p>';
   const all=a.every(x=>TP.sel.has(x.user_id));
   return bulk+'<div class="tp-sl" role="list"><div class="tp-sh" aria-hidden="true"><label class="tp-ck"><input type="checkbox" aria-label="Zaznacz wszystkich widocznych"'+(all?' checked':'')+' onchange="tpSelAll(this.checked)"></label><span>Nick</span><span>Ostatnio</span><span>Odp. 7 dni</span><span>Skuteczność</span><span>Opanowane</span><span>Gwiazdki</span><span>WordLinks</span><span>Zadania</span></div>'
    +a.map(x=>'<div class="tp-st'+(TP.sel.has(x.user_id)?' on':'')+'" role="listitem"><label class="tp-ck"><input type="checkbox" aria-label="Zaznacz '+esc(x.nick)+'"'+(TP.sel.has(x.user_id)?' checked':'')+' onchange="tpSelOne(\''+x.user_id+'\',this.checked)"></label>'
@@ -1856,14 +1856,14 @@ function tpSelOne(id,on){on?TP.sel.add(id):TP.sel.delete(id);TP.delSel=0;tpList(
 function tpSelAll(on){tpFiltered().forEach(x=>on?TP.sel.add(x.user_id):TP.sel.delete(x.user_id));TP.delSel=0;tpList()}
 function tpStu(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
-  return '<div class="panel"><h4>'+ic('user')+'Uczniowie ('+d.s.length+')</h4><div class="wa" style="margin-top:0"><button class="gbtn" onclick="TP.add=TP.add?null:{};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button>'+(d.s.length?'<button class="nb" onclick="tpCsv()">Eksport CSV</button>':'')+'</div><p class="lg">Uczniowie mogą też dołączyć sami kodem klasy: <b>'+esc(c.code)+'</b>.</p>'
+  return '<div class="panel"><h4>'+ic('user')+'Uczniowie ('+d.s.length+')</h4><div class="wa" style="margin-top:0"><button class="gbtn" onclick="TP.add=TP.add?null:{};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button>'+(d.s.length?'<button class="nb" onclick="tpCsv()">Eksport CSV</button>':'')+'</div><p class="lg">Uczniowie mogą też dołączyć sami kodem grupy: <b>'+esc(c.code)+'</b>.</p>'
    +(TP.add?tpAddHTML():'')
    +(d.s.length?'<div class="tp-flt"><label class="vh" for="tp-q">Szukaj ucznia</label><input id="tp-q" type="text" placeholder="Szukaj nicku…" value="'+esc(TP.q)+'" oninput="TP.q=this.value;tpList()" autocomplete="off">'
      +'<label class="vh" for="tp-so">Sortuj</label><select id="tp-so" onchange="TP.sort=this.value;tpList()">'+[['nick','Sortuj: nick'],['last','Ostatnia aktywność'],['acc','Najsłabsza skuteczność'],['a7','Najwięcej odpowiedzi (7 dni)']].map(o=>'<option value="'+o[0]+'"'+(TP.sort===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>'
-     +'<div class="seg" role="group" aria-label="Filtr">'+[['all','Wszyscy'],['inactive','Nieaktywni'],['overdue','Po terminie']].map(o=>'<button type="button" class="'+(TP.fil===o[0]?'on':'')+'" aria-pressed="'+(TP.fil===o[0])+'" onclick="TP.fil=\''+o[0]+'\';renderTeach()">'+o[1]+'</button>').join('')+'</div></div><div id="tp-list">'+tpRows()+'</div><p class="lg">Kliknij nick, aby zobaczyć szczegóły. Zaznacz kilku uczniów, aby zadać im zadanie albo ich usunąć.</p>':'<p class="lg">Brak uczniów. Dodaj ich albo podaj im kod klasy.</p>')
+     +'<div class="seg" role="group" aria-label="Filtr">'+[['all','Wszyscy'],['inactive','Nieaktywni'],['overdue','Po terminie']].map(o=>'<button type="button" class="'+(TP.fil===o[0]?'on':'')+'" aria-pressed="'+(TP.fil===o[0])+'" onclick="TP.fil=\''+o[0]+'\';renderTeach()">'+o[1]+'</button>').join('')+'</div></div><div id="tp-list">'+tpRows()+'</div><p class="lg">Kliknij nick, aby zobaczyć szczegóły. Zaznacz kilku uczniów, aby zadać im zadanie albo ich usunąć.</p>':'<p class="lg">Brak uczniów. Dodaj ich albo podaj im kod grupy.</p>')
    +'</div>'+(TP.det?tpDetHTML():'');
 }
-const TPS={nick:'zły nick',password:'hasło min. 6 znaków',taken:'nick zajęty',member:'nie dodano do klasy',server:'błąd serwera'};
+const TPS={nick:'zły nick',password:'hasło min. 6 znaków',taken:'nick zajęty',member:'nie dodano do grupy',server:'błąd serwera'};
 function tpAddHTML(){
   const a=TP.add;
   if(a.res)return '<div class="panel tp-add"><h4>Utworzone konta</h4><p class="lg">Zapisz hasła teraz: po zamknięciu nie będzie ich już widać (możesz je później zmienić).</p><div class="tp-tw"><table class="tp-tb"><thead><tr><th>Nick</th><th>Hasło</th><th>Wynik</th></tr></thead><tbody>'+a.res.map(r=>'<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.ok?'<code>'+esc(r.pw)+'</code>':'–')+'</td><td>'+(r.ok?ic('check','ok')+'utworzono':ic('alert','warn')+esc(TPS[r.error]||'błąd'))+'</td></tr>').join('')+'</tbody></table></div><div class="wa"><button class="nb" onclick="tpCopyRes()">Kopiuj listę</button><button class="nb" onclick="tpCsvRes()">Pobierz CSV</button><button class="gbtn" onclick="TP.add=null;renderTeach()">Gotowe</button></div></div>';
@@ -1881,7 +1881,7 @@ async function tpCreate(){
     TP.add={res:(r.data.results||[]).map(x=>({nick:x.nick,ok:!!x.ok,error:x.error,pw:pw[x.nick]}))};
     const d=await sb.rpc('class_students',{p_class:TP.cur});if(d.data)TP.d.s=d.data;
     renderTeach();
-  }catch(c){tpMsg(c==='forbidden'?'Brak uprawnień do tej klasy.':c==='input'?'Błędne dane.':'Nie udało się utworzyć kont. Spróbuj ponownie.')}
+  }catch(c){tpMsg(c==='forbidden'?'Brak uprawnień do tej grupy.':c==='input'?'Błędne dane.':'Nie udało się utworzyć kont. Spróbuj ponownie.')}
 }
 const tpResTxt=()=>TP.add.res.filter(r=>r.ok).map(r=>r.nick+'\t'+r.pw).join('\n');
 function tpCopyRes(){tpCopy(tpResTxt(),'Skopiowano listę nick/hasło.')}
@@ -1915,8 +1915,8 @@ function tpDetHTML(){
      +'<h5 class="tp-h">Najtrudniejsze słówka</h5>'+(d.hard.length?d.hard.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span></div>').join(''):'<p class="lg">Brak błędów.</p>')
      +'<h5 class="tp-h">WordLinks (najlepsze czasy)</h5><p class="lg">'+(Object.keys(d.wl).length?Object.entries(d.wl).map(([k,v])=>({bt:'Dzienna',all:'Losowa',sp:'Sprint'}[k]||k)+': <b>'+cnFmt(v)+'</b>').join(' · '):'Jeszcze nie grał.')+'</p>';
   }
-  b+='<h5 class="tp-h">Hasło i klasa</h5><div class="tp-row"><input id="tp-pw" type="text" maxlength="72" autocomplete="off" spellcheck="false" aria-label="Nowe hasło" placeholder="nowe hasło"><button class="nb" onclick="$(\'tp-pw\').value=tpGen()">Generuj</button><button class="nb" onclick="tpReset()">Zmień hasło</button></div><p id="tp-m" role="status"></p>'
-   +'<div class="wa"><button class="nb dng" onclick="tpRemove()">'+(t.del?'Kliknij jeszcze raz, aby usunąć z klasy':'Usuń z klasy')+'</button><button class="nb" onclick="TP.det=null;renderTeach()">Zamknij</button></div></div>';
+  b+='<h5 class="tp-h">Hasło i grupa</h5><div class="tp-row"><input id="tp-pw" type="text" maxlength="72" autocomplete="off" spellcheck="false" aria-label="Nowe hasło" placeholder="nowe hasło"><button class="nb" onclick="$(\'tp-pw\').value=tpGen()">Generuj</button><button class="nb" onclick="tpReset()">Zmień hasło</button></div><p id="tp-m" role="status"></p>'
+   +'<div class="wa"><button class="nb dng" onclick="tpRemove()">'+(t.del?'Kliknij jeszcze raz, aby usunąć z grupy':'Usuń z grupy')+'</button><button class="nb" onclick="TP.det=null;renderTeach()">Zamknij</button></div></div>';
   return b;
 }
 async function tpReset(){
@@ -1925,7 +1925,7 @@ async function tpReset(){
   try{const r=await sb.functions.invoke('reset-student-password',{body:{nick:TP.det.nick,password:p}});
     if(r.error){let c='';try{c=(await r.error.context.json()).error}catch(e){}throw c}
     tpMsg('Nowe hasło ucznia '+TP.det.nick+': '+p+' (przekaż mu je).',1)}
-  catch(c){tpMsg(c==='not_in_class'?'Ten uczeń nie jest w żadnej Twojej klasie.':RPE[c]||'Nie udało się zmienić hasła.')}
+  catch(c){tpMsg(c==='not_in_class'?'Ten uczeń nie jest w żadnej Twojej grupie.':RPE[c]||'Nie udało się zmienić hasła.')}
 }
 async function tpRemove(){
   if(!TP.det.del){TP.det.del=1;renderTeach();return}
@@ -1937,11 +1937,11 @@ function tpAsg(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
   const cats=CATS.filter(x=>!x.tmp&&x.w.length>=4),opt=cats.map(x=>'<option value="'+x.id+'">'+esc(x.e)+' '+esc(x.n)+(x.l?' ('+x.l+')':'')+'</option>').join('');
   const form=TP.asgNew?'<div class="panel tp-add"><h4>Nowe zadanie</h4>'
-    +(TP.tg?'<p class="lg" style="margin:0 0 6px">Dla wybranych uczniów: <b>'+TP.tg.map(id=>esc((d.s.find(x=>x.user_id===id)||{}).nick)).join(', ')+'</b> <button type="button" class="nb" onclick="TP.tg=null;renderTeach()">Dla całej klasy</button></p>':'<p class="lg" style="margin:0 0 6px">Dla całej klasy. (Aby zadać wybranym uczniom, zaznacz ich w zakładce Uczniowie.)</p>')
+    +(TP.tg?'<p class="lg" style="margin:0 0 6px">Dla wybranych uczniów: <b>'+TP.tg.map(id=>esc((d.s.find(x=>x.user_id===id)||{}).nick)).join(', ')+'</b> <button type="button" class="nb" onclick="TP.tg=null;renderTeach()">Dla całej grupy</button></p>':'<p class="lg" style="margin:0 0 6px">Dla całej grupy. (Aby zadać wybranym uczniom, zaznacz ich w zakładce Uczniowie.)</p>')
     +'<div class="seg" role="group" aria-label="Rodzaj zadania"><button type="button" class="'+(TP.asgNew==='category'?'on':'')+'" onclick="TP.asgNew=\'category\';renderTeach()">Kategoria do przerobienia</button><button type="button" class="'+(TP.asgNew==='wordlinks'?'on':'')+'" onclick="TP.asgNew=\'wordlinks\';renderTeach()">Łamigłówka WordLinks</button></div>'
     +'<label for="ta-t">Tytuł</label><input id="ta-t" type="text" maxlength="60" placeholder="np. Zwierzęta na piątek">'
     +(TP.asgNew==='category'?'<label for="ta-c0">Kategoria</label><select id="ta-c0">'+opt+'</select>':'<p class="lg" style="margin:8px 0 0">Wybierz 4 różne kategorie. Słówka zostaną wylosowane raz, więc wszyscy dostaną tę samą planszę. Uczeń ma jedną próbę.</p>'+[0,1,2,3].map(i=>'<label for="ta-c'+i+'">Grupa '+(i+1)+'</label><select id="ta-c'+i+'">'+opt+'</select>').join(''))
-    +'<label for="ta-d">Termin (opcjonalnie)</label><input id="ta-d" type="date" style="padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit"><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpAsgSave()">Zadaj '+(TP.tg?'wybranym':'klasie')+'</button><button class="nb" onclick="TP.asgNew=0;TP.tg=null;renderTeach()">Anuluj</button></div></div>':'';
+    +'<label for="ta-d">Termin (opcjonalnie)</label><input id="ta-d" type="date" style="padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit"><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpAsgSave()">Zadaj '+(TP.tg?'wybranym':'grupie')+'</button><button class="nb" onclick="TP.asgNew=0;TP.tg=null;renderTeach()">Anuluj</button></div></div>':'';
   const today=ymd(new Date());
   const list=d.as.map(a=>{
     const o=TP.open===a.id,st=TP.ast[a.id],late=a.due&&a.due<today;
@@ -1949,7 +1949,7 @@ function tpAsg(c){
     return '<div class="tp-a"><div class="crow"><span class="ct"><b>'+esc(a.title)+'</b> <span class="tag2">'+(a.kind==='category'?'kategoria':'WordLinks')+'</span>'+(a.targets?'<span class="tag2">dla '+a.targets.length+' uczn.</span>':'')+' <span class="lg">termin: '+tpDue(a.due)+'</span> '+sum+'</span><button class="nb" onclick="tpAsgOpen(\''+a.id+'\')">'+(o?'Ukryj wyniki':'Wyniki')+'</button><button class="nb dng" aria-label="Usuń zadanie" onclick="tpAsgDel(\''+a.id+'\')">'+ic('trash')+(TP.del===a.id?'Na pewno?':'')+'</button></div>'
      +(o?(st?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Uczeń</th><th>Stan</th><th>Kiedy</th><th>'+(a.kind==='wordlinks'?'Czas':'Gwiazdki')+'</th>'+(a.kind==='wordlinks'?'<th>Błędy</th>':'')+'</tr></thead><tbody>'+st.map(r=>{const dd=r.done_at?String(r.done_at).slice(0,10):'',lt=r.done&&a.due&&dd>a.due;return '<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.done?(a.kind==='wordlinks'?(r.won?ic('check','ok')+'ułożone':ic('x','bad')+'nieudane'):ic('check','ok')+'zrobione')+(lt?' (po terminie)':''):(late?ic('alert','warn')+'po terminie':ic('clock','wait')+'czeka'))+'</td><td>'+(dd?tpDue(dd):'–')+'</td><td>'+(a.kind==='wordlinks'?(r.ms?cnFmt(r.ms):'–'):(r.done?r.stars:'–'))+'</td>'+(a.kind==='wordlinks'?'<td>'+(r.done?r.miss:'–')+'</td>':'')+'</tr>'}).join('')+'</tbody></table></div><p class="lg">Zrobiło: '+st.filter(r=>r.done).length+' z '+st.length+'. Zadanie kategorii liczy się od chwili zadania: gwiazdki zdobyte wcześniej nie są zaliczane.</p>':'<p class="lg">Wczytuję…</p>'):'')+'</div>';
   }).join('');
-  return '<div class="panel"><h4>'+ic('target')+'Zadania dla klasy ('+d.as.length+')</h4><div class="wa" style="margin-top:0">'+(c.archived?'<span class="lg">Klasa w archiwum.</span>':'<button class="gbtn" onclick="TP.asgNew=TP.asgNew?0:\'category\';TP.tg=null;renderTeach()">'+ic('plus')+'Nowe zadanie</button>')+'</div>'+(TP.hmsg?'<p class="lg">'+esc(TP.hmsg)+'</p>':'')+'</div>'+form
+  return '<div class="panel"><h4>'+ic('target')+'Zadania dla grupy ('+d.as.length+')</h4><div class="wa" style="margin-top:0">'+(c.archived?'<span class="lg">Grupa w archiwum.</span>':'<button class="gbtn" onclick="TP.asgNew=TP.asgNew?0:\'category\';TP.tg=null;renderTeach()">'+ic('plus')+'Nowe zadanie</button>')+'</div>'+(TP.hmsg?'<p class="lg">'+esc(TP.hmsg)+'</p>':'')+'</div>'+form
    +(d.as.length?'<div class="panel">'+list+'</div>':'<div class="panel"><p class="lg">Nie ma jeszcze zadań. Zadanie pojawi się uczniom na stronie głównej i w profilu.</p></div>');
 }
 async function tpAsgOpen(id){
@@ -1987,7 +1987,7 @@ async function tpAsgSave(){
   try{const r=await sb.rpc('assignment_create',p);if(r.error)throw r.error;TP.asgNew=0;TP.hmsg='';await tpLoad()}
   catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się zapisać zadania.')}
 }
-/* ===== PORADNIK NAUCZYCIELA (zakładka w panelu) ===== */
+/* ===== PORADNIK KOREPETYTORA (zakładka w panelu) ===== */
 const HPS={dodaj:[900,690],dzis:[900,1005],elf:[900,540],'home-gry':[900,1076],'home-hero':[900,339],klasa:[900,1005],konta:[900,878],kreator:[900,1100],pokoj:[900,515],szczegoly:[900,1100],'uczen-home':[900,1100],'uczen-profil':[900,1100],uczniowie:[900,621],wc:[900,689],wl:[900,540],wyniki:[900,625],'zadanie-wl':[900,1100],zadanie:[900,847]};
 const hpFig=(n,alt,cap)=>'<figure class="hp-fig"><img src="assets/help/'+n+'.webp" width="'+HPS[n][0]+'" height="'+HPS[n][1]+'" alt="'+alt+'" loading="lazy"><figcaption>'+cap+'</figcaption></figure>';
 const hpSteps=a=>'<ol class="hp-st">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ol>';
@@ -1999,62 +1999,62 @@ function hpRanks(){
   return '<div class="tp-tw"><table class="tp-tb hp-tb"><tbody>'+row('Razem',TR)+row('WordCraft',WCR)+row('WordLinks',WLR)+row('WordElf',ELR)+'</tbody></table></div>'
 }
 function helpHTML(){
-  const toc=[['start','Szybki start'],['portal','Czym jest WordLand'],['konto','Konto nauczyciela'],['klasy','Klasy'],['uczniowie','Uczniowie'],['dzis','Zakładka Dziś'],['zadania','Zadania'],['kategorie','Własne kategorie'],['gry','Gry'],['punkty','Punkty i rankingi'],['uczen','Oczami ucznia'],['prywatnosc','Bezpieczeństwo'],['faq','Pytania i odpowiedzi']];
-  const hero='<div class="panel hp-hero"><h3>'+ic('book')+'Poradnik nauczyciela</h3><p>Tu znajdziesz wszystko, co potrzebne, żeby zacząć pracę z klasą w WordLand: od założenia klasy, przez zadania i własne kategorie słówek, po punkty i rankingi. Zrzuty ekranu pochodzą z prawdziwego portalu (dane w nich są przykładowe).</p><div class="hp-toc" role="navigation" aria-label="Spis treści">'+toc.map((t,i)=>'<button type="button" class="nb" onclick="hpGo(\''+t[0]+'\')"><b>'+(i+1)+'</b>'+t[1]+'</button>').join('')+'</div></div>';
+  const toc=[['start','Szybki start'],['portal','Czym jest WordLand'],['konto','Konto korepetytora'],['klasy','Grupy'],['uczniowie','Uczniowie'],['dzis','Zakładka Dziś'],['zadania','Zadania'],['kategorie','Własne kategorie'],['gry','Gry'],['punkty','Punkty i rankingi'],['uczen','Oczami ucznia'],['prywatnosc','Bezpieczeństwo'],['faq','Pytania i odpowiedzi']];
+  const hero='<div class="panel hp-hero"><h3>'+ic('book')+'Poradnik korepetytora</h3><p>Tu znajdziesz wszystko, co potrzebne, żeby zacząć pracę z grupą w WordLand: od założenia grupy, przez zadania i własne kategorie słówek, po punkty i rankingi. Zrzuty ekranu pochodzą z prawdziwego portalu (dane w nich są przykładowe).</p><div class="hp-toc" role="navigation" aria-label="Spis treści">'+toc.map((t,i)=>'<button type="button" class="nb" onclick="hpGo(\''+t[0]+'\')"><b>'+(i+1)+'</b>'+t[1]+'</button>').join('')+'</div></div>';
   const s1=hpSec('start',1,'Szybki start w 5 krokach',hpSteps([
-    '<b>Aktywuj konto nauczyciela.</b> Załóż zwykłe konto, a potem wpisz kod nauczyciela (dostajesz go od administratora portalu) w zakładce <i>Nauczyciel</i>.',
-    '<b>Utwórz klasę.</b> W zakładce <i>Dziś</i> wpisz nazwę, np. „5b angielski”. Portal nada klasie 6-znakowy <b>kod</b>.',
-    '<b>Dodaj uczniów.</b> Podaj im kod klasy albo załóż im konta samodzielnie w zakładce <i>Uczniowie</i>.',
+    '<b>Aktywuj konto korepetytora.</b> Załóż zwykłe konto, a potem wpisz kod korepetytora (dostajesz go od administratora portalu) w zakładce <i>Korepetytor</i>.',
+    '<b>Utwórz grupę.</b> W zakładce <i>Dziś</i> wpisz nazwę, np. „5b angielski”. Portal nada grupie 6-znakowy <b>kod</b>.',
+    '<b>Dodaj uczniów.</b> Podaj im kod grupy albo załóż im konta samodzielnie w zakładce <i>Uczniowie</i>.',
     '<b>Zadaj zadanie.</b> W zakładce <i>Zadania</i> wybierz kategorię do przerobienia albo łamigłówkę WordLinks. Możesz ustawić termin.',
     '<b>Sprawdzaj wyniki.</b> Zakładka <i>Dziś</i> pokazuje, kto potrzebuje uwagi i które słówka sprawiają kłopot. <i>Zadania</i> i <i>Uczniowie</i> pokazują szczegóły.'
   ])+hpTip('Cały proces zajmuje kilka minut. Uczniowie mogą grać od razu po dołączeniu, a ich postępy zapisują się na koncie.'));
   const s2=hpSec('portal',2,'Czym jest WordLand',
-    '<p>WordLand to portal do nauki angielskiego (poziomy <b>A1–B1</b>) w formie gier. Uczeń zbiera słówka, odpowiada na pytania i zdobywa punkty, rangi oraz trofea. Ty, jako nauczyciel, zakładasz klasy, zadajesz zadania i widzisz, jak idzie uczniom. Portal działa w przeglądarce, na komputerze i telefonie, bez instalacji.</p>'
-    +hpFig('home-hero','Strona główna portalu z baner i przyciskiem Graj','Strona główna ucznia: baner z grami, a pod nim zadania od nauczyciela, seria dni i słówko dnia.')
+    '<p>WordLand to portal do nauki angielskiego (poziomy <b>A1–B1</b>) w formie gier. Uczeń zbiera słówka, odpowiada na pytania i zdobywa punkty, rangi oraz trofea. Ty, jako korepetytor, zakładasz grupy, zadajesz zadania i widzisz, jak idzie uczniom. Portal działa w przeglądarce, na komputerze i telefonie, bez instalacji.</p>'
+    +hpFig('home-hero','Strona główna portalu z baner i przyciskiem Graj','Strona główna ucznia: baner z grami, a pod nim zadania od korepetytora, seria dni i słówko dnia.')
     +'<h4>Trzy gry w jednym portalu</h4><div class="tp-tw"><table class="tp-tb hp-tb"><thead><tr><th>Gra</th><th>Na czym polega</th><th>Co ćwiczy</th></tr></thead><tbody>'
     +'<tr><th>'+ic('cube')+'WordCraft</th><td>Platformówka 2D w świecie z bloków. Uczeń zbiera słówka z bloków „?”, dociera do flagi i pokonuje bossa.</td><td>Słownictwo: tłumaczenie, wpisywanie z pamięci, układanie zdań, zdania z lukami.</td></tr>'
     +'<tr><th>'+ic('grid')+'WordLinks</th><td>Łamigłówka: 16 słówek do połączenia w 4 grupy po 4 z tej samej kategorii. Liczy się czas.</td><td>Kategoryzowanie, szybkie rozpoznawanie słów, pewność.</td></tr>'
     +'<tr><th>'+ic('gift')+'WordElf</th><td>Skrzat pakuje prezenty z listy Mikołaja. Po trzech rundach sanie odlatują.</td><td>Nazwy przedmiotów, liczby i liczba mnoga, czytanie opisów.</td></tr>'
     +'</tbody></table></div>'+hpFig('home-gry','Karty gier na stronie głównej','Karty gier na stronie głównej. Każda ma przycisk „Graj”, a pod nim rekord ucznia.')
     +'<p>Szczegóły każdej gry opisuje sekcja <a href="#" onclick="hpGo(\'gry\');return false">Gry</a>.</p>');
-  const s3=hpSec('konto',3,'Konto nauczyciela',
-    '<p>Konto nauczyciela to zwykłe konto z dodatkowymi uprawnieniami. Dzięki nim w menu pojawia się zakładka <b>Nauczyciel</b> (ikona klucza) z panelem do zarządzania klasami.</p>'
-    +hpSteps(['Kliknij <b>Zaloguj</b> i wybierz „Załóż konto”. Podaj nick (3–16 znaków: małe litery, cyfry, _) i hasło (min. 6 znaków).','Wejdź w <b>Nauczyciel</b> (albo w Profilu kliknij „Jestem nauczycielem i mam kod”).','Wpisz <b>kod nauczyciela</b> i kliknij „Aktywuj”. Kod dostajesz od administratora portalu.','Gotowe: pojawia się panel z zakładkami <b>Dziś, Uczniowie, Zadania, Kategorie</b> i <b>Poradnik</b>.'])
-    +hpTip('Konto nauczyciela nie ma rankingu ani punktów. Nie pojawisz się w rankingach uczniów.'));
-  const s4=hpSec('klasy',4,'Klasy',
-    '<p>Każda klasa ma nazwę i <b>kod</b>. Możesz mieć kilka klas i przełączać je listą na górze panelu. Uczniowie jednej klasy nie widzą uczniów innej.</p>'
-    +hpFig('klasa','Zakładka Dziś z kodem klasy','Zakładka <i>Dziś</i>: u góry kod klasy z przyciskami „Kopiuj kod” i „Dodaj uczniów”.')
-    +hpSteps(['Kliknij <b>Nowa klasa</b> (u góry panelu), wpisz nazwę i potwierdź.','Skopiuj kod przyciskiem <b>Kopiuj kod</b> i przekaż go uczniom (np. na tablicy lub w dzienniku elektronicznym).','Uczeń wpisuje kod w swoim <b>Profilu</b> w polu „Dołącz do klasy”.'])
-    +'<h4>Ustawienia klasy</h4><ul><li><b>Zapisz nazwę</b>: zmiana nazwy klasy.</li><li><b>Nowy kod klasy</b>: generuje nowy kod. Użyj, gdy kod trafił w niepowołane ręce. Uczniowie już w klasie zostają.</li><li><b>Archiwizuj</b>: klasa znika z codziennego widoku, ale dane zostają. Możesz ją przywrócić.</li><li><b>Usuń klasę</b>: wymaga dwóch kliknięć. To usuwa klasę i jej zadania.</li></ul>'
-    +hpTip('Uczeń w profilu ma przycisk <b>Opuść klasę</b>. Możesz też usunąć go z klasy sam w szczegółach ucznia.'));
+  const s3=hpSec('konto',3,'Konto korepetytora',
+    '<p>Konto korepetytora to zwykłe konto z dodatkowymi uprawnieniami. Dzięki nim w menu pojawia się zakładka <b>Korepetytor</b> (ikona klucza) z panelem do zarządzania grupami.</p>'
+    +hpSteps(['Kliknij <b>Zaloguj</b> i wybierz „Załóż konto”. Podaj nick (3–16 znaków: małe litery, cyfry, _) i hasło (min. 6 znaków).','Wejdź w <b>Korepetytor</b> (albo w Profilu kliknij „Jestem korepetytorem i mam kod”).','Wpisz <b>kod korepetytora</b> i kliknij „Aktywuj”. Kod dostajesz od administratora portalu.','Gotowe: pojawia się panel z zakładkami <b>Dziś, Uczniowie, Zadania, Kategorie</b> i <b>Poradnik</b>.'])
+    +hpTip('Konto korepetytora nie ma rankingu ani punktów. Nie pojawisz się w rankingach uczniów.'));
+  const s4=hpSec('klasy',4,'Grupy',
+    '<p>Każda grupa ma nazwę i <b>kod</b>. Możesz mieć kilka grup i przełączać je listą na górze panelu. Uczniowie jednej grupy nie widzą uczniów innej.</p>'
+    +hpFig('klasa','Zakładka Dziś z kodem grupy','Zakładka <i>Dziś</i>: u góry kod grupy z przyciskami „Kopiuj kod” i „Dodaj uczniów”.')
+    +hpSteps(['Kliknij <b>Nowa grupa</b> (u góry panelu), wpisz nazwę i potwierdź.','Skopiuj kod przyciskiem <b>Kopiuj kod</b> i przekaż go uczniom (np. na tablicy lub w dzienniku elektronicznym).','Uczeń wpisuje kod w swoim <b>Profilu</b> w polu „Dołącz do grupy”.'])
+    +'<h4>Ustawienia grupy</h4><ul><li><b>Zapisz nazwę</b>: zmiana nazwy grupy.</li><li><b>Nowy kod grupy</b>: generuje nowy kod. Użyj, gdy kod trafił w niepowołane ręce. Uczniowie już w grupie zostają.</li><li><b>Archiwizuj</b>: grupa znika z codziennego widoku, ale dane zostają. Możesz ją przywrócić.</li><li><b>Usuń grupę</b>: wymaga dwóch kliknięć. To usuwa grupę i jej zadania.</li></ul>'
+    +hpTip('Uczeń w profilu ma przycisk <b>Opuść grupę</b>. Możesz też usunąć go z grupy sam w szczegółach ucznia.'));
   const s5=hpSec('uczniowie',5,'Uczniowie',
-    '<p>Są dwa sposoby, żeby uczeń trafił do klasy. Możesz używać obu naraz.</p>'
-    +'<h4>Sposób A: uczeń zakłada konto sam</h4><p>Uczeń wchodzi na stronę, zakłada konto (nick, hasło i zaznaczenie oświadczenia, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, ma zgodę rodzica) i wpisuje kod klasy w Profilu. To najszybsze rozwiązanie, gdy uczniowie mają własne urządzenia.</p>'
+    '<p>Są dwa sposoby, żeby uczeń trafił do grupy. Możesz używać obu naraz.</p>'
+    +'<h4>Sposób A: uczeń zakłada konto sam</h4><p>Uczeń wchodzi na stronę, zakłada konto (nick, hasło i zaznaczenie oświadczenia, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, ma zgodę rodzica) i wpisuje kod grupy w Profilu. To najszybsze rozwiązanie, gdy uczniowie mają własne urządzenia.</p>'
     +'<h4>Sposób B: ty zakładasz konta</h4><p>Przydatne dla młodszych dzieci albo na lekcji, gdy chcesz mieć pewność, że każdy ma konto. Zakładka <i>Uczniowie</i> → <b>Dodaj uczniów</b>.</p>'
     +hpFig('dodaj','Formularz dodawania uczniów','Wpisz po jednym uczniu w wierszu: sam nick albo „nick;hasło”.')
     +'<ul><li>Nick: 3–16 znaków, małe litery, cyfry i „_”. Hasło: min. 6 znaków. Bez hasła portal <b>wygeneruje je</b> (8 znaków).</li><li>Maksymalnie 40 uczniów naraz. Powtórzone nicki są pomijane.</li><li>Po kliknięciu <b>Utwórz konta</b> zobaczysz tabelę z nickami i hasłami.</li></ul>'
     +hpFig('konta','Tabela utworzonych kont z hasłami','Hasła widzisz tylko teraz. Skopiuj je przyciskiem „Kopiuj listę” albo pobierz plik CSV.')
     +hpTip('<b>Zapisz hasła od razu.</b> Po zamknięciu tabeli nie da się ich już zobaczyć. Zawsze można je jednak zmienić (patrz niżej).','warn')
-    +'<h4>Lista uczniów</h4><p>W zakładce <i>Uczniowie</i> każdy uczeń ma wiersz z aktywnością i skutecznością. Możesz:</p><ul><li><b>szukać</b> po nicku i <b>sortować</b> (nick, ostatnia aktywność, skuteczność, odpowiedzi z 7 dni),</li><li><b>filtrować</b>: Wszyscy, Nieaktywni, Po terminie,</li><li><b>zaznaczać</b> wielu uczniów: pojawia się pasek akcji (zadaj zadanie wybranym, eksport CSV, usuń z klasy).</li></ul>'
+    +'<h4>Lista uczniów</h4><p>W zakładce <i>Uczniowie</i> każdy uczeń ma wiersz z aktywnością i skutecznością. Możesz:</p><ul><li><b>szukać</b> po nicku i <b>sortować</b> (nick, ostatnia aktywność, skuteczność, odpowiedzi z 7 dni),</li><li><b>filtrować</b>: Wszyscy, Nieaktywni, Po terminie,</li><li><b>zaznaczać</b> wielu uczniów: pojawia się pasek akcji (zadaj zadanie wybranym, eksport CSV, usuń z grupy).</li></ul>'
     +hpFig('uczniowie','Lista uczniów z zaznaczeniem i paskiem akcji','Zaznaczenie uczniów otwiera pasek akcji. Dzięki temu zadasz zadanie tylko wybranym osobom.')
-    +'<h4>Szczegóły ucznia</h4><p>Kliknij nick, żeby zobaczyć: postępy w kategoriach (gwiazdki), najtrudniejsze słówka ucznia, jego wyniki w WordLinks oraz ustawić nowe hasło lub usunąć go z klasy.</p>'
+    +'<h4>Szczegóły ucznia</h4><p>Kliknij nick, żeby zobaczyć: postępy w kategoriach (gwiazdki), najtrudniejsze słówka ucznia, jego wyniki w WordLinks oraz ustawić nowe hasło lub usunąć go z grupy.</p>'
     +hpFig('szczegoly','Karta szczegółów ucznia','Szczegóły ucznia: tu też zmienisz hasło, jeśli uczeń je zapomniał.')
     +hpTip('Używaj nicków bez imienia i nazwiska, np. „kot_ania” zamiast „ania_kowalska”. Nicki są widoczne w rankingach dla innych uczniów.'));
-  const s6=hpSec('dzis',6,'Zakładka „Dziś”: szybki przegląd klasy',
-    '<p>To pierwsze miejsce, do którego warto zajrzeć. Pokazuje stan klasy w kilka sekund.</p>'
-    +hpFig('dzis','Zakładka Dziś z kafelkami i wykresem aktywności','Kafelki, lista „Wymaga uwagi”, wykres aktywności z 14 dni i najtrudniejsze słówka klasy.')
-    +'<ul><li><b>Kafelki</b>: liczba uczniów, ilu było aktywnych w ostatnich 7 dniach, liczba odpowiedzi i średnia skuteczność.</li><li><b>Wymaga uwagi</b>: uczniowie, którzy odstają. Powody: brak aktywności od tygodnia (albo jeszcze nie zaczęli), zadanie po terminie, skuteczność poniżej 50% przy co najmniej 20 odpowiedziach.</li><li><b>Aktywność klasy</b>: słupki z ostatnich 14 dni. Najedź kursorem, żeby zobaczyć liczby.</li><li><b>Najtrudniejsze słówka klasy</b>: słówka z największą liczbą błędów.</li></ul>'
-    +hpTip('Przycisk <b>Zadaj te słówka klasie</b> tworzy prywatną kategorię „Trudne: nazwa klasy” z najtrudniejszych słówek (min. 4) i od razu zadaje ją całej klasie. To gotowa powtórka w jednym kliknięciu.'));
-  const s7=hpSec('zadania',7,'Zadania dla klasy',
+  const s6=hpSec('dzis',6,'Zakładka „Dziś”: szybki przegląd grupy',
+    '<p>To pierwsze miejsce, do którego warto zajrzeć. Pokazuje stan grupy w kilka sekund.</p>'
+    +hpFig('dzis','Zakładka Dziś z kafelkami i wykresem aktywności','Kafelki, lista „Wymaga uwagi”, wykres aktywności z 14 dni i najtrudniejsze słówka grupy.')
+    +'<ul><li><b>Kafelki</b>: liczba uczniów, ilu było aktywnych w ostatnich 7 dniach, liczba odpowiedzi i średnia skuteczność.</li><li><b>Wymaga uwagi</b>: uczniowie, którzy odstają. Powody: brak aktywności od tygodnia (albo jeszcze nie zaczęli), zadanie po terminie, skuteczność poniżej 50% przy co najmniej 20 odpowiedziach.</li><li><b>Aktywność grupy</b>: słupki z ostatnich 14 dni. Najedź kursorem, żeby zobaczyć liczby.</li><li><b>Najtrudniejsze słówka grupy</b>: słówka z największą liczbą błędów.</li></ul>'
+    +hpTip('Przycisk <b>Zadaj te słówka grupie</b> tworzy prywatną kategorię „Trudne: nazwa grupy” z najtrudniejszych słówek (min. 4) i od razu zadaje ją całej grupie. To gotowa powtórka w jednym kliknięciu.'));
+  const s7=hpSec('zadania',7,'Zadania dla grupy',
     '<p>Zadanie to polecenie dla uczniów, które pojawia się u nich na stronie głównej i w profilu. Masz dwa rodzaje.</p>'
     +'<div class="hp-two"><div><h4>'+ic('book')+'Kategoria do przerobienia</h4><p>Uczeń otwiera WordCraft w wybranej kategorii. Zadanie jest zaliczone, gdy <b>zdobędzie gwiazdkę</b> w tej kategorii po utworzeniu zadania. Zdobyte wcześniej gwiazdki się nie liczą.</p></div><div><h4>'+ic('grid')+'Łamigłówka WordLinks</h4><p>Wybierasz 4 różne kategorie. Słówka są losowane raz, więc <b>wszyscy dostają tę samą planszę</b>. Uczeń ma jedną próbę, a Ty widzisz jego czas i błędy.</p></div></div>'
-    +hpSteps(['Wejdź w <i>Zadania</i> → <b>Nowe zadanie</b>.','Wybierz rodzaj i wpisz <b>tytuł</b> (np. „Zwierzęta na piątek”).','Wybierz kategorię (albo 4 kategorie dla WordLinks).','Opcjonalnie ustaw <b>termin</b>.','Kliknij <b>Zadaj klasie</b>. Aby zadać tylko wybranym uczniom, zaznacz ich wcześniej w zakładce <i>Uczniowie</i> i użyj „Zadaj zadanie wybranym”.'])
+    +hpSteps(['Wejdź w <i>Zadania</i> → <b>Nowe zadanie</b>.','Wybierz rodzaj i wpisz <b>tytuł</b> (np. „Zwierzęta na piątek”).','Wybierz kategorię (albo 4 kategorie dla WordLinks).','Opcjonalnie ustaw <b>termin</b>.','Kliknij <b>Zadaj grupie</b>. Aby zadać tylko wybranym uczniom, zaznacz ich wcześniej w zakładce <i>Uczniowie</i> i użyj „Zadaj zadanie wybranym”.'])
     +hpFig('zadanie','Formularz nowego zadania z kategorią','Zadanie typu „kategoria”: tytuł, kategoria i opcjonalny termin.')
-    +hpFig('zadanie-wl','Formularz zadania WordLinks z czterema grupami','Zadanie WordLinks: cztery różne kategorie tworzą jedną planszę dla całej klasy.')
+    +hpFig('zadanie-wl','Formularz zadania WordLinks z czterema grupami','Zadanie WordLinks: cztery różne kategorie tworzą jedną planszę dla całej grupy.')
     +'<h4>Wyniki</h4><p>Przy każdym zadaniu widzisz, ilu uczniów je zrobiło (np. „2/5 zrobiło”) i ilu jest po terminie. Kliknij <b>Wyniki</b>, żeby zobaczyć listę uczniów ze statusem.</p>'
     +hpFig('wyniki','Lista zadań z podsumowaniem wyników','Lista zadań: przy każdym liczba uczniów, którzy je zrobili, i przycisk „Wyniki”.')
-    +'<h4>Jak to widzi uczeń</h4><p>Zadania pojawiają się na górze strony głównej w panelu „Zadania od nauczyciela” (z przyciskiem „Zrób zadanie”). Po wykonaniu zadanie <b>znika ze strony głównej</b>, a w Profilu zostaje jako zrobione.</p>'
-    +hpFig('uczen-home','Strona główna ucznia z zadaniami od nauczyciela','Widok ucznia: zadania od nauczyciela są na samej górze strony głównej.')
+    +'<h4>Jak to widzi uczeń</h4><p>Zadania pojawiają się na górze strony głównej w panelu „Zadania od korepetytora” (z przyciskiem „Zrób zadanie”). Po wykonaniu zadanie <b>znika ze strony głównej</b>, a w Profilu zostaje jako zrobione.</p>'
+    +hpFig('uczen-home','Strona główna ucznia z zadaniami od korepetytora','Widok ucznia: zadania od korepetytora są na samej górze strony głównej.')
     +hpTip('Zadania nie da się edytować. Jeśli pomyliłeś się, usuń je i utwórz nowe. Zadanie dla wybranych uczniów oznaczone jest etykietą „dla N uczn.”.'));
   const s8=hpSec('kategorie',8,'Własne kategorie słówek',
     '<p>Oprócz gotowych kategorii możesz tworzyć własne, np. słownictwo z aktualnego rozdziału. Od razu pojawiają się w grach uczniów (WordCraft, WordLinks) i możesz je zadawać jako zadania.</p>'
@@ -2072,18 +2072,18 @@ function helpHTML(){
   const s10=hpSec('punkty',10,'Punkty, rangi, rankingi i trofea',
     '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li></ul>'
     +'<h4>Rangi</h4><p>Za sumę punktów uczeń awansuje na kolejne rangi (osobno w każdej grze i ogólnie):</p>'+hpRanks()
-    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks i WordElf, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja klasa</b>. Ranking klasy pokazuje tylko uczniów z tej samej klasy co oglądający.</p>'
+    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks i WordElf, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja grupa</b>. Ranking grupy pokazuje tylko uczniów z tej samej grupy co oglądający.</p>'
     +'<h4>Pokój i trofea</h4>'+hpFig('pokoj','Pokój ucznia z półką pucharów za rangi','Profil ucznia: „Mój pokój”. Każda zdobyta ranga to puchar na półce.')
     +'<p>Suma punktów jest też stale widoczna w górnym menu, obok płomienia z liczbą dni nauki z rzędu.</p>'
-    +hpTip('Rankingi działają tylko dla zalogowanych uczniów. Konto nauczyciela nie jest w nich uwzględniane.'));
+    +hpTip('Rankingi działają tylko dla zalogowanych uczniów. Konto korepetytora nie jest w nich uwzględniane.'));
   const s11=hpSec('uczen',11,'Portal oczami ucznia',
-    '<p>Warto zobaczyć, co widzi uczeń, żeby łatwiej go wspierać. Profil ucznia zawiera: zadania od nauczyciela, klasę (z przyciskiem „Opuść klasę”), pokój z trofeami, ranking, panele gier z rekordami i postęp według poziomów, a także najtrudniejsze słówka do powtórki.</p>'
-    +hpFig('uczen-profil','Profil ucznia z klasą, trofeami i rankingiem','Profil ucznia (fragment).')
-    +hpTip('Na swoim koncie możesz zobaczyć portal oczami ucznia tylko po założeniu osobnego, uczniowskiego konta (np. testowego) i dołączeniu go do swojej klasy kodem.'));
+    '<p>Warto zobaczyć, co widzi uczeń, żeby łatwiej go wspierać. Profil ucznia zawiera: zadania od korepetytora, grupę (z przyciskiem „Opuść grupę”), pokój z trofeami, ranking, panele gier z rekordami i postęp według poziomów, a także najtrudniejsze słówka do powtórki.</p>'
+    +hpFig('uczen-profil','Profil ucznia z grupą, trofeami i rankingiem','Profil ucznia (fragment).')
+    +hpTip('Na swoim koncie możesz zobaczyć portal oczami ucznia tylko po założeniu osobnego, uczniowskiego konta (np. testowego) i dołączeniu go do swojej grupy kodem.'));
   const s12=hpSec('prywatnosc',12,'Bezpieczeństwo i prywatność',
-    '<ul><li>Uczniowie logują się <b>nickiem i hasłem</b>. Nie podają adresu e-mail ani numeru telefonu.</li><li>Widzisz tylko uczniów <b>swoich klas</b>. Uczeń widzi tylko swoje dane, a w rankingach cudze nicki i punkty.</li><li>Nick jest publiczny dla innych zalogowanych uczniów, więc <b>nie używaj nazwisk</b>.</li><li>Hasła, które wygenerujesz, widać tylko raz. Zmiana hasła ucznia jest zawsze możliwa.</li><li>Przy rejestracji uczeń oświadcza, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, że ma zgodę rodzica lub opiekuna. Konta, które zakładasz uczniom sam, powinny mieć taką zgodę zebraną przez Ciebie, zgodnie z zasadami szkoły.</li></ul>'
+    '<ul><li>Uczniowie logują się <b>nickiem i hasłem</b>. Nie podają adresu e-mail ani numeru telefonu.</li><li>Widzisz tylko uczniów <b>swoich grup</b>. Uczeń widzi tylko swoje dane, a w rankingach cudze nicki i punkty.</li><li>Nick jest publiczny dla innych zalogowanych uczniów, więc <b>nie używaj nazwisk</b>.</li><li>Hasła, które wygenerujesz, widać tylko raz. Zmiana hasła ucznia jest zawsze możliwa.</li><li>Przy rejestracji uczeń oświadcza, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, że ma zgodę rodzica lub opiekuna. Konta, które zakładasz uczniom sam, powinny mieć taką zgodę zebraną przez Ciebie, zgodnie z zasadami szkoły.</li></ul>'
     +hpTip('Pełna polityka prywatności portalu jest jeszcze w przygotowaniu. Przed szerokim wdrożeniem w szkole uzgodnij zasady z dyrekcją i inspektorem ochrony danych.','warn'));
-  const faq=[['Uczeń zapomniał hasła. Co robić?','Wejdź w <i>Uczniowie</i>, kliknij nick ucznia, wpisz nowe hasło (min. 6 znaków) i kliknij „Zmień hasło”. Przekaż je uczniowi.'],['Uczeń nie widzi zadania.','Sprawdź, czy dołączył do klasy (w Profilu powinna być widoczna nazwa klasy) oraz czy zadanie nie jest przeznaczone dla wybranych uczniów. Pomaga też odświeżenie strony.'],['Zadanie z kategorii się nie zalicza.','Zalicza się dopiero, gdy uczeń zdobędzie gwiazdkę w tej kategorii po utworzeniu zadania. Gwiazdki z wcześniejszych gier się nie liczą.'],['Zadanie WordLinks można powtórzyć?','Nie, uczeń ma jedną próbę, żeby wyniki były porównywalne. Możesz zadać nową łamigłówkę.'],['Czy mogę zmienić zadanie?','Zadań nie edytuje się. Usuń je i utwórz nowe.'],['Uczeń zmienił klasę.','Usuń go z klasy w szczegółach ucznia (albo niech kliknie „Opuść klasę” w profilu) i podaj mu kod nowej klasy.'],['Czy portal działa na telefonie?','Tak. Gry i panel nauczyciela dopasowują się do ekranu telefonu, także poziomo.'],['Gdzie widzę, które słówka są trudne?','W zakładce <i>Dziś</i> (cała klasa) oraz w szczegółach ucznia (pojedynczy uczeń).'],['Jak szybko zadać powtórkę?','W <i>Dziś</i> kliknij „Zadaj te słówka klasie”. Portal sam zrobi kategorię z najtrudniejszych słówek i zadanie.']];
+  const faq=[['Uczeń zapomniał hasła. Co robić?','Wejdź w <i>Uczniowie</i>, kliknij nick ucznia, wpisz nowe hasło (min. 6 znaków) i kliknij „Zmień hasło”. Przekaż je uczniowi.'],['Uczeń nie widzi zadania.','Sprawdź, czy dołączył do grupy (w Profilu powinna być widoczna nazwa grupy) oraz czy zadanie nie jest przeznaczone dla wybranych uczniów. Pomaga też odświeżenie strony.'],['Zadanie z kategorii się nie zalicza.','Zalicza się dopiero, gdy uczeń zdobędzie gwiazdkę w tej kategorii po utworzeniu zadania. Gwiazdki z wcześniejszych gier się nie liczą.'],['Zadanie WordLinks można powtórzyć?','Nie, uczeń ma jedną próbę, żeby wyniki były porównywalne. Możesz zadać nową łamigłówkę.'],['Czy mogę zmienić zadanie?','Zadań nie edytuje się. Usuń je i utwórz nowe.'],['Uczeń zmienił grupę.','Usuń go z grupy w szczegółach ucznia (albo niech kliknie „Opuść grupę” w profilu) i podaj mu kod nowej grupy.'],['Czy portal działa na telefonie?','Tak. Gry i panel korepetytora dopasowują się do ekranu telefonu, także poziomo.'],['Gdzie widzę, które słówka są trudne?','W zakładce <i>Dziś</i> (cała grupa) oraz w szczegółach ucznia (pojedynczy uczeń).'],['Jak szybko zadać powtórkę?','W <i>Dziś</i> kliknij „Zadaj te słówka grupie”. Portal sam zrobi kategorię z najtrudniejszych słówek i zadanie.']];
   const s13=hpSec('faq',13,'Pytania i odpowiedzi',faq.map(f=>'<details class="hp-q"><summary>'+f[0]+'</summary><p>'+f[1]+'</p></details>').join(''));
   return '<div class="hp">'+hero+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+'</div>';
 }
@@ -2093,8 +2093,8 @@ function tpShell(body){
 }
 function tpBar(){
   const o=(TP.cls||[]).map(c=>'<option value="'+c.id+'"'+(c.id===TP.cur?' selected':'')+'>'+esc(c.name)+(c.archived?' (archiwum)':'')+'</option>').join('');
-  return '<div class="panel tp-bar">'+((TP.cls||[]).length?'<select id="tp-sel" aria-label="Klasa" onchange="tpPick(this.value)">'+o+'</select>':'<b>Nie masz jeszcze klasy</b>')+'<button class="nb" onclick="TP.new=!TP.new;renderTeach()">'+ic('plus')+'Nowa klasa</button></div>'
-   +(TP.new||(TP.cls&&!TP.cls.length&&TP.tab!=='cat')?'<div class="panel"><label for="tp-nn" style="margin-top:0">Nazwa nowej klasy</label><div class="tp-row"><input id="tp-nn" type="text" maxlength="40" placeholder="np. 5b angielski"><button class="gbtn" onclick="tpNewClass()">Utwórz klasę</button></div><p id="tp-m" role="status"></p></div>':'');
+  return '<div class="panel tp-bar">'+((TP.cls||[]).length?'<select id="tp-sel" aria-label="Grupa" onchange="tpPick(this.value)">'+o+'</select>':'<b>Nie masz jeszcze grupy</b>')+'<button class="nb" onclick="TP.new=!TP.new;renderTeach()">'+ic('plus')+'Nowa grupa</button></div>'
+   +(TP.new||(TP.cls&&!TP.cls.length&&TP.tab!=='cat')?'<div class="panel"><label for="tp-nn" style="margin-top:0">Nazwa nowej grupy</label><div class="tp-row"><input id="tp-nn" type="text" maxlength="40" placeholder="np. 5b angielski"><button class="gbtn" onclick="tpNewClass()">Utwórz grupę</button></div><p id="tp-m" role="status"></p></div>':'');
 }
 
 start(0);menu();
@@ -2293,7 +2293,7 @@ async function cnShare(){
 function cnMode(m){CNmode=m;CN=null;renderConn()}
 function cnLvl(l){CNlvl=l;CN=cnLoad('random');renderConn()}
 function cnNew(){const m=CNmode==='sprint'?'sprint':'random';CN=cnLoad(m);CNmode=m;renderConn()}
-/* wyzwanie: plansza zakodowana w linku (#wl=...), działa też z własnymi kategoriami nauczyciela */
+/* wyzwanie: plansza zakodowana w linku (#wl=...), działa też z własnymi kategoriami korepetytora */
 const cnClean=x=>typeof x==='string'?x.replace(/[<>&"'`\\]/g,'').slice(0,40):'';
 function cnChalLink(withTime){
   const o={g:CN.groups.map(g=>[g.n,g.e,g.w,g.pl]),t:withTime&&CN.won?CN.ms:0,f:U?U.nick:''};
