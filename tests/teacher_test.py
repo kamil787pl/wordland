@@ -11,6 +11,8 @@ cats=[{'id':1,'name':'Zwierzęta','emoji':'🐶','level':'A1','no_hint':False,'i
 users={};profiles={};nid=[100];wid=[1000];CODE='WL-TEST'
 CL=[];MEM={};ASG=[];RES=[];AW=[]
 log=[]
+def HS(sel,path):
+    pg.evaluate("document.getElementById('pt').style.visibility='hidden'");pg.locator(sel).screenshot(path=path);pg.evaluate("document.getElementById('pt').style.visibility=''")
 CORS={'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*','access-control-expose-headers':'*'}
 def jr(route,obj,st=200):route.fulfill(status=st,headers={'content-type':'application/json',**CORS},body=json.dumps(obj))
 def sess(u):return {'access_token':'tok_'+u['id'],'token_type':'bearer','expires_in':3600,'expires_at':9999999999,'refresh_token':'r','user':{'id':u['id'],'aud':'authenticated','role':'authenticated','email':u['email'],'user_metadata':{'nickname':u['nick']},'app_metadata':{},'created_at':'2026-11-04T00:00:00Z'}}
@@ -166,6 +168,7 @@ with sync_playwright() as pw:
     pg.locator('#tc-rows .wr').nth(3).locator('.s').press('Enter');res['enter dodaje wiersz']=pg.locator('#tc-rows .wr').count()
     pg.click('button:has-text("Wklej z Excela")');pg.fill('#tc-w','boisko\tpitch\tThey play on the ___.\ndrużyna;team\nzła linia\nbramka=goal');pg.click('button:has-text("Dodaj do listy")');pg.wait_for_timeout(200)
     res['po wklejeniu']={'wiersze':pg.locator('#tc-rows .wr').count(),'licznik':pg.inner_text('#tc-cnt'),'msg':pg.inner_text('#tc-m')}
+    HS('#v-teach',S+'/help-kreator.png')
     pg.screenshot(path=S+'/wiz.png',full_page=True)
     pg.click('button:has-text("Zapisz kategorię")');pg.wait_for_timeout(900)
     res['po zapisie']={'komunikat':pg.inner_text('#tc-m'),'w_bazie':[(c['name'],c['emoji'],c['level'],[w['en'] for w in c['words']]) for c in cats if c['owner']],'w_grze':pg.evaluate("CATS.filter(c=>c.own).map(c=>c.n+':'+c.w.length)")}
@@ -194,15 +197,19 @@ with sync_playwright() as pw:
     res['klasa: formularz gdy brak klas']=pg.is_visible('#tp-nn')
     pg.fill('#tp-nn','5b angielski');pg.click('button:has-text("Utwórz klasę")');pg.wait_for_timeout(700)
     res['klasa: utworzona']={'kod':pg.inner_text('#tp-code'),'w_bazie':[c['name'] for c in CL],'kafelki':pg.locator('.tp-t').count()}
+    HS('#v-teach',S+'/help-klasa.png')
     pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
     pg.click('button:has-text("Dodaj uczniów")');pg.fill('#tp-nl','ania_k\njan_n;haslo123\nZLY NICK');pg.click('button:has-text("Utwórz konta")');pg.wait_for_timeout(200)
     res['dodawanie: zly nick']=pg.inner_text('#tp-m')
+    pg.fill('#tp-nl','ania_k\njan_n;haslo123\nleniwy');HS('#v-teach',S+'/help-dodaj.png')
     pg.fill('#tp-nl','ania_k\njan_n;haslo123\nleniwy\nania_k');pg.click('button:has-text("Utwórz konta")');pg.wait_for_timeout(800)
     t=pg.inner_text('.tp-add');res['dodawanie: wynik']={'utworzono':t.count('utworzono'),'ma_haslo_jan':'haslo123' in t,'wygenerowane_8':all(len(u['pw'])==8 for n,u in users.items() if n in('ania_k','leniwy'))}
+    HS('#v-teach',S+'/help-konta.png')
     pg.click('button:has-text("Gotowe")');pg.wait_for_timeout(200)
     res['uczniowie: wiersze']=pg.locator('.tp-st').count()
     pg.click('.tp-st .tp-nm >> nth=0');pg.wait_for_timeout(500)
     res['szczegoly']={'kat':'Zwierzęta' in pg.inner_text('#tp-det'),'trudne':'cat' in pg.inner_text('#tp-det'),'wl':'1:35' in pg.inner_text('#tp-det')}
+    HS('#v-teach',S+'/help-szczegoly.png')
     pg.fill('#tp-pw','abc');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(150);res['reset: krotkie']=pg.inner_text('#tp-m')
     pg.fill('#tp-pw','nowe1234');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(500);res['reset: ok']={'msg':pg.inner_text('#tp-m'),'haslo':users['ania_k']['pw']}
     pg.click('#tp-det button:has-text("Usuń z klasy")');pg.wait_for_timeout(150);pot=pg.is_visible('text=Kliknij jeszcze raz');pg.click('#tp-det button.dng');pg.wait_for_timeout(700)
@@ -217,6 +224,7 @@ with sync_playwright() as pw:
     pg.select_option('#tp-so','last');res['sort po aktywnosci: pierwszy']=pg.locator('.tp-st .tp-nm').first.inner_text().split(' ')[0]
     pg.click('.tp-flt button:has-text("Nieaktywni")');res['filtr nieaktywni']=pg.locator('.tp-st').count();pg.click('.tp-flt button:has-text("Wszyscy")')
     pg.check('.tp-st:has-text("jan_n") input');res['pasek akcji']=pg.is_visible('.tp-bulk')
+    HS('#v-teach',S+'/help-uczniowie.png')
     pg.click('button:has-text("Zadaj zadanie wybranym")');pg.wait_for_timeout(200);res['formularz dla wybranych']='jan_n' in pg.inner_text('.tp-add')
     pg.fill('#ta-t','Tylko Jan');pg.click('button:has-text("Zadaj wybranym")');pg.wait_for_timeout(700)
     res['zadanie celowane']=[(a['title'],a['targets']==[next(u['id'] for n,u in users.items() if n=='jan_n')]) for a in ASG if a['title']=='Tylko Jan']
@@ -225,18 +233,29 @@ with sync_playwright() as pw:
     pg.check('.tp-st:has-text("leniwy") input');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(150);pot2=pg.is_visible('text=Kliknij jeszcze raz: usunąć');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(700)
     res['usuniecie zaznaczonych']={'potwierdzenie':pot2,'zostalo':pg.locator('.tp-st').count()}
     pg.click('.tp-tabs button:has-text("Dziś")');pg.wait_for_timeout(200)
+    HS('#v-teach',S+'/help-dzis.png')
     pg.screenshot(path=S+'/panel-ov.png',full_page=True)
     # zadania
-    pg.click('.tp-tabs button:has-text("Zadania")');pg.click('button:has-text("Nowe zadanie")');pg.fill('#ta-t','Zwierzaki');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)
+    pg.click('.tp-tabs button:has-text("Zadania")');pg.click('button:has-text("Nowe zadanie")');pg.fill('#ta-t','Zwierzaki');HS('#v-teach',S+'/help-zadanie.png');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)
     res['zadanie kategoria']=[(a['kind'],a['title'],a['category_id']) for a in ASG]
     pg.click('button:has-text("Nowe zadanie")');pg.click('button:has-text("Łamigłówka WordLinks")');pg.fill('#ta-t','Puzzle');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(200)
     res['wl: te same kategorie']=pg.inner_text('#tp-m')
     ncat=pg.locator('#ta-c0 option').count();res['wl: liczba kategorii w liscie']=ncat
     for i in range(4):pg.select_option('#ta-c%d'%i,index=min(i,ncat-1))
+    pg.fill('#ta-d','2099-01-31');HS('#v-teach',S+'/help-zadanie-wl.png')
     pg.fill('#ta-d','2099-01-31');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)
     res['zadanie wordlinks']=[(a['kind'],a['title'],len(a['groups'] or []),a['due']) for a in ASG]
     pg.click('.tp-a >> nth=0 >> button:has-text("Wyniki")');pg.wait_for_timeout(500);res['status zadania']=pg.inner_text('.tp-a >> nth=0')[:160]
+    HS('#v-teach',S+'/help-wyniki.png')
     pg.screenshot(path=S+'/panel-asg.png',full_page=True)
+    # poradnik
+    pg.evaluate("TP.tab='help';show('teach')");pg.wait_for_timeout(300)
+    res['poradnik: sekcje']=pg.locator('#v-teach .hp-s').count()
+    res['poradnik: spis tresci']=pg.locator('#v-teach .hp-toc button').count()
+    pg.evaluate("document.querySelectorAll('#v-teach .hp-fig img').forEach(i=>i.loading='eager')");pg.wait_for_timeout(1500)
+    res['poradnik: obrazki zaladowane']=pg.evaluate("[...document.querySelectorAll('#v-teach .hp-fig img')].filter(i=>!i.complete||i.naturalWidth===0).length")==0 and pg.locator('#v-teach .hp-fig img').count()>=15
+    pg.click('#v-teach .hp-toc button >> nth=7');pg.wait_for_timeout(2500);res['poradnik: skok do sekcji']=pg.evaluate("document.getElementById('hp-kategorie').getBoundingClientRect().top")<300
+    pg.evaluate("document.getElementById('pt').style.visibility='hidden'");pg.locator('#v-teach').screenshot(path=S+'/poradnik.png');pg.evaluate("document.getElementById('pt').style.visibility=''")
     # uczen: dolacza, widzi i robi zadanie
     pg.evaluate("logout()");pg.wait_for_timeout(600)
     pg.evaluate("goAuth(1)");pg.fill('#au-n','ola_u');pg.fill('#au-p','haslo123');pg.fill('#au-p2','haslo123');pg.check('#au-ok');pg.click('#au-go');pg.wait_for_timeout(900)
@@ -244,6 +263,7 @@ with sync_playwright() as pw:
     pg.fill('#my-code','abc000');pg.click('button:has-text("Dołącz")');pg.wait_for_timeout(700)
     res['uczen: w klasie']='5b angielski' in pg.inner_text('#v-prof')
     pg.evaluate("show('home')");pg.wait_for_timeout(300);hm=pg.inner_text('#v-home .my-asg');res['uczen: zadania na home']={'tekst':hm[:140],'przyciski':pg.locator('#v-home .my-asg .gbtn').count()}
+    HS('#v-home',S+'/help-uczen-home.png')
     pg.screenshot(path=S+'/panel-home.png',full_page=True)
     pg.locator('#v-home .my-asg .crow').filter(has_text='Puzzle').locator('.gbtn').click();pg.wait_for_timeout(500)
     res['uczen: tryb zadania']={'widok':pg.evaluate('view'),'tryb':pg.evaluate('CN.mode'),'etykieta':'Zadanie: Puzzle' in pg.inner_text('#v-conn')}
@@ -261,6 +281,7 @@ with sync_playwright() as pw:
     pg.screenshot(path=S+'/wl-rank.png',full_page=True)
     pg.evaluate("show('home')");pg.wait_for_timeout(300);pg.click('#v-home .cn-lbp button:has-text("WordLinks")');pg.wait_for_timeout(500);res['home: przelacznik gier']=pg.inner_text('#v-home .cn-lbp').count('lacznik')
     pg.evaluate("show('prof')");pg.wait_for_timeout(500);res['profil: punkty i ranga']={'ranga':'Ranga WordCraft' in pg.inner_text('#v-prof'),'ranking':pg.locator('#v-prof .cn-lbp li').count()}
+    HS('#v-prof',S+'/help-uczen-profil.png')
     pg.screenshot(path=S+'/panel-rank.png',full_page=True)
     pg.evaluate("show('prof')");res['uczen: zadania w profilu']=pg.locator('#v-prof .my-asg .crow').count();pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
     res['DONE']=1;res['log']=log;res['errors']=errs

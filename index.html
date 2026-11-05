@@ -589,6 +589,18 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 #pt #nb-home .t,#pt #nb-prof .t{display:none}#pt .fire.pts .fd{display:none!important}#pt .fire.pts{background:#fff4d6}
 @media(max-width:860px){#pt .nb .t{display:none}}
 #pt .pchips{display:inline-flex;align-items:stretch;margin-left:4px;border-radius:10px;overflow:hidden;background:var(--amb-t)}#pt .pchips .fire{margin:0;border-radius:0;background:transparent}#pt .pchips .fire.pts{border-left:1px solid rgba(138,90,0,.25);background:transparent}
+.hp{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}.hp>*{min-width:0}.hp-hero h3{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:22px}.hp-hero p{margin:0 0 12px;color:var(--mut)}
+.hp-toc{display:flex;flex-wrap:wrap;gap:6px}.hp-toc .nb b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--pri-t);color:var(--pri);font-size:12px}
+.hp-s{scroll-margin-top:78px}.hp-s h3{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:20px}.hp-n{display:inline-grid;place-items:center;flex:none;width:30px;height:30px;border-radius:10px;background:var(--pri);color:#fff;font:800 15px "Figtree",system-ui,sans-serif}
+.hp-s h4{display:flex;align-items:center;gap:6px;margin:18px 0 6px;font-size:16px}.hp-s p{margin:0 0 10px;line-height:1.55}.hp-s ul{margin:0 0 10px;padding-left:20px;line-height:1.55}.hp-s li{margin:3px 0}
+.hp-st{margin:0 0 12px;padding:0;list-style:none;counter-reset:s;display:grid;gap:8px}.hp-st li{position:relative;counter-increment:s;padding:10px 12px 10px 48px;border:1px solid var(--line);border-radius:12px;background:var(--sf);line-height:1.5}
+.hp-st li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;font:800 14px "Figtree",system-ui,sans-serif}
+.hp-fig{margin:12px 0 16px}.hp-fig img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 18px rgba(22,35,59,.12);background:#fff}.hp-fig figcaption{margin-top:6px;text-align:center;color:var(--mut);font-size:13px}
+.hp-tip{display:flex;gap:10px;align-items:flex-start;margin:12px 0 4px;padding:10px 12px;border-radius:12px;background:#fff7e0;border:1px solid #f1dc9a;line-height:1.5}.hp-tip.warn{background:#fdecea;border-color:#f3c0bb}.hp-tip .i{flex:none;margin-top:2px}
+.hp-two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.hp-two>div{padding:4px 14px 6px;border:1px solid var(--line);border-radius:12px}
+.hp-tb th{text-align:left;white-space:nowrap;vertical-align:top}.hp-tb th .i{margin-right:6px}.hp-rk{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border-radius:999px;background:var(--pri-t);font-size:12px;white-space:nowrap}.hp-rk b{color:var(--pri)}
+.hp-q{border:1px solid var(--line);border-radius:12px;margin:0 0 8px;padding:0 14px}.hp-q summary{cursor:pointer;padding:12px 0;font-weight:700}.hp-q p{margin:0 0 12px}
+@media(max-width:640px){.hp-two{grid-template-columns:1fr}.hp-s h3{font-size:18px}}
 </style>
 </head>
 <body>
@@ -1334,7 +1346,7 @@ function renderHome(){
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
   +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
-  +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>')
+  +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
 }
@@ -1598,7 +1610,7 @@ function renderTeach(){
   +tFormHTML(e);
   if(TP.cls===null)tpInit();
   const c=tpCur(),cat=TP.tab==='cat';
-  const body=cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz klasę powyżej. Uczniowie dołączą kodem klasy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
+  const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz klasę powyżej. Uczniowie dołączą kodem klasy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
   root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'+tpShell(body);
   if(cat){if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
 }
@@ -1975,8 +1987,108 @@ async function tpAsgSave(){
   try{const r=await sb.rpc('assignment_create',p);if(r.error)throw r.error;TP.asgNew=0;TP.hmsg='';await tpLoad()}
   catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się zapisać zadania.')}
 }
+/* ===== PORADNIK NAUCZYCIELA (zakładka w panelu) ===== */
+const HPS={dodaj:[900,690],dzis:[900,1005],elf:[900,540],'home-gry':[900,1076],'home-hero':[900,339],klasa:[900,1005],konta:[900,878],kreator:[900,1100],pokoj:[900,515],szczegoly:[900,1100],'uczen-home':[900,1100],'uczen-profil':[900,1100],uczniowie:[900,621],wc:[900,689],wl:[900,540],wyniki:[900,625],'zadanie-wl':[900,1100],zadanie:[900,847]};
+const hpFig=(n,alt,cap)=>'<figure class="hp-fig"><img src="assets/help/'+n+'.webp" width="'+HPS[n][0]+'" height="'+HPS[n][1]+'" alt="'+alt+'" loading="lazy"><figcaption>'+cap+'</figcaption></figure>';
+const hpSteps=a=>'<ol class="hp-st">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ol>';
+const hpTip=(t,k)=>'<div class="hp-tip'+(k?' '+k:'')+'">'+ic(k==='warn'?'alert':'bulb',k==='warn'?'warn':'pt')+'<div>'+t+'</div></div>';
+const hpSec=(id,n,t,body)=>'<section class="panel hp-s" id="hp-'+id+'"><h3><span class="hp-n">'+n+'</span>'+t+'</h3>'+body+'</section>';
+function hpGo(id){const e=document.getElementById('hp-'+id);if(e)e.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
+function hpRanks(){
+  const row=(nm,R)=>'<tr><th>'+nm+'</th><td>'+R.map(r=>'<span class="hp-rk"><b>'+r[1]+'</b> '+(r[0]?wcFmtP(r[0])+' pkt':'start')+'</span>').join('')+'</td></tr>';
+  return '<div class="tp-tw"><table class="tp-tb hp-tb"><tbody>'+row('Razem',TR)+row('WordCraft',WCR)+row('WordLinks',WLR)+row('WordElf',ELR)+'</tbody></table></div>'
+}
+function helpHTML(){
+  const toc=[['start','Szybki start'],['portal','Czym jest WordLand'],['konto','Konto nauczyciela'],['klasy','Klasy'],['uczniowie','Uczniowie'],['dzis','Zakładka Dziś'],['zadania','Zadania'],['kategorie','Własne kategorie'],['gry','Gry'],['punkty','Punkty i rankingi'],['uczen','Oczami ucznia'],['prywatnosc','Bezpieczeństwo'],['faq','Pytania i odpowiedzi']];
+  const hero='<div class="panel hp-hero"><h3>'+ic('book')+'Poradnik nauczyciela</h3><p>Tu znajdziesz wszystko, co potrzebne, żeby zacząć pracę z klasą w WordLand: od założenia klasy, przez zadania i własne kategorie słówek, po punkty i rankingi. Zrzuty ekranu pochodzą z prawdziwego portalu (dane w nich są przykładowe).</p><div class="hp-toc" role="navigation" aria-label="Spis treści">'+toc.map((t,i)=>'<button type="button" class="nb" onclick="hpGo(\''+t[0]+'\')"><b>'+(i+1)+'</b>'+t[1]+'</button>').join('')+'</div></div>';
+  const s1=hpSec('start',1,'Szybki start w 5 krokach',hpSteps([
+    '<b>Aktywuj konto nauczyciela.</b> Załóż zwykłe konto, a potem wpisz kod nauczyciela (dostajesz go od administratora portalu) w zakładce <i>Nauczyciel</i>.',
+    '<b>Utwórz klasę.</b> W zakładce <i>Dziś</i> wpisz nazwę, np. „5b angielski”. Portal nada klasie 6-znakowy <b>kod</b>.',
+    '<b>Dodaj uczniów.</b> Podaj im kod klasy albo załóż im konta samodzielnie w zakładce <i>Uczniowie</i>.',
+    '<b>Zadaj zadanie.</b> W zakładce <i>Zadania</i> wybierz kategorię do przerobienia albo łamigłówkę WordLinks. Możesz ustawić termin.',
+    '<b>Sprawdzaj wyniki.</b> Zakładka <i>Dziś</i> pokazuje, kto potrzebuje uwagi i które słówka sprawiają kłopot. <i>Zadania</i> i <i>Uczniowie</i> pokazują szczegóły.'
+  ])+hpTip('Cały proces zajmuje kilka minut. Uczniowie mogą grać od razu po dołączeniu, a ich postępy zapisują się na koncie.'));
+  const s2=hpSec('portal',2,'Czym jest WordLand',
+    '<p>WordLand to portal do nauki angielskiego (poziomy <b>A1–B1</b>) w formie gier. Uczeń zbiera słówka, odpowiada na pytania i zdobywa punkty, rangi oraz trofea. Ty, jako nauczyciel, zakładasz klasy, zadajesz zadania i widzisz, jak idzie uczniom. Portal działa w przeglądarce, na komputerze i telefonie, bez instalacji.</p>'
+    +hpFig('home-hero','Strona główna portalu z baner i przyciskiem Graj','Strona główna ucznia: baner z grami, a pod nim zadania od nauczyciela, seria dni i słówko dnia.')
+    +'<h4>Trzy gry w jednym portalu</h4><div class="tp-tw"><table class="tp-tb hp-tb"><thead><tr><th>Gra</th><th>Na czym polega</th><th>Co ćwiczy</th></tr></thead><tbody>'
+    +'<tr><th>'+ic('cube')+'WordCraft</th><td>Platformówka 2D w świecie z bloków. Uczeń zbiera słówka z bloków „?”, dociera do flagi i pokonuje bossa.</td><td>Słownictwo: tłumaczenie, wpisywanie z pamięci, układanie zdań, zdania z lukami.</td></tr>'
+    +'<tr><th>'+ic('grid')+'WordLinks</th><td>Łamigłówka: 16 słówek do połączenia w 4 grupy po 4 z tej samej kategorii. Liczy się czas.</td><td>Kategoryzowanie, szybkie rozpoznawanie słów, pewność.</td></tr>'
+    +'<tr><th>'+ic('gift')+'WordElf</th><td>Skrzat pakuje prezenty z listy Mikołaja. Po trzech rundach sanie odlatują.</td><td>Nazwy przedmiotów, liczby i liczba mnoga, czytanie opisów.</td></tr>'
+    +'</tbody></table></div>'+hpFig('home-gry','Karty gier na stronie głównej','Karty gier na stronie głównej. Każda ma przycisk „Graj”, a pod nim rekord ucznia.')
+    +'<p>Szczegóły każdej gry opisuje sekcja <a href="#" onclick="hpGo(\'gry\');return false">Gry</a>.</p>');
+  const s3=hpSec('konto',3,'Konto nauczyciela',
+    '<p>Konto nauczyciela to zwykłe konto z dodatkowymi uprawnieniami. Dzięki nim w menu pojawia się zakładka <b>Nauczyciel</b> (ikona klucza) z panelem do zarządzania klasami.</p>'
+    +hpSteps(['Kliknij <b>Zaloguj</b> i wybierz „Załóż konto”. Podaj nick (3–16 znaków: małe litery, cyfry, _) i hasło (min. 6 znaków).','Wejdź w <b>Nauczyciel</b> (albo w Profilu kliknij „Jestem nauczycielem i mam kod”).','Wpisz <b>kod nauczyciela</b> i kliknij „Aktywuj”. Kod dostajesz od administratora portalu.','Gotowe: pojawia się panel z zakładkami <b>Dziś, Uczniowie, Zadania, Kategorie</b> i <b>Poradnik</b>.'])
+    +hpTip('Konto nauczyciela nie ma rankingu ani punktów. Nie pojawisz się w rankingach uczniów.'));
+  const s4=hpSec('klasy',4,'Klasy',
+    '<p>Każda klasa ma nazwę i <b>kod</b>. Możesz mieć kilka klas i przełączać je listą na górze panelu. Uczniowie jednej klasy nie widzą uczniów innej.</p>'
+    +hpFig('klasa','Zakładka Dziś z kodem klasy','Zakładka <i>Dziś</i>: u góry kod klasy z przyciskami „Kopiuj kod” i „Dodaj uczniów”.')
+    +hpSteps(['Kliknij <b>Nowa klasa</b> (u góry panelu), wpisz nazwę i potwierdź.','Skopiuj kod przyciskiem <b>Kopiuj kod</b> i przekaż go uczniom (np. na tablicy lub w dzienniku elektronicznym).','Uczeń wpisuje kod w swoim <b>Profilu</b> w polu „Dołącz do klasy”.'])
+    +'<h4>Ustawienia klasy</h4><ul><li><b>Zapisz nazwę</b>: zmiana nazwy klasy.</li><li><b>Nowy kod klasy</b>: generuje nowy kod. Użyj, gdy kod trafił w niepowołane ręce. Uczniowie już w klasie zostają.</li><li><b>Archiwizuj</b>: klasa znika z codziennego widoku, ale dane zostają. Możesz ją przywrócić.</li><li><b>Usuń klasę</b>: wymaga dwóch kliknięć. To usuwa klasę i jej zadania.</li></ul>'
+    +hpTip('Uczeń w profilu ma przycisk <b>Opuść klasę</b>. Możesz też usunąć go z klasy sam w szczegółach ucznia.'));
+  const s5=hpSec('uczniowie',5,'Uczniowie',
+    '<p>Są dwa sposoby, żeby uczeń trafił do klasy. Możesz używać obu naraz.</p>'
+    +'<h4>Sposób A: uczeń zakłada konto sam</h4><p>Uczeń wchodzi na stronę, zakłada konto (nick, hasło i zaznaczenie oświadczenia, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, ma zgodę rodzica) i wpisuje kod klasy w Profilu. To najszybsze rozwiązanie, gdy uczniowie mają własne urządzenia.</p>'
+    +'<h4>Sposób B: ty zakładasz konta</h4><p>Przydatne dla młodszych dzieci albo na lekcji, gdy chcesz mieć pewność, że każdy ma konto. Zakładka <i>Uczniowie</i> → <b>Dodaj uczniów</b>.</p>'
+    +hpFig('dodaj','Formularz dodawania uczniów','Wpisz po jednym uczniu w wierszu: sam nick albo „nick;hasło”.')
+    +'<ul><li>Nick: 3–16 znaków, małe litery, cyfry i „_”. Hasło: min. 6 znaków. Bez hasła portal <b>wygeneruje je</b> (8 znaków).</li><li>Maksymalnie 40 uczniów naraz. Powtórzone nicki są pomijane.</li><li>Po kliknięciu <b>Utwórz konta</b> zobaczysz tabelę z nickami i hasłami.</li></ul>'
+    +hpFig('konta','Tabela utworzonych kont z hasłami','Hasła widzisz tylko teraz. Skopiuj je przyciskiem „Kopiuj listę” albo pobierz plik CSV.')
+    +hpTip('<b>Zapisz hasła od razu.</b> Po zamknięciu tabeli nie da się ich już zobaczyć. Zawsze można je jednak zmienić (patrz niżej).','warn')
+    +'<h4>Lista uczniów</h4><p>W zakładce <i>Uczniowie</i> każdy uczeń ma wiersz z aktywnością i skutecznością. Możesz:</p><ul><li><b>szukać</b> po nicku i <b>sortować</b> (nick, ostatnia aktywność, skuteczność, odpowiedzi z 7 dni),</li><li><b>filtrować</b>: Wszyscy, Nieaktywni, Po terminie,</li><li><b>zaznaczać</b> wielu uczniów: pojawia się pasek akcji (zadaj zadanie wybranym, eksport CSV, usuń z klasy).</li></ul>'
+    +hpFig('uczniowie','Lista uczniów z zaznaczeniem i paskiem akcji','Zaznaczenie uczniów otwiera pasek akcji. Dzięki temu zadasz zadanie tylko wybranym osobom.')
+    +'<h4>Szczegóły ucznia</h4><p>Kliknij nick, żeby zobaczyć: postępy w kategoriach (gwiazdki), najtrudniejsze słówka ucznia, jego wyniki w WordLinks oraz ustawić nowe hasło lub usunąć go z klasy.</p>'
+    +hpFig('szczegoly','Karta szczegółów ucznia','Szczegóły ucznia: tu też zmienisz hasło, jeśli uczeń je zapomniał.')
+    +hpTip('Używaj nicków bez imienia i nazwiska, np. „kot_ania” zamiast „ania_kowalska”. Nicki są widoczne w rankingach dla innych uczniów.'));
+  const s6=hpSec('dzis',6,'Zakładka „Dziś”: szybki przegląd klasy',
+    '<p>To pierwsze miejsce, do którego warto zajrzeć. Pokazuje stan klasy w kilka sekund.</p>'
+    +hpFig('dzis','Zakładka Dziś z kafelkami i wykresem aktywności','Kafelki, lista „Wymaga uwagi”, wykres aktywności z 14 dni i najtrudniejsze słówka klasy.')
+    +'<ul><li><b>Kafelki</b>: liczba uczniów, ilu było aktywnych w ostatnich 7 dniach, liczba odpowiedzi i średnia skuteczność.</li><li><b>Wymaga uwagi</b>: uczniowie, którzy odstają. Powody: brak aktywności od tygodnia (albo jeszcze nie zaczęli), zadanie po terminie, skuteczność poniżej 50% przy co najmniej 20 odpowiedziach.</li><li><b>Aktywność klasy</b>: słupki z ostatnich 14 dni. Najedź kursorem, żeby zobaczyć liczby.</li><li><b>Najtrudniejsze słówka klasy</b>: słówka z największą liczbą błędów.</li></ul>'
+    +hpTip('Przycisk <b>Zadaj te słówka klasie</b> tworzy prywatną kategorię „Trudne: nazwa klasy” z najtrudniejszych słówek (min. 4) i od razu zadaje ją całej klasie. To gotowa powtórka w jednym kliknięciu.'));
+  const s7=hpSec('zadania',7,'Zadania dla klasy',
+    '<p>Zadanie to polecenie dla uczniów, które pojawia się u nich na stronie głównej i w profilu. Masz dwa rodzaje.</p>'
+    +'<div class="hp-two"><div><h4>'+ic('book')+'Kategoria do przerobienia</h4><p>Uczeń otwiera WordCraft w wybranej kategorii. Zadanie jest zaliczone, gdy <b>zdobędzie gwiazdkę</b> w tej kategorii po utworzeniu zadania. Zdobyte wcześniej gwiazdki się nie liczą.</p></div><div><h4>'+ic('grid')+'Łamigłówka WordLinks</h4><p>Wybierasz 4 różne kategorie. Słówka są losowane raz, więc <b>wszyscy dostają tę samą planszę</b>. Uczeń ma jedną próbę, a Ty widzisz jego czas i błędy.</p></div></div>'
+    +hpSteps(['Wejdź w <i>Zadania</i> → <b>Nowe zadanie</b>.','Wybierz rodzaj i wpisz <b>tytuł</b> (np. „Zwierzęta na piątek”).','Wybierz kategorię (albo 4 kategorie dla WordLinks).','Opcjonalnie ustaw <b>termin</b>.','Kliknij <b>Zadaj klasie</b>. Aby zadać tylko wybranym uczniom, zaznacz ich wcześniej w zakładce <i>Uczniowie</i> i użyj „Zadaj zadanie wybranym”.'])
+    +hpFig('zadanie','Formularz nowego zadania z kategorią','Zadanie typu „kategoria”: tytuł, kategoria i opcjonalny termin.')
+    +hpFig('zadanie-wl','Formularz zadania WordLinks z czterema grupami','Zadanie WordLinks: cztery różne kategorie tworzą jedną planszę dla całej klasy.')
+    +'<h4>Wyniki</h4><p>Przy każdym zadaniu widzisz, ilu uczniów je zrobiło (np. „2/5 zrobiło”) i ilu jest po terminie. Kliknij <b>Wyniki</b>, żeby zobaczyć listę uczniów ze statusem.</p>'
+    +hpFig('wyniki','Lista zadań z podsumowaniem wyników','Lista zadań: przy każdym liczba uczniów, którzy je zrobili, i przycisk „Wyniki”.')
+    +'<h4>Jak to widzi uczeń</h4><p>Zadania pojawiają się na górze strony głównej w panelu „Zadania od nauczyciela” (z przyciskiem „Zrób zadanie”). Po wykonaniu zadanie <b>znika ze strony głównej</b>, a w Profilu zostaje jako zrobione.</p>'
+    +hpFig('uczen-home','Strona główna ucznia z zadaniami od nauczyciela','Widok ucznia: zadania od nauczyciela są na samej górze strony głównej.')
+    +hpTip('Zadania nie da się edytować. Jeśli pomyliłeś się, usuń je i utwórz nowe. Zadanie dla wybranych uczniów oznaczone jest etykietą „dla N uczn.”.'));
+  const s8=hpSec('kategorie',8,'Własne kategorie słówek',
+    '<p>Oprócz gotowych kategorii możesz tworzyć własne, np. słownictwo z aktualnego rozdziału. Od razu pojawiają się w grach uczniów (WordCraft, WordLinks) i możesz je zadawać jako zadania.</p>'
+    +hpFig('kreator','Kreator nowej kategorii słówek','Kreator kategorii: nazwa, ikona, poziom i lista słówek ze zdaniami z luką.')
+    +hpSteps(['Wejdź w <i>Kategorie</i> i wypełnij <b>nazwę</b>, wybierz <b>ikonę</b> i <b>poziom</b> (Bez poziomu, A1, A2, B1).','Dodaj słówka: <b>polski</b>, <b>angielski</b> i opcjonalnie <b>zdanie z luką</b> (w miejscu brakującego słowa wpisz ___). Enter w ostatnim wierszu dodaje nowy.','Szybciej: kliknij <b>Wklej z Excela</b> i wklej wiele wierszy naraz. Kolumny oddziel tabulatorem, średnikiem albo znakiem „=”. Błędne wiersze są pomijane.','Kliknij <b>Zapisz kategorię</b>. Potrzeba co najmniej <b>4 słówek</b>.'])
+    +'<ul><li><b>Trudniej</b>: zaznacz opcję ukrywania polskiego tłumaczenia w zdaniach z luką, jeśli ma być trudniej.</li><li><b>Edytuj</b>: zmienisz słówka, poziom i ikonę. <b>Ukryj / Pokaż uczniom</b>: ukryta kategoria jest niewidoczna dla ogółu, ale uczniowie, którym ją zadałeś, nadal ją widzą.</li><li><b>Usuń</b>: wymaga potwierdzenia.</li></ul>'
+    +hpTip('Dobre zdania z luką uczą słów w kontekście. Przykład: „I kick the ___.” dla słowa <i>ball</i>.'));
+  const s9=hpSec('gry',9,'Gry: zasady w pigułce',
+    '<h4>'+ic('cube')+'WordCraft</h4>'+hpFig('wc','Menu gry WordCraft z poziomami A1, A2 i B1','Menu gry: poziomy A1, A2, B1 i tryb Hard. Poniżej klawiszologia.')
+    +'<ul><li><b>Sterowanie</b>: strzałki lub A/D (ruch), spacja (skok), lewy przycisk myszy lub klawisz (kopanie). Na telefonie są przyciski dotykowe. Klawisz F włącza pełny ekran.</li><li><b>Cel</b>: zbieraj słówka z bloków „?”, dobiegnij do flagi i pokonaj bossa, odpowiadając na pytania.</li><li><b>Gwiazdki</b>: za poziom 0–3. Tryb <b>Hard</b> to te same słówka bez podpowiedzi (wpisywanie, słuchanie, układanie zdań).</li></ul>'
+    +'<h4>'+ic('grid')+'WordLinks</h4>'+hpFig('wl','Plansza WordLinks w trakcie gry','WordLinks: zaznacz 4 słówka z jednej kategorii i zatwierdź.')
+    +'<ul><li>Zaznacz 4 słówka z jednej kategorii i kliknij <b>Zatwierdź</b>. Masz 4 szanse na błąd. Czas liczy się od kliknięcia <b>Start</b>.</li><li>Błąd to <b>+10 s</b>, a podpowiedź <b>+15 s</b> (maks. 2).</li><li>Tryby: <b>Codzienna</b> (jedna łamigłówka dla wszystkich), <b>Losowa</b> (poziom A1/A2/B1) i <b>Sprint</b> (3 łamigłówki pod rząd). Można też wyzwać znajomego linkiem.</li><li>Za czas są medale i punkty. Odznaki dostaje się za serie dni i rekordy.</li></ul>'
+    +'<h4>'+ic('gift')+'WordElf</h4>'+hpFig('elf','Półka z prezentami i worek Mikołaja w grze WordElf','WordElf: kliknij prezenty z listy na półce, a trafią do worka Mikołaja.')
+    +'<ul><li>Gra ma <b>3 rundy</b>. Każda następna ma dłuższą listę i większą półkę.</li><li><b>A1</b>: lista z nazwami (np. „teddy bear”). <b>A2</b>: liczby i liczba mnoga (np. „3 candies”, trzeba kliknąć 3 razy). <b>B1</b>: opisy zamiast nazw (np. „it keeps you dry when it rains”).</li><li>Błąd to <b>+5 s</b>. Po trzeciej rundzie sanie Mikołaja odlatują, a uczeń widzi czas, gwiazdki i słówka z tłumaczeniem.</li></ul>');
+  const s10=hpSec('punkty',10,'Punkty, rangi, rankingi i trofea',
+    '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li></ul>'
+    +'<h4>Rangi</h4><p>Za sumę punktów uczeń awansuje na kolejne rangi (osobno w każdej grze i ogólnie):</p>'+hpRanks()
+    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks i WordElf, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja klasa</b>. Ranking klasy pokazuje tylko uczniów z tej samej klasy co oglądający.</p>'
+    +'<h4>Pokój i trofea</h4>'+hpFig('pokoj','Pokój ucznia z półką pucharów za rangi','Profil ucznia: „Mój pokój”. Każda zdobyta ranga to puchar na półce.')
+    +'<p>Suma punktów jest też stale widoczna w górnym menu, obok płomienia z liczbą dni nauki z rzędu.</p>'
+    +hpTip('Rankingi działają tylko dla zalogowanych uczniów. Konto nauczyciela nie jest w nich uwzględniane.'));
+  const s11=hpSec('uczen',11,'Portal oczami ucznia',
+    '<p>Warto zobaczyć, co widzi uczeń, żeby łatwiej go wspierać. Profil ucznia zawiera: zadania od nauczyciela, klasę (z przyciskiem „Opuść klasę”), pokój z trofeami, ranking, panele gier z rekordami i postęp według poziomów, a także najtrudniejsze słówka do powtórki.</p>'
+    +hpFig('uczen-profil','Profil ucznia z klasą, trofeami i rankingiem','Profil ucznia (fragment).')
+    +hpTip('Na swoim koncie możesz zobaczyć portal oczami ucznia tylko po założeniu osobnego, uczniowskiego konta (np. testowego) i dołączeniu go do swojej klasy kodem.'));
+  const s12=hpSec('prywatnosc',12,'Bezpieczeństwo i prywatność',
+    '<ul><li>Uczniowie logują się <b>nickiem i hasłem</b>. Nie podają adresu e-mail ani numeru telefonu.</li><li>Widzisz tylko uczniów <b>swoich klas</b>. Uczeń widzi tylko swoje dane, a w rankingach cudze nicki i punkty.</li><li>Nick jest publiczny dla innych zalogowanych uczniów, więc <b>nie używaj nazwisk</b>.</li><li>Hasła, które wygenerujesz, widać tylko raz. Zmiana hasła ucznia jest zawsze możliwa.</li><li>Przy rejestracji uczeń oświadcza, że nie podaje imienia i nazwiska, a jeśli ma mniej niż 16 lat, że ma zgodę rodzica lub opiekuna. Konta, które zakładasz uczniom sam, powinny mieć taką zgodę zebraną przez Ciebie, zgodnie z zasadami szkoły.</li></ul>'
+    +hpTip('Pełna polityka prywatności portalu jest jeszcze w przygotowaniu. Przed szerokim wdrożeniem w szkole uzgodnij zasady z dyrekcją i inspektorem ochrony danych.','warn'));
+  const faq=[['Uczeń zapomniał hasła. Co robić?','Wejdź w <i>Uczniowie</i>, kliknij nick ucznia, wpisz nowe hasło (min. 6 znaków) i kliknij „Zmień hasło”. Przekaż je uczniowi.'],['Uczeń nie widzi zadania.','Sprawdź, czy dołączył do klasy (w Profilu powinna być widoczna nazwa klasy) oraz czy zadanie nie jest przeznaczone dla wybranych uczniów. Pomaga też odświeżenie strony.'],['Zadanie z kategorii się nie zalicza.','Zalicza się dopiero, gdy uczeń zdobędzie gwiazdkę w tej kategorii po utworzeniu zadania. Gwiazdki z wcześniejszych gier się nie liczą.'],['Zadanie WordLinks można powtórzyć?','Nie, uczeń ma jedną próbę, żeby wyniki były porównywalne. Możesz zadać nową łamigłówkę.'],['Czy mogę zmienić zadanie?','Zadań nie edytuje się. Usuń je i utwórz nowe.'],['Uczeń zmienił klasę.','Usuń go z klasy w szczegółach ucznia (albo niech kliknie „Opuść klasę” w profilu) i podaj mu kod nowej klasy.'],['Czy portal działa na telefonie?','Tak. Gry i panel nauczyciela dopasowują się do ekranu telefonu, także poziomo.'],['Gdzie widzę, które słówka są trudne?','W zakładce <i>Dziś</i> (cała klasa) oraz w szczegółach ucznia (pojedynczy uczeń).'],['Jak szybko zadać powtórkę?','W <i>Dziś</i> kliknij „Zadaj te słówka klasie”. Portal sam zrobi kategorię z najtrudniejszych słówek i zadanie.']];
+  const s13=hpSec('faq',13,'Pytania i odpowiedzi',faq.map(f=>'<details class="hp-q"><summary>'+f[0]+'</summary><p>'+f[1]+'</p></details>').join(''));
+  return '<div class="hp">'+hero+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+'</div>';
+}
 function tpShell(body){
-  const tabs=[['ov','Dziś'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie']];
+  const tabs=[['ov','Dziś'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie'],['help','Poradnik']];
   return tpBar()+'<div class="seg tp-tabs" role="group" aria-label="Sekcje panelu">'+tabs.map(t=>'<button type="button" class="'+(TP.tab===t[0]?'on':'')+'" aria-pressed="'+(TP.tab===t[0])+'" onclick="tpTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div><div id="t-body">'+body+'</div>';
 }
 function tpBar(){
