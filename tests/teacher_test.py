@@ -40,7 +40,7 @@ def handle(route):
     if p.startswith('/rest/v1/profiles'):return jr(route,[profiles[u_]] if u_ in profiles else [])
     if p.startswith('/rest/v1/categories'):
         if m=='GET':
-            vis=[c for c in cats if c['is_public'] or c['owner']==u_];return jr(route,vis)
+            vis=[c for c in cats if c['is_public'] or c['owner']==u_ or any(a['category_id']==c['id'] and u_ in MEM.get(a['class_id'],[]) for a in ASG)];return jr(route,vis)
         if m=='POST':
             nid[0]+=1;c={'id':nid[0],'name':b['name'],'emoji':b['emoji'],'level':b.get('level'),'no_hint':b['no_hint'],'is_public':b['is_public'],'owner':b['owner'],'sort':100,'words':[]};cats.append(c);log.append('cat+ '+b['name']);return jr(route,{'id':c['id']},201)
         i=eqid(url);c=next((c for c in cats if c['id']==i and c['owner']==u_),None)
@@ -80,16 +80,16 @@ def handle(route):
             MEM[b['p_class']].remove(b['p_user']);return jr(route,None)
         if fn=='class_students':
             return jr(route,[{'user_id':i,'nick':profiles[i]['nickname'],'joined_at':'2026-11-05T08:00:00Z','last_day':'2026-11-05' if profiles[i]['nickname']!='leniwy' else None,'answers':40,'correct':30,'answers_7d':12 if profiles[i]['nickname']!='leniwy' else 0,'mastered':5,'stars':3,'wl_best':95000,'done':len([r for r in RES if r['user']==i])} for i in MEM.get(b['p_class'],[])])
-        if fn=='class_hard_words':return jr(route,[{'pl':'ryba','en':'fish','wrong':7,'hit':3}])
+        if fn=='class_hard_words':return jr(route,[{'pl':'ryba','en':'fish','wrong':7,'hit':3},{'pl':'kot','en':'cat','wrong':5,'hit':3},{'pl':'pies','en':'dog','wrong':4,'hit':2},{'pl':'ptak','en':'bird','wrong':3,'hit':1},{'pl':'koń','en':'horse','wrong':2,'hit':1}])
         if fn=='class_activity':return jr(route,[{'day':'2026-11-04','answers':20,'active':2},{'day':'2026-11-05','answers':50,'active':3}])
         if fn=='student_detail':return jr(route,{'cats':[{'name':'Zwierzęta','emoji':'🐶','stars':2,'hard':1}],'hard':[{'pl':'kot','en':'cat','wrong':4,'right':1}],'days':[{'day':'2026-11-05','answers':12,'correct':9}],'wl':{'bt':95000}})
         if fn=='assignment_create':
-            a={'id':'a%d'%(len(ASG)+1),'class_id':b['p_class'],'kind':b['p_kind'],'title':b['p_title'],'category_id':b['p_category'],'groups':b['p_groups'],'due':b['p_due'],'created_at':'2026-11-05T09:00:00Z'};ASG.append(a);return jr(route,a['id'])
+            a={'id':'a%d'%(len(ASG)+1),'class_id':b['p_class'],'kind':b['p_kind'],'title':b['p_title'],'category_id':b['p_category'],'groups':b['p_groups'],'due':b['p_due'],'targets':b.get('p_targets'),'created_at':'2026-11-05T09:00:00Z'};ASG.append(a);return jr(route,a['id'])
         if fn=='assignment_delete':
             ASG[:]=[a for a in ASG if a['id']!=b['p_id']];return jr(route,None)
         if fn=='assignment_status':
             a=next(a for a in ASG if a['id']==b['p_id'])
-            return jr(route,[{'user_id':i,'nick':profiles[i]['nickname'],'done':any(r['user']==i and r['a']==a['id'] for r in RES),'won':True,'ms':70000,'miss':1,'stars':0} for i in MEM[a['class_id']]])
+            return jr(route,[{'user_id':i,'nick':profiles[i]['nickname'],'done':any(r['user']==i and r['a']==a['id'] for r in RES),'won':True,'ms':70000,'miss':1,'stars':0,'done_at':'2026-11-05T10:00:00Z'} for i in MEM[a['class_id']] if not a.get('targets') or i in a['targets']])
         if fn=='join_class':
             c=next((c for c in CL if c['code']==b['p_code'].upper()),None)
             if not c:return jr(route,{'message':'code'},400)
@@ -98,7 +98,7 @@ def handle(route):
         if fn=='leave_class':MEM[b['p_class']].remove(u_);return jr(route,None)
         if fn=='my_classes':return jr(route,[{'class_id':c['id'],'name':c['name'],'teacher':'anna'} for c in CL if u_ in MEM[c['id']]])
         if fn=='my_assignments':
-            return jr(route,[{'id':a['id'],'class_name':'5b','kind':a['kind'],'title':a['title'],'category_id':a['category_id'],'groups':a['groups'],'due':a['due'],'done':any(r['user']==u_ and r['a']==a['id'] for r in RES),'won':True,'ms':80000} for a in ASG if u_ in MEM[a['class_id']]])
+            return jr(route,[{'id':a['id'],'class_name':'5b','kind':a['kind'],'title':a['title'],'category_id':a['category_id'],'groups':a['groups'],'due':a['due'],'done':any(r['user']==u_ and r['a']==a['id'] for r in RES),'won':True,'ms':80000} for a in ASG if u_ in MEM[a['class_id']] and (not a.get('targets') or u_ in a['targets'])])
         if fn=='submit_assignment':RES.append({'user':u_,'a':b['p_id'],'ms':b['p_ms'],'miss':b['p_miss'],'won':b['p_won']});return jr(route,None)
     if p.startswith('/rest/v1/classes'):return jr(route,[c for c in CL if c['teacher_id']==u_])
     if p.startswith('/rest/v1/assignments'):
@@ -183,7 +183,7 @@ with sync_playwright() as pw:
     pg.click('text=Na pewno usunąć');pg.wait_for_timeout(600);res['usuwanie']={'potwierdzenie':first,'zostalo':len([c for c in cats if c['owner']])}
 
     # ===== panel: klasy, uczniowie, zadania =====
-    pg.evaluate("show('teach')");pg.click('.tp-tabs button:has-text("Przegląd")');pg.wait_for_timeout(500)
+    pg.evaluate("show('teach')");pg.click('.tp-tabs button:has-text("Dziś")');pg.wait_for_timeout(500)
     res['klasa: formularz gdy brak klas']=pg.is_visible('#tp-nn')
     pg.fill('#tp-nn','5b angielski');pg.click('button:has-text("Utwórz klasę")');pg.wait_for_timeout(700)
     res['klasa: utworzona']={'kod':pg.inner_text('#tp-code'),'w_bazie':[c['name'] for c in CL],'kafelki':pg.locator('.tp-t').count()}
@@ -193,15 +193,31 @@ with sync_playwright() as pw:
     pg.fill('#tp-nl','ania_k\njan_n;haslo123\nleniwy\nania_k');pg.click('button:has-text("Utwórz konta")');pg.wait_for_timeout(800)
     t=pg.inner_text('.tp-add');res['dodawanie: wynik']={'utworzono':t.count('utworzono'),'ma_haslo_jan':'haslo123' in t,'wygenerowane_8':all(len(u['pw'])==8 for n,u in users.items() if n in('ania_k','leniwy'))}
     pg.click('button:has-text("Gotowe")');pg.wait_for_timeout(200)
-    res['uczniowie: wiersze']=pg.locator('.tp-tb tbody tr').count()
-    pg.click('.tp-tb tbody tr >> nth=0');pg.wait_for_timeout(500)
+    res['uczniowie: wiersze']=pg.locator('.tp-st').count()
+    pg.click('.tp-st .tp-nm >> nth=0');pg.wait_for_timeout(500)
     res['szczegoly']={'kat':'Zwierzęta' in pg.inner_text('#tp-det'),'trudne':'cat' in pg.inner_text('#tp-det'),'wl':'1:35' in pg.inner_text('#tp-det')}
     pg.fill('#tp-pw','abc');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(150);res['reset: krotkie']=pg.inner_text('#tp-m')
     pg.fill('#tp-pw','nowe1234');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(500);res['reset: ok']={'msg':pg.inner_text('#tp-m'),'haslo':users['ania_k']['pw']}
     pg.click('#tp-det button:has-text("Usuń z klasy")');pg.wait_for_timeout(150);pot=pg.is_visible('text=Kliknij jeszcze raz');pg.click('#tp-det button.dng');pg.wait_for_timeout(700)
-    res['usuniecie ucznia']={'potwierdzenie':pot,'zostalo':pg.locator('.tp-tb tbody tr').count()}
-    pg.click('.tp-tabs button:has-text("Przegląd")');pg.wait_for_timeout(300)
-    ov=pg.inner_text('#t-body');res['przeglad']={'trudne':'fish' in ov,'nieaktywni':'leniwy' in ov.split('Bez aktywności')[1],'slupki':pg.locator('.tp-bars i').count()}
+    res['usuniecie ucznia']={'potwierdzenie':pot,'zostalo':pg.locator('.tp-st').count()}
+    pg.click('.tp-tabs button:has-text("Dziś")');pg.wait_for_timeout(300)
+    ov=pg.inner_text('#t-body');res['przeglad']={'trudne':'fish' in ov,'uwaga':'leniwy' in ov.split('Wymaga uwagi')[1].split('Aktywność klasy')[0] and 'jeszcze nie zaczął' in ov,'slupki':pg.locator('.tp-bars i').count(),'kod':pg.inner_text('#tp-code')}
+    pg.click('#tp-hard');pg.wait_for_timeout(900)
+    hc=[c for c in cats if c['name'].startswith('Trudne')]
+    res['trudne: zadanie']={'kat_prywatna':[(c['is_public'],len(c['words'])) for c in hc],'zadanie':[(a['title'],a['category_id']==hc[0]['id'],a['targets']) for a in ASG],'zakladka':pg.locator('.tp-tabs button.on').inner_text()}
+    pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
+    pg.fill('#tp-q','jan');res['szukaj']=pg.locator('.tp-st').count();pg.fill('#tp-q','')
+    pg.select_option('#tp-so','last');res['sort po aktywnosci: pierwszy']=pg.locator('.tp-st .tp-nm').first.inner_text().split(' ')[0]
+    pg.click('.tp-flt button:has-text("Nieaktywni")');res['filtr nieaktywni']=pg.locator('.tp-st').count();pg.click('.tp-flt button:has-text("Wszyscy")')
+    pg.check('.tp-st:has-text("jan_n") input');res['pasek akcji']=pg.is_visible('.tp-bulk')
+    pg.click('button:has-text("Zadaj zadanie wybranym")');pg.wait_for_timeout(200);res['formularz dla wybranych']='jan_n' in pg.inner_text('.tp-add')
+    pg.fill('#ta-t','Tylko Jan');pg.click('button:has-text("Zadaj wybranym")');pg.wait_for_timeout(700)
+    res['zadanie celowane']=[(a['title'],a['targets']==[next(u['id'] for n,u in users.items() if n=='jan_n')]) for a in ASG if a['title']=='Tylko Jan']
+    pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(200);res['lista zadan: podsumowanie']=pg.inner_text('.tp-a >> nth=0')[:140]
+    pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
+    pg.check('.tp-st:has-text("leniwy") input');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(150);pot2=pg.is_visible('text=Kliknij jeszcze raz: usunąć');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(700)
+    res['usuniecie zaznaczonych']={'potwierdzenie':pot2,'zostalo':pg.locator('.tp-st').count()}
+    pg.click('.tp-tabs button:has-text("Dziś")');pg.wait_for_timeout(200)
     pg.screenshot(path=S+'/panel-ov.png',full_page=True)
     # zadania
     pg.click('.tp-tabs button:has-text("Zadania")');pg.click('button:has-text("Nowe zadanie")');pg.fill('#ta-t','Zwierzaki');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)

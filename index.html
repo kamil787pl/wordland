@@ -521,6 +521,16 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 #tp-m{min-height:20px;margin:8px 0 0;font-weight:600;color:var(--red)}#tp-m.ok{color:var(--grn,#1b7a45)}
 @media(max-width:640px){.tp-tiles{grid-template-columns:repeat(2,1fr)}.tp-code{font-size:28px}}
 .ptsfx{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:60;font:800 22px "Figtree",system-ui,sans-serif;color:#fff;background:var(--grn);padding:6px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.25);pointer-events:none;animation:ptsup .9s ease-out forwards}@keyframes ptsup{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}20%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-36px)}}@media(prefers-reduced-motion:reduce){.ptsfx{animation:none;opacity:.95}}
+
+.tp-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tp-ci{display:flex;flex-direction:column;margin-right:auto}.tp-ci .tp-code{margin:0;font-size:26px}
+.tp-set summary{cursor:pointer;font-weight:800;display:flex;align-items:center;gap:8px;list-style:none}.tp-set summary::-webkit-details-marker{display:none}.tp-set[open] summary{margin-bottom:8px}
+.tp-nm{font:800 14px "Figtree",system-ui,sans-serif;background:none;border:0;padding:4px 0;color:var(--pri-d);cursor:pointer;text-align:left}.tp-nm:hover{text-decoration:underline}
+.tp-flt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}.tp-flt input{flex:1;min-width:140px;padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit;font-size:16px}.tp-flt select{width:auto!important;min-width:150px}.tp-flt .seg{margin:0}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tp-bulk{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding:10px 12px;background:var(--pri-t);border-radius:12px;position:sticky;top:72px;z-index:5}
+.tp-sl{margin-top:8px}.tp-sh,.tp-st{display:grid;grid-template-columns:34px minmax(110px,1.4fr) repeat(7,minmax(70px,1fr));gap:6px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--line);font-size:14px}.tp-sh{font-size:12px;color:var(--mut);font-weight:700}.tp-st.on{background:var(--pri-t)}
+.tp-ck{display:flex;align-items:center;justify-content:center;min-width:34px;min-height:34px;margin:0!important}.tp-ck input{width:18px;height:18px}
+@media(max-width:760px){.tp-sh{display:none}.tp-st{grid-template-columns:34px 1fr 1fr;row-gap:4px;padding:10px 6px}.tp-st .tp-nm{grid-column:2/4}.tp-st span[data-l]{grid-column:span 1;font-size:13px}.tp-st span[data-l]::before{content:attr(data-l)": ";color:var(--mut);font-size:12px}.tp-st .tp-ck{grid-row:1/span 5;align-self:start}.tp-bulk{top:130px}}
 </style>
 </head>
 <body>
@@ -1609,9 +1619,9 @@ function myAsgHTML(all){
     return '<div class="crow"><span class="ct"><b>'+esc(x.title)+'</b> <span class="lg">'+esc(x.class_name)+' · '+(x.kind==='category'?'kategoria':'WordLinks')+(x.due?' · termin: '+tpDue(x.due):'')+'</span>'+(late?' <span class="tag2" style="background:#fbe9eb;color:var(--red)">po terminie</span>':'')+'</span>'
      +(x.done?'<span class="tag2">'+(x.kind==='wordlinks'?(x.won?'✅ '+cnFmt(x.ms):'❌ nieudane'):'✅ zrobione')+'</span>':'<button class="gbtn" style="padding:7px 14px;font-size:14px" onclick="asgGo(\''+x.id+'\')">Zrób zadanie</button>')+'</div>'}).join('')+'</div>';
 }
-function asgGo(id){
+async function asgGo(id){
   const a=(MY.asg||[]).find(x=>x.id===id);if(!a||a.done)return;
-  if(a.kind==='category'){const i=CATS.findIndex(c=>c.id===a.category_id);if(i<0)return;show('game');start(i);return}
+  if(a.kind==='category'){let i=CATS.findIndex(c=>c.id===a.category_id);if(i<0){await loadBank();i=CATS.findIndex(c=>c.id===a.category_id)}if(i<0)return;show('game');start(i);return}
   const g=cnFromObj({g:a.groups,t:0,f:''});if(!g)return;
   g.mode='asg';g.aid=id;g.title=cl(a.title,60);CN=g;CNmode='asg';show('conn');
 }
@@ -1639,14 +1649,15 @@ function myClassHTML(){
    +'<div class="tp-row" style="margin-top:8px"><input id="my-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Kod klasy" placeholder="Kod klasy, np. K7M2QX" onkeydown="if(event.key===\'Enter\')myJoin()"><button class="nb" onclick="myJoin()">Dołącz</button></div><p id="my-m" role="status" style="min-height:20px;margin:6px 0 0;font-weight:600;color:var(--red)"></p></div>';
 }
 /* ===== PANEL NAUCZYCIELA: klasy, uczniowie, zadania ===== */
-const TP={tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,open:null,del:null,busy:0,ast:{}};
-const TPE={forbidden:'Brak uprawnień do tej klasy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit klas.'};
+const TP={tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,tg:null,open:null,del:null,busy:0,ast:{},q:'',sort:'nick',fil:'all',sel:new Set(),delSel:0,hmsg:''};
+const TPE={forbidden:'Brak uprawnień do tej klasy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit klas.',targets:'Wybrani uczniowie nie są w tej klasie.'};
 const tpGen=()=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(const x of crypto.getRandomValues(new Uint8Array(8)))s+=a[x%a.length];return s};
 const tpCur=()=>(TP.cls||[]).find(c=>c.id===TP.cur);
 const tpSum=(a,k)=>a.reduce((s,x)=>s+(x[k]||0),0);
 const tpPct=(a,b)=>b?Math.round(100*a/b)+'%':'–';
 function tpMsg(t,ok){const e=$('tp-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
-const tpDay=d=>{if(!d)return'nigdy';const n=Math.round((new Date(ymd(new Date())+'T00:00:00')-new Date(d+'T00:00:00'))/864e5);return n<=0?'dziś':n===1?'wczoraj':n+' dni temu'};
+const tpDayN=d=>d?Math.round((new Date(ymd(new Date())+'T00:00:00')-new Date(d+'T00:00:00'))/864e5):null;
+const tpDay=d=>{const n=tpDayN(d);return n==null?'nigdy':n<=0?'dziś':n===1?'wczoraj':n+' dni temu'};
 async function tpInit(){
   if(TP.busy)return;TP.busy=1;
   try{const r=await sb.from('classes').select('id,name,code,archived').order('created_at');if(r.error)throw r.error;TP.cls=r.data||[];
@@ -1655,16 +1666,17 @@ async function tpInit(){
   TP.busy=0;await tpLoad();
 }
 async function tpLoad(){
-  TP.d=null;TP.det=null;TP.open=null;TP.del=null;TP.add=null;
+  TP.d=null;TP.det=null;TP.open=null;TP.del=null;TP.add=null;TP.sel=new Set();TP.delSel=0;TP.ast={};TP.tg=null;
   if(TP.cur){
-    try{const [s,h,a,as]=await Promise.all([sb.rpc('class_students',{p_class:TP.cur}),sb.rpc('class_hard_words',{p_class:TP.cur}),sb.rpc('class_activity',{p_class:TP.cur}),sb.from('assignments').select('id,kind,title,category_id,groups,due,created_at').eq('class_id',TP.cur).order('created_at',{ascending:false})]);
-      TP.d={s:s.data||[],h:h.data||[],a:a.data||[],as:as.data||[]}}
-    catch(e){TP.d={s:[],h:[],a:[],as:[]}}
+    try{const [s,h,a,as]=await Promise.all([sb.rpc('class_students',{p_class:TP.cur}),sb.rpc('class_hard_words',{p_class:TP.cur}),sb.rpc('class_activity',{p_class:TP.cur}),sb.from('assignments').select('id,kind,title,category_id,groups,due,targets,created_at').eq('class_id',TP.cur).order('created_at',{ascending:false})]);
+      TP.d={s:s.data||[],h:h.data||[],a:a.data||[],as:as.data||[]};
+      await Promise.all(TP.d.as.slice(0,12).map(async x=>{try{const r=await sb.rpc('assignment_status',{p_id:x.id});TP.ast[x.id]=r.data||[]}catch(e){}}));
+    }catch(e){TP.d={s:[],h:[],a:[],as:[]}}
   }else TP.d={s:[],h:[],a:[],as:[]};
   if(view==='teach')renderTeach();
 }
 async function tpReload(){TP.cls=null;TP.d=null;renderTeach()}
-function tpPick(v){TP.cur=v;tpLoad();TP.d=null;renderTeach()}
+function tpPick(v){TP.cur=v;tpLoad();renderTeach()}
 function tpTab(t){tSync();TP.tab=t;TP.del=null;renderTeach()}
 async function tpNewClass(){
   const n=cl($('tp-nn').value,40);if(!n)return tpMsg('Podaj nazwę klasy.');
@@ -1682,39 +1694,89 @@ async function tpDelClass(){
   try{const r=await sb.rpc('class_delete',{p_class:TP.cur});if(r.error)throw r.error;TP.cur=null;await tpReload()}catch(e){tpMsg('Nie udało się usunąć klasy.')}
 }
 async function tpCopy(t,msg){try{await navigator.clipboard.writeText(t);tpMsg(msg||'Skopiowano.',1)}catch(e){tpMsg('Nie udało się skopiować.')}}
-function tpClassPanel(c){
-  return '<div class="panel"><h4>'+ic('cap')+'Klasa: '+esc(c.name)+(c.archived?' <span class="tag2">archiwum</span>':'')+'</h4>'
-   +'<p class="lg" style="margin:0">Kod klasy dla uczniów (wpisują go w profilu):</p><div class="tp-code" id="tp-code">'+esc(c.code)+'</div>'
-   +'<div class="wa"><button class="nb" onclick="tpCopy(tpCur().code,\'Kod skopiowany.\')">Kopiuj kod</button><button class="nb" onclick="tpNewCode()">Nowy kod</button><button class="nb" onclick="tpArch()">'+(c.archived?'Przywróć klasę':'Archiwizuj')+'</button><button class="nb dng" onclick="tpDelClass()">'+ic('trash')+(TP.del==='class'?'Kliknij jeszcze raz, aby usunąć':'Usuń klasę')+'</button></div>'
-   +'<label for="tp-rn">Nazwa klasy</label><div class="tp-row"><input id="tp-rn" type="text" maxlength="40" value="'+esc(c.name)+'"><button class="nb" onclick="tpRename()">Zapisz nazwę</button></div></div>';
+function tpSettings(c){
+  return '<details class="panel tp-set"><summary>'+ic('tool')+'Ustawienia klasy'+(c.archived?' <span class="tag2">archiwum</span>':'')+'</summary>'
+   +'<div class="wa"><button class="nb" onclick="tpNewCode()">Nowy kod klasy</button><button class="nb" onclick="tpArch()">'+(c.archived?'Przywróć klasę':'Archiwizuj')+'</button><button class="nb dng" onclick="tpDelClass()">'+ic('trash')+(TP.del==='class'?'Kliknij jeszcze raz, aby usunąć':'Usuń klasę')+'</button></div>'
+   +'<label for="tp-rn">Nazwa klasy</label><div class="tp-row"><input id="tp-rn" type="text" maxlength="40" value="'+esc(c.name)+'"><button class="nb" onclick="tpRename()">Zapisz nazwę</button></div></details>';
+}
+/* uczniowie, którzy mają niezrobione zadania po terminie */
+function tpOverdue(){
+  const t=ymd(new Date()),m={};
+  (TP.d.as||[]).filter(a=>a.due&&a.due<t).forEach(a=>(TP.ast[a.id]||[]).forEach(r=>{if(!r.done)(m[r.user_id]=m[r.user_id]||[]).push(a.title)}));
+  return m;
+}
+function tpAttention(){
+  const od=tpOverdue(),out=[];
+  TP.d.s.forEach(x=>{
+    const r=[],n=tpDayN(x.last_day);
+    if(x.answers_7d===0)r.push(n==null?'jeszcze nie zaczął':'brak aktywności od '+n+' dni');
+    if(od[x.user_id])r.push('po terminie: '+od[x.user_id].map(esc).join(', '));
+    if(x.answers>=20&&x.correct/x.answers<.5)r.push('skuteczność '+tpPct(x.correct,x.answers));
+    if(r.length)out.push([x,r]);
+  });
+  return out;
 }
 function tpOv(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
-  const s=d.s,act=s.filter(x=>x.answers_7d>0),ina=s.filter(x=>x.answers_7d===0);
+  const s=d.s,act=s.filter(x=>x.answers_7d>0),att=tpAttention();
   const mx=Math.max(1,...d.a.map(x=>x.answers)),by={};d.a.forEach(x=>by[x.day]=x);
   const days=[];for(let i=13;i>=0;i--){const t=new Date();t.setDate(t.getDate()-i);days.push(ymd(t))}
   const bars=days.map(k=>{const x=by[k]||{answers:0,active:0};return '<i style="height:'+Math.max(3,Math.round(100*x.answers/mx))+'%" title="'+k.slice(5).replace('-','.')+': '+x.answers+' odp., '+x.active+' uczn."></i>'}).join('');
-  return tpClassPanel(c)
+  const open=d.as.filter(a=>!a.due||a.due>=ymd(new Date())).length;
+  return '<div class="panel tp-top"><span class="tp-ci"><span class="lg">Kod klasy</span><b class="tp-code" id="tp-code">'+esc(c.code)+'</b></span><button class="nb" onclick="tpCopy(tpCur().code,\'Kod skopiowany.\')">Kopiuj kod</button><button class="nb" onclick="TP.tab=\'stu\';TP.add={};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button><span id="tp-m" role="status"></span></div>'
    +'<div class="tp-tiles"><div class="tp-t"><b>'+s.length+'</b>uczniów</div><div class="tp-t"><b>'+act.length+'</b>aktywnych (7 dni)</div><div class="tp-t"><b>'+tpSum(s,'answers_7d')+'</b>odpowiedzi (7 dni)</div><div class="tp-t"><b>'+tpPct(tpSum(s,'correct'),tpSum(s,'answers'))+'</b>skuteczność</div></div>'
+   +'<div class="panel tp-att"><h4>'+ic('alert')+'Wymaga uwagi ('+att.length+')</h4>'+(att.length?att.map(([x,r])=>'<div class="crow"><button class="tp-nm" onclick="tpOpen(\''+x.user_id+'\')">'+esc(x.nick)+'</button><span class="ct lg">'+r.join(' · ')+'</span></div>').join(''):'<p class="lg" style="margin:0">'+(s.length?'Wszystko w porządku: nikt nie odstaje od klasy. ✅':'Klasa nie ma jeszcze uczniów.')+'</p>')+'</div>'
    +'<div class="panel"><h4>'+ic('target')+'Aktywność klasy (14 dni)</h4>'+(d.a.length?'<div class="tp-bars" role="img" aria-label="Odpowiedzi dziennie">'+bars+'</div><div class="tp-ax"><span>'+days[0].slice(5).replace('-','.')+'</span><span>dziś</span></div>':'<p class="lg">Brak aktywności w ostatnich 14 dniach.</p>')+'</div>'
-   +'<div class="panel"><h4>'+ic('alert')+'Najtrudniejsze słówka klasy</h4>'+(d.h.length?d.h.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span><span class="lg">'+tpPct(w.hit,w.hit+w.wrong)+' trafnych</span></div>').join(''):'<p class="lg">Jeszcze brak błędów do pokazania.</p>')+'</div>'
-   +'<div class="panel"><h4>'+ic('user')+'Bez aktywności od 7 dni ('+ina.length+')</h4>'+(ina.length?'<div class="tp-chips">'+ina.map(x=>'<span class="tag2" title="Ostatnio: '+tpDay(x.last_day)+'">'+esc(x.nick)+'</span>').join('')+'</div>':'<p class="lg">'+(s.length?'Wszyscy uczniowie byli aktywni w tym tygodniu.':'Klasa nie ma jeszcze uczniów.')+'</p>')+'</div>';
+   +'<div class="panel"><h4>'+ic('book')+'Najtrudniejsze słówka klasy</h4>'+(d.h.length?d.h.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span><span class="lg">'+tpPct(w.hit,w.hit+w.wrong)+' trafnych</span></div>').join('')+'<div class="wa"><button class="gbtn" id="tp-hard" onclick="tpHardTask()"'+(d.h.length<4||c.archived?' disabled':'')+'>'+ic('target')+'Zadaj te słówka klasie</button></div><p class="lg" style="margin:4px 0 0">'+(d.h.length<4?'Potrzeba co najmniej 4 trudnych słówek.':'Powstanie prywatna kategoria z tych słówek i zadanie dla całej klasy.')+'</p>':'<p class="lg">Jeszcze brak błędów do pokazania.</p>')+'<p class="lg" id="tp-hm">'+esc(TP.hmsg)+'</p></div>'
+   +tpSettings(c);
+}
+function tpOpen(id){TP.tab='stu';TP.q='';TP.fil='all';renderTeach();tpDetail(id)}
+async function tpHardTask(){
+  const c=tpCur(),w=TP.d.h.slice(0,10);if(w.length<4||c.archived)return;
+  const b=$('tp-hard');if(b)b.disabled=true;TP.hmsg='Tworzę zadanie…';const hm=$('tp-hm');if(hm)hm.textContent=TP.hmsg;
+  try{
+    const t=new Date(),lab=t.getDate()+'.'+String(t.getMonth()+1).padStart(2,'0');
+    const r=await sb.from('categories').insert({slug:'u-'+U.id.slice(0,6)+'-'+Date.now().toString(36),name:cl('Trudne: '+c.name,40),emoji:'🎯',level:null,no_hint:false,is_public:false,owner:U.id,sort:100}).select('id').single();if(r.error)throw r.error;
+    const q=await sb.from('words').insert(w.map(x=>({category_id:r.data.id,pl:cl(x.pl,40),en:cl(x.en,40)})));if(q.error)throw q.error;
+    const a=await sb.rpc('assignment_create',{p_class:c.id,p_kind:'category',p_title:'Trudne słówka '+lab,p_category:r.data.id,p_groups:null,p_due:null,p_targets:null});if(a.error)throw a.error;
+    await loadBank();TP.hmsg='Zadanie utworzone: '+w.length+' słówek dla całej klasy.';TP.tab='asg';await tpLoad();
+  }catch(e){TP.hmsg='Nie udało się utworzyć zadania.';if(b)b.disabled=false;const h=$('tp-hm');if(h)h.textContent=TP.hmsg}
 }
 /* uczniowie */
+function tpFiltered(){
+  const od=tpOverdue(),q=TP.q.trim().toLowerCase();
+  let a=TP.d.s.filter(x=>(!q||x.nick.includes(q))&&(TP.fil==='all'||(TP.fil==='inactive'&&x.answers_7d===0)||(TP.fil==='overdue'&&od[x.user_id])));
+  const acc=x=>x.answers?x.correct/x.answers:-1,S={nick:(x,y)=>x.nick.localeCompare(y.nick),last:(x,y)=>(y.last_day||'').localeCompare(x.last_day||''),acc:(x,y)=>acc(x)-acc(y),a7:(x,y)=>y.answers_7d-x.answers_7d};
+  return a.sort(S[TP.sort]||S.nick);
+}
+function tpRows(){
+  const a=tpFiltered(),n=TP.sel.size,od=tpOverdue();
+  const bulk=n?'<div class="tp-bulk" role="region" aria-label="Akcje dla zaznaczonych"><b>Zaznaczono: '+n+'</b><button class="nb" onclick="tpAssignSel()">'+ic('target')+'Zadaj zadanie wybranym</button><button class="nb" onclick="tpCsv()">Eksport CSV</button><button class="nb dng" onclick="tpRemoveSel()">'+ic('trash')+(TP.delSel?'Kliknij jeszcze raz: usunąć '+n+'?':'Usuń z klasy')+'</button><button class="nb" onclick="TP.sel=new Set();TP.delSel=0;tpList()">Odznacz</button></div>':'';
+  if(!a.length)return bulk+'<p class="lg">'+(TP.d.s.length?'Nikt nie pasuje do filtra.':'Brak uczniów. Dodaj ich albo podaj im kod klasy.')+'</p>';
+  const all=a.every(x=>TP.sel.has(x.user_id));
+  return bulk+'<div class="tp-sl" role="list"><div class="tp-sh" aria-hidden="true"><label class="tp-ck"><input type="checkbox" aria-label="Zaznacz wszystkich widocznych"'+(all?' checked':'')+' onchange="tpSelAll(this.checked)"></label><span>Nick</span><span>Ostatnio</span><span>Odp. 7 dni</span><span>Skuteczność</span><span>Opanowane</span><span>⭐</span><span>WordLinks</span><span>Zadania</span></div>'
+   +a.map(x=>'<div class="tp-st'+(TP.sel.has(x.user_id)?' on':'')+'" role="listitem"><label class="tp-ck"><input type="checkbox" aria-label="Zaznacz '+esc(x.nick)+'"'+(TP.sel.has(x.user_id)?' checked':'')+' onchange="tpSelOne(\''+x.user_id+'\',this.checked)"></label>'
+     +'<button class="tp-nm" onclick="tpDetail(\''+x.user_id+'\')">'+esc(x.nick)+(od[x.user_id]?' <span class="tag2" style="background:#fbe9eb;color:var(--red)">po terminie</span>':'')+'</button>'
+     +'<span data-l="Ostatnio">'+tpDay(x.last_day)+'</span><span data-l="Odp. 7 dni">'+x.answers_7d+'</span><span data-l="Skuteczność">'+tpPct(x.correct,x.answers)+'</span><span data-l="Opanowane">'+x.mastered+'</span><span data-l="⭐">'+x.stars+'</span><span data-l="WordLinks">'+(x.wl_best?cnFmt(x.wl_best):'–')+'</span><span data-l="Zadania">'+x.done+'</span></div>').join('')+'</div>';
+}
+function tpList(){const e=$('tp-list');if(e)e.innerHTML=tpRows()}
+function tpSelOne(id,on){on?TP.sel.add(id):TP.sel.delete(id);TP.delSel=0;tpList()}
+function tpSelAll(on){tpFiltered().forEach(x=>on?TP.sel.add(x.user_id):TP.sel.delete(x.user_id));TP.delSel=0;tpList()}
 function tpStu(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
-  const rows=d.s.map(x=>'<tr tabindex="0" role="button" onclick="tpDetail(\''+x.user_id+'\')" onkeydown="if(event.key===\'Enter\')tpDetail(\''+x.user_id+'\')"><td><b>'+esc(x.nick)+'</b></td><td>'+tpDay(x.last_day)+'</td><td>'+x.answers_7d+'</td><td>'+tpPct(x.correct,x.answers)+'</td><td>'+x.mastered+'</td><td>'+x.stars+'</td><td>'+(x.wl_best?cnFmt(x.wl_best):'–')+'</td><td>'+x.done+'</td></tr>').join('');
   return '<div class="panel"><h4>'+ic('user')+'Uczniowie ('+d.s.length+')</h4><div class="wa" style="margin-top:0"><button class="gbtn" onclick="TP.add=TP.add?null:{};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button>'+(d.s.length?'<button class="nb" onclick="tpCsv()">Eksport CSV</button>':'')+'</div><p class="lg">Uczniowie mogą też dołączyć sami kodem klasy: <b>'+esc(c.code)+'</b>.</p>'
    +(TP.add?tpAddHTML():'')
-   +(d.s.length?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Nick</th><th>Ostatnio</th><th>Odp. 7 dni</th><th>Skuteczność</th><th>Opanowane</th><th>⭐</th><th>WordLinks</th><th>Zadania</th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="lg">Kliknij ucznia, aby zobaczyć szczegóły.</p>':'<p class="lg">Brak uczniów. Dodaj ich albo podaj im kod klasy.</p>')
+   +(d.s.length?'<div class="tp-flt"><label class="vh" for="tp-q">Szukaj ucznia</label><input id="tp-q" type="text" placeholder="Szukaj nicku…" value="'+esc(TP.q)+'" oninput="TP.q=this.value;tpList()" autocomplete="off">'
+     +'<label class="vh" for="tp-so">Sortuj</label><select id="tp-so" onchange="TP.sort=this.value;tpList()">'+[['nick','Sortuj: nick'],['last','Ostatnia aktywność'],['acc','Najsłabsza skuteczność'],['a7','Najwięcej odpowiedzi (7 dni)']].map(o=>'<option value="'+o[0]+'"'+(TP.sort===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>'
+     +'<div class="seg" role="group" aria-label="Filtr">'+[['all','Wszyscy'],['inactive','Nieaktywni'],['overdue','Po terminie']].map(o=>'<button type="button" class="'+(TP.fil===o[0]?'on':'')+'" aria-pressed="'+(TP.fil===o[0])+'" onclick="TP.fil=\''+o[0]+'\';renderTeach()">'+o[1]+'</button>').join('')+'</div></div><div id="tp-list">'+tpRows()+'</div><p class="lg">Kliknij nick, aby zobaczyć szczegóły. Zaznacz kilku uczniów, aby zadać im zadanie albo ich usunąć.</p>':'<p class="lg">Brak uczniów. Dodaj ich albo podaj im kod klasy.</p>')
    +'</div>'+(TP.det?tpDetHTML():'');
 }
+const TPS={nick:'zły nick',password:'hasło min. 6 znaków',taken:'nick zajęty',member:'nie dodano do klasy',server:'błąd serwera'};
 function tpAddHTML(){
   const a=TP.add;
   if(a.res)return '<div class="panel tp-add"><h4>Utworzone konta</h4><p class="lg">Zapisz hasła teraz: po zamknięciu nie będzie ich już widać (możesz je później zmienić).</p><div class="tp-tw"><table class="tp-tb"><thead><tr><th>Nick</th><th>Hasło</th><th>Wynik</th></tr></thead><tbody>'+a.res.map(r=>'<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.ok?'<code>'+esc(r.pw)+'</code>':'–')+'</td><td>'+(r.ok?'✅ utworzono':'⚠️ '+esc(TPS[r.error]||'błąd'))+'</td></tr>').join('')+'</tbody></table></div><div class="wa"><button class="nb" onclick="tpCopyRes()">Kopiuj listę</button><button class="nb" onclick="tpCsvRes()">Pobierz CSV</button><button class="gbtn" onclick="TP.add=null;renderTeach()">Gotowe</button></div></div>';
   return '<div class="panel tp-add"><h4>Dodaj uczniów</h4><p class="lg" style="margin:0 0 6px">Jeden uczeń w wierszu: <b>nick</b> albo <b>nick;hasło</b>. Bez hasła zostanie wygenerowane. Nick: 3–16 znaków, małe litery, cyfry i _. Maks. 40 naraz.</p><label for="tp-nl">Lista uczniów</label><textarea id="tp-nl" spellcheck="false" placeholder="ania_k&#10;jan_n;haslo123&#10;ola5"></textarea><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpCreate()">Utwórz konta</button><button class="nb" onclick="TP.add=null;renderTeach()">Anuluj</button></div></div>';
 }
-const TPS={nick:'zły nick',password:'hasło min. 6 znaków',taken:'nick zajęty',member:'nie dodano do klasy',server:'błąd serwera'};
 async function tpCreate(){
   const lines=$('tp-nl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),seen=new Set(),st=[];
   for(const l of lines){const [n0,p0]=l.split(/[;\t]/),n=(n0||'').trim().toLowerCase();if(seen.has(n))continue;seen.add(n);if(!nickOK(n))return tpMsg('Zły nick: „'+cl(n0,20)+'”. Dozwolone 3–16 znaków: a–z, 0–9, _.');const p=(p0||'').trim()||tpGen();if(p.length<6)return tpMsg('Hasło dla '+n+' musi mieć min. 6 znaków.');st.push({nick:n,password:p})}
@@ -1736,7 +1798,14 @@ function tpDl(name,rows){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
 }
 function tpCsvRes(){tpDl('konta-uczniow.csv',[['nick','haslo']].concat(TP.add.res.filter(r=>r.ok).map(r=>[r.nick,r.pw])))}
-function tpCsv(){const c=tpCur();tpDl('klasa-'+c.code+'.csv',[['nick','ostatnio','odpowiedzi_7_dni','odpowiedzi_razem','skutecznosc','opanowane','gwiazdki','wordlinks_najlepszy','ukonczone_zadania']].concat(TP.d.s.map(x=>[x.nick,x.last_day||'',x.answers_7d,x.answers,tpPct(x.correct,x.answers),x.mastered,x.stars,x.wl_best?cnFmt(x.wl_best):'',x.done])))}
+function tpCsv(){const c=tpCur(),rows=TP.sel.size?TP.d.s.filter(x=>TP.sel.has(x.user_id)):TP.d.s;tpDl('klasa-'+c.code+'.csv',[['nick','ostatnio','odpowiedzi_7_dni','odpowiedzi_razem','skutecznosc','opanowane','gwiazdki','wordlinks_najlepszy','ukonczone_zadania']].concat(rows.map(x=>[x.nick,x.last_day||'',x.answers_7d,x.answers,tpPct(x.correct,x.answers),x.mastered,x.stars,x.wl_best?cnFmt(x.wl_best):'',x.done])))}
+async function tpRemoveSel(){
+  if(!TP.delSel){TP.delSel=1;return tpList()}
+  const ids=[...TP.sel];let bad=0;
+  for(const id of ids){try{const r=await sb.rpc('class_remove_student',{p_class:TP.cur,p_user:id});if(r.error)bad++}catch(e){bad++}}
+  await tpLoad();if(bad)tpMsg('Nie udało się usunąć: '+bad+'.');
+}
+function tpAssignSel(){TP.tg=[...TP.sel];TP.asgNew='category';TP.tab='asg';renderTeach()}
 async function tpDetail(id){
   const s=TP.d.s.find(x=>x.user_id===id);TP.det={id,nick:s.nick,d:null,del:0};renderTeach();
   try{const r=await sb.rpc('student_detail',{p_class:TP.cur,p_user:id});if(r.error)throw r.error;TP.det.d=r.data}catch(e){TP.det.err=1}
@@ -1775,22 +1844,26 @@ const tpDue=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pl-PL',{day:'numeri
 function tpAsg(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
   const cats=CATS.filter(x=>!x.tmp&&x.w.length>=4),opt=cats.map(x=>'<option value="'+x.id+'">'+esc(x.e)+' '+esc(x.n)+(x.l?' ('+x.l+')':'')+'</option>').join('');
-  const form=TP.asgNew?'<div class="panel tp-add"><h4>Nowe zadanie</h4><div class="seg" role="group" aria-label="Rodzaj zadania"><button type="button" class="'+(TP.asgNew==='category'?'on':'')+'" onclick="TP.asgNew=\'category\';renderTeach()">Kategoria do przerobienia</button><button type="button" class="'+(TP.asgNew==='wordlinks'?'on':'')+'" onclick="TP.asgNew=\'wordlinks\';renderTeach()">Łamigłówka WordLinks</button></div>'
+  const form=TP.asgNew?'<div class="panel tp-add"><h4>Nowe zadanie</h4>'
+    +(TP.tg?'<p class="lg" style="margin:0 0 6px">Dla wybranych uczniów: <b>'+TP.tg.map(id=>esc((d.s.find(x=>x.user_id===id)||{}).nick)).join(', ')+'</b> <button type="button" class="nb" onclick="TP.tg=null;renderTeach()">Dla całej klasy</button></p>':'<p class="lg" style="margin:0 0 6px">Dla całej klasy. (Aby zadać wybranym uczniom, zaznacz ich w zakładce Uczniowie.)</p>')
+    +'<div class="seg" role="group" aria-label="Rodzaj zadania"><button type="button" class="'+(TP.asgNew==='category'?'on':'')+'" onclick="TP.asgNew=\'category\';renderTeach()">Kategoria do przerobienia</button><button type="button" class="'+(TP.asgNew==='wordlinks'?'on':'')+'" onclick="TP.asgNew=\'wordlinks\';renderTeach()">Łamigłówka WordLinks</button></div>'
     +'<label for="ta-t">Tytuł</label><input id="ta-t" type="text" maxlength="60" placeholder="np. Zwierzęta na piątek">'
-    +(TP.asgNew==='category'?'<label for="ta-c0">Kategoria</label><select id="ta-c0">'+opt+'</select>':'<p class="lg" style="margin:8px 0 0">Wybierz 4 różne kategorie. Słówka zostaną wylosowane raz, więc cała klasa dostanie tę samą planszę. Uczeń ma jedną próbę.</p>'+[0,1,2,3].map(i=>'<label for="ta-c'+i+'">Grupa '+(i+1)+'</label><select id="ta-c'+i+'">'+opt+'</select>').join(''))
-    +'<label for="ta-d">Termin (opcjonalnie)</label><input id="ta-d" type="date" style="padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit"><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpAsgSave()">Zadaj klasie</button><button class="nb" onclick="TP.asgNew=0;renderTeach()">Anuluj</button></div></div>':'';
+    +(TP.asgNew==='category'?'<label for="ta-c0">Kategoria</label><select id="ta-c0">'+opt+'</select>':'<p class="lg" style="margin:8px 0 0">Wybierz 4 różne kategorie. Słówka zostaną wylosowane raz, więc wszyscy dostaną tę samą planszę. Uczeń ma jedną próbę.</p>'+[0,1,2,3].map(i=>'<label for="ta-c'+i+'">Grupa '+(i+1)+'</label><select id="ta-c'+i+'">'+opt+'</select>').join(''))
+    +'<label for="ta-d">Termin (opcjonalnie)</label><input id="ta-d" type="date" style="padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit"><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpAsgSave()">Zadaj '+(TP.tg?'wybranym':'klasie')+'</button><button class="nb" onclick="TP.asgNew=0;TP.tg=null;renderTeach()">Anuluj</button></div></div>':'';
+  const today=ymd(new Date());
   const list=d.as.map(a=>{
-    const o=TP.open===a.id,st=TP.ast[a.id];
-    return '<div class="tp-a"><div class="crow"><span class="ct"><b>'+esc(a.title)+'</b> <span class="tag2">'+(a.kind==='category'?'kategoria':'WordLinks')+'</span> <span class="lg">termin: '+tpDue(a.due)+'</span></span><button class="nb" onclick="tpAsgOpen(\''+a.id+'\')">'+(o?'Ukryj wyniki':'Wyniki')+'</button><button class="nb dng" aria-label="Usuń zadanie" onclick="tpAsgDel(\''+a.id+'\')">'+ic('trash')+(TP.del===a.id?'Na pewno?':'')+'</button></div>'
-     +(o?(st?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Uczeń</th><th>Stan</th><th>'+(a.kind==='wordlinks'?'Czas':'Gwiazdki')+'</th>'+(a.kind==='wordlinks'?'<th>Błędy</th>':'')+'</tr></thead><tbody>'+st.map(r=>'<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.done?(a.kind==='wordlinks'?(r.won?'✅ ułożone':'❌ nieudane'):'✅ zrobione'):'⏳ czeka')+'</td><td>'+(a.kind==='wordlinks'?(r.ms?cnFmt(r.ms):'–'):(r.stars||'–'))+'</td>'+(a.kind==='wordlinks'?'<td>'+(r.done?r.miss:'–')+'</td>':'')+'</tr>').join('')+'</tbody></table></div><p class="lg">Zrobiło: '+st.filter(r=>r.done).length+' z '+st.length+'</p>':'<p class="lg">Wczytuję…</p>'):'')+'</div>';
+    const o=TP.open===a.id,st=TP.ast[a.id],late=a.due&&a.due<today;
+    const sum=st?'<span class="tag2">'+st.filter(r=>r.done).length+'/'+st.length+' zrobiło</span>'+(late&&st.some(r=>!r.done)?'<span class="tag2" style="background:#fbe9eb;color:var(--red)">'+st.filter(r=>!r.done).length+' po terminie</span>':''):'';
+    return '<div class="tp-a"><div class="crow"><span class="ct"><b>'+esc(a.title)+'</b> <span class="tag2">'+(a.kind==='category'?'kategoria':'WordLinks')+'</span>'+(a.targets?'<span class="tag2">dla '+a.targets.length+' uczn.</span>':'')+' <span class="lg">termin: '+tpDue(a.due)+'</span> '+sum+'</span><button class="nb" onclick="tpAsgOpen(\''+a.id+'\')">'+(o?'Ukryj wyniki':'Wyniki')+'</button><button class="nb dng" aria-label="Usuń zadanie" onclick="tpAsgDel(\''+a.id+'\')">'+ic('trash')+(TP.del===a.id?'Na pewno?':'')+'</button></div>'
+     +(o?(st?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Uczeń</th><th>Stan</th><th>Kiedy</th><th>'+(a.kind==='wordlinks'?'Czas':'Gwiazdki')+'</th>'+(a.kind==='wordlinks'?'<th>Błędy</th>':'')+'</tr></thead><tbody>'+st.map(r=>{const dd=r.done_at?String(r.done_at).slice(0,10):'',lt=r.done&&a.due&&dd>a.due;return '<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.done?(a.kind==='wordlinks'?(r.won?'✅ ułożone':'❌ nieudane'):'✅ zrobione')+(lt?' (po terminie)':''):(late?'⚠️ po terminie':'⏳ czeka'))+'</td><td>'+(dd?tpDue(dd):'–')+'</td><td>'+(a.kind==='wordlinks'?(r.ms?cnFmt(r.ms):'–'):(r.done?r.stars:'–'))+'</td>'+(a.kind==='wordlinks'?'<td>'+(r.done?r.miss:'–')+'</td>':'')+'</tr>'}).join('')+'</tbody></table></div><p class="lg">Zrobiło: '+st.filter(r=>r.done).length+' z '+st.length+'. Zadanie kategorii liczy się od chwili zadania: gwiazdki zdobyte wcześniej nie są zaliczane.</p>':'<p class="lg">Wczytuję…</p>'):'')+'</div>';
   }).join('');
-  return '<div class="panel"><h4>'+ic('target')+'Zadania dla klasy ('+d.as.length+')</h4><div class="wa" style="margin-top:0">'+(c.archived?'<span class="lg">Klasa w archiwum.</span>':'<button class="gbtn" onclick="TP.asgNew=TP.asgNew?0:\'category\';renderTeach()">'+ic('plus')+'Nowe zadanie</button>')+'</div></div>'+form
-   +(d.as.length?'<div class="panel">'+list+'</div>':'<div class="panel"><p class="lg">Nie ma jeszcze zadań. Zadanie pojawi się uczniom na stronie głównej.</p></div>');
+  return '<div class="panel"><h4>'+ic('target')+'Zadania dla klasy ('+d.as.length+')</h4><div class="wa" style="margin-top:0">'+(c.archived?'<span class="lg">Klasa w archiwum.</span>':'<button class="gbtn" onclick="TP.asgNew=TP.asgNew?0:\'category\';TP.tg=null;renderTeach()">'+ic('plus')+'Nowe zadanie</button>')+'</div>'+(TP.hmsg?'<p class="lg">'+esc(TP.hmsg)+'</p>':'')+'</div>'+form
+   +(d.as.length?'<div class="panel">'+list+'</div>':'<div class="panel"><p class="lg">Nie ma jeszcze zadań. Zadanie pojawi się uczniom na stronie głównej i w profilu.</p></div>');
 }
 async function tpAsgOpen(id){
   if(TP.open===id){TP.open=null;return renderTeach()}
   TP.open=id;renderTeach();
-  try{const r=await sb.rpc('assignment_status',{p_id:id});if(r.error)throw r.error;TP.ast[id]=r.data||[]}catch(e){TP.ast[id]=[]}
+  if(!TP.ast[id]){try{const r=await sb.rpc('assignment_status',{p_id:id});if(r.error)throw r.error;TP.ast[id]=r.data||[]}catch(e){TP.ast[id]=[]}}
   renderTeach();
 }
 async function tpAsgDel(id){
@@ -1811,7 +1884,7 @@ async function tpAsgSave(){
   const kind=TP.asgNew,title=cl($('ta-t').value,60),due=$('ta-d').value||null;
   if(!title)return tpMsg('Podaj tytuł zadania.');
   const ids=[0,1,2,3].map(i=>$('ta-c'+i)).filter(Boolean).map(e=>+e.value);
-  let p={p_class:TP.cur,p_kind:kind,p_title:title,p_category:null,p_groups:null,p_due:due};
+  let p={p_class:TP.cur,p_kind:kind,p_title:title,p_category:null,p_groups:null,p_due:due,p_targets:TP.tg&&TP.tg.length?TP.tg:null};
   if(kind==='category')p.p_category=ids[0];
   else{
     if(new Set(ids).size<4)return tpMsg('Wybierz 4 różne kategorie.');
@@ -1819,11 +1892,11 @@ async function tpAsgSave(){
     p.p_groups=g;
   }
   tpMsg('Zapisuję…',1);
-  try{const r=await sb.rpc('assignment_create',p);if(r.error)throw r.error;TP.asgNew=0;await tpLoad()}
+  try{const r=await sb.rpc('assignment_create',p);if(r.error)throw r.error;TP.asgNew=0;TP.hmsg='';await tpLoad()}
   catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się zapisać zadania.')}
 }
 function tpShell(body){
-  const tabs=[['ov','Przegląd'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie']];
+  const tabs=[['ov','Dziś'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie']];
   return tpBar()+'<div class="seg tp-tabs" role="group" aria-label="Sekcje panelu">'+tabs.map(t=>'<button type="button" class="'+(TP.tab===t[0]?'on':'')+'" aria-pressed="'+(TP.tab===t[0])+'" onclick="tpTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div><div id="t-body">'+body+'</div>';
 }
 function tpBar(){
