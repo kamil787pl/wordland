@@ -94,6 +94,7 @@ def handle(route):
             c=next((c for c in CL if c['code']==b['p_code'].upper()),None)
             if not c:return jr(route,{'message':'code'},400)
             MEM[c['id']].append(u_);return jr(route,[{'class_id':c['id'],'name':c['name']}])
+        if fn=='wc_board':return jr(route,[{'nick':'mistrz','pts':1200,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
         if fn=='leave_class':MEM[b['p_class']].remove(u_);return jr(route,None)
         if fn=='my_classes':return jr(route,[{'class_id':c['id'],'name':c['name'],'teacher':'anna'} for c in CL if u_ in MEM[c['id']]])
         if fn=='my_assignments':
@@ -228,6 +229,11 @@ with sync_playwright() as pw:
     res['uczen: wynik wyslany']=[(r['won'],r['miss'],r['ms']>=30000) for r in RES]
     pg.evaluate("show('home')");pg.wait_for_timeout(300);res['uczen: po zadaniu']=pg.inner_text('#v-home .my-asg')[:200]
     pg.locator('#v-home .my-asg .crow').filter(has_text='Zwierzaki').locator('.gbtn').click();pg.wait_for_timeout(400);res['uczen: zadanie kategoria otwiera gre']=pg.evaluate('view')
+    pg.evaluate("show('home')");pg.wait_for_timeout(500);hb=pg.inner_text('#v-home .cn-lbp');res['ranking: home']={'wiersze':pg.locator('#v-home .cn-lbp li').count(),'ja':pg.locator('#v-home .cn-lbp li.me b').inner_text(),'pkt':'1\xa0200 pkt' in hb}
+    pg.click('#v-home .cn-lbp button:has-text("Ogółem")');pg.wait_for_timeout(400);res['ranking: zakladka']=pg.locator('#v-home .cn-lbp button.on').inner_text()
+    pg.evaluate("show('game')");pg.evaluate("touchDay(true)");pg.wait_for_timeout(100);res['punkty: efekt +10']=pg.locator('.ptsfx').count()
+    pg.evaluate("show('prof')");pg.wait_for_timeout(500);res['profil: punkty i ranga']={'ranga':'Ranga:' in pg.inner_text('#v-prof'),'ranking':pg.locator('#v-prof .cn-lbp li').count()}
+    pg.screenshot(path=S+'/panel-rank.png',full_page=True)
     pg.evaluate("show('prof')");res['uczen: zadania w profilu']=pg.locator('#v-prof .my-asg .crow').count();pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
     res['DONE']=1;res['log']=log;res['errors']=errs
     pg.evaluate("show('teach')");pg.screenshot(path=S+'/teach.png',full_page=True)

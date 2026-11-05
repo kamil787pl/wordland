@@ -520,6 +520,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .tp-h{margin:14px 0 4px;font-size:13px;color:var(--mut)}.tp-add code{background:var(--pri-t);padding:2px 6px;border-radius:6px}
 #tp-m{min-height:20px;margin:8px 0 0;font-weight:600;color:var(--red)}#tp-m.ok{color:var(--grn,#1b7a45)}
 @media(max-width:640px){.tp-tiles{grid-template-columns:repeat(2,1fr)}.tp-code{font-size:28px}}
+.ptsfx{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:60;font:800 22px "Figtree",system-ui,sans-serif;color:#fff;background:var(--grn);padding:6px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.25);pointer-events:none;animation:ptsup .9s ease-out forwards}@keyframes ptsup{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}20%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-36px)}}@media(prefers-reduced-motion:reduce){.ptsfx{animation:none;opacity:.95}}
 </style>
 </head>
 <body>
@@ -787,7 +788,7 @@ function menu(){
   state='menu';const S=SV.s||[],gr=[];
   CATS.forEach((c,i)=>{const L=c.l||'Własne';let g=gr.find(x=>x.L===L);if(!g)gr.push(g={L,a:[]});g.a.push(i)});
   const open=gr.some(g=>g.L===SV.o)?SV.o:(gr.find(g=>g.a.some(i=>!(S[i]>0)))||gr[0]).L;
-  card(mhead()+'<p class="sub">Kop, skacz i zbieraj angielskie słówka</p>'+gr.map(g=>{
+  card(mhead()+'<p class="sub">Kop, skacz i zbieraj angielskie słówka</p><p class="sub" style="margin-top:-4px">⭐ '+wcFmtP(wcPts())+' pkt · '+wcRank(wcPts()).t+'</p>'+gr.map(g=>{
     const st=g.a.reduce((n,i)=>n+(S[i]||0),0),done=g.a.filter(i=>S[i]>0).length;
     return '<details class="grp" data-l="'+g.L+'" '+(g.L===open?'open':'')+' ontoggle="mT(this)"><summary><b>'+(g.L==='Własne'?'Własne kategorie':'Poziom '+g.L)+'</b><span>'+done+'/'+g.a.length+' ukończone · ★ '+st+'</span></summary>'
       +g.a.map(i=>{const c=CATS[i],s=S[i]||0;const hs=(SV.h||[])[i]||0;return '<div class="lvr"><button class="lv" onclick="start('+i+')"><span>'+c.e+' '+c.n+'</span><span>'+'★'.repeat(s)+'<u>'+'★'.repeat(3-s)+'</u></span></button><button class="lv hd" onclick="start('+i+',1)" title="Hard: bez podpowiedzi, wpisywanie i słuchanie"><span>Hard</span><span>'+'★'.repeat(hs)+'<u>'+'★'.repeat(3-hs)+'</u></span></button></div>'}).join('')+'</details>';
@@ -1209,6 +1210,7 @@ function touchDay(ok){
   SV.tot=(SV.tot||0)+1;if(ok)SV.ok=(SV.ok||0)+1;
   const st=SV.st||(SV.st={last:'',n:0,best:0});
   if(st.last!==t){const y=new Date();y.setDate(y.getDate()-1);st.n=st.last===ymd(y)?st.n+1:1;st.last=t;st.best=Math.max(st.best,st.n)}
+  if(ok&&view==='game')ptsFx();
   save();pushDay();
 }
 function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate(y.getDate()-1);return st.last===ymd(new Date())||st.last===ymd(y)?st.n:0}
@@ -1249,7 +1251,7 @@ function renderHome(){
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
-  +'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
+  +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla nauczyciela</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel nauczyciela</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
@@ -1261,7 +1263,7 @@ function gpanel(ic_,name,stats,badges,btns){
 }
 function wcProfile(){
   const S=SV.s||[],H=SV.h||[],tot=CATS.filter(c=>!c.tmp).length,done=S.filter(x=>x>0).length,sum=a=>a.reduce((x,y)=>x+(y||0),0),ak=Object.keys(ACH),got=ak.filter(k=>SV.a&&SV.a[k]).length;
-  return gpanel('cube','WordCraft',[[done+'/'+tot,'ukończone poziomy'],[sum(S)+' ★','gwiazdki'],[sum(H)+' ★','gwiazdki Hard'],[got+'/'+ak.length,'osiągnięcia']],
+  return gpanel('cube','WordCraft',[[wcFmtP(wcPts()),'punkty · '+wcRank(wcPts()).t],[done+'/'+tot,'ukończone poziomy'],[(sum(S)+sum(H))+' ★','gwiazdki (Hard: '+sum(H)+')'],[got+'/'+ak.length,'osiągnięcia']],
    ak.map(k=>[Array.from(ACH[k][0])[0],ACH[k][0]+': '+ACH[k][1],SV.a&&SV.a[k]]),
    '<button class="nb" onclick="openGame()">Graj</button><button class="nb" onclick="openGame();stats()">'+ic('repeat')+'Powtórka trudnych słówek</button>');
 }
@@ -1279,7 +1281,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+wcProfile()+cnProfile()
+  +myAsgHTML(1)+myClassHTML()+wcProfile()+wcNext()+wbHtml()+cnProfile()
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1557,6 +1559,38 @@ async function tSave(){
   }catch(e){tmsg('Błąd zapisu: '+((e&&e.message)||'sieć'))}
 }
 
+/* ===== PUNKTY i ranking: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard ===== */
+const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'],[7000,'Mistrz słówek'],[15000,'Legenda']];
+const wcSum=a=>(a||[]).reduce((x,y)=>x+(y||0),0);
+const wcPts=()=>(SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150;
+function wcRank(p){let i=0;WCR.forEach((r,k)=>{if(p>=r[0])i=k});const n=WCR[i+1];return{t:WCR[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-WCR[i][0])/(n[0]-WCR[i][0])):100}}
+const wcFmtP=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+function ptsFx(){
+  const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
+}
+let WB={scope:'week',rows:null,t:0,l:0,err:0};
+async function wbLoad(){
+  if(!live()||ROLE==='teacher'||WB.l)return;WB.l=1;WB.t=Date.now();
+  try{const r=await sb.rpc('wc_board',{p_scope:WB.scope});WB.err=r.error?1:0;WB.rows=r.error?null:(r.data||[])}catch(e){WB.err=1}
+  WB.l=0;if(view==='home')renderHome();if(view==='prof')renderProf();
+}
+function wbTab(s){WB.scope=s;WB.rows=null;WB.t=0;wbLoad();if(view==='home')renderHome();if(view==='prof')renderProf()}
+function wbHtml(){
+  if(ROLE==='teacher')return '';
+  const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>';
+  let b;
+  if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
+  else{
+    if(!WB.rows&&!WB.l&&!WB.err||Date.now()-WB.t>60000)setTimeout(wbLoad,0);
+    const cap={week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'}[WB.scope];
+    if(!WB.rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
+    else if(!WB.rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
+    else b='<ol class="cn-lb">'+WB.rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
+    b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
+  }
+  return '<div class="panel cn-lbp"><h4>🏆 Ranking punktów</h4>'+tabs+b+'</div>';
+}
+function wcNext(){const r=wcRank(wcPts());return '<div class="panel"><h4>⭐ Ranga: '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.</p>':'<p class="lg" style="margin:0">Najwyższa ranga! 🎉</p>')+'</div>'}
 /* ===== UCZEŃ: klasa i zadania od nauczyciela ===== */
 let MY={cls:null,asg:null,del:null};
 async function myLoad(){
