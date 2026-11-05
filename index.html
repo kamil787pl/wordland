@@ -1293,7 +1293,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty: 25 za grupę, do 100 za ukończenie (minus 10 za błąd) i do 100 za medal czasowy.')
+  +myAsgHTML(1)+myClassHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1576,7 +1576,7 @@ const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'
 function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
 function wcPts(){return (SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150}
 var ptsB=0,runPts=0;
-const WLR=[[0,'Nowicjusz'],[300,'Łącznik'],[1000,'Detektyw'],[2500,'Mistrz powiązań'],[5000,'Wizjoner'],[10000,'Legenda']];
+const WLR=[[0,'Nowicjusz'],[500,'Łącznik'],[2000,'Detektyw'],[5000,'Mistrz powiązań'],[12000,'Wizjoner'],[25000,'Legenda']];
 function wcRank(p,R){R=R||WCR;let i=0;R.forEach((r,k)=>{if(p>=r[0])i=k});const n=R[i+1];return{t:R[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-R[i][0])/(n[0]-R[i][0])):100}}
 function wcFmtP(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}
 function ptsFx(){
@@ -1600,7 +1600,7 @@ function wbHtml(fixed){
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
-    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za łamigłówki z ostatnich 7 dni.',all:'Wszystkie punkty zdobyte w WordLinks.',class:'Punkty uczniów z Twojej klasy w WordLinks.'}}[g][WB.scope];
+    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
     else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
     else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
@@ -1936,11 +1936,16 @@ const cnHash=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i)
 const cnFmt=ms=>{const t=Math.floor(ms/1000);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 const CNHINT=15000,cnMeds=sp=>sp?CNMED.map(m=>[m[0]*2.5,m[1]]):CNMED;
 const cnMedal=(ms,sp)=>{const m=cnMeds(sp).find(x=>ms<=x[0]);return m?m[1]:''};
-let SPN={n:1,acc:0,miss:0,hints:0},CNP=0;
-function cnBonus(ms,sp){const i=cnMeds(sp).findIndex(x=>ms<=x[0]);return i<0?0:[100,60,30][i]}
-function cnAwardPts(p){
-  const c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:'',bt:0,br:{}});c.pts=(c.pts||0)+p;save();
-  if(live()&&p>0)sb.rpc('wl_award',{p_pts:p}).then(r=>{if(!r.error&&typeof r.data==='number'&&r.data<p){c.pts-=p-r.data;save()}WB.t={};if(view==='conn')renderConn()}).catch(()=>{});
+let SPN={n:1,acc:0,miss:0,hints:0};
+/* punkty zależą od czasu: im szybciej, tym więcej (łamigłówka do 300 pkt przy 0 s, 0 przy 5:00; sprint do 900, 0 przy 12:30). Błędy i podpowiedzi to doliczone sekundy. */
+const cnPtsMax=sp=>sp?900:300,cnPtsT=sp=>sp?750000:300000;
+const cnPtsOf=(ms,sp)=>Math.max(10,Math.round(cnPtsMax(sp)*(1-Math.min(ms,cnPtsT(sp))/cnPtsT(sp))));
+function cnAwardPts(mode,pts,ms,won){
+  const cn=CN,c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:'',bt:0,br:{}}),t=ymd(new Date());
+  if(!c.pd||c.pd.d!==t)c.pd={d:t,m:{}};
+  const loc=Math.max(0,pts-(c.pd.m[mode]||0));c.pd.m[mode]=Math.max(c.pd.m[mode]||0,pts);
+  const done=g=>{cn.gain=g;c.pts=(c.pts||0)+g;save();WB.t={};if(view==='conn'&&CN===cn)renderConn()};
+  if(live())sb.rpc('wl_award',{p_mode:mode,p_ms:Math.round(ms),p_won:!!won}).then(r=>done(!r.error&&typeof r.data==='number'?r.data:loc)).catch(()=>done(loc));else done(loc);
 }
 const cnTotal=()=>CN.over?CN.ms:(CN.t0?Date.now()-CN.t0:0)+CN.miss*CNPEN+(CN.hints||0)*CNHINT+(CN.mode==='sprint'?SPN.acc:0);
 function cnBestKey(){return CN.mode==='daily'?'bt':CN.mode==='sprint'?'sp':CNlvl||'all'}
@@ -1971,7 +1976,7 @@ function cnLoad(mode){
 }
 function cnBestAll(){const c=SV.cn||{},v=[c.bt].concat(Object.entries(c.br||{}).filter(e=>e[0]!=='sp').map(e=>e[1])).filter(x=>x>0);return v.length?Math.min(...v):0}
 function cnHomeSub(){const b=cnBestAll(),d=SV.cn&&SV.cn.d,done=d&&d.date===ymd(new Date())&&d.done;return (b?'Twój rekord: '+cnFmt(b)+' '+cnMedal(b):'Pobij 1:30 i zdobądź 🥇')+' · '+(done?'dzisiejsza ukończona':'dziś nowa łamigłówka')}
-function cnStart(){if(!CN||CN.over||CN.go)return;CNP=0;if(CN.mode==='sprint')SPN={n:1,acc:0,miss:0,hints:0};CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
+function cnStart(){if(!CN||CN.over||CN.go)return;if(CN.mode==='sprint')SPN={n:1,acc:0,miss:0,hints:0};CN.go=1;CN.t0=Date.now();CN.fresh=1;renderConn()}
 function cnTap(i){
   if(!CN||CN.over||!CN.go)return;
   const k=CN.sel.indexOf(i);
@@ -2001,7 +2006,7 @@ function cnSubmit(){
   const best=Math.max(...Object.values(cnt));
   CN.hist.push(ts.map(t=>CN.groups[t.g].c));
   if(best===4){
-    const g=ts[0].g;CN.solved.push(g);CNP+=25;CN.up++;CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
+    const g=ts[0].g;CN.solved.push(g);CN.up++;CN.newG=[g];CN.tiles=CN.tiles.filter(t=>t.g!==g);CN.sel=[];CN.msg='Dobrze! '+CN.groups[g].e+' '+CN.groups[g].n;cnFx('ok');touchDay(true);
     if(CN.solved.length===4)cnFinish(1);
   }else{
     const mg=+Object.keys(cnt).find(k=>cnt[k]===best);
@@ -2018,8 +2023,7 @@ function cnFinish(won){
   }
   CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';
   if(CN.mode==='sprint'){CN.miss+=SPN.miss;CN.hints=(CN.hints||0)+SPN.hints}
-  if(won)CNP+=Math.max(0,100-10*CN.miss)+cnBonus(CN.ms,CN.mode==='sprint');
-  if(CN.mode==='chal')CN.pts=null;else{CN.pts=CNP;cnAwardPts(CNP)}
+  if(CN.mode==='daily'||CN.mode==='random'||CN.mode==='sprint'){CN.pts=won?cnPtsOf(CN.ms,CN.mode==='sprint'):0;cnAwardPts(CN.mode,CN.pts,CN.ms,won)}else CN.pts=null;
   if(won)cnFx('win');
   if(CN.mode==='asg'){asgSubmit();return}
   if(CN.mode==='chal')return;
@@ -2134,7 +2138,7 @@ async function cnChal(withTime){
   try{await navigator.clipboard.writeText(t);CN.msg='Skopiowano link wyzwania.'}catch(e){CN.msg='Nie udało się skopiować.'}
   renderConn();
 }
-setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
+setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const q=document.getElementById('cn-pts');if(q)q.textContent=cnPtsOf(cnTotal(),CN.mode==='sprint');const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
 function cnPaceTxt(){const t=cnTotal(),m=cnMeds(CN.mode==='sprint').find(x=>t<x[0]);return m?m[1]+' '+cnFmt(m[0]-t):'🏁'}
 /* wspinaczka: każda odgadnięta grupa to jedno piętro wyżej (sprint: 12 pięter) */
 function cnTower(wait){
@@ -2160,7 +2164,7 @@ function renderConn(){
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+esc(G.e)+' '+esc(G.n)+'</b><span>'+G.w.map(esc).join(', ')+'</span><small>'+G.pl.map(esc).join(' · ')+'</small></div>'}).join('');
   const wait=!CN.over&&!CN.go;
   const lab=sp?'⚡ Sprint '+SPN.n+'/3':CN.mode==='asg'?'📚 Zadanie: '+esc(CN.title):CN.mode==='chal'?'🎯 Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
-  const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b>'+(CN.over?(CN.pts!=null?'<i>⭐ '+CN.pts+'</i>':''):'<i>⭐ '+(CN.go?CNP:0)+'</i>')+'<i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b>'+(CN.over?(CN.pts!=null?'<i>⭐ '+CN.pts+'</i>':''):(CN.mode==='chal'||CN.mode==='asg'?'':'<i title="Tyle punktów dostaniesz, jeśli ukończysz teraz. Maleje z czasem.">⭐ <span id="cn-pts">'+(CN.go?cnPtsOf(cnTotal(),CN.mode==='sprint'):cnPtsMax(CN.mode==='sprint'))+'</span></i>'))+'<i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
   let end='',conf='',acts='',stats='';
@@ -2168,7 +2172,7 @@ function renderConn(){
     conf=CN.conf?'<div class="cn-conf" aria-hidden="true">'+Array.from({length:26},(_,i)=>'<i style="left:'+(i*3.9+Math.random()*3)+'%;background:'+CNC[i%4]+';animation-delay:'+(Math.random()*.5)+'s"></i>').join('')+'</div>':'';
     end='<div class="cn-end"><h3>'+(CN.won?'Brawo! 🎉':'Tym razem się nie udało')+'</h3>'
      +(CN.won?'<div class="cn-time2">⏱ '+cnFmt(CN.ms)+(medalOf?' '+medalOf:'')+'</div>'+(CN.rec?'<span class="cn-rec">Nowy rekord!</span>':'')+(CN.mode==='chal'&&CN.t?'<span class="cn-rec">'+(CN.ms<CN.t?'Pobiłeś wynik!':'Nie pobiłeś wyniku ('+cnFmt(CN.t)+')')+'</span>':'')+'<div>'+(CN.miss?'Błędy: '+CN.miss+' (+'+CN.miss*10+' s). ':'Bez żadnego błędu! ')+(CN.hints?'Podpowiedzi: '+CN.hints+' (+'+CN.hints*15+' s).':'')+'</div>':'<div>Odpowiedzi widzisz obok. Spróbuj jutro lub w trybie losowym.</div>')
-     +(CN.pts?'<div class="cn-pts">⭐ Punkty: <b>'+CN.pts+'</b> <small>(25 za grupę'+(CN.won?', ukończenie'+(cnBonus(CN.ms,CN.mode==="sprint")?', medal':''):'')+')</small></div>':'')
+     +(CN.pts!=null?'<div class="cn-pts">⭐ Punkty: <b>'+CN.pts+'</b> <small>'+(CN.pts===0?'(punkty dostajesz za ukończoną łamigłówkę, a im szybciej, tym więcej)':CN.gain==null?'(liczę…)':CN.gain>0?'(+'+CN.gain+' do rankingu dziś)':'(masz dziś już lepszy wynik w tym trybie)')+'</small></div>':'')
      +(CN.nb&&CN.nb.length?'<div class="cn-newbd">'+CN.nb.map(k=>'<span>'+CNBD[k][0]+' Nowa odznaka: <b>'+CNBD[k][1]+'</b></span>').join('')+'</div>':'')+'<pre>'+CN.hist.map(r=>r.map(x=>CNE[x]).join('')).join('\n')+'</pre></div>';
     acts='<button class="pri" onclick="cnShare()">Udostępnij wynik</button><button onclick="cnChal(1)">Wyzwij znajomego</button>'+(CN.bad&&CN.bad.length?'<button onclick="cnReview()">📌 Powtórki ('+CN.bad.length+')</button>':'')+'<button onclick="cnNew()">Nowa łamigłówka</button>';
     stats=CN.mode==='daily'?'<div class="cn-stats"><span><b>'+c.p+'</b>rozegrane</span><span><b>'+c.w+'</b>wygrane</span><span><b>'+c.s+'</b>seria</span><span><b>'+c.b+'</b>rekord serii</span></div>':'';

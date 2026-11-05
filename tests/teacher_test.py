@@ -94,7 +94,7 @@ def handle(route):
             c=next((c for c in CL if c['code']==b['p_code'].upper()),None)
             if not c:return jr(route,{'message':'code'},400)
             MEM[c['id']].append(u_);return jr(route,[{'class_id':c['id'],'name':c['name']}])
-        if fn=='wl_award':AW.append(b['p_pts']);return jr(route,b['p_pts'])
+        if fn=='wl_award':AW.append([b['p_mode'],b['p_ms']//1000,b['p_won']]);return jr(route,230)
         if fn=='wl_my_points':return jr(route,40)
         if fn=='wl_pts_board':return jr(route,[{'nick':'lacznik','pts':900,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
         if fn=='wc_board':return jr(route,[{'nick':'mistrz','pts':1200,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
