@@ -9,8 +9,8 @@ with sync_playwright() as pw:
     res['karta']='WordElf' in pg.inner_text('#v-home')
     for lvl,n in (('A1',6),('A2',5),('B1',5)):
         pg.evaluate("show('elf');elLvl('%s')"%lvl);pg.wait_for_timeout(150)
-        res[lvl+' przed startem polka ukryta']=pg.locator('button.el-it').count()==0 and pg.locator('.cn-start').count()==1
-        pg.click('.cn-start .pri');pg.wait_for_timeout(150)
+        res[lvl+' przed startem polka ukryta']=pg.locator('button.el-it').count()==0 and pg.locator('.el-start').count()==1
+        pg.click('.el-start .pri');pg.wait_for_timeout(150)
         res[lvl+' lista']=pg.locator('.el-list>div').count()==n
         res[lvl+' polka>=lista']=pg.locator('button.el-it').count()>=n
         # błąd: kliknij przedmiot spoza listy
@@ -26,5 +26,5 @@ with sync_playwright() as pw:
         res[lvl+' ekran koncowy']='Sanie odleciały' in pg.inner_text('#v-elf')
     res['rekordy zapisane']=pg.evaluate("Object.keys(SV.elf.br).length")==3
     pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof')
-    pg.evaluate("show('elf');elNewR()");pg.click('.cn-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
+    pg.evaluate("show('elf');elNewR()");pg.click('.el-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
     print({k:v for k,v in res.items() if v is not True});print('OK',errs)
