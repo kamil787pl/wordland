@@ -100,6 +100,7 @@ def handle(route):
         if fn=='elf_my_points':return jr(route,25)
         if fn=='elf_pts_board':return jr(route,[{'nick':'skrzat','pts':700,'rk':1,'me':False},{'nick':'ola_u','pts':150,'rk':2,'me':True}])
         if fn=='wl_pts_board':return jr(route,[{'nick':'lacznik','pts':900,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
+        if fn=='total_pts_board':return jr(route,[{'nick':'mistrz','pts':2000,'rk':1,'me':False},{'nick':'ola_u','pts':500,'rk':2,'me':True}])
         if fn=='wc_board':return jr(route,[{'nick':'mistrz','pts':1200,'rk':1,'me':False},{'nick':'ola_u','pts':340,'rk':2,'me':True}])
         if fn=='leave_class':MEM[b['p_class']].remove(u_);return jr(route,None)
         if fn=='my_classes':return jr(route,[{'class_id':c['id'],'name':c['name'],'teacher':'anna'} for c in CL if u_ in MEM[c['id']]])

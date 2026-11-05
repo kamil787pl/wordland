@@ -586,6 +586,8 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .rm-t{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}.rm-t svg{display:block;width:100%;max-width:42px;height:auto;filter:drop-shadow(0 3px 2px rgba(0,0,0,.45))}.rm-t.on svg{filter:drop-shadow(0 0 6px rgba(255,220,120,.55)) drop-shadow(0 3px 2px rgba(0,0,0,.45))}
 .rm-t small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#a08c70;font:600 10px "Figtree",system-ui,sans-serif;padding-bottom:3px}.rm-t.on small{color:#ffe9a0}
 @media(max-width:640px){.rm-in{grid-template-columns:1fr;padding:10px 10px 0;background:linear-gradient(#f7e8cd,#f2dcb6)}.rm-left{max-width:320px;margin:0 auto}.rm-shelf{margin-bottom:10px}.rm-t small{font-size:9px}}
+#pt #nb-home .t,#pt #nb-prof .t{display:none}#pt .fire.pts .fd{display:none!important}#pt .fire.pts{background:#fff4d6}
+@media(max-width:860px){#pt .nb .t{display:none}}
 </style>
 </head>
 <body>
@@ -629,7 +631,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel nauczyciela" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Nauczyciel</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><button class="fire pts" id="pt-pts" onclick="show('prof')" aria-label="Suma punktów"></button><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
@@ -1360,7 +1362,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+roomHTML()+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
+  +myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1368,7 +1370,7 @@ function renderProf(){
 function show(v){
   view=v;['home','prof','game','auth','teach','conn','elf'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
-  clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
+  ptsChip();clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
   if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='game'&&state==='menu')menu();
   if((v==='home'||v==='prof')&&live()&&ROLE!=='teacher'&&Date.now()-(MY.t||0)>30000)myLoad();
@@ -1641,6 +1643,10 @@ async function tSave(){
 /* ===== PUNKTY i ranking: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard ===== */
 const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'],[7000,'Mistrz słówek'],[15000,'Legenda']];
 function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
+const TR=[[0,'Uczeń'],[1000,'Zawodnik'],[4000,'Ekspert'],[10000,'Mistrz portalu'],[25000,'Gwiazda WordLand'],[50000,'Legenda WordLand']];
+function totalPts(){return wcPts()+((SV.cn&&SV.cn.pts)||0)+((SV.elf&&SV.elf.pts)||0)}
+function ptsChip(){const f=$('pt-pts');if(!f)return;const n=totalPts(),h=ic('star','f pt')+wcFmtP(n)+'<span class="fd">\u00a0pkt</span>';f.title=f.ariaLabel='Suma punktów ze wszystkich gier: '+wcFmtP(n)+' ('+wcRank(n,TR).t+'). Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h)f.innerHTML=h}
+setInterval(()=>ptsChip(),1000);
 function wcPts(){return (SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150}
 var ptsB=0,runPts=0;
 const WLR=[[0,'Nowicjusz'],[500,'Łącznik'],[2000,'Detektyw'],[5000,'Mistrz powiązań'],[12000,'Wizjoner'],[25000,'Legenda']];
@@ -1649,11 +1655,11 @@ function wcFmtP(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}
 function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
-let WB={game:'wc',scope:'week',data:{},t:{},l:0,err:0};
+let WB={game:'sum',scope:'week',data:{},t:{},l:0,err:0};
 function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn();if(view==='elf')renderElf()}
 async function wbLoad(g){
   g=g||WB.game;if(!live()||ROLE==='teacher'||WB.l)return;const k=g+':'+WB.scope;WB.l=1;WB.t[k]=Date.now();
-  try{const r=await sb.rpc(({wc:'wc_board',wl:'wl_pts_board',el:'elf_pts_board'})[g],{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
+  try{const r=await sb.rpc(({sum:'total_pts_board',wc:'wc_board',wl:'wl_pts_board',el:'elf_pts_board'})[g],{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
   WB.l=0;wbRefresh();
 }
 function wbTab(sc,g){WB.scope=sc;WB.err=0;wbLoad(g);wbRefresh()}
@@ -1661,13 +1667,13 @@ function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
 function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
-  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
+  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
   const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja klasa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
-    const cap={wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej klasy.'}}[g][WB.scope];
+    const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf).',class:'Suma punktów uczniów z Twojej klasy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej klasy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej klasy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej klasy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
     else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej klasie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod klasy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
     else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
@@ -2339,7 +2345,7 @@ const ROOM_SVG=`<svg class="rm-scene" viewBox="0 0 340 250" aria-hidden="true">
 <rect x="298" y="176" width="26" height="30" rx="3" fill="#c0643a"/><rect x="296" y="172" width="30" height="7" rx="2" fill="#d6764a"/><ellipse cx="311" cy="166" rx="24" ry="12" fill="#3f9a56"/><ellipse cx="298" cy="150" rx="9" ry="18" fill="#4fb36a" transform="rotate(-22 298 150)"/><ellipse cx="324" cy="148" rx="9" ry="19" fill="#2f8a48" transform="rotate(20 324 148)"/><ellipse cx="311" cy="142" rx="8" ry="18" fill="#58c07a"/>
 </svg>`;
 function roomHTML(){
-  const G=[['cube','WordCraft',wcPts(),WCR],['grid','WordLinks',(SV.cn&&SV.cn.pts)||0,WLR],['gift','WordElf',(SV.elf&&SV.elf.pts)||0,ELR]];
+  const G=[['star','Wszystkie gry',totalPts(),TR],['cube','WordCraft',wcPts(),WCR],['grid','WordLinks',(SV.cn&&SV.cn.pts)||0,WLR],['gift','WordElf',(SV.elf&&SV.elf.pts)||0,ELR]];
   let got=0,tot=0;
   const rows=G.map(g=>{const r=g[3],idx=r.reduce((a,x,k)=>g[2]>=x[0]?k:a,0);
     return'<div class="rm-row"><div class="rm-lab">'+ic(g[0])+'<b>'+g[1]+'</b><small>'+r[idx][1]+'</small></div><div class="rm-slots">'+r.slice(1).map((x,k)=>{const on=idx>=k+1;tot++;if(on)got++;return'<div class="rm-t'+(on?' on':'')+'" title="'+(on?g[1]+': '+x[1]:'Zdobądź '+wcFmtP(x[0])+' pkt w '+g[1])+'">'+trophySvg(k+1,on)+'<small>'+(on?x[1]:wcFmtP(x[0])+' pkt')+'</small></div>'}).join('')+'</div></div>'}).join('');
