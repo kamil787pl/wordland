@@ -37,7 +37,7 @@ with sync_playwright() as pw:
     res['czas i medal po wygranej']=pg.evaluate("CN.ms>=CN.miss*10000&&cnMedal(CN.ms)==='🥇'")
     res['kara 10 s za blad']=pg.evaluate("CN.ms>=10000")  # w tescie jest 1 blad
     res['rekord zapisany']=pg.evaluate("SV.cn.bt===CN.ms&&CN.rec===1")
-    res['ekran koncowy: czas i rekord']='Nowy rekord' in pg.inner_text('.cn-end') and '⏱' in pg.inner_text('.cn-end')
+    res['ekran koncowy: czas i rekord']='Nowy rekord' in pg.inner_text('.cn-end') and pg.locator('.cn-end .cn-time2 svg').count()==1
     res['udostepnianie z czasem']='⏱' not in pg.evaluate("cnShareText()") and ':' in pg.evaluate("cnShareText()")
     res['statystyki zapisane']=pg.evaluate("SV.cn.p==1&&SV.cn.w==1&&SV.cn.s==1")
     res['share ma kwadraciki']='🟨' in pg.evaluate("cnShareText()") or '🟩' in pg.evaluate("cnShareText()")

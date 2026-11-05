@@ -256,7 +256,7 @@ with sync_playwright() as pw:
     res['wl: ranking w widoku gry']={'wiersze':pg.locator('#v-conn .cn-lbp li').count(),'ja':'ola_u' in pg.inner_text('#v-conn .cn-lbp'),'tytul':'Ranking punktów WordLinks' in pg.inner_text('#v-conn')}
     pg.screenshot(path=S+'/wl-rank.png',full_page=True)
     pg.evaluate("show('home')");pg.wait_for_timeout(300);pg.click('#v-home .cn-lbp button:has-text("WordLinks")');pg.wait_for_timeout(500);res['home: przelacznik gier']=pg.inner_text('#v-home .cn-lbp').count('lacznik')
-    pg.evaluate("show('prof')");pg.wait_for_timeout(500);res['profil: punkty i ranga']={'ranga':'Ranga:' in pg.inner_text('#v-prof'),'ranking':pg.locator('#v-prof .cn-lbp li').count()}
+    pg.evaluate("show('prof')");pg.wait_for_timeout(500);res['profil: punkty i ranga']={'ranga':'Ranga WordCraft' in pg.inner_text('#v-prof'),'ranking':pg.locator('#v-prof .cn-lbp li').count()}
     pg.screenshot(path=S+'/panel-rank.png',full_page=True)
     pg.evaluate("show('prof')");res['uczen: zadania w profilu']=pg.locator('#v-prof .my-asg .crow').count();pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
     res['DONE']=1;res['log']=log;res['errors']=errs

@@ -13,3 +13,9 @@ Każda gra w WordLand używa tej samej ramki, żeby portal wyglądał spójnie:
 - W środku: `.gs-hud` (logo gry, tryb, czas i rekord), `.gs-body` (plansza, wyśrodkowana), `.gs-foot` (błędy/życia i komunikat).
 - Pod oknem: `.gbar` (przyciski akcji, ten sam styl co przyciski WordCraft), `.gtips` (jednozdaniowy cel gry), potem odznaki, ranking i panele.
 - Wzór: widok WordLinks (`renderConn`). Własnych szerokości i ramek nie wymyślamy.
+
+## Ikony (obowiązkowe dla wszystkiego, co nowe)
+- Cały interfejs (przyciski, chipy, statusy, nagłówki, tabele, HUD) używa ikon SVG ze sprite'a przez `ic('nazwa','klasa')`: styl kreskowy, viewBox 24. Brakującą ikonę dodajemy do sprite'a w tym samym stylu, nie wstawiamy emoji.
+- Kolory statusów tylko klasami: `.ok` (zielony), `.bad` (czerwony), `.wait`/`.warn`/`.pt` (bursztyn).
+- Emoji zostają wyłącznie jako treść: emoji kategorii, medale 🥇🥈🥉, odznaki, grafika gier (kafelki, wieża, karty WordCraft), tekst udostępniania.
+- Ukończone zadania nauczyciela znikają ze strony głównej (widać je w profilu).
