@@ -4,9 +4,12 @@ S=str(__import__('pathlib').Path(__file__).resolve().parent/'out')
 LIB=str(__import__('pathlib').Path(__file__).resolve().parent.parent/'node_modules/@supabase/supabase-js/dist/umd/supabase.js')
 __import__('pathlib').Path(S).mkdir(exist_ok=True)
 W=lambda i,pl,en,s=None:{'id':i,'pl':pl,'en':en,'sentence':s,'trap':None}
-cats=[{'id':1,'name':'Zwierzęta','emoji':'🐶','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':0,'words':[W(1,'pies','dog','I walk my ___.'),W(2,'kot','cat'),W(3,'ptak','bird'),W(4,'ryba','fish'),W(5,'koń','horse')]}]
+cats=[{'id':1,'name':'Zwierzęta','emoji':'🐶','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':0,'words':[W(1,'pies','dog','I walk my ___.'),W(2,'kot','cat'),W(3,'ptak','bird'),W(4,'ryba','fish'),W(5,'koń','horse')]},
+ {'id':2,'name':'Jedzenie','emoji':'🍎','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':1,'words':[W(11,'chleb','bread'),W(12,'mleko','milk'),W(13,'ser','cheese'),W(14,'jajko','egg')]},
+ {'id':3,'name':'Dom','emoji':'🏠','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':2,'words':[W(21,'okno','window'),W(22,'drzwi','door'),W(23,'stół','table'),W(24,'łóżko','bed')]},
+ {'id':4,'name':'Kolory','emoji':'🎨','level':'A1','no_hint':False,'is_public':True,'owner':None,'sort':3,'words':[W(31,'czerwony','red'),W(32,'niebieski','blue'),W(33,'zielony','green'),W(34,'żółty','yellow')]}]
 users={};profiles={};nid=[100];wid=[1000];CODE='WL-TEST'
-STUDENTS={}
+CL=[];MEM={};ASG=[];RES=[]
 log=[]
 CORS={'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*','access-control-expose-headers':'*'}
 def jr(route,obj,st=200):route.fulfill(status=st,headers={'content-type':'application/json',**CORS},body=json.dumps(obj))
@@ -62,6 +65,49 @@ def handle(route):
                 for w in c['words']:
                     if w['id']==i and c['owner']==u_:w.update(b)
             log.append('words~');return route.fulfill(status=204,headers=CORS)
+    if p.startswith('/rest/v1/rpc/'):
+        fn=p.split('/rpc/')[1].split('?')[0];b=b or {}
+        def mine(cid):return next((c for c in CL if c['id']==cid and c['teacher_id']==u_),None)
+        if fn=='class_create':
+            cid='c%d'%(len(CL)+1);c={'id':cid,'teacher_id':u_,'name':b['p_name'],'code':'ABC%03d'%len(CL),'archived':False};CL.append(c);MEM[cid]=[];return jr(route,[{'id':cid,'code':c['code']}])
+        if fn=='class_update':
+            c=mine(b['p_class']);c['name']=b['p_name'];c['archived']=b['p_archived'];return jr(route,None)
+        if fn=='class_new_code':
+            c=mine(b['p_class']);c['code']='NEW999';return jr(route,'NEW999')
+        if fn=='class_delete':
+            c=mine(b['p_class']);CL.remove(c);return jr(route,None)
+        if fn=='class_remove_student':
+            MEM[b['p_class']].remove(b['p_user']);return jr(route,None)
+        if fn=='class_students':
+            return jr(route,[{'user_id':i,'nick':profiles[i]['nickname'],'joined_at':'2026-11-05T08:00:00Z','last_day':'2026-11-05' if profiles[i]['nickname']!='leniwy' else None,'answers':40,'correct':30,'answers_7d':12 if profiles[i]['nickname']!='leniwy' else 0,'mastered':5,'stars':3,'wl_best':95000,'done':len([r for r in RES if r['user']==i])} for i in MEM.get(b['p_class'],[])])
+        if fn=='class_hard_words':return jr(route,[{'pl':'ryba','en':'fish','wrong':7,'hit':3}])
+        if fn=='class_activity':return jr(route,[{'day':'2026-11-04','answers':20,'active':2},{'day':'2026-11-05','answers':50,'active':3}])
+        if fn=='student_detail':return jr(route,{'cats':[{'name':'Zwierzęta','emoji':'🐶','stars':2,'hard':1}],'hard':[{'pl':'kot','en':'cat','wrong':4,'right':1}],'days':[{'day':'2026-11-05','answers':12,'correct':9}],'wl':{'bt':95000}})
+        if fn=='assignment_create':
+            a={'id':'a%d'%(len(ASG)+1),'class_id':b['p_class'],'kind':b['p_kind'],'title':b['p_title'],'category_id':b['p_category'],'groups':b['p_groups'],'due':b['p_due'],'created_at':'2026-11-05T09:00:00Z'};ASG.append(a);return jr(route,a['id'])
+        if fn=='assignment_delete':
+            ASG[:]=[a for a in ASG if a['id']!=b['p_id']];return jr(route,None)
+        if fn=='assignment_status':
+            a=next(a for a in ASG if a['id']==b['p_id'])
+            return jr(route,[{'user_id':i,'nick':profiles[i]['nickname'],'done':any(r['user']==i and r['a']==a['id'] for r in RES),'won':True,'ms':70000,'miss':1,'stars':0} for i in MEM[a['class_id']]])
+        if fn=='join_class':
+            c=next((c for c in CL if c['code']==b['p_code'].upper()),None)
+            if not c:return jr(route,{'message':'code'},400)
+            MEM[c['id']].append(u_);return jr(route,[{'class_id':c['id'],'name':c['name']}])
+        if fn=='leave_class':MEM[b['p_class']].remove(u_);return jr(route,None)
+        if fn=='my_classes':return jr(route,[{'class_id':c['id'],'name':c['name'],'teacher':'anna'} for c in CL if u_ in MEM[c['id']]])
+        if fn=='my_assignments':
+            return jr(route,[{'id':a['id'],'class_name':'5b','kind':a['kind'],'title':a['title'],'category_id':a['category_id'],'groups':a['groups'],'due':a['due'],'done':any(r['user']==u_ and r['a']==a['id'] for r in RES),'won':True,'ms':80000} for a in ASG if u_ in MEM[a['class_id']]])
+        if fn=='submit_assignment':RES.append({'user':u_,'a':b['p_id'],'ms':b['p_ms'],'miss':b['p_miss'],'won':b['p_won']});return jr(route,None)
+    if p.startswith('/rest/v1/classes'):return jr(route,[c for c in CL if c['teacher_id']==u_])
+    if p.startswith('/rest/v1/assignments'):
+        i=re.search(r'class_id=eq\.([^&]+)',url);return jr(route,[a for a in ASG if i and a['class_id']==i.group(1)][::-1])
+    if p.startswith('/functions/v1/create-students'):
+        out=[]
+        for st in b['students']:
+            if st['nick'] in users:out.append({'nick':st['nick'],'ok':False,'error':'taken'});continue
+            u={'id':str(uuid.uuid4()),'pw':st['password'],'nick':st['nick'],'email':st['nick']+'@x'};users[st['nick']]=u;profiles[u['id']]={'role':'student','nickname':st['nick']};MEM[b['class_id']].append(u['id']);out.append({'nick':st['nick'],'ok':True})
+        return jr(route,{'results':out})
     if p.startswith('/functions/v1/reset-student-password'):
         role=profiles.get(u_,{}).get('role');nk=(b or {}).get('nick');pw=(b or {}).get('password','')
         if role!='teacher':return jr(route,{'error':'forbidden'},403)
@@ -72,6 +118,8 @@ def handle(route):
         u['pw']=pw;log.append('reset '+nk);return jr(route,{'ok':True})
     return jr(route,[])
 res={}
+import atexit
+atexit.register(lambda:print(json.dumps(res,ensure_ascii=False,indent=1)) if 'DONE' not in res else None)
 with sync_playwright() as pw:
     br=pw.chromium.launch();pg=br.new_context(viewport={'width':1000,'height':900}).new_page();errs=[]
     pg.on('pageerror',lambda e:errs.append('PAGEERROR '+str(e)));pg.on('console',lambda m:errs.append(m.text) if m.type=='error' else None)
@@ -92,7 +140,8 @@ with sync_playwright() as pw:
     res['po dobrym kodzie']={'rola':pg.evaluate('ROLE'),'przycisk':pg.is_visible('#nb-teach'),'formularz':pg.is_visible('#tc-w')}
     pg.evaluate("show('home')");res['nauczyciel: home ma blok']='Dla nauczyciela' in pg.inner_text('#v-home')
     pg.evaluate("show('prof')");res['nauczyciel: profil bez linku']='mam kod' not in pg.inner_text('#v-prof')
-    pg.evaluate("show('teach')")
+    pg.evaluate("show('teach')");pg.wait_for_timeout(300)
+    res['panel: 4 zakladki']=pg.locator('.tp-tabs button').all_inner_texts();pg.click('.tp-tabs button:has-text("Kategorie")')
     # nowa kategoria (kreator)
     res['kreator: 4 puste wiersze']=pg.locator('#tc-rows .wr').count()
     pg.fill('#tc-n','Sport');pg.click('.emo button >> nth=10');res['ikona z listy']=pg.input_value('#tc-e')
@@ -122,12 +171,6 @@ with sync_playwright() as pw:
     pg.click('button:has-text("Zapisz zmiany")');pg.wait_for_timeout(900)
     mine=[c for c in cats if c['owner']][0]
     res['po edycji']=[(w['en'],w['sentence']) for w in mine['words']]
-    # reset hasła ucznia
-    users['uczen1']={'id':'u-stu','pw':'stare12','nick':'uczen1','email':'uczen1@x'};profiles['u-stu']={'role':'student','nickname':'uczen1'}
-    pg.fill('#rp-n','nieistnieje');pg.fill('#rp-p','nowe1234');pg.click('button:has-text("Zmień hasło")');pg.wait_for_timeout(400);res['reset: brak ucznia']=pg.inner_text('#rp-m')
-    pg.fill('#rp-n','uczen1');pg.fill('#rp-p','abc');pg.click('button:has-text("Zmień hasło")');pg.wait_for_timeout(200);res['reset: krotkie haslo']=pg.inner_text('#rp-m')
-    pg.fill('#rp-n','anna_nauczycielka');pg.fill('#rp-p','nowe1234');pg.click('button:has-text("Zmień hasło")');pg.wait_for_timeout(400);res['reset: konto nauczyciela']=pg.inner_text('#rp-m')
-    pg.fill('#rp-n','uczen1');pg.fill('#rp-p','nowe1234');pg.click('button:has-text("Zmień hasło")');pg.wait_for_timeout(400);res['reset: ok']={'msg':pg.inner_text('#rp-m'),'haslo_w_atrapie':users['uczen1']['pw'],'pole_wyczyszczone':pg.input_value('#rp-p')==''}
     # ukryj/pokaż, widok ucznia
     pg.click('button:has-text("Ukryj")');pg.wait_for_timeout(500);res['ukryta']=mine['is_public']
     pg.click('button:has-text("Pokaż uczniom")');pg.wait_for_timeout(500);res['pokazana']=mine['is_public']
@@ -137,7 +180,56 @@ with sync_playwright() as pw:
     # usuń (2 kliknięcia)
     pg.evaluate("show('teach')");pg.click('button.dng');pg.wait_for_timeout(200);first=pg.is_visible('text=Na pewno usunąć')
     pg.click('text=Na pewno usunąć');pg.wait_for_timeout(600);res['usuwanie']={'potwierdzenie':first,'zostalo':len([c for c in cats if c['owner']])}
-    res['log']=log;res['errors']=errs
+
+    # ===== panel: klasy, uczniowie, zadania =====
+    pg.evaluate("show('teach')");pg.click('.tp-tabs button:has-text("Przegląd")');pg.wait_for_timeout(500)
+    res['klasa: formularz gdy brak klas']=pg.is_visible('#tp-nn')
+    pg.fill('#tp-nn','5b angielski');pg.click('button:has-text("Utwórz klasę")');pg.wait_for_timeout(700)
+    res['klasa: utworzona']={'kod':pg.inner_text('#tp-code'),'w_bazie':[c['name'] for c in CL],'kafelki':pg.locator('.tp-t').count()}
+    pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
+    pg.click('button:has-text("Dodaj uczniów")');pg.fill('#tp-nl','ania_k\njan_n;haslo123\nZLY NICK');pg.click('button:has-text("Utwórz konta")');pg.wait_for_timeout(200)
+    res['dodawanie: zly nick']=pg.inner_text('#tp-m')
+    pg.fill('#tp-nl','ania_k\njan_n;haslo123\nleniwy\nania_k');pg.click('button:has-text("Utwórz konta")');pg.wait_for_timeout(800)
+    t=pg.inner_text('.tp-add');res['dodawanie: wynik']={'utworzono':t.count('utworzono'),'ma_haslo_jan':'haslo123' in t,'wygenerowane_8':all(len(u['pw'])==8 for n,u in users.items() if n in('ania_k','leniwy'))}
+    pg.click('button:has-text("Gotowe")');pg.wait_for_timeout(200)
+    res['uczniowie: wiersze']=pg.locator('.tp-tb tbody tr').count()
+    pg.click('.tp-tb tbody tr >> nth=0');pg.wait_for_timeout(500)
+    res['szczegoly']={'kat':'Zwierzęta' in pg.inner_text('#tp-det'),'trudne':'cat' in pg.inner_text('#tp-det'),'wl':'1:35' in pg.inner_text('#tp-det')}
+    pg.fill('#tp-pw','abc');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(150);res['reset: krotkie']=pg.inner_text('#tp-m')
+    pg.fill('#tp-pw','nowe1234');pg.click('#tp-det button:has-text("Zmień hasło")');pg.wait_for_timeout(500);res['reset: ok']={'msg':pg.inner_text('#tp-m'),'haslo':users['ania_k']['pw']}
+    pg.click('#tp-det button:has-text("Usuń z klasy")');pg.wait_for_timeout(150);pot=pg.is_visible('text=Kliknij jeszcze raz');pg.click('#tp-det button.dng');pg.wait_for_timeout(700)
+    res['usuniecie ucznia']={'potwierdzenie':pot,'zostalo':pg.locator('.tp-tb tbody tr').count()}
+    pg.click('.tp-tabs button:has-text("Przegląd")');pg.wait_for_timeout(300)
+    ov=pg.inner_text('#t-body');res['przeglad']={'trudne':'fish' in ov,'nieaktywni':'leniwy' in ov.split('Bez aktywności')[1],'slupki':pg.locator('.tp-bars i').count()}
+    pg.screenshot(path=S+'/panel-ov.png',full_page=True)
+    # zadania
+    pg.click('.tp-tabs button:has-text("Zadania")');pg.click('button:has-text("Nowe zadanie")');pg.fill('#ta-t','Zwierzaki');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)
+    res['zadanie kategoria']=[(a['kind'],a['title'],a['category_id']) for a in ASG]
+    pg.click('button:has-text("Nowe zadanie")');pg.click('button:has-text("Łamigłówka WordLinks")');pg.fill('#ta-t','Puzzle');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(200)
+    res['wl: te same kategorie']=pg.inner_text('#tp-m')
+    ncat=pg.locator('#ta-c0 option').count();res['wl: liczba kategorii w liscie']=ncat
+    for i in range(4):pg.select_option('#ta-c%d'%i,index=min(i,ncat-1))
+    pg.fill('#ta-d','2099-01-31');pg.click('button:has-text("Zadaj klasie")');pg.wait_for_timeout(700)
+    res['zadanie wordlinks']=[(a['kind'],a['title'],len(a['groups'] or []),a['due']) for a in ASG]
+    pg.click('.tp-a >> nth=0 >> button:has-text("Wyniki")');pg.wait_for_timeout(500);res['status zadania']=pg.inner_text('.tp-a >> nth=0')[:160]
+    pg.screenshot(path=S+'/panel-asg.png',full_page=True)
+    # uczen: dolacza, widzi i robi zadanie
+    pg.evaluate("logout()");pg.wait_for_timeout(600)
+    pg.evaluate("goAuth(1)");pg.fill('#au-n','ola_u');pg.fill('#au-p','haslo123');pg.fill('#au-p2','haslo123');pg.check('#au-ok');pg.click('#au-go');pg.wait_for_timeout(900)
+    pg.evaluate("show('prof')");pg.fill('#my-code','zzzzzz');pg.click('button:has-text("Dołącz")');pg.wait_for_timeout(400);res['uczen: zly kod']=pg.inner_text('#my-m')
+    pg.fill('#my-code','abc000');pg.click('button:has-text("Dołącz")');pg.wait_for_timeout(700)
+    res['uczen: w klasie']='5b angielski' in pg.inner_text('#v-prof')
+    pg.evaluate("show('home')");pg.wait_for_timeout(300);hm=pg.inner_text('#my-asg');res['uczen: zadania na home']={'tekst':hm[:140],'przyciski':pg.locator('#my-asg .gbtn').count()}
+    pg.screenshot(path=S+'/panel-home.png',full_page=True)
+    pg.locator('#my-asg .crow').filter(has_text='Puzzle').locator('.gbtn').click();pg.wait_for_timeout(500)
+    res['uczen: tryb zadania']={'widok':pg.evaluate('view'),'tryb':pg.evaluate('CN.mode'),'etykieta':'Zadanie: Puzzle' in pg.inner_text('#v-conn')}
+    pg.click('.cn-start .pri');pg.wait_for_timeout(200)
+    pg.evaluate("CN.t0=Date.now()-30000;for(let g=0;g<4;g++){CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);cnSubmit()}");pg.wait_for_timeout(500)
+    res['uczen: wynik wyslany']=[(r['won'],r['miss'],r['ms']>=30000) for r in RES]
+    pg.evaluate("show('home')");pg.wait_for_timeout(300);res['uczen: po zadaniu']=pg.inner_text('#my-asg')[:200]
+    pg.locator('#my-asg .crow').filter(has_text='Zwierzaki').locator('.gbtn').click();pg.wait_for_timeout(400);res['uczen: zadanie kategoria otwiera gre']=pg.evaluate('view')
+    pg.evaluate("show('prof')");pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
+    res['DONE']=1;res['log']=log;res['errors']=errs
     pg.evaluate("show('teach')");pg.screenshot(path=S+'/teach.png',full_page=True)
     br.close()
 print(json.dumps(res,ensure_ascii=False,indent=1))

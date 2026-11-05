@@ -9,7 +9,7 @@ with sync_playwright() as pw:
     res['karta na stronie glownej']='WordLinks' in pg.inner_text('#v-home')
     pg.evaluate("show('conn')");pg.wait_for_timeout(300)
     words=pg.evaluate("CN.tiles.map(t=>t.w)")
-    res['przed startem slowa ukryte']=not any(w in pg.inner_text('#v-conn') for w in words) and not any(w in pg.inner_html('#v-conn') for w in words) and pg.locator('.cn-start').count()==1
+    import re;tx=pg.inner_text('#v-conn')+pg.inner_html('#v-conn');res['przed startem slowa ukryte']=not any(re.search(r'(?<![A-Za-z-])'+re.escape(w)+r'(?![A-Za-z])',tx) for w in words) and pg.locator('.cn-start').count()==1
     res['przed startem czas stoi']=pg.evaluate("CN.t0")==0 and pg.evaluate("cnTap(0),cnSubmit(),CN.t0")==0 and pg.evaluate("CN.sel.length")==0
     pg.wait_for_timeout(1200);res['przed startem czas 0:00']=pg.inner_text('#cn-time')=='0:00'
     pg.click('.cn-start .pri');pg.wait_for_timeout(200)

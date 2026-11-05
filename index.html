@@ -507,6 +507,19 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 }
 .hvis.wl .fchip.c1{left:auto;right:-12px;top:42%;bottom:auto}
 .gc.feat.rev .gimg{object-fit:contain;background:linear-gradient(160deg,#16233b,#26427a)}
+
+.tp-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tp-bar select{flex:1;min-width:180px;width:auto!important}
+.tp-tabs{margin:12px 0 0}.tp-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tp-row input{flex:1;min-width:150px}
+.tp-code{font:800 34px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.18em;margin:6px 0 4px;color:var(--pri-d)}
+.tp-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.tp-t{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;color:var(--mut)}.tp-t b{display:block;font-size:24px;color:var(--ink)}
+.tp-bars{display:flex;align-items:flex-end;gap:5px;height:90px;border-bottom:1px solid var(--line)}.tp-bars i{flex:1;background:var(--pri);border-radius:4px 4px 0 0;min-height:3px}
+.tp-ax{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:3px}
+.tp-chips{display:flex;gap:6px;flex-wrap:wrap}.tp-chips .tag2{margin:0}
+.tp-tw{overflow-x:auto;margin-top:8px}.tp-tb{width:100%;border-collapse:collapse;font-size:14px}.tp-tb th{text-align:left;font-size:12px;color:var(--mut);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}.tp-tb td{padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tp-tb tbody tr[role=button]{cursor:pointer}.tp-tb tbody tr[role=button]:hover,.tp-tb tbody tr[role=button]:focus-visible{background:var(--pri-t);outline:0}
+.tp-h{margin:14px 0 4px;font-size:13px;color:var(--mut)}.tp-add code{background:var(--pri-t);padding:2px 6px;border-radius:6px}
+#tp-m{min-height:20px;margin:8px 0 0;font-weight:600;color:var(--red)}#tp-m.ok{color:var(--grn,#1b7a45)}
+@media(max-width:640px){.tp-tiles{grid-template-columns:repeat(2,1fr)}.tp-code{font-size:28px}}
 </style>
 </head>
 <body>
@@ -1232,7 +1245,7 @@ function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+
 function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
-  $('v-home').innerHTML='<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
+  $('v-home').innerHTML='<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+myAsgHTML()+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
@@ -1266,7 +1279,7 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +wcProfile()+cnProfile()
+  +myClassHTML()+wcProfile()+cnProfile()
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem nauczycielem i mam kod</a></p>':'');
@@ -1319,7 +1332,7 @@ async function loadUser(u,prev){
     const asc=days.map(x=>x.day).sort();let run=0,best=0,prevD=null;
     asc.forEach(d=>{run=prevD&&(Date.parse(d)-Date.parse(prevD))/864e5===1?run+1:1;best=Math.max(best,run);prevD=d});
     SV.st=asc.length?{last:asc[asc.length-1],n:run,best}:null;
-    await cnSync();
+    myLoad();await cnSync();
   }catch(e){}
   save();
 }
@@ -1398,7 +1411,7 @@ async function doRegister(){
 }
 async function logout(){
   try{await sb.auth.signOut()}catch(e){}
-  U=null;ROLE='student';SKEY='wc2';try{SV=JSON.parse(localStorage.getItem(SKEY)||'{}')}catch(e){SV={}}SV.m=SV.m||{};
+  U=null;ROLE='student';MY={cls:null,asg:null};SKEY='wc2';try{SV=JSON.parse(localStorage.getItem(SKEY)||'{}')}catch(e){SV={}}SV.m=SV.m||{};
   await loadBank();start(0);menu();show('home');
 }
 function dbList(){
@@ -1422,18 +1435,6 @@ let tEdit=null,tDel=null;
 
 /* reset hasła ucznia (funkcja serwerowa sprawdza rolę nauczyciela) */
 const RPE={nick:'Nick ma 3–16 znaków: małe litery, cyfry i _.',password:'Hasło musi mieć 6–72 znaków.',not_found:'Nie ma ucznia o takim nicku.',teacher_account:'Nie można zresetować hasła konta nauczyciela.',forbidden:'Tylko nauczyciel może zmieniać hasła.',auth:'Zaloguj się ponownie.'};
-function rmsg(t,ok){const e=$('rp-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
-function resetHTML(){return '<div class="panel"><h4>'+ic('user')+'Reset hasła ucznia</h4><p class="lg" style="margin:0 0 4px">Uczeń zapomniał hasła? Wpisz jego nick i ustaw nowe hasło, a potem mu je przekaż. Nie dotyczy kont nauczycieli.</p><div class="row2"><div><label for="rp-n">Nick ucznia</label><input id="rp-n" type="text" maxlength="16" autocomplete="off" autocapitalize="none" spellcheck="false"></div><div><label for="rp-p">Nowe hasło</label><input id="rp-p" type="text" maxlength="72" autocomplete="off" spellcheck="false"></div></div><p id="rp-m" style="min-height:20px;margin:8px 0;font-weight:600;color:var(--red)"></p><button class="gbtn" onclick="resetPw()">Zmień hasło</button></div>'}
-async function resetPw(){
-  const n=$('rp-n').value.trim().toLowerCase(),p=$('rp-p').value;
-  if(!nickOK(n))return rmsg(RPE.nick);
-  if(p.length<6)return rmsg('Nowe hasło musi mieć co najmniej 6 znaków.');
-  rmsg('Zmieniam hasło…',1);
-  try{const r=await sb.functions.invoke('reset-student-password',{body:{nick:n,password:p}});
-    if(r.error){let c='';try{c=(await r.error.context.json()).error}catch(e){}throw c}
-    $('rp-p').value='';rmsg('Hasło ucznia '+n+' zostało zmienione. Przekaż mu nowe hasło.',1)}
-  catch(c){rmsg(RPE[c]||'Nie udało się zmienić hasła. Spróbuj ponownie.')}
-}
 /* kreator kategorii */
 const EMO=['🐶','🍎','🏠','🎨','🧍','🏃','👪','🛒','✈️','📅','⚽','🎵','🌳','🏫','💼','📚'];
 const LVD={'':'Bez poziomu: kategoria pojawi się w grupie „Własne”.',A1:'A1: początkujący, krótkie i proste słówka.',A2:'A2: podstawowy, słówka z codziennych sytuacji.',B1:'B1: średnio zaawansowany, trudniejsze słownictwo.'};
@@ -1507,11 +1508,14 @@ function renderTeach(){
   tSync();
   const mine=CATS.filter(c=>c.own&&c.own===U.id),e=tEdit&&mine.find(c=>c.id===tEdit);
   if(!tRows){tRows=e?e.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})):[blankRow(),blankRow(),blankRow(),blankRow()];tLvl=e?(e.l||''):'';tDraft=e?{n:e.n,e:e.e,nh:!!e.nh}:null}
-  root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'
+  const catHTML=''
   +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
-  +tFormHTML(e)+resetHTML();
-  if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}
-  tCount();
+  +tFormHTML(e);
+  if(TP.cls===null)tpInit();
+  const c=tpCur(),cat=TP.tab==='cat';
+  const body=cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz klasę powyżej. Uczniowie dołączą kodem klasy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
+  root.innerHTML='<h2>'+ic('tool')+'Panel nauczyciela</h2>'+tpShell(body);
+  if(cat){if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
 }
 async function claimTeacher(){
   const code=$('tc-code').value.trim();if(!code)return tmsg('Wpisz kod.');
@@ -1551,6 +1555,245 @@ async function tSave(){
     tRows=null;tDraft=null;tLvl='';await loadBank();renderTeach();tmsg('Zapisano w bazie: '+name+(pw.bad?' (pominięto '+pw.bad+' niepełnych wierszy)':''),1);
   }catch(e){tmsg('Błąd zapisu: '+((e&&e.message)||'sieć'))}
 }
+
+/* ===== UCZEŃ: klasa i zadania od nauczyciela ===== */
+let MY={cls:null,asg:null,del:null};
+async function myLoad(){
+  if(!live()||ROLE==='teacher'){MY={cls:[],asg:[]};return}
+  try{const [c,a]=await Promise.all([sb.rpc('my_classes'),sb.rpc('my_assignments')]);MY.cls=c.data||[];MY.asg=a.data||[]}catch(e){MY.cls=MY.cls||[];MY.asg=MY.asg||[]}
+  if(view==='home')renderHome();if(view==='prof')renderProf();
+}
+function myAsgHTML(){
+  const a=(MY.asg||[]);if(!live()||!a.length)return '';
+  const open=a.filter(x=>!x.done).length;
+  return '<div class="panel" id="my-asg"><h4>'+ic('target')+'Zadania od nauczyciela'+(open?' <span class="tag2">do zrobienia: '+open+'</span>':'')+'</h4>'+a.slice(0,8).map(x=>{
+    const late=!x.done&&x.due&&x.due<ymd(new Date());
+    return '<div class="crow"><span class="ct"><b>'+esc(x.title)+'</b> <span class="lg">'+esc(x.class_name)+' · '+(x.kind==='category'?'kategoria':'WordLinks')+(x.due?' · termin: '+tpDue(x.due):'')+'</span>'+(late?' <span class="tag2" style="background:#fbe9eb;color:var(--red)">po terminie</span>':'')+'</span>'
+     +(x.done?'<span class="tag2">'+(x.kind==='wordlinks'?(x.won?'✅ '+cnFmt(x.ms):'❌ nieudane'):'✅ zrobione')+'</span>':'<button class="gbtn" style="padding:7px 14px;font-size:14px" onclick="asgGo(\''+x.id+'\')">Zrób zadanie</button>')+'</div>'}).join('')+'</div>';
+}
+function asgGo(id){
+  const a=(MY.asg||[]).find(x=>x.id===id);if(!a||a.done)return;
+  if(a.kind==='category'){const i=CATS.findIndex(c=>c.id===a.category_id);if(i<0)return;show('game');start(i);return}
+  const g=cnFromObj({g:a.groups,t:0,f:''});if(!g)return;
+  g.mode='asg';g.aid=id;g.title=cl(a.title,60);CN=g;CNmode='asg';show('conn');
+}
+async function asgSubmit(){
+  if(!live())return;
+  try{await sb.rpc('submit_assignment',{p_id:CN.aid,p_ms:Math.round(CN.ms),p_miss:CN.miss,p_won:!!CN.won})}catch(e){}
+  myLoad();
+}
+function myMsg(t,ok){const e=$('my-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
+async function myJoin(){
+  const c=cl($('my-code').value,12).toUpperCase().replace(/\s/g,'');if(c.length<4)return myMsg('Wpisz kod klasy od nauczyciela.');
+  myMsg('Dołączam…',1);
+  try{const r=await sb.rpc('join_class',{p_code:c});if(r.error)throw r.error;await myLoad();myMsg('Dołączono do klasy.',1)}
+  catch(e){myMsg(/teacher/i.test(e&&e.message||'')?'Konto nauczyciela nie może dołączyć do klasy.':'Nie ma takiej klasy. Sprawdź kod.')}
+}
+async function myLeave(id){
+  if(MY.del!==id){MY.del=id;return renderProf()}
+  MY.del=null;try{await sb.rpc('leave_class',{p_class:id})}catch(e){}
+  await myLoad();
+}
+function myClassHTML(){
+  if(!live()||ROLE==='teacher')return '';
+  const c=MY.cls||[];
+  return '<div class="panel"><h4>'+ic('cap')+'Moja klasa</h4>'+(c.length?c.map(x=>'<div class="crow"><span class="ct"><b>'+esc(x.name)+'</b> <span class="lg">nauczyciel: '+esc(x.teacher)+'</span></span><button class="nb dng" onclick="myLeave(\''+x.class_id+'\')">'+(MY.del===x.class_id?'Na pewno opuścić?':'Opuść klasę')+'</button></div>').join('')+'<p class="lg">Nauczyciel widzi Twoje postępy w nauce i wyniki zadań.</p>':'<p class="lg" style="margin:0">Masz kod od nauczyciela? Wpisz go, aby dołączyć do klasy i dostawać zadania. Nauczyciel zobaczy wtedy Twoje postępy.</p>')
+   +'<div class="tp-row" style="margin-top:8px"><input id="my-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Kod klasy" placeholder="Kod klasy, np. K7M2QX" onkeydown="if(event.key===\'Enter\')myJoin()"><button class="nb" onclick="myJoin()">Dołącz</button></div><p id="my-m" role="status" style="min-height:20px;margin:6px 0 0;font-weight:600;color:var(--red)"></p></div>';
+}
+/* ===== PANEL NAUCZYCIELA: klasy, uczniowie, zadania ===== */
+const TP={tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,open:null,del:null,busy:0,ast:{}};
+const TPE={forbidden:'Brak uprawnień do tej klasy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit klas.'};
+const tpGen=()=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(const x of crypto.getRandomValues(new Uint8Array(8)))s+=a[x%a.length];return s};
+const tpCur=()=>(TP.cls||[]).find(c=>c.id===TP.cur);
+const tpSum=(a,k)=>a.reduce((s,x)=>s+(x[k]||0),0);
+const tpPct=(a,b)=>b?Math.round(100*a/b)+'%':'–';
+function tpMsg(t,ok){const e=$('tp-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
+const tpDay=d=>{if(!d)return'nigdy';const n=Math.round((new Date(ymd(new Date())+'T00:00:00')-new Date(d+'T00:00:00'))/864e5);return n<=0?'dziś':n===1?'wczoraj':n+' dni temu'};
+async function tpInit(){
+  if(TP.busy)return;TP.busy=1;
+  try{const r=await sb.from('classes').select('id,name,code,archived').order('created_at');if(r.error)throw r.error;TP.cls=r.data||[];
+    if(!TP.cls.some(c=>c.id===TP.cur))TP.cur=(TP.cls.find(c=>!c.archived)||TP.cls[0]||{}).id||null}
+  catch(e){TP.cls=[]}
+  TP.busy=0;await tpLoad();
+}
+async function tpLoad(){
+  TP.d=null;TP.det=null;TP.open=null;TP.del=null;TP.add=null;
+  if(TP.cur){
+    try{const [s,h,a,as]=await Promise.all([sb.rpc('class_students',{p_class:TP.cur}),sb.rpc('class_hard_words',{p_class:TP.cur}),sb.rpc('class_activity',{p_class:TP.cur}),sb.from('assignments').select('id,kind,title,category_id,groups,due,created_at').eq('class_id',TP.cur).order('created_at',{ascending:false})]);
+      TP.d={s:s.data||[],h:h.data||[],a:a.data||[],as:as.data||[]}}
+    catch(e){TP.d={s:[],h:[],a:[],as:[]}}
+  }else TP.d={s:[],h:[],a:[],as:[]};
+  if(view==='teach')renderTeach();
+}
+async function tpReload(){TP.cls=null;TP.d=null;renderTeach()}
+function tpPick(v){TP.cur=v;tpLoad();TP.d=null;renderTeach()}
+function tpTab(t){tSync();TP.tab=t;TP.del=null;renderTeach()}
+async function tpNewClass(){
+  const n=cl($('tp-nn').value,40);if(!n)return tpMsg('Podaj nazwę klasy.');
+  tpMsg('Tworzę…',1);
+  try{const r=await sb.rpc('class_create',{p_name:n});if(r.error)throw r.error;const row=Array.isArray(r.data)?r.data[0]:r.data;TP.cur=row&&row.id;TP.new=0;TP.tab='ov';await tpReload()}
+  catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się utworzyć klasy.')}
+}
+async function tpRename(){const n=cl($('tp-rn').value,40);if(!n)return tpMsg('Podaj nazwę klasy.');
+  try{const r=await sb.rpc('class_update',{p_class:TP.cur,p_name:n,p_archived:!!tpCur().archived});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się zmienić nazwy.')}}
+async function tpArch(){const c=tpCur();
+  try{const r=await sb.rpc('class_update',{p_class:c.id,p_name:c.name,p_archived:!c.archived});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się zmienić stanu klasy.')}}
+async function tpNewCode(){try{const r=await sb.rpc('class_new_code',{p_class:TP.cur});if(r.error)throw r.error;await tpReload()}catch(e){tpMsg('Nie udało się wygenerować kodu.')}}
+async function tpDelClass(){
+  if(TP.del!=='class'){TP.del='class';return renderTeach()}
+  try{const r=await sb.rpc('class_delete',{p_class:TP.cur});if(r.error)throw r.error;TP.cur=null;await tpReload()}catch(e){tpMsg('Nie udało się usunąć klasy.')}
+}
+async function tpCopy(t,msg){try{await navigator.clipboard.writeText(t);tpMsg(msg||'Skopiowano.',1)}catch(e){tpMsg('Nie udało się skopiować.')}}
+function tpClassPanel(c){
+  return '<div class="panel"><h4>'+ic('cap')+'Klasa: '+esc(c.name)+(c.archived?' <span class="tag2">archiwum</span>':'')+'</h4>'
+   +'<p class="lg" style="margin:0">Kod klasy dla uczniów (wpisują go w profilu):</p><div class="tp-code" id="tp-code">'+esc(c.code)+'</div>'
+   +'<div class="wa"><button class="nb" onclick="tpCopy(tpCur().code,\'Kod skopiowany.\')">Kopiuj kod</button><button class="nb" onclick="tpNewCode()">Nowy kod</button><button class="nb" onclick="tpArch()">'+(c.archived?'Przywróć klasę':'Archiwizuj')+'</button><button class="nb dng" onclick="tpDelClass()">'+ic('trash')+(TP.del==='class'?'Kliknij jeszcze raz, aby usunąć':'Usuń klasę')+'</button></div>'
+   +'<label for="tp-rn">Nazwa klasy</label><div class="tp-row"><input id="tp-rn" type="text" maxlength="40" value="'+esc(c.name)+'"><button class="nb" onclick="tpRename()">Zapisz nazwę</button></div></div>';
+}
+function tpOv(c){
+  const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
+  const s=d.s,act=s.filter(x=>x.answers_7d>0),ina=s.filter(x=>x.answers_7d===0);
+  const mx=Math.max(1,...d.a.map(x=>x.answers)),by={};d.a.forEach(x=>by[x.day]=x);
+  const days=[];for(let i=13;i>=0;i--){const t=new Date();t.setDate(t.getDate()-i);days.push(ymd(t))}
+  const bars=days.map(k=>{const x=by[k]||{answers:0,active:0};return '<i style="height:'+Math.max(3,Math.round(100*x.answers/mx))+'%" title="'+k.slice(5).replace('-','.')+': '+x.answers+' odp., '+x.active+' uczn."></i>'}).join('');
+  return tpClassPanel(c)
+   +'<div class="tp-tiles"><div class="tp-t"><b>'+s.length+'</b>uczniów</div><div class="tp-t"><b>'+act.length+'</b>aktywnych (7 dni)</div><div class="tp-t"><b>'+tpSum(s,'answers_7d')+'</b>odpowiedzi (7 dni)</div><div class="tp-t"><b>'+tpPct(tpSum(s,'correct'),tpSum(s,'answers'))+'</b>skuteczność</div></div>'
+   +'<div class="panel"><h4>'+ic('target')+'Aktywność klasy (14 dni)</h4>'+(d.a.length?'<div class="tp-bars" role="img" aria-label="Odpowiedzi dziennie">'+bars+'</div><div class="tp-ax"><span>'+days[0].slice(5).replace('-','.')+'</span><span>dziś</span></div>':'<p class="lg">Brak aktywności w ostatnich 14 dniach.</p>')+'</div>'
+   +'<div class="panel"><h4>'+ic('alert')+'Najtrudniejsze słówka klasy</h4>'+(d.h.length?d.h.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span><span class="lg">'+tpPct(w.hit,w.hit+w.wrong)+' trafnych</span></div>').join(''):'<p class="lg">Jeszcze brak błędów do pokazania.</p>')+'</div>'
+   +'<div class="panel"><h4>'+ic('user')+'Bez aktywności od 7 dni ('+ina.length+')</h4>'+(ina.length?'<div class="tp-chips">'+ina.map(x=>'<span class="tag2" title="Ostatnio: '+tpDay(x.last_day)+'">'+esc(x.nick)+'</span>').join('')+'</div>':'<p class="lg">'+(s.length?'Wszyscy uczniowie byli aktywni w tym tygodniu.':'Klasa nie ma jeszcze uczniów.')+'</p>')+'</div>';
+}
+/* uczniowie */
+function tpStu(c){
+  const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
+  const rows=d.s.map(x=>'<tr tabindex="0" role="button" onclick="tpDetail(\''+x.user_id+'\')" onkeydown="if(event.key===\'Enter\')tpDetail(\''+x.user_id+'\')"><td><b>'+esc(x.nick)+'</b></td><td>'+tpDay(x.last_day)+'</td><td>'+x.answers_7d+'</td><td>'+tpPct(x.correct,x.answers)+'</td><td>'+x.mastered+'</td><td>'+x.stars+'</td><td>'+(x.wl_best?cnFmt(x.wl_best):'–')+'</td><td>'+x.done+'</td></tr>').join('');
+  return '<div class="panel"><h4>'+ic('user')+'Uczniowie ('+d.s.length+')</h4><div class="wa" style="margin-top:0"><button class="gbtn" onclick="TP.add=TP.add?null:{};renderTeach()">'+ic('userplus')+'Dodaj uczniów</button>'+(d.s.length?'<button class="nb" onclick="tpCsv()">Eksport CSV</button>':'')+'</div><p class="lg">Uczniowie mogą też dołączyć sami kodem klasy: <b>'+esc(c.code)+'</b>.</p>'
+   +(TP.add?tpAddHTML():'')
+   +(d.s.length?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Nick</th><th>Ostatnio</th><th>Odp. 7 dni</th><th>Skuteczność</th><th>Opanowane</th><th>⭐</th><th>WordLinks</th><th>Zadania</th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="lg">Kliknij ucznia, aby zobaczyć szczegóły.</p>':'<p class="lg">Brak uczniów. Dodaj ich albo podaj im kod klasy.</p>')
+   +'</div>'+(TP.det?tpDetHTML():'');
+}
+function tpAddHTML(){
+  const a=TP.add;
+  if(a.res)return '<div class="panel tp-add"><h4>Utworzone konta</h4><p class="lg">Zapisz hasła teraz: po zamknięciu nie będzie ich już widać (możesz je później zmienić).</p><div class="tp-tw"><table class="tp-tb"><thead><tr><th>Nick</th><th>Hasło</th><th>Wynik</th></tr></thead><tbody>'+a.res.map(r=>'<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.ok?'<code>'+esc(r.pw)+'</code>':'–')+'</td><td>'+(r.ok?'✅ utworzono':'⚠️ '+esc(TPS[r.error]||'błąd'))+'</td></tr>').join('')+'</tbody></table></div><div class="wa"><button class="nb" onclick="tpCopyRes()">Kopiuj listę</button><button class="nb" onclick="tpCsvRes()">Pobierz CSV</button><button class="gbtn" onclick="TP.add=null;renderTeach()">Gotowe</button></div></div>';
+  return '<div class="panel tp-add"><h4>Dodaj uczniów</h4><p class="lg" style="margin:0 0 6px">Jeden uczeń w wierszu: <b>nick</b> albo <b>nick;hasło</b>. Bez hasła zostanie wygenerowane. Nick: 3–16 znaków, małe litery, cyfry i _. Maks. 40 naraz.</p><label for="tp-nl">Lista uczniów</label><textarea id="tp-nl" spellcheck="false" placeholder="ania_k&#10;jan_n;haslo123&#10;ola5"></textarea><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpCreate()">Utwórz konta</button><button class="nb" onclick="TP.add=null;renderTeach()">Anuluj</button></div></div>';
+}
+const TPS={nick:'zły nick',password:'hasło min. 6 znaków',taken:'nick zajęty',member:'nie dodano do klasy',server:'błąd serwera'};
+async function tpCreate(){
+  const lines=$('tp-nl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),seen=new Set(),st=[];
+  for(const l of lines){const [n0,p0]=l.split(/[;\t]/),n=(n0||'').trim().toLowerCase();if(seen.has(n))continue;seen.add(n);if(!nickOK(n))return tpMsg('Zły nick: „'+cl(n0,20)+'”. Dozwolone 3–16 znaków: a–z, 0–9, _.');const p=(p0||'').trim()||tpGen();if(p.length<6)return tpMsg('Hasło dla '+n+' musi mieć min. 6 znaków.');st.push({nick:n,password:p})}
+  if(!st.length)return tpMsg('Wpisz co najmniej jednego ucznia.');
+  if(st.length>40)return tpMsg('Maksymalnie 40 uczniów naraz.');
+  tpMsg('Tworzę konta…',1);
+  try{const r=await sb.functions.invoke('create-students',{body:{class_id:TP.cur,students:st}});
+    if(r.error){let c='';try{c=(await r.error.context.json()).error}catch(e){}throw c}
+    const pw=Object.fromEntries(st.map(s=>[s.nick,s.password]));
+    TP.add={res:(r.data.results||[]).map(x=>({nick:x.nick,ok:!!x.ok,error:x.error,pw:pw[x.nick]}))};
+    const d=await sb.rpc('class_students',{p_class:TP.cur});if(d.data)TP.d.s=d.data;
+    renderTeach();
+  }catch(c){tpMsg(c==='forbidden'?'Brak uprawnień do tej klasy.':c==='input'?'Błędne dane.':'Nie udało się utworzyć kont. Spróbuj ponownie.')}
+}
+const tpResTxt=()=>TP.add.res.filter(r=>r.ok).map(r=>r.nick+'\t'+r.pw).join('\n');
+function tpCopyRes(){tpCopy(tpResTxt(),'Skopiowano listę nick/hasło.')}
+function tpDl(name,rows){
+  const csv='﻿'+rows.map(r=>r.map(x=>'"'+String(x==null?'':x).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+}
+function tpCsvRes(){tpDl('konta-uczniow.csv',[['nick','haslo']].concat(TP.add.res.filter(r=>r.ok).map(r=>[r.nick,r.pw])))}
+function tpCsv(){const c=tpCur();tpDl('klasa-'+c.code+'.csv',[['nick','ostatnio','odpowiedzi_7_dni','odpowiedzi_razem','skutecznosc','opanowane','gwiazdki','wordlinks_najlepszy','ukonczone_zadania']].concat(TP.d.s.map(x=>[x.nick,x.last_day||'',x.answers_7d,x.answers,tpPct(x.correct,x.answers),x.mastered,x.stars,x.wl_best?cnFmt(x.wl_best):'',x.done])))}
+async function tpDetail(id){
+  const s=TP.d.s.find(x=>x.user_id===id);TP.det={id,nick:s.nick,d:null,del:0};renderTeach();
+  try{const r=await sb.rpc('student_detail',{p_class:TP.cur,p_user:id});if(r.error)throw r.error;TP.det.d=r.data}catch(e){TP.det.err=1}
+  renderTeach();const e=$('tp-det');if(e)e.scrollIntoView({block:'nearest'});
+}
+function tpDetHTML(){
+  const t=TP.det,d=t.d;
+  let b='<div class="panel" id="tp-det"><h4>'+ic('user')+esc(t.nick)+'</h4>';
+  if(t.err)b+='<p class="lg">Nie udało się wczytać szczegółów.</p>';
+  else if(!d)b+='<p class="lg">Wczytuję…</p>';
+  else{
+    const mx=Math.max(1,...d.days.map(x=>x.answers));
+    b+='<h5 class="tp-h">Odpowiedzi w ostatnich 14 dniach</h5>'+(d.days.length?'<div class="tp-bars">'+d.days.map(x=>'<i style="height:'+Math.max(3,Math.round(100*x.answers/mx))+'%" title="'+String(x.day).slice(5).replace('-','.')+': '+x.answers+' odp. ('+tpPct(x.correct,x.answers)+')"></i>').join('')+'</div>':'<p class="lg">Brak aktywności.</p>')
+     +'<h5 class="tp-h">Kategorie</h5>'+(d.cats.length?d.cats.map(c=>'<div class="crow"><span class="ct">'+esc(c.emoji)+' '+esc(c.name)+'</span><span class="tag2">⭐ '+c.stars+(c.hard?' · 🔥 '+c.hard:'')+'</span></div>').join(''):'<p class="lg">Jeszcze żadnej ukończonej.</p>')
+     +'<h5 class="tp-h">Najtrudniejsze słówka</h5>'+(d.hard.length?d.hard.map(w=>'<div class="crow"><span class="ct"><b>'+esc(w.en)+'</b> <span class="lg">'+esc(w.pl)+'</span></span><span class="tag2">'+w.wrong+' błędów</span></div>').join(''):'<p class="lg">Brak błędów.</p>')
+     +'<h5 class="tp-h">WordLinks (najlepsze czasy)</h5><p class="lg">'+(Object.keys(d.wl).length?Object.entries(d.wl).map(([k,v])=>({bt:'Dzienna',all:'Losowa',sp:'Sprint'}[k]||k)+': <b>'+cnFmt(v)+'</b>').join(' · '):'Jeszcze nie grał.')+'</p>';
+  }
+  b+='<h5 class="tp-h">Hasło i klasa</h5><div class="tp-row"><input id="tp-pw" type="text" maxlength="72" autocomplete="off" spellcheck="false" aria-label="Nowe hasło" placeholder="nowe hasło"><button class="nb" onclick="$(\'tp-pw\').value=tpGen()">Generuj</button><button class="nb" onclick="tpReset()">Zmień hasło</button></div><p id="tp-m" role="status"></p>'
+   +'<div class="wa"><button class="nb dng" onclick="tpRemove()">'+(t.del?'Kliknij jeszcze raz, aby usunąć z klasy':'Usuń z klasy')+'</button><button class="nb" onclick="TP.det=null;renderTeach()">Zamknij</button></div></div>';
+  return b;
+}
+async function tpReset(){
+  const p=$('tp-pw').value;if(p.length<6)return tpMsg('Nowe hasło musi mieć co najmniej 6 znaków.');
+  tpMsg('Zmieniam hasło…',1);
+  try{const r=await sb.functions.invoke('reset-student-password',{body:{nick:TP.det.nick,password:p}});
+    if(r.error){let c='';try{c=(await r.error.context.json()).error}catch(e){}throw c}
+    tpMsg('Nowe hasło ucznia '+TP.det.nick+': '+p+' (przekaż mu je).',1)}
+  catch(c){tpMsg(c==='not_in_class'?'Ten uczeń nie jest w żadnej Twojej klasie.':RPE[c]||'Nie udało się zmienić hasła.')}
+}
+async function tpRemove(){
+  if(!TP.det.del){TP.det.del=1;renderTeach();return}
+  try{const r=await sb.rpc('class_remove_student',{p_class:TP.cur,p_user:TP.det.id});if(r.error)throw r.error;await tpLoad()}catch(e){tpMsg('Nie udało się usunąć ucznia.')}
+}
+/* zadania */
+const tpDue=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pl-PL',{day:'numeric',month:'short'}):'bez terminu';
+function tpAsg(c){
+  const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
+  const cats=CATS.filter(x=>!x.tmp&&x.w.length>=4),opt=cats.map(x=>'<option value="'+x.id+'">'+esc(x.e)+' '+esc(x.n)+(x.l?' ('+x.l+')':'')+'</option>').join('');
+  const form=TP.asgNew?'<div class="panel tp-add"><h4>Nowe zadanie</h4><div class="seg" role="group" aria-label="Rodzaj zadania"><button type="button" class="'+(TP.asgNew==='category'?'on':'')+'" onclick="TP.asgNew=\'category\';renderTeach()">Kategoria do przerobienia</button><button type="button" class="'+(TP.asgNew==='wordlinks'?'on':'')+'" onclick="TP.asgNew=\'wordlinks\';renderTeach()">Łamigłówka WordLinks</button></div>'
+    +'<label for="ta-t">Tytuł</label><input id="ta-t" type="text" maxlength="60" placeholder="np. Zwierzęta na piątek">'
+    +(TP.asgNew==='category'?'<label for="ta-c0">Kategoria</label><select id="ta-c0">'+opt+'</select>':'<p class="lg" style="margin:8px 0 0">Wybierz 4 różne kategorie. Słówka zostaną wylosowane raz, więc cała klasa dostanie tę samą planszę. Uczeń ma jedną próbę.</p>'+[0,1,2,3].map(i=>'<label for="ta-c'+i+'">Grupa '+(i+1)+'</label><select id="ta-c'+i+'">'+opt+'</select>').join(''))
+    +'<label for="ta-d">Termin (opcjonalnie)</label><input id="ta-d" type="date" style="padding:9px 12px;border:1px solid #c5cfe1;border-radius:10px;font:inherit"><p id="tp-m" role="status"></p><div class="wa"><button class="gbtn" onclick="tpAsgSave()">Zadaj klasie</button><button class="nb" onclick="TP.asgNew=0;renderTeach()">Anuluj</button></div></div>':'';
+  const list=d.as.map(a=>{
+    const o=TP.open===a.id,st=TP.ast[a.id];
+    return '<div class="tp-a"><div class="crow"><span class="ct"><b>'+esc(a.title)+'</b> <span class="tag2">'+(a.kind==='category'?'kategoria':'WordLinks')+'</span> <span class="lg">termin: '+tpDue(a.due)+'</span></span><button class="nb" onclick="tpAsgOpen(\''+a.id+'\')">'+(o?'Ukryj wyniki':'Wyniki')+'</button><button class="nb dng" aria-label="Usuń zadanie" onclick="tpAsgDel(\''+a.id+'\')">'+ic('trash')+(TP.del===a.id?'Na pewno?':'')+'</button></div>'
+     +(o?(st?'<div class="tp-tw"><table class="tp-tb"><thead><tr><th>Uczeń</th><th>Stan</th><th>'+(a.kind==='wordlinks'?'Czas':'Gwiazdki')+'</th>'+(a.kind==='wordlinks'?'<th>Błędy</th>':'')+'</tr></thead><tbody>'+st.map(r=>'<tr><td><b>'+esc(r.nick)+'</b></td><td>'+(r.done?(a.kind==='wordlinks'?(r.won?'✅ ułożone':'❌ nieudane'):'✅ zrobione'):'⏳ czeka')+'</td><td>'+(a.kind==='wordlinks'?(r.ms?cnFmt(r.ms):'–'):(r.stars||'–'))+'</td>'+(a.kind==='wordlinks'?'<td>'+(r.done?r.miss:'–')+'</td>':'')+'</tr>').join('')+'</tbody></table></div><p class="lg">Zrobiło: '+st.filter(r=>r.done).length+' z '+st.length+'</p>':'<p class="lg">Wczytuję…</p>'):'')+'</div>';
+  }).join('');
+  return '<div class="panel"><h4>'+ic('target')+'Zadania dla klasy ('+d.as.length+')</h4><div class="wa" style="margin-top:0">'+(c.archived?'<span class="lg">Klasa w archiwum.</span>':'<button class="gbtn" onclick="TP.asgNew=TP.asgNew?0:\'category\';renderTeach()">'+ic('plus')+'Nowe zadanie</button>')+'</div></div>'+form
+   +(d.as.length?'<div class="panel">'+list+'</div>':'<div class="panel"><p class="lg">Nie ma jeszcze zadań. Zadanie pojawi się uczniom na stronie głównej.</p></div>');
+}
+async function tpAsgOpen(id){
+  if(TP.open===id){TP.open=null;return renderTeach()}
+  TP.open=id;renderTeach();
+  try{const r=await sb.rpc('assignment_status',{p_id:id});if(r.error)throw r.error;TP.ast[id]=r.data||[]}catch(e){TP.ast[id]=[]}
+  renderTeach();
+}
+async function tpAsgDel(id){
+  if(TP.del!==id){TP.del=id;return renderTeach()}
+  try{const r=await sb.rpc('assignment_delete',{p_id:id});if(r.error)throw r.error;await tpLoad()}catch(e){TP.del=null;renderTeach()}
+}
+function tpPickGroups(ids){
+  const used=new Set(),sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a},out=[];
+  for(const id of ids){
+    const c=CATS.find(x=>x.id===id),ws=[];
+    for(const w of sh(c.w)){const k=w[1].toLowerCase();if(!used.has(k)&&w[1].length<=14){ws.push(w);if(ws.length===4)break}}
+    if(ws.length<4)return c.n;
+    ws.forEach(w=>used.add(w[1].toLowerCase()));out.push([c.n,c.e,ws.map(w=>w[1]),ws.map(w=>w[0])]);
+  }
+  return out;
+}
+async function tpAsgSave(){
+  const kind=TP.asgNew,title=cl($('ta-t').value,60),due=$('ta-d').value||null;
+  if(!title)return tpMsg('Podaj tytuł zadania.');
+  const ids=[0,1,2,3].map(i=>$('ta-c'+i)).filter(Boolean).map(e=>+e.value);
+  let p={p_class:TP.cur,p_kind:kind,p_title:title,p_category:null,p_groups:null,p_due:due};
+  if(kind==='category')p.p_category=ids[0];
+  else{
+    if(new Set(ids).size<4)return tpMsg('Wybierz 4 różne kategorie.');
+    const g=tpPickGroups(ids);if(typeof g==='string')return tpMsg('Kategoria „'+g+'” ma za mało różnych słówek (potrzeba 4 do 14 liter).');
+    p.p_groups=g;
+  }
+  tpMsg('Zapisuję…',1);
+  try{const r=await sb.rpc('assignment_create',p);if(r.error)throw r.error;TP.asgNew=0;await tpLoad()}
+  catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się zapisać zadania.')}
+}
+function tpShell(body){
+  const tabs=[['ov','Przegląd'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie']];
+  return tpBar()+'<div class="seg tp-tabs" role="group" aria-label="Sekcje panelu">'+tabs.map(t=>'<button type="button" class="'+(TP.tab===t[0]?'on':'')+'" aria-pressed="'+(TP.tab===t[0])+'" onclick="tpTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div><div id="t-body">'+body+'</div>';
+}
+function tpBar(){
+  const o=(TP.cls||[]).map(c=>'<option value="'+c.id+'"'+(c.id===TP.cur?' selected':'')+'>'+esc(c.name)+(c.archived?' (archiwum)':'')+'</option>').join('');
+  return '<div class="panel tp-bar">'+((TP.cls||[]).length?'<select id="tp-sel" aria-label="Klasa" onchange="tpPick(this.value)">'+o+'</select>':'<b>Nie masz jeszcze klasy</b>')+'<button class="nb" onclick="TP.new=!TP.new;renderTeach()">'+ic('plus')+'Nowa klasa</button></div>'
+   +(TP.new||(TP.cls&&!TP.cls.length&&TP.tab!=='cat')?'<div class="panel"><label for="tp-nn" style="margin-top:0">Nazwa nowej klasy</label><div class="tp-row"><input id="tp-nn" type="text" maxlength="40" placeholder="np. 5b angielski"><button class="gbtn" onclick="tpNewClass()">Utwórz klasę</button></div><p id="tp-m" role="status"></p></div>':'');
+}
+
 start(0);menu();
 let last=performance.now(),acc=0;
 (function loop(now){
@@ -1579,7 +1822,7 @@ const cnMedal=(ms,sp)=>{const m=cnMeds(sp).find(x=>ms<=x[0]);return m?m[1]:''};
 let SPN={n:1,acc:0,miss:0,hints:0};
 const cnTotal=()=>CN.over?CN.ms:(CN.t0?Date.now()-CN.t0:0)+CN.miss*CNPEN+(CN.hints||0)*CNHINT+(CN.mode==='sprint'?SPN.acc:0);
 function cnBestKey(){return CN.mode==='daily'?'bt':CN.mode==='sprint'?'sp':CNlvl||'all'}
-function cnBest(){if(CN.mode==='chal')return CN.t;const c=SV.cn;if(!c)return 0;return CN.mode==='daily'?(c.bt||0):((c.br||{})[CN.mode==='sprint'?'sp':CNlvl||'all']||0)}
+function cnBest(){if(CN.mode==='chal'||CN.mode==='asg')return CN.t;const c=SV.cn;if(!c)return 0;return CN.mode==='daily'?(c.bt||0):((c.br||{})[CN.mode==='sprint'?'sp':CNlvl||'all']||0)}
 function cnBuild(mode){
   const R=mode==='daily'?cnRng(cnHash('wl'+ymd(new Date()))):Math.random;
   const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -1654,6 +1897,7 @@ function cnFinish(won){
   CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';
   if(CN.mode==='sprint'){CN.miss+=SPN.miss;CN.hints=(CN.hints||0)+SPN.hints}
   if(won)cnFx('win');
+  if(CN.mode==='asg'){asgSubmit();return}
   if(CN.mode==='chal')return;
   const c=SV.cn||(SV.cn={p:0,w:0,s:0,b:0,last:'',bt:0,br:{}});c.br=c.br||{};
   if(won){const k=cnBestKey(),prev=cnBest();if(!prev||CN.ms<prev){CN.rec=1;if(CN.mode==='daily')c.bt=CN.ms;else c.br[k]=CN.ms}}
@@ -1741,8 +1985,10 @@ function cnChalLink(withTime){
   return location.href.split('#')[0]+'#wl='+btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
 function cnFromLink(h){
+  try{return cnFromObj(JSON.parse(decodeURIComponent(escape(atob(h.slice(4).replace(/-/g,'+').replace(/_/g,'/'))))))}catch(e){return null}
+}
+function cnFromObj(o){
   try{
-    const o=JSON.parse(decodeURIComponent(escape(atob(h.slice(4).replace(/-/g,'+').replace(/_/g,'/')))));
     if(!Array.isArray(o.g)||o.g.length!==4)return null;
     const groups=o.g.map((a,i)=>{
       if(!Array.isArray(a)||!Array.isArray(a[2])||a[2].length!==4)return null;
@@ -1788,7 +2034,7 @@ function renderConn(){
   const chal='<div class="cn-chal">Wyzwanie czasowe:'+cnMeds(sp).map(m=>'<em class="'+(medalOf===m[1]?'got':'')+'">'+m[1]+' '+cnFmt(m[0])+'</em>').join('')+'<small>+10 s za błąd, +15 s za podpowiedź</small></div>';
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+esc(G.e)+' '+esc(G.n)+'</b><span>'+G.w.map(esc).join(', ')+'</span><small>'+G.pl.map(esc).join(' · ')+'</small></div>'}).join('');
   const wait=!CN.over&&!CN.go;
-  const lab=sp?'⚡ Sprint '+SPN.n+'/3':CN.mode==='chal'?'🎯 Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
+  const lab=sp?'⚡ Sprint '+SPN.n+'/3':CN.mode==='asg'?'📚 Zadanie: '+esc(CN.title):CN.mode==='chal'?'🎯 Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
   const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">⏱ <b id="cn-time">'+cnFmt(cnTotal())+'</b><i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
   const dots='<span class="cn-dots" aria-label="Pozostałe błędy: '+(CN.max-CN.miss)+'">'+Array.from({length:CN.max},(_,i)=>'<i class="'+(i<CN.max-CN.miss?'':'off')+'"></i>').join('')+'</span>';
