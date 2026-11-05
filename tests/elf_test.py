@@ -22,7 +22,7 @@ with sync_playwright() as pw:
             if i<0:break
             pg.locator('button.el-it').nth(i).click(force=True);pg.wait_for_timeout(30)
         res[lvl+' wygrana']=pg.evaluate("EL.over")==1
-        pg.wait_for_timeout(3200)
+        pg.wait_for_timeout(3900)
         res[lvl+' ekran koncowy']='Sanie odleciały' in pg.inner_text('#v-elf')
     res['rekordy zapisane']=pg.evaluate("Object.keys(SV.elf.br).length")==3
     pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof')
