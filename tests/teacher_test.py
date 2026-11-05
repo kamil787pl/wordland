@@ -219,16 +219,16 @@ with sync_playwright() as pw:
     pg.evaluate("show('prof')");pg.fill('#my-code','zzzzzz');pg.click('button:has-text("Dołącz")');pg.wait_for_timeout(400);res['uczen: zly kod']=pg.inner_text('#my-m')
     pg.fill('#my-code','abc000');pg.click('button:has-text("Dołącz")');pg.wait_for_timeout(700)
     res['uczen: w klasie']='5b angielski' in pg.inner_text('#v-prof')
-    pg.evaluate("show('home')");pg.wait_for_timeout(300);hm=pg.inner_text('#my-asg');res['uczen: zadania na home']={'tekst':hm[:140],'przyciski':pg.locator('#my-asg .gbtn').count()}
+    pg.evaluate("show('home')");pg.wait_for_timeout(300);hm=pg.inner_text('#v-home .my-asg');res['uczen: zadania na home']={'tekst':hm[:140],'przyciski':pg.locator('#v-home .my-asg .gbtn').count()}
     pg.screenshot(path=S+'/panel-home.png',full_page=True)
-    pg.locator('#my-asg .crow').filter(has_text='Puzzle').locator('.gbtn').click();pg.wait_for_timeout(500)
+    pg.locator('#v-home .my-asg .crow').filter(has_text='Puzzle').locator('.gbtn').click();pg.wait_for_timeout(500)
     res['uczen: tryb zadania']={'widok':pg.evaluate('view'),'tryb':pg.evaluate('CN.mode'),'etykieta':'Zadanie: Puzzle' in pg.inner_text('#v-conn')}
     pg.click('.cn-start .pri');pg.wait_for_timeout(200)
     pg.evaluate("CN.t0=Date.now()-30000;for(let g=0;g<4;g++){CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);cnSubmit()}");pg.wait_for_timeout(500)
     res['uczen: wynik wyslany']=[(r['won'],r['miss'],r['ms']>=30000) for r in RES]
-    pg.evaluate("show('home')");pg.wait_for_timeout(300);res['uczen: po zadaniu']=pg.inner_text('#my-asg')[:200]
-    pg.locator('#my-asg .crow').filter(has_text='Zwierzaki').locator('.gbtn').click();pg.wait_for_timeout(400);res['uczen: zadanie kategoria otwiera gre']=pg.evaluate('view')
-    pg.evaluate("show('prof')");pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
+    pg.evaluate("show('home')");pg.wait_for_timeout(300);res['uczen: po zadaniu']=pg.inner_text('#v-home .my-asg')[:200]
+    pg.locator('#v-home .my-asg .crow').filter(has_text='Zwierzaki').locator('.gbtn').click();pg.wait_for_timeout(400);res['uczen: zadanie kategoria otwiera gre']=pg.evaluate('view')
+    pg.evaluate("show('prof')");res['uczen: zadania w profilu']=pg.locator('#v-prof .my-asg .crow').count();pg.click('button:has-text("Opuść klasę")');pg.click('button:has-text("Na pewno opuścić")');pg.wait_for_timeout(500);res['uczen: opuscil']=len(MEM['c1'])
     res['DONE']=1;res['log']=log;res['errors']=errs
     pg.evaluate("show('teach')");pg.screenshot(path=S+'/teach.png',full_page=True)
     br.close()
