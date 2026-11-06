@@ -601,6 +601,29 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .hp-tb th{text-align:left;white-space:nowrap;vertical-align:top}.hp-tb th .i{margin-right:6px}.hp-rk{display:inline-block;margin:2px 6px 2px 0;padding:2px 9px;border-radius:999px;background:var(--pri-t);font-size:12px;white-space:nowrap}.hp-rk b{color:var(--pri)}
 .hp-q{border:1px solid var(--line);border-radius:12px;margin:0 0 8px;padding:0 14px}.hp-q summary{cursor:pointer;padding:12px 0;font-weight:700}.hp-q p{margin:0 0 12px}
 @media(max-width:640px){.hp-two{grid-template-columns:1fr}.hp-s h3{font-size:18px}}
+/* ===== wygląd v2: kolory gier, sezon, miękkie nagrody, animacje ===== */
+.gc{--g:var(--pri);--gt:var(--pri-t);--gd:var(--pri-d)}
+.gc.g-wc{--g:#2f7d32;--gt:#e1f2de;--gd:#245f27}
+.gc.g-wl{--g:#5b3fd1;--gt:#ebe7fb;--gd:#4630a8}
+.gc.g-el{--g:#c4343f;--gt:#fde6e8;--gd:#9f2830}
+.gc .em{background:var(--gt);color:var(--g)}
+.gc button:not(:disabled){background:var(--g)}
+.gc button:not(:disabled):hover{background:var(--gd)}
+.gc:not(.soon) .tag{background:var(--gt);color:var(--g)}
+.cn-seg button.on.g-wc{background:#2f7d32}.cn-seg button.on.g-wl{background:#5b3fd1}.cn-seg button.on.g-el{background:#c4343f}
+.gpn.g-wc{border-left:4px solid #2f7d32}.gpn.g-wl{border-left:4px solid #5b3fd1}.gpn.g-el{border-left:4px solid #c4343f}
+.gpn.g-wc .gph h4 svg{color:#2f7d32}.gpn.g-wl .gph h4 svg{color:#5b3fd1}.gpn.g-el .gph h4 svg{color:#c4343f}
+html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radius:0;opacity:.5;background:radial-gradient(circle 2px at 20px 30px,#fff 98%,transparent),radial-gradient(circle 3px at 80px 90px,rgba(255,255,255,.9) 98%,transparent),radial-gradient(circle 1.5px at 140px 50px,#fff 98%,transparent),radial-gradient(circle 2.5px at 50px 140px,rgba(255,255,255,.85) 98%,transparent),radial-gradient(circle 2px at 170px 170px,#fff 98%,transparent);background-size:200px 200px}
+@media(prefers-reduced-motion:no-preference){html[data-season=winter] .hero::after{animation:snowfall 16s linear infinite}}
+@keyframes snowfall{to{background-position:-20px 200px,20px 200px,-10px 200px,15px 200px,-25px 200px}}
+.rkp{display:flex;gap:14px;align-items:center}.rkm{flex:none}.rkm svg{display:block;width:48px;height:58px}.rkb{flex:1;min-width:0}
+.fxbox{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}.fxbox i{position:absolute;border-radius:2px;will-change:transform}
+#pt-pts.bump{animation:bumpy .4s var(--ease-out)}
+@media(prefers-reduced-motion:no-preference){#pt-fire svg,.stats3 .stat:first-child .ib svg{transform-origin:50% 85%;animation:flick 2.6s ease-in-out infinite}}
+@keyframes flick{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-5deg) scale(1.06)}50%{transform:rotate(3deg) scale(.97)}75%{transform:rotate(-2deg) scale(1.04)}}
+.nb,.gbtn,.gc button,.cn-seg button{transition:background .15s var(--ease-out),border-color .15s var(--ease-out),color .15s var(--ease-out),transform .38s cubic-bezier(.34,1.56,.64,1)}
+.nb:active,.gbtn:active,.gc button:active{transform:scale(.95);transition-duration:.08s}
+@media(hover:hover){.gc:not(.soon){transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .2s var(--ease-out)}.gc:not(.soon):hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(22,35,59,.14)}}
 </style>
 </head>
 <body>
@@ -834,7 +857,7 @@ let stage=0,needs=[8],cp=null,HARD=false,tyv='pl';
 function plan(n){const tot=n<=9?Math.max(1,n-1):Math.min(24,Math.max(8,Math.round(n*.75))),st=tot<=8?1:tot<=16?2:3,per=Math.ceil(tot/st);return Array.from({length:st},(_,k)=>Math.min(tot,per*(k+1)))}
 function start(i,h){runPts=0;HARD=!!h;lvl=i;needs=plan(CATS[i].w.length);stage=0;NEED=needs[0];deck=prio(CATS[i].w.slice());seen=[];torches=0;pick=0;jb=0;sh=0;got=[];score=0;hearts=3;inv=0;gems=0;streak=0;asked=right=0;build(i)}
 function stageDone(){
-  state='end';clearKeys();[523,659,784].forEach((f,k)=>setTimeout(()=>beep(f,.15,'square',.05),k*120));
+  state='end';clearKeys();fxConfetti({n:36});[523,659,784].forEach((f,k)=>setTimeout(()=>beep(f,.15,'square',.05),k*120));
   card('<h2>Etap '+(stage+1)+' z '+needs.length+' ukończony! ⭐</h2><p>Zebrane słówka: <b>'+got.length+'/'+needs[needs.length-1]+'</b>. Dostajesz dodatkowe serce, a postęp jest zapisany (checkpoint).</p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div><button class="g" onclick="nextStage()">Następny etap ▶</button>');
 }
 function nextStage(){stage++;NEED=needs[stage];hearts=Math.min(3,hearts+1);build(lvl)}
@@ -885,7 +908,7 @@ function menu(){
 }
 function fail(){const wb=state==='boss';state='end';card('<h2>Koniec serc 💔</h2><p>Spokojnie – każda próba to powtórka słówek.'+(wb?' Zebrane słówka zostają, wracasz do bossa.':needs.length>1?' Wracasz na początek tego etapu ('+(stage+1)+'/'+needs.length+'), a zebrane wcześniej słówka zostają.':'')+'</p><button class="g" onclick="'+(wb?'retryBoss()':'retryStage()')+'">'+(wb?'Do bossa':needs.length>1?'Spróbuj etap ponownie':'Spróbuj ponownie')+'</button> '+(wb||needs.length>1?'<button class="g" onclick="start(lvl,HARD)">Od początku</button> ':'')+'<button class="g" onclick="menu()">Menu</button>')}
 function win(){
-  state='end';const acc=asked?Math.round(100*right/asked):100,st=acc>=90?3:acc>=70?2:1;
+  state='end';const acc=asked?Math.round(100*right/asked):100,st=acc>=90?3:acc>=70?2:1;fxConfetti({n:st*20+20});
   if(HARD){SV.h=SV.h||[];SV.h[lvl]=Math.max(SV.h[lvl]||0,st);save();pushHard(lvl)}else{SV.s=SV.s||[];SV.s[lvl]=Math.max(SV.s[lvl]||0,st);save();pushStars(lvl)}
   [523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'square',.05),i*140));
   card('<h2>Boss pokonany! 🏆<br>'+(HARD?'Hard ukończony! ':'Poziom ukończony! ')+' <span class="stars">'+[1,2,3].map(i=>'<i style="--d:'+(i*.18+.3)+'s"'+(i<=st?' class="on">★':'>☆')+'</i>').join('')+'</span></h2><p>Trafność: '+acc+'% ('+right+'/'+asked+') · Punkty w tej grze: <b>'+wcFmtP(runPts)+'</b></p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div>'+(lvl<CATS.length-1?'<button class="g" onclick="start(lvl+1,HARD)">Następna kategoria ▶</button> ':'')+'<button class="g" onclick="start(lvl,HARD)">Jeszcze raz</button> <button class="g" onclick="menu()">Menu</button>');
@@ -1307,9 +1330,9 @@ function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate
 function wod(){const all=[];CATS.forEach(c=>{if(c.l)c.w.forEach(w=>all.push(w))});const d=new Date(),n=Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return all[(n*7919)%all.length]}
 function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(!x||(!x.r&&!x.w))n++;else if(x.b>=4)m++;else l++});return{m,l,n,t:ws.length}}
 const GAMES=[
- {n:'WordCraft',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/hero-game.webp',go:'openGame()'},
- {n:'WordLinks',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/wordlinks.webp',go:"show('conn')"},
- {n:'WordElf',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/wordelf.webp',go:"show('elf')"},
+ {n:'WordCraft',k:'wc',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/hero-game.webp',go:'openGame()'},
+ {n:'WordLinks',k:'wl',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/wordlinks.webp',go:"show('conn')"},
+ {n:'WordElf',k:'el',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/wordelf.webp',go:"show('elf')"},
  {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
  {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
 
@@ -1342,16 +1365,17 @@ function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNod
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
   $('v-home').innerHTML=myAsgHTML()+'<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1,2].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
-  +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b>'+stars+'</b><span>gwiazdek w grach</span></div></div>'
+  +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b data-n="'+st+'">'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b data-n="'+stars+'">'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
-  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.k?' g-'+g.k:'')+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
   +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla korepetytora</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel korepetytora</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   $('hero').querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===HI));heroTick();
+  if(Date.now()-(window.HFX||0)>8000){window.HFX=Date.now();document.querySelectorAll('#v-home .stats3 b[data-n]').forEach(b=>countUp(b,+b.dataset.n))}
 }
 function gpanel(ic_,name,stats,badges,btns){
-  return '<div class="panel gpn"><div class="gph"><h4>'+ic(ic_)+name+'</h4><div class="gpb">'+btns+'</div></div><div class="wlp">'
+  return '<div class="panel gpn g-'+({WordCraft:'wc',WordLinks:'wl',WordElf:'el'}[name]||'x')+'"><div class="gph"><h4>'+ic(ic_)+name+'</h4><div class="gpb">'+btns+'</div></div><div class="wlp">'
    +stats.map(x=>'<div class="stat"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>'
    +'<div class="cn-bd lab" style="margin:12px 0 0">'+badges.map(x=>'<span class="'+(x[2]?'on':'')+'" title="'+x[1]+'">'+x[0]+'<small>'+x[1].split(':')[0].replace(/^[^\p{L}\s]+\s*/u,'')+'</small></span>').join('')+'</div></div>';
 }
@@ -1658,13 +1682,25 @@ const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'
 function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
 const TR=[[0,'Uczeń'],[1000,'Zawodnik'],[4000,'Ekspert'],[10000,'Mistrz portalu'],[25000,'Gwiazda WordLand'],[50000,'Legenda WordLand']];
 function totalPts(){return wcPts()+((SV.cn&&SV.cn.pts)||0)+((SV.elf&&SV.elf.pts)||0)}
-function ptsChip(){const f=$('pt-pts');if(!f)return;const n=totalPts(),h=ic('star','f pt')+wcFmtP(n)+'<span class="fd">\u00a0pkt</span>';f.title=f.ariaLabel='Suma punktów ze wszystkich gier: '+wcFmtP(n)+' ('+wcRank(n,TR).t+'). Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h)f.innerHTML=h}
+var PTSN=null,PTSR=0,PTSE=0;
+function ptsChip(){const f=$('pt-pts');if(!f)return;const n=totalPts(),mk=v=>ic('star','f pt')+wcFmtP(v)+'<span class="fd">\u00a0pkt</span>';f.title=f.ariaLabel='Suma punktów ze wszystkich gier: '+wcFmtP(n)+' ('+wcRank(n,TR).t+'). Kliknij, aby zobaczyć profil.';
+  if(PTSN!==null&&n>PTSN&&!RM){const a=PTSN,t0=performance.now();PTSE=t0+800;cancelAnimationFrame(PTSR);(function s(t){const k=Math.min(1,(t-t0)/800);f.innerHTML=mk(Math.round(a+(n-a)*(1-Math.pow(1-k,3))));if(k<1)PTSR=requestAnimationFrame(s)})(t0);f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}
+  else if(performance.now()>PTSE&&f.innerHTML!==mk(n))f.innerHTML=mk(n);
+  PTSN=n}
 setInterval(()=>ptsChip(),1000);
 function wcPts(){return (SV.ok||0)*10+wcSum(SV.s)*100+wcSum(SV.h)*150}
 var ptsB=0,runPts=0;
 const WLR=[[0,'Nowicjusz'],[500,'Łącznik'],[2000,'Detektyw'],[5000,'Mistrz powiązań'],[12000,'Wizjoner'],[25000,'Legenda']];
-function wcRank(p,R){R=R||WCR;let i=0;R.forEach((r,k)=>{if(p>=r[0])i=k});const n=R[i+1];return{t:R[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-R[i][0])/(n[0]-R[i][0])):100}}
+function wcRank(p,R){R=R||WCR;let i=0;R.forEach((r,k)=>{if(p>=r[0])i=k});const n=R[i+1];return{i,t:R[i][1],next:n?n[1]:'',left:n?n[0]-p:0,pct:n?Math.round(100*(p-R[i][0])/(n[0]-R[i][0])):100}}
 function wcFmtP(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')}
+function countUp(el,to){if(!el)return;if(RM||to<=0){el.textContent=to;return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/700);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)}
+function fxConfetti(o){if(RM)return;o=o||{};const n=o.n||36,cs=['#f2a516','#2457d6','#178a5b','#cf3f4b','#5b3fd1'],box=document.createElement('div');box.className='fxbox';box.setAttribute('aria-hidden','true');document.body.appendChild(box);
+  const x0=o.x!=null?o.x:innerWidth/2,y0=o.y!=null?o.y:innerHeight*.4;
+  for(let i=0;i<n;i++){const p=document.createElement('i');p.style.cssText='left:'+x0+'px;top:'+y0+'px;background:'+cs[i%cs.length]+';width:'+(6+Math.random()*6)+'px;height:'+(9+Math.random()*8)+'px';box.appendChild(p);
+    const a=-Math.PI/2+(Math.random()-.5)*2.4,v=220+Math.random()*320,dx=Math.cos(a)*v,dy=Math.sin(a)*v;
+    p.animate([{transform:'translate(0,0) rotate(0deg)',opacity:1},{transform:'translate('+dx*.6+'px,'+dy*.6+'px) rotate('+Math.round(Math.random()*360)+'deg)',opacity:1,offset:.45},{transform:'translate('+dx+'px,'+(dy+520)+'px) rotate('+Math.round(360+Math.random()*540)+'deg)',opacity:0}],{duration:1500+Math.random()*700,easing:'cubic-bezier(.2,.7,.4,1)'})}
+  setTimeout(()=>box.remove(),2400)}
+document.documentElement.dataset.season=[10,11,0].includes(new Date().getMonth())?'winter':'';
 function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
@@ -1680,7 +1716,7 @@ function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
 function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
-  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
+  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf']].map(x=>'<button class="'+(g===x[0]?'on':'')+' g-'+x[0]+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
   const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja grupa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
@@ -1694,7 +1730,8 @@ function wbHtml(fixed){
   }
   return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
 }
-function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div>'}
+function medalSvg(i,n){const c=TRC[Math.min(4,Math.floor(i*5/n))],id='md'+(++TSV);return'<svg viewBox="0 0 48 58" aria-hidden="true"><defs><radialGradient id="'+id+'" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="'+cmix(c,.6,255)+'"/><stop offset=".55" stop-color="'+c+'"/><stop offset="1" stop-color="'+cmix(c,.32,0)+'"/></radialGradient></defs><path d="M13 30l-6 24 9-5 5 7 6-22z" fill="#cf3f4b"/><path d="M35 30l6 24-9-5-5 7-6-22z" fill="#2457d6"/><ellipse cx="24" cy="46" rx="14" ry="2" fill="#000" opacity=".12"/><circle cx="24" cy="23" r="19" fill="url(#'+id+')"/><circle cx="24" cy="23" r="14.5" fill="none" stroke="'+cmix(c,.4,255)+'" stroke-width="1.6" opacity=".7"/><ellipse cx="17" cy="13" rx="6" ry="3.4" transform="rotate(-35 17 13)" fill="#fff" opacity=".5"/><text x="24" y="29.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#000" opacity=".22">'+(i+1)+'</text><text x="24" y="28.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#fff">'+(i+1)+'</text></svg>'}
+function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel rkp"><div class="rkm">'+medalSvg(r.i,(R||WCR).length)+'</div><div class="rkb"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div></div>'}
 /* ===== UCZEŃ: grupa i zadania od korepetytora ===== */
 let MY={cls:null,asg:null,del:null};
 async function myLoad(){
@@ -2411,7 +2448,7 @@ function elTap(i,b){
   if(e){
     s.used=1;e.got++;EL.mood='ok';EL.pop=1;EL.msg='Dobrze! '+ELI[s.k][1]+' = '+ELI[s.k][2];cnFx('ok');
     const sk=$('el-sack');if(b&&sk&&!RM){const r=b.getBoundingClientRect(),q=sk.getBoundingClientRect(),f=document.createElement('span');f.className='el-fly1';f.textContent=ELI[s.k][0];f.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px';document.body.appendChild(f);requestAnimationFrame(()=>{f.style.transform='translate('+(q.left+q.width/2-r.left-r.width/2)+'px,'+(q.top+q.height/2-r.top-r.height/2)+'px) scale(.4)';f.style.opacity='.2'});setTimeout(()=>f.remove(),500)}
-    if(EL.list.every(e=>e.got>=e.need)){EL.words.push(...EL.list.map(e=>e.k));EL.prev+=EL.list.reduce((a,e)=>a+e.need,0);if(EL.round<EL.rounds-1){EL.acc+=Date.now()-EL.t0;EL.t0=0;EL.between=1}else elFinish()}
+    if(EL.list.every(e=>e.got>=e.need)){EL.words.push(...EL.list.map(e=>e.k));EL.prev+=EL.list.reduce((a,e)=>a+e.need,0);if(EL.round<EL.rounds-1){EL.acc+=Date.now()-EL.t0;EL.t0=0;EL.between=1;fxConfetti({n:28})}else{elFinish();fxConfetti({n:64})}}
   }else{EL.miss++;EL.shake=i;EL.mood='bad';EL.msg='Ups, tego nie ma na liście. +5 s';cnFx('bad')}
   renderElf();
 }
@@ -2429,7 +2466,13 @@ function villageSvg(){
 
 /* ===== POKÓJ UCZNIA: półka z trofeami (rangi ze wszystkich gier) ===== */
 const TRC=['#cd7f32','#c3ccd8','#f1c453','#5fd0f0','#b57cf0'];
-function trophySvg(i,on){const c=on?TRC[i-1]:'#8a7355',o=on?1:.35;return'<svg viewBox="0 0 40 52" aria-hidden="true" style="opacity:'+o+'"><rect x="9" y="45" width="22" height="6" rx="2" fill="'+(on?'#5a3a1e':'#6b5a46')+'"/><rect x="17" y="36" width="6" height="10" fill="'+c+'"/><path d="M9 6h22v14q0 15-11 16Q9 35 9 20z" fill="'+c+'"'+(on?'':' stroke="#6b5a46" stroke-dasharray="3 2" stroke-width="1.5"')+'/><path d="M9 11Q0 11 2 19q2 7 9 6M31 11q9 0 7 8-2 7-9 6" fill="none" stroke="'+c+'" stroke-width="3" stroke-linecap="round"/>'+(on?'<path d="M13 9h4v18q-4-3-4-10z" fill="#fff" opacity=".4"/><path d="M20 12l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#fff" opacity=".9"/>':'')+'</svg>'}
+var TSV=0;
+function cmix(h,t,k){const n=parseInt(h.slice(1),16),f=v=>Math.round(v+(k-v)*t),r=f(n>>16),g=f((n>>8)&255),b=f(n&255);return'#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function trophySvg(i,on){
+  if(!on)return'<svg viewBox="0 0 40 52" aria-hidden="true" style="opacity:.35"><rect x="9" y="45" width="22" height="6" rx="2" fill="#6b5a46"/><rect x="17" y="36" width="6" height="10" fill="#8a7355"/><path d="M9 6h22v14q0 15-11 16Q9 35 9 20z" fill="#8a7355" stroke="#6b5a46" stroke-dasharray="3 2" stroke-width="1.5"/><path d="M9 11Q0 11 2 19q2 7 9 6M31 11q9 0 7 8-2 7-9 6" fill="none" stroke="#8a7355" stroke-width="3" stroke-linecap="round"/></svg>';
+  const c=TRC[i-1],id='tg'+(++TSV),lt=cmix(c,.62,255),dk=cmix(c,.34,0);
+  return'<svg viewBox="0 0 40 52" aria-hidden="true"><defs><radialGradient id="'+id+'" cx=".32" cy=".22" r=".95"><stop offset="0" stop-color="'+lt+'"/><stop offset=".5" stop-color="'+c+'"/><stop offset="1" stop-color="'+dk+'"/></radialGradient><linearGradient id="'+id+'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a32"/><stop offset="1" stop-color="#4d2f17"/></linearGradient></defs><ellipse cx="20" cy="51" rx="14" ry="1.3" fill="#000" opacity=".25"/><rect x="8" y="43" width="24" height="8" rx="3.5" fill="url(#'+id+'b)"/><rect x="8" y="43" width="24" height="2.6" rx="1.3" fill="#fff" opacity=".22"/><rect x="16" y="34" width="8" height="10" rx="2.5" fill="url(#'+id+')"/><path d="M8.5 11Q-1 10 1.5 19q2.4 8 9.5 6.6M31.5 11q9.5-1 7 8-2.4 8-9.5 6.6" fill="none" stroke="url(#'+id+')" stroke-width="4.2" stroke-linecap="round"/><path d="M7 5.5h26v14.5q0 16-13 17.5Q7 36 7 20z" fill="url(#'+id+')"/><ellipse cx="20" cy="31.5" rx="9" ry="3" fill="'+dk+'" opacity=".28"/><ellipse cx="13.4" cy="14" rx="2.8" ry="7.2" transform="rotate(8 13.4 14)" fill="#fff" opacity=".5"/><circle cx="12.6" cy="24.6" r="1.1" fill="#fff" opacity=".6"/><path d="M20 12.4l2.5 5.2 5.6.8-4.1 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4.1-3.9 5.6-.8z" fill="'+dk+'" opacity=".3" transform="translate(0 1.1)"/><path d="M20 12.4l2.5 5.2 5.6.8-4.1 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4.1-3.9 5.6-.8z" fill="#fff" opacity=".96"/></svg>'
+}
 const ROOM_SVG=`<svg class="rm-scene" viewBox="0 0 340 250" aria-hidden="true">
 <defs><linearGradient id="rmSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc4ff"/><stop offset="1" stop-color="#dff3ff"/></linearGradient>
 <linearGradient id="rmScr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fb0"/><stop offset="1" stop-color="#1b3556"/></linearGradient>
