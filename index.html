@@ -724,6 +724,42 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 /* nakładka z boku (obóz, szczyt): widać wspinacza po lewej */
 .cl-ov.side{position:relative;inset:auto;grid-column:2;grid-row:1;border-radius:14px;background:rgba(15,22,40,.62);backdrop-filter:blur(2px)}
 .cl-big{width:96px;height:140px}
+/* WordClimb: podsumowanie w stylu gry, szczegóły sceny */
+.cl-fire{transform-box:fill-box;transform-origin:50% 100%;animation:clfire .45s ease-in-out infinite alternate}
+@keyframes clfire{from{transform:scale(.9,.82)}to{transform:scale(1.08,1.12)}}
+.cl-aur{animation:claur 9s ease-in-out infinite alternate}
+@keyframes claur{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+.cl-birds.big{animation-duration:24s}
+.cl-peb circle{animation:clpeb .8s ease-in forwards}
+@keyframes clpeb{from{transform:translateY(0);opacity:1}to{transform:translateY(90px);opacity:0}}
+.cl-ov.side{justify-content:center;gap:9px;padding:14px 16px;min-height:0;overflow:hidden}
+.cl-ov.side.end{justify-content:flex-start;overflow:auto}
+.cl-stars{display:flex;gap:8px}
+.cl-stars svg{width:46px;height:46px;animation:clpop .55s cubic-bezier(.3,1.6,.5,1) both}
+.cl-stars svg:nth-child(2){animation-delay:.15s}.cl-stars svg:nth-child(3){animation-delay:.3s}
+@keyframes clpop{from{transform:scale(0) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}
+.cl-tiles{display:flex;gap:8px;width:100%;max-width:440px}
+.cl-tiles>div{flex:1;padding:8px 6px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.cl-tiles b{display:block;font:800 clamp(18px,2.6vw,24px) "Figtree",system-ui,sans-serif;color:#fff}
+.cl-tiles small{color:#ffd9b0;font-size:12px;font-weight:700}
+.cl-pts{display:flex;align-items:center;gap:10px;padding:6px 22px;border-radius:999px;background:linear-gradient(180deg,#fbbf24,#f59e0b);color:#3a2410;box-shadow:0 4px 0 #b45309}
+.cl-pts span{font-weight:800;font-size:15px}.cl-pts b{font:800 28px "Figtree",system-ui,sans-serif}
+.cl-pts svg{width:26px;height:26px;color:#7c2d12}
+.cl-wh{margin:4px 0 0;color:#ffd9b0;font:800 14px "Figtree",system-ui,sans-serif;letter-spacing:.3px}
+.cl-wl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;max-width:480px;flex:1 1 auto;min-height:90px;overflow:auto;padding:2px 2px 6px;align-content:start}
+.cl-wc{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 10px;text-align:left;border-radius:16px 12px 16px 12px/12px 16px 12px 16px;color:#3a2410;background:radial-gradient(120% 90% at 30% 15%,#fff4de,#e9cc9c 55%,#c99c64);box-shadow:0 3px 0 #8a5f33}
+.cl-wc div{min-width:0}.cl-wc b{display:block;font:800 15px "Figtree",system-ui,sans-serif;overflow-wrap:anywhere}.cl-wc span{font-size:13px;color:#6b4a2b;overflow-wrap:anywhere}
+.cl-wc svg{flex:none;width:20px;height:20px}
+.cl-wc.bad{background:radial-gradient(120% 90% at 30% 15%,#ffe1e1,#f3a0a0 55%,#d86a6a);box-shadow:0 3px 0 #9b2c2c}
+.cl-note{margin:0;color:#c9d6f2;font-size:13px}
+@media(max-width:699px){.cl-wl{grid-template-columns:1fr}.cl-stars svg{width:38px;height:38px}.cl-tiles b{font-size:17px}.cl-ov.side{padding:10px}}
+/* WordClimb: zwarte podsumowanie */
+.cl-ov.side{gap:7px}.cl-ov.side h3{font-size:clamp(20px,2.8vw,26px)}
+.cl-stars svg{width:36px;height:36px}.cl-tiles>div{padding:5px 6px}.cl-tiles b{font-size:clamp(16px,2.2vw,20px)}
+.cl-pts{padding:3px 20px}.cl-pts b{font-size:24px}.cl-ov.side .cl-wh{margin:0}
+@media(max-width:699px){.cl-scene{height:300px;align-self:start}.cl-ov.side.end{grid-column:1/-1;grid-row:2;overflow:visible}.cl-wl{grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible}.cl-stars svg{width:40px;height:40px}.cl-tiles b{font-size:18px}}
+.cl-alt{left:10px;top:10px;bottom:10px}
+@media(max-width:699px){.cl-alt{left:10px;top:10px;bottom:10px}.cl-stage.over .cl-scene{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -2645,7 +2681,7 @@ const CLM={A1:25,A2:40,B1:60},CLMAX={A1:300,A2:400,B1:500},CLNAME={A1:'Zielona H
 const CLR=[[0,'Turysta'],[500,'Wędrowiec'],[2000,'Taternik'],[5000,'Alpinista'],[12000,'Przewodnik górski'],[25000,'Legenda Szczytów']];
 const clPts=(l,first,slips)=>Math.round(CLMAX[l]*(.7*first/12+.3*Math.max(0,1-slips/6)));
 function clPool(l){
-  const a=[],seen=new Set(),add=lv=>CATS.forEach((c,ci)=>{if(!c.own&&c.l&&(!lv||c.l===lv))c.w.forEach(w=>{if(w[0].length<=22&&w[1].length<=22&&!seen.has(w[1])){seen.add(w[1]);a.push({w,ci})}})});
+  const a=[],seen=new Set(),add=lv=>CATS.forEach((c,ci)=>{if(!c.own&&c.l&&(!lv||c.l===lv))c.w.forEach(w=>{if(w[0].length<=22&&w[1].length<=22&&!seen.has('e'+w[1])&&!seen.has('p'+w[0])){seen.add('e'+w[1]);seen.add('p'+w[0]);a.push({w,ci})}})});
   add(l);if(a.length<12)add(null);return a
 }
 function clNew(l){
@@ -2675,8 +2711,9 @@ function clTap(k){
     me.i++;me.p++;me.mood='ok';me.msg='Dobrze! '+line;cnFx('ok')
   }else{
     if(!it.bad)clRec(it.w,false);
-    it.bad=1;me.slips++;me.slip=1;me.mood='bad';me.msg='Poślizg! '+line+'. Słówko wróci.';cnFx('bad');
-    me.q.splice(Math.min(me.q.length,me.p+4),0,it);me.p++
+    it.bad=1;me.slips++;me.slip=1;me.mood='bad';me.msg='Poślizg! '+line+'. Trafia do powtórek.';cnFx('bad');
+    const u=new Set(me.q.map(x=>x.w[1])),nx=elShuf(me.pool.filter(x=>!u.has(x.w[1])))[0];
+    me.q.push(nx?{w:nx.w,ci:nx.ci,d:me.q.length%2,bad:0}:{w:it.w,ci:it.ci,d:it.d,bad:1});me.p++
   }
   renderClimb();
   setTimeout(()=>{
@@ -2692,7 +2729,7 @@ function clFinish(){
   const e=CL;e.over=1;e.stars=e.slips===0?3:e.slips<=3?2:1;e.pts=clPts(e.lvl,e.first,e.slips);
   const c=SV.climb||(SV.climb={p:0,perf:0,st:{}});c.st=c.st||{};c.p++;if(!e.slips)c.perf++;
   c.st[e.lvl]=Math.max(c.st[e.lvl]||0,e.stars);save();
-  e.words=[];const s=new Set();e.q.forEach(x=>{if(!s.has(x.w[1])){s.add(x.w[1]);e.words.push(x)}});
+  e.words=e.q.slice(0,e.p).map(x=>({w:x.w,bad:x.bad}));
   cnFx('win');fxConfetti({n:64})
 }
 function clMan(o){
@@ -2701,14 +2738,14 @@ function clMan(o){
   const leg=s=>`<g transform="translate(${s*5} 11)"><g class="cm-leg ${s<0?'l':'r'}"><path d="M0 0Q${s*4} 8 ${s*3} 16" stroke="#1e3a8a" stroke-width="7.4" stroke-linecap="round" fill="none"/><path d="M${s*-1} 6Q${s*3.4} 8 ${s*5.4} 6.4" stroke="#f97316" stroke-width="2.2" fill="none" stroke-linecap="round"/><rect x="${s*3-5.5}" y="15" width="11" height="8" rx="3.2" fill="#3b2a1a"/><rect x="${s*3-5.5}" y="20.6" width="11" height="2.4" rx="1.2" fill="#9a8f84"/></g></g>`;
   return`<g class="cl-man st-${st} lead-${lead}"><g class="cm-all">`
    +(lv!=='A1'?'<path d="M11 -4L18 -28" stroke="#8a5f33" stroke-width="3" stroke-linecap="round"/><path d="M14 -25Q19 -31 25 -27L24 -24Q20 -26 17 -22z" fill="#cbd5e1"/>':'')
-   +'<rect x="-12.5" y="-11" width="25" height="21" rx="7" fill="#c2410c"/>'
+   +'<rect x="-12.5" y="-11" width="25" height="21" rx="7" fill="#c2410c"/><rect x="-14.6" y="0" width="4.6" height="10" rx="2.2" fill="#38bdf8"/><rect x="-13" y="-13.6" width="26" height="5.4" rx="2.7" fill="#fde047"/><path d="M-8 -13.6v5.4M0 -13.6v5.4M8 -13.6v5.4" stroke="#ca8a04" stroke-width="1"/>'
    +leg(-1)+leg(1)
    +`<rect x="-10" y="-12" width="20" height="25" rx="8" fill="${jk}"/><path d="M2 -12H6Q10 -12 10 -8V9Q10 13 6 13H2z" fill="${jk2}" opacity=".45"/><path d="M-6.5 -11L5 9M6.5 -11L-5 9" stroke="#7c2d12" stroke-width="1.8" stroke-linecap="round"/>`
    +'<rect x="-10.4" y="6.4" width="20.8" height="5.4" rx="1.6" fill="#f97316"/><rect x="-2.6" y="6" width="5.2" height="6.2" rx="1" fill="#cbd5e1" stroke="#64748b" stroke-width=".8"/><circle cx="6.6" cy="12.6" r="2.3" fill="none" stroke="#cbd5e1" stroke-width="1.5"/><path d="M0 12.4Q-3.4 19 0 26" stroke="#f4ead2" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
    +arm(-1)+arm(1)
    +(b1?'<path d="M-8 -11Q0 -5 8 -11L8 -7Q0 -1 -8 -7z" fill="#ef4444"/><path class="cm-scarf" d="M5 -8L12 -2L9.4 1L3.6 -4z" fill="#dc2626"/>':'')
    +`<g transform="translate(0 -21)"><g class="cm-head"><circle cx="-9.4" cy="2.6" r="2.4" fill="#f3c9a0"/><circle cx="9.4" cy="2.6" r="2.4" fill="#f3c9a0"/><circle cx="0" cy="0" r="9.6" fill="#f3c9a0"/>`
-   +'<path d="M-10.4 -1A10.4 10.4 0 0 1 10.4 -1L10.4 .6L-10.4 .6z" fill="#f97316"/><rect x="-11.2" y="-1.4" width="22.4" height="3.2" rx="1.6" fill="#ea580c"/><rect x="-1.5" y="-11.2" width="3" height="10" rx="1.2" fill="#fff" opacity=".85"/><circle cx="0" cy="-5.6" r="2.5" fill="#fde68a" stroke="#92400e" stroke-width=".9"/><path d="M-9.4 3.6Q-9 8 -5 10M9.4 3.6Q9 8 5 10" stroke="#7c2d12" stroke-width=".9" fill="none"/>'
+   +'<path d="M-10.4 -1A10.4 10.4 0 0 1 10.4 -1L10.4 .6L-10.4 .6z" fill="#f97316"/><rect x="-11.2" y="-1.4" width="22.4" height="3.2" rx="1.6" fill="#ea580c"/><rect x="-1.5" y="-11.2" width="3" height="10" rx="1.2" fill="#fff" opacity=".85"/><circle cx="0" cy="-5.6" r="2.5" fill="#fde68a" stroke="#92400e" stroke-width=".9"/><path d="M-9.4 3.6Q-9 8 -5 10M9.4 3.6Q9 8 5 10" stroke="#7c2d12" stroke-width=".9" fill="none"/><path d="M-9.8 1.6Q-11 6 -8.4 7.6M9.8 1.6Q11 6 8.4 7.6" stroke="#7a4a24" stroke-width="2.4" stroke-linecap="round" fill="none"/>'
    +'<g class="cm-eyes"><circle cx="-3.7" cy="3.2" r="2.5" fill="#fff"/><circle cx="3.7" cy="3.2" r="2.5" fill="#fff"/><circle cx="-3.5" cy="2.6" r="1.4" fill="#2a1a0e"/><circle cx="3.9" cy="2.6" r="1.4" fill="#2a1a0e"/><circle cx="-3.1" cy="2.1" r=".5" fill="#fff"/><circle cx="4.3" cy="2.1" r=".5" fill="#fff"/></g>'
    +'<path class="cm-brow" d="M-6.4 .8L-2 -.2M6.4 .8L2 -.2" stroke="#5a3a1e" stroke-width="1.1" stroke-linecap="round"/><circle cx="-6.4" cy="6.2" r="1.9" fill="#f09a9a" opacity=".6"/><circle cx="6.4" cy="6.2" r="1.9" fill="#f09a9a" opacity=".6"/>'
    +'<path class="mh" d="M-3 6.6Q0 9.6 3 6.6" stroke="#2a1a0e" stroke-width="1.4" fill="none" stroke-linecap="round"/><ellipse class="mo" cx="0" cy="7.8" rx="2.2" ry="2.8" fill="#5a1f1f"/><path class="mg" d="M-4.2 5.8Q0 12.6 4.2 5.8z" fill="#5a1f1f" stroke="#2a1a0e" stroke-width=".8" stroke-linejoin="round"/><path class="sw" d="M11 -1Q13.4 3 11 4.4Q8.6 3 11 -1z" fill="#7dd3fc"/>'
@@ -2735,17 +2772,30 @@ function clWorld(l,ci){
   const cap=l==='A1'?'#6fbf5c':'#fff',ch=l==='B1'?14:l==='A2'?7:5;
   h+='<path d="M22 '+top+'Q60 '+(top-ch)+' 100 '+(top-ch/2)+'T178 '+top+'v'+(ch+4)+'Q150 '+(top+ch+8)+' 120 '+(top+ch+3)+'T60 '+(top+ch+9)+'T22 '+(top+ch+4)+'z" fill="'+cap+'"/>';
   if(l==='B1')for(let k=0;k<7;k++)h+='<path d="M'+(32+k*20)+' '+(top+ch+6)+'l3 0 -1.5 '+(7+R(k)*8).toFixed(0)+'z" fill="#e6f6ff"/>';
-  h+='<path d="M100 '+gy+'L100 '+clY(12)+'" stroke="#f4ead2" stroke-width="2.4" opacity=".92"/>';
+  for(let s=1;s<12;s++){if(s===4||s===8)continue;const y=clY(s)+10+R(s+77)*8,lf=s%2===0,x=lf?22:150,w=28;
+    h+='<path d="M'+x+' '+y+'h'+w+'q-2 7 -'+(lf?4:8)+' 7h-'+(w-8)+'z" fill="#000" opacity=".25"/>';
+    if(l==='A1')h+='<path d="M'+(x+4)+' '+y+'l2-7 2 7 2-9 2 9 2-6 2 6 2-8 2 8z" fill="#4c9a3c"/><circle cx="'+(x+20)+'" cy="'+(y-2)+'" r="2" fill="#f472b6"/>';
+    else if(l==='A2')h+='<ellipse cx="'+(x+8)+'" cy="'+(y-2)+'" rx="5" ry="3" fill="#6a635a"/><ellipse cx="'+(x+18)+'" cy="'+(y-1)+'" rx="3.4" ry="2.2" fill="#837b70"/>';
+    else h+='<path d="M'+x+' '+y+'q14 -8 '+w+' 0z" fill="#fff"/><path d="M'+(x+6)+' '+y+'l2 0 -1 7zM'+(x+16)+' '+y+'l2 0 -1 9z" fill="#e6f6ff"/>'}
+  h+='<path d="M100 '+gy+'L100 '+clY(12)+'" stroke="#f4ead2" stroke-width="2.4" opacity=".92"/><path d="M100 '+gy+'q-22 6 -12 13q14 5 24 -2q9 -5 -12 -11" fill="none" stroke="#f4ead2" stroke-width="2.4" stroke-linecap="round"/>';
   for(let s=0;s<=12;s++){
     const a=s%2,col=['#f97316','#facc15','#ef4444','#38bdf8'][s%4],used=s<=ci;
     h+=clHold(a?86:114,clY(s)-28,col,used&&s>0)+clHold(a?114:86,clY(s)+26,col,used&&s>0);
     if(s&&s<12)h+='<rect x="97" y="'+(clY(s)-2)+'" width="6" height="4" rx="1" fill="#9aa3b2"/>'
   }
-  [4,8].forEach((s,k)=>{const y=clY(s)+16;h+='<rect x="22" y="'+y+'" width="56" height="5" rx="2" fill="#000" opacity=".3"/><path d="M30 '+y+'L48 '+(y-24)+'L66 '+y+'z" fill="#f97316"/><path d="M48 '+(y-24)+'L40 '+y+'L56 '+y+'z" fill="#7c2d12" opacity=".55"/><path d="M48 '+(y-24)+'L48 '+(y-40)+'" stroke="#9a3412" stroke-width="1.5"/><path class="cl-flag" d="M48 '+(y-40)+'L63 '+(y-35)+'L48 '+(y-30)+'z" fill="#fbbf24" stroke="#9a3412" stroke-width="1"/><circle cx="72" cy="'+(y-5)+'" r="3.4" fill="#fde68a"/><circle cx="72" cy="'+(y-5)+'" r="7" fill="#fde68a" opacity=".25"/><text x="26" y="'+(y+15)+'" fill="#fff" font-weight="800" font-size="9" font-family="Figtree,Arial,sans-serif" stroke="#000" stroke-opacity=".5" stroke-width=".6">Obóz '+(k+1)+'</text>'});
+  [4,8].forEach((s,k)=>{const y=clY(s)+16;h+='<rect x="22" y="'+y+'" width="56" height="5" rx="2" fill="#000" opacity=".3"/><path d="M30 '+y+'L48 '+(y-24)+'L66 '+y+'z" fill="#f97316"/><path d="M48 '+(y-24)+'L40 '+y+'L56 '+y+'z" fill="#7c2d12" opacity=".55"/><path d="M48 '+(y-24)+'L48 '+(y-40)+'" stroke="#9a3412" stroke-width="1.5"/><path class="cl-flag" d="M48 '+(y-40)+'L63 '+(y-35)+'L48 '+(y-30)+'z" fill="#fbbf24" stroke="#9a3412" stroke-width="1"/><g transform="translate(84 '+(y+1)+')"><path d="M-6 0l12 -3M-6 -3l12 3" stroke="#6b4a2b" stroke-width="2.4" stroke-linecap="round"/><path class="cl-fire" d="M0 -2Q-5 -8 0 -17Q1 -10 5 -9Q6 -4 0 -2z" fill="#fb923c"/><path class="cl-fire" d="M0 -2Q-2.5 -6 0 -11Q2 -6 2.5 -4z" fill="#fde047"/></g><circle cx="72" cy="'+(y-5)+'" r="3.4" fill="#fde68a"/><circle cx="72" cy="'+(y-5)+'" r="7" fill="#fde68a" opacity=".25"/><text x="26" y="'+(y+15)+'" fill="#fff" font-weight="800" font-size="9" font-family="Figtree,Arial,sans-serif" stroke="#000" stroke-opacity=".5" stroke-width=".6">Obóz '+(k+1)+'</text>'});
   h+='<path d="M100 '+top+'L100 '+(top-44)+'" stroke="#5b3a1e" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="'+(top-45)+'" r="2.4" fill="#fbbf24"/><path class="cl-flag" d="M100 '+(top-42)+'L100 '+(top-22)+'L130 '+(top-32)+'z" fill="#f97316" stroke="#9a3412" stroke-width="1.2"/>';
   return h
 }
-const clTf=(f,i)=>f==='w'?'translateY('+(200-clY(i))+'px)':'translateY('+(i*CLH*f)+'px)';
+const clTf=(f,i)=>f==='w'?'translateY('+(200-clY(i))+'px)':f==='g'?'translateY('+((200-clY(0))+i*CLH*1.15)+'px)':'translateY('+(i*CLH*f)+'px)';
+function clFg(l){
+  const R=n=>{const x=Math.sin(n*91.7+l.charCodeAt(1)*57.3)*43758.5453;return x-Math.floor(x)};let h='';
+  for(let k=0;k<=12;k++){const y=clY(k)+R(k)*30-10,lf=k%2===0,o=R(k+5)*6,x=lf?-2:202,d=lf?1:-1;
+    if(l==='A1')h+='<path d="M'+x+' '+y.toFixed(0)+'q'+(d*14)+' -8 '+(d*(20+o))+' 6q'+(d*-10)+' 3 '+(d*-(20+o))+' 0z" fill="#2f7d32"/><path d="M'+x+' '+(y+1).toFixed(0)+'q'+(d*10)+' -3 '+(d*(16+o))+' 4" stroke="#1f5a22" stroke-width="1" fill="none"/>';
+    else if(l==='A2')h+='<path d="M'+x+' '+y.toFixed(0)+'l'+(d*(14+o))+' 6 '+(d*-2)+' '+(14+o)+' '+(d*-14)+' -4z" fill="#4b4b53"/><path d="M'+x+' '+y.toFixed(0)+'l'+(d*(14+o))+' 6" stroke="#8a8a94" stroke-width="1.2" fill="none"/>';
+    else h+='<path d="M'+x+' '+y.toFixed(0)+'l'+(d*(15+o))+' 4 '+(d*-15)+' 9z" fill="#cfe9ff" opacity=".95"/><path d="M'+x+' '+y.toFixed(0)+'l'+(d*(15+o))+' 4" stroke="#fff" stroke-width="1.2" fill="none"/>'}
+  return h
+}
 function clScene(l,from){
   const st=CL.over?'win':CL.slip?'slip':(CL.lock&&CL.mood==='ok')?'up':CL.between?'wave':'idle';
   const cl=[[30,40],[130,100],[60,-60],[150,-130],[40,-200],[120,-270]].map(c=>'<g transform="translate('+c[0]+' '+c[1]+')" fill="#fff" opacity=".78"><ellipse cx="0" cy="0" rx="22" ry="7"/><ellipse cx="12" cy="-5" rx="14" ry="8"/><ellipse cx="-10" cy="-3" rx="11" ry="6"/></g>').join('');
@@ -2755,8 +2805,12 @@ function clScene(l,from){
   const birds=l==='A1'?'<g class="cl-birds" fill="none" stroke="#2a3b55" stroke-width="1.4" stroke-linecap="round"><path d="M40 60q4-5 8 0q4-5 8 0"/><path d="M70 82q3-4 6 0q3-4 6 0"/></g>':'';
   return'<div class="cl-scene cl-'+l+'"><svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="clw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--w1)"/><stop offset=".5" style="stop-color:var(--w1)"/><stop offset="1" style="stop-color:var(--w2)"/></linearGradient></defs>'
    +sun+birds+'<g class="cl-fl" style="transform:'+clTf(.2,from)+'" data-f=".2">'+mt+'</g><g class="cl-fl" style="transform:'+clTf(.5,from)+'" data-f=".5">'+cl+'</g><g class="cl-fl" style="transform:'+clTf(.38,from)+'" data-f=".38">'+hl+'</g>'
+   +(l==='B1'?'<path class="cl-aur" d="M-10 70Q50 30 110 60T210 40V80Q150 100 100 80T-10 100z" fill="#7cf0c8" opacity=".2"/>':'')+(l==='A2'?'<g class="cl-birds big" fill="none" stroke="#3a3a42" stroke-width="2" stroke-linecap="round"><path d="M30 54q8-8 16 0q8-8 16 0"/></g>':'')
    +'<g class="cl-fl cl-world" style="transform:'+clTf('w',from)+'" data-f="w">'+clWorld(l,CL.i)+'</g>'
-   +'<g transform="translate(100 200)"><g class="cl-man-w'+(CL.slip?' slip':'')+'">'+clMan({arm:CL.i%2,mood:CL.mood,st:st,lvl:l})+'</g></g></svg><i class="cl-vg"></i></div>'
+   +'<ellipse cx="106" cy="206" rx="15" ry="22" fill="#000" opacity=".14"/>'
+   +'<g transform="translate(100 200)"><g class="cl-man-w'+(CL.slip?' slip':'')+'">'+clMan({arm:CL.i%2,mood:CL.mood,st:st,lvl:l})+'</g></g>'
+   +(CL.slip?'<g class="cl-peb">'+[[90,170,0],[104,160,.1],[112,176,.2],[96,186,.15],[118,168,.3]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.4" fill="#8a7a66" style="animation-delay:'+p[2]+'s"/>').join('')+'</g>':'')
+   +'<g class="cl-fl" style="transform:'+clTf('g',from)+'" data-f="g">'+clFg(l)+'</g></svg><i class="cl-vg"></i></div>'
 }
 function renderClimb(){
   const root=$('v-climb');if(!root)return;if(!CL)clNew(CLlvl);
@@ -2767,11 +2821,11 @@ function renderClimb(){
   const cu=CL.cur,hold=k=>{const st=CL.lock?(CL.pick===k?(k===cu.ok?' ok':' bad'):(k===cu.ok&&CL.pick!==cu.ok?' ans':'')):'';return'<button class="cl-hold h'+k+st+'" '+(CL.lock||wait?'disabled ':'')+'onclick="clTap('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(cu.opts[k]||'')+'</button>'};
   const q=side?'':cu?'<div class="cl-q"><div class="cl-card"><small>'+(cu.d?'Co to znaczy po polsku?':'Jak to będzie po angielsku?')+'</small><b class="cl-w">'+esc(cu.q)+'</b></div><div class="cl-holds">'+[0,1,2].map(hold).join('')+'</div></div>':'<div class="cl-q"></div>';
   let ov='';
-  if(wait)ov='<div class="cl-ov"><svg class="cl-big" viewBox="-26 -40 52 78" aria-hidden="true">'+clMan({st:'wave',lvl:l,arm:1})+'</svg><h3>Zdobądź szczyt!</h3><p>12 kroków w 3 obozach. Wybierz z trzech chwytów poprawne tłumaczenie. Pomyłka to tylko poślizg: nic nie tracisz, a słówko wróci później. Bez limitu czasu.</p><button onclick="clStart()">Start</button></div>';
-  else if(CL.between){const n=CL.i/4;ov='<div class="cl-ov side"><h3>Obóz '+n+'!</h3><p>Wysokość: <b>'+m+' m</b>. Odpocznij chwilę. Do szczytu zostało '+(12-CL.i)+' kroków.</p><button onclick="clNext()">Dalej</button></div>'}
-  else if(CL.over)ov='<div class="cl-ov side"><h3>Szczyt zdobyty!</h3><div class="el-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=CL.stars?'pt':'dim'))).join('')+'</div><p>Wysokość: <b>'+m+' m</b> · od razu dobrze: <b>'+CL.first+'/12</b> · poślizgi: <b>'+CL.slips+'</b></p><div class="cn-pts">'+ic('star','f pt')+'Punkty: <b>'+CL.pts+'</b></div><div class="cl-words">'+CL.words.map(x=>esc(x.w[1]+' = '+x.w[0])).join('<br>')+'</div></div>';
-  root.innerHTML=head+'<div class="gstage cn-stage cl-stage">'+hud+'<div class="gs-body">'+clScene(l,from)+alt+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–3 też działają.</p>';
-  if(from!==CL.i){requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=CL.i;root.querySelectorAll('[data-f]').forEach(e=>{const f=e.dataset.f;e.style.transform=clTf(f==='w'?f:+f,i)});const b=root.querySelector('.cl-alt .bar i');if(b)b.style.height=(100*i/12)+'%'}))}
+  if(wait)ov='<div class="cl-ov"><svg class="cl-big" viewBox="-26 -40 52 78" aria-hidden="true">'+clMan({st:'wave',lvl:l,arm:1})+'</svg><h3>Zdobądź szczyt!</h3><p>12 kroków w 3 obozach. Wybierz z trzech chwytów poprawne tłumaczenie. Pomyłka to tylko poślizg: nic nie tracisz, a słówko trafi do powtórek. Bez limitu czasu.</p><button onclick="clStart()">Start</button></div>';
+  else if(CL.between){const n=CL.i/4;ov='<div class="cl-ov side"><h3>Obóz '+n+'!</h3><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+(12-CL.i)+'</b><small>do szczytu</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><p>Odpocznij chwilę i złap oddech.</p><button onclick="clNext()">Dalej</button></div>'}
+  else if(CL.over){const mis=CL.words.filter(x=>x.bad).length;ov='<div class="cl-ov side end"><h3>Szczyt zdobyty!</h3><div class="cl-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=CL.stars?'pt':'dim'))).join('')+'</div><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+CL.first+'/12</b><small>od razu dobrze</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><div class="cl-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+CL.pts+'</b></div><h4 class="cl-wh">Słówka z trasy</h4><div class="cl-wl">'+CL.words.map(x=>'<div class="cl-wc'+(x.bad?' bad':'')+'"><div><b>'+esc(x.w[1])+'</b><span>'+esc(x.w[0])+'</span></div>'+ic(x.bad?'repeat':'check',x.bad?'warn':'ok')+'</div>').join('')+'</div>'+(mis?'<p class="cl-note">Słówka z poślizgiem ('+mis+') trafiły do powtórek.</p>':'<p class="cl-note">Bez żadnego poślizgu. Świetna robota!</p>')+'</div>'}
+  root.innerHTML=head+'<div class="gstage cn-stage cl-stage'+(CL.over?' over':'')+'">'+hud+'<div class="gs-body">'+clScene(l,from).replace(/<\/div>$/,alt+'</div>')+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–3 też działają.</p>';
+  if(from!==CL.i){requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=CL.i;root.querySelectorAll('[data-f]').forEach(e=>{const f=e.dataset.f;e.style.transform=clTf(f==='w'||f==='g'?f:+f,i)});const b=root.querySelector('.cl-alt .bar i');if(b)b.style.height=(100*i/12)+'%'}))}
   CL.shown=CL.i
 }
 addEventListener('keydown',e=>{
