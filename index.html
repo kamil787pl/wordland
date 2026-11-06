@@ -761,6 +761,9 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .cl-alt{left:10px;top:10px;bottom:10px}
 @media(max-width:699px){.cl-alt{left:10px;top:10px;bottom:10px}.cl-stage.over .cl-scene{grid-column:1/-1}}
 .cl-ov.side.end{justify-content:center;gap:12px}.cl-ov.side.end .cl-stars svg{width:48px;height:48px}.cl-ov.side.end .cl-tiles b{font-size:clamp(20px,2.8vw,26px)}.cl-ov.side.end .cl-pts{padding:6px 26px}.cl-ov.side.end .cl-pts b{font-size:30px}.cl-note{font-size:14px}
+.cl-w.gap{font-size:clamp(17px,2.4vw,22px);line-height:1.3}
+.cl-hold.h3{border-radius:24px 28px 22px 30px/28px 22px 30px 24px}
+.cl-holds.n4{gap:9px}.cl-holds.n4 .cl-hold{min-height:50px;padding-top:6px;padding-bottom:6px}
 </style>
 </head>
 <body>
@@ -2685,17 +2688,22 @@ function clPool(l){
   const a=[],seen=new Set(),add=lv=>CATS.forEach((c,ci)=>{if(!c.own&&c.l&&(!lv||c.l===lv))c.w.forEach(w=>{if(w[0].length<=22&&w[1].length<=22&&!seen.has('e'+w[1])&&!seen.has('p'+w[0])){seen.add('e'+w[1]);seen.add('p'+w[0]);a.push({w,ci})}})});
   add(l);if(a.length<12)add(null);return a
 }
+const CLN={A1:3,A2:4,B1:4};
+function clItem(x,i,l){const gap=l==='B1'&&i%3===2&&x.w[2]&&x.w[2].includes('___')?1:0;return{w:x.w,ci:x.ci,d:gap?0:i%2,gap,bad:0}}
 function clNew(l){
-  const pool=clPool(l),q=elShuf(pool.slice()).slice(0,12).map((x,i)=>({w:x.w,ci:x.ci,d:i%2,bad:0}));
+  const pool=clPool(l),q=elShuf(pool.slice()).slice(0,12).map((x,i)=>clItem(x,i,l));
   const o={lvl:l,pool,q,p:0,i:0,first:0,slips:0,go:0,between:0,over:0,lock:0,pick:-1,slip:0,msg:'',mood:'',shown:0};
   CL=o;clOpts();return o
 }
 function clOpts(){
   const it=CL.q[CL.p];if(!it)return;
-  const d=it.d,txt=x=>d?x.w[0]:x.w[1],ans=txt(it),lc=ans.toLowerCase(),seen=new Set([lc]),o=[];
-  const same=CL.pool.filter(x=>x.ci===it.ci),rest=CL.pool.filter(x=>x.ci!==it.ci);
-  for(const x of elShuf(same).concat(elShuf(rest))){const t=txt(x),k=t.toLowerCase();if(!seen.has(k)){seen.add(k);o.push(t)}if(o.length===2)break}
-  const all=elShuf([ans].concat(o));CL.cur={q:d?it.w[1]:it.w[0],opts:all,ok:all.indexOf(ans),d}
+  const l=CL.lvl,N=CLN[l],d=it.d,txt=x=>d?x.w[0]:x.w[1],ans=txt(it),lc=ans.toLowerCase(),seen=new Set([lc]),o=[];
+  if(l==='B1'&&!d&&it.w[3]&&!seen.has(it.w[3].toLowerCase())){seen.add(it.w[3].toLowerCase());o.push(it.w[3])}
+  let c=CL.pool.filter(x=>x.w!==it.w);
+  if(l==='B1')c=elShuf(c.map(x=>[lev(txt(x).toLowerCase(),lc),x]).sort((p,q)=>p[0]-q[0]).slice(0,12).map(p=>p[1]));
+  else c=elShuf(c.filter(x=>x.ci===it.ci)).concat(elShuf(c.filter(x=>x.ci!==it.ci)));
+  for(const x of c){if(o.length>=N-1)break;const t=txt(x),k=t.toLowerCase();if(!seen.has(k)){seen.add(k);o.push(t)}}
+  const all=elShuf([ans].concat(o));CL.cur={q:it.gap?it.w[2]:d?it.w[1]:it.w[0],opts:all,ok:all.indexOf(ans),d,gap:it.gap}
 }
 function clRec(w,ok){const k=w[0]+'='+w[1],m=SV.m[k]||(SV.m[k]={b:0,r:0,w:0});if(ok){m.r++;m.b=Math.min(5,m.b+1)}else{m.w++;m.b=Math.max(0,m.b-2)}touchDay(ok);pushWord(k)}
 function clLvl(l){CLlvl=l;clNew(l);renderClimb()}
@@ -2704,7 +2712,7 @@ function clSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderClimb()}
 function clStart(){if(!CL||CL.go||CL.over)return;CL.go=1;renderClimb()}
 function clNext(){if(!CL||!CL.between)return;CL.between=0;clOpts();renderClimb()}
 function clTap(k){
-  if(!CL||!CL.go||CL.over||CL.between||CL.lock||!CL.cur||k<0||k>2)return;
+  if(!CL||!CL.go||CL.over||CL.between||CL.lock||!CL.cur||k<0||k>=CL.cur.opts.length)return;
   const me=CL,it=me.q[me.p],ok=k===me.cur.ok,line=it.w[1]+' = '+it.w[0];
   me.lock=1;me.pick=k;
   if(ok){
@@ -2714,7 +2722,7 @@ function clTap(k){
     if(!it.bad)clRec(it.w,false);
     it.bad=1;me.slips++;me.slip=1;me.mood='bad';me.msg='Poślizg! '+line+'. Trafia do powtórek.';cnFx('bad');
     const u=new Set(me.q.map(x=>x.w[1])),nx=elShuf(me.pool.filter(x=>!u.has(x.w[1])))[0];
-    me.q.push(nx?{w:nx.w,ci:nx.ci,d:me.q.length%2,bad:0}:{w:it.w,ci:it.ci,d:it.d,bad:1});me.p++
+    me.q.push(nx?clItem(nx,me.q.length,me.lvl):{w:it.w,ci:it.ci,d:it.d,gap:it.gap,bad:1});me.p++
   }
   renderClimb();
   setTimeout(()=>{
@@ -2820,18 +2828,18 @@ function renderClimb(){
   const hud='<div class="gs-hud"><span class="gs-t">'+ic('peak')+'WordClimb</span><span class="gs-m">'+CLNAME[l]+' · krok '+Math.min(CL.i+1,12)+'/12</span><span class="gs-s">'+ic('flag')+'<b>'+m+' m</b><i title="Punkty za poprawne odpowiedzi od pierwszego razu. Premia za szczyt bez poślizgów.">'+ic('star','f pt')+(CL.over?CL.pts:Math.round(CLMAX[l]*.7*CL.first/12))+'</i></span></div>';
   const alt='<div class="cl-alt" aria-hidden="true"><b>'+m+' m</b><div class="bar"><i style="height:'+(100*from/12)+'%"></i><u style="bottom:33.3%"></u><u style="bottom:66.6%"></u></div></div>';
   const cu=CL.cur,hold=k=>{const st=CL.lock?(CL.pick===k?(k===cu.ok?' ok':' bad'):(k===cu.ok&&CL.pick!==cu.ok?' ans':'')):'';return'<button class="cl-hold h'+k+st+'" '+(CL.lock||wait?'disabled ':'')+'onclick="clTap('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(cu.opts[k]||'')+'</button>'};
-  const q=side?'':cu?'<div class="cl-q"><div class="cl-card"><small>'+(cu.d?'Co to znaczy po polsku?':'Jak to będzie po angielsku?')+'</small><b class="cl-w">'+esc(cu.q)+'</b></div><div class="cl-holds">'+[0,1,2].map(hold).join('')+'</div></div>':'<div class="cl-q"></div>';
+  const q=side?'':cu?'<div class="cl-q"><div class="cl-card"><small>'+(cu.gap?'Uzupełnij zdanie':cu.d?'Co to znaczy po polsku?':'Jak to będzie po angielsku?')+'</small><b class="cl-w'+(cu.gap?' gap':'')+'">'+esc(cu.q)+'</b></div><div class="cl-holds n'+cu.opts.length+'">'+cu.opts.map((_,k)=>hold(k)).join('')+'</div></div>':'<div class="cl-q"></div>';
   let ov='';
-  if(wait)ov='<div class="cl-ov"><svg class="cl-big" viewBox="-26 -40 52 78" aria-hidden="true">'+clMan({st:'wave',lvl:l,arm:1})+'</svg><h3>Zdobądź szczyt!</h3><p>12 kroków w 3 obozach. Wybierz z trzech chwytów poprawne tłumaczenie. Pomyłka to tylko poślizg: nic nie tracisz, a słówko trafi do powtórek. Bez limitu czasu.</p><button onclick="clStart()">Start</button></div>';
+  if(wait)ov='<div class="cl-ov"><svg class="cl-big" viewBox="-26 -40 52 78" aria-hidden="true">'+clMan({st:'wave',lvl:l,arm:1})+'</svg><h3>Zdobądź szczyt!</h3><p>12 kroków w 3 obozach. Wybierz z '+(l==='A1'?'trzech':'czterech')+' chwytów poprawną odpowiedź'+(l==='B1'?'. Odpowiedzi są podchwytliwe, a część pytań to zdania z luką.':'.')+' Pomyłka to tylko poślizg: nic nie tracisz, a słówko trafi do powtórek. Bez limitu czasu.</p><button onclick="clStart()">Start</button></div>';
   else if(CL.between){const n=CL.i/4;ov='<div class="cl-ov side"><h3>Obóz '+n+'!</h3><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+(12-CL.i)+'</b><small>do szczytu</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><p>Odpocznij chwilę i złap oddech.</p><button onclick="clNext()">Dalej</button></div>'}
   else if(CL.over){const mis=CL.words.filter(x=>x.bad).length;ov='<div class="cl-ov side end"><h3>Szczyt zdobyty!</h3><div class="cl-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=CL.stars?'pt':'dim'))).join('')+'</div><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+CL.first+'/12</b><small>od razu dobrze</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><div class="cl-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+CL.pts+'</b></div>'+(mis?'<p class="cl-note">Słówka z poślizgiem ('+mis+') trafiły do powtórek.</p>':'<p class="cl-note">Bez żadnego poślizgu. Świetna robota!</p>')+'</div>'}
-  root.innerHTML=head+'<div class="gstage cn-stage cl-stage'+(CL.over?' over':'')+'">'+hud+'<div class="gs-body">'+clScene(l,from).replace(/<\/div>$/,alt+'</div>')+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–3 też działają.</p>';
+  root.innerHTML=head+'<div class="gstage cn-stage cl-stage'+(CL.over?' over':'')+'">'+hud+'<div class="gs-body">'+clScene(l,from).replace(/<\/div>$/,alt+'</div>')+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–4 też działają.</p>';
   if(from!==CL.i){requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=CL.i;root.querySelectorAll('[data-f]').forEach(e=>{const f=e.dataset.f;e.style.transform=clTf(f==='w'||f==='g'?f:+f,i)});const b=root.querySelector('.cl-alt .bar i');if(b)b.style.height=(100*i/12)+'%'}))}
   CL.shown=CL.i
 }
 addEventListener('keydown',e=>{
   if(view!=='climb'||!CL||e.ctrlKey||e.metaKey||e.altKey)return;
-  if(e.key>='1'&&e.key<='3'){clTap(+e.key-1);return}
+  if(e.key>='1'&&e.key<='4'){clTap(+e.key-1);return}
   if(e.key==='Enter'&&!(e.target&&/BUTTON|INPUT|TEXTAREA/.test(e.target.tagName))){if(!CL.go&&!CL.over)clStart();else if(CL.between)clNext()}
 });
 show('home');initCloud();
