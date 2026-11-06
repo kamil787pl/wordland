@@ -22,3 +22,5 @@ Każda gra w WordLand używa tej samej ramki, żeby portal wyglądał spójnie:
 
 ## Każda nowa gra ma ranking (obowiązkowe)
 Nowa gra jest skończona dopiero z: punktami i rangami, rankingiem (przełącznik gry w `wbHtml`: tydzień/ogółem/moja klasa) na stronie głównej, w profilu i pod grą, panelem `gpanel` i `rankPanel` w profilu, kartą z grafiką na stronie głównej, slajdem w karuzeli i opisem w „Jak to działa”. Wzór: WordElf (elf_award, elf_my_points, elf_pts_board).
+
+Karty gier na stronie głównej: obrazek assets/card-<gra>.webp 800x480 (5:3), wycinek planszy .gstage z tests/card_shots.py, kolor gry przez .gc.g-<skrót> (--g/--gt/--gd). Bez innych proporcji i bez object-fit:contain.
