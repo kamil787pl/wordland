@@ -812,6 +812,19 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 @keyframes twpop{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.tw-wh,.tw-smk circle,.tw-man.go{animation:none}}
 @media(max-width:700px){.cn-tower{height:76px}.tw-svg{width:84px;height:42px}.tw-man,.tw-man.go{top:-39px}.tw-fl i::after{top:-30px;height:27px}.tw-fl i::before{top:-36px}}
+/* WordLinks: kafelki jak bilety kolejowe, rozwiązane grupy jak wagony */
+.cn-t{--tk:#f8f2e0;position:relative;padding:6px 18px 6px 26px;border-bottom-color:#cdbb8a;border-radius:10px;background:radial-gradient(circle at 0 50%,transparent 7px,var(--tk) 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,var(--tk) 7.5px) right/51% 100% no-repeat;transition:transform .12s var(--ease-out)}
+.cn-t::before{content:"";position:absolute;left:15px;top:9px;bottom:9px;border-left:2px dashed rgba(122,92,40,.35)}
+.cn-t::after{content:"";position:absolute;right:11px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:rgba(122,92,40,.25)}
+.cn-t.sel{--tk:var(--amb);border-bottom-color:#c98100}
+.cn-t.sel::before{border-left-color:rgba(58,38,0,.4)}.cn-t.sel::after{background:rgba(58,38,0,.35)}
+.cn-t.blank{--tk:#e6ebf5;background:radial-gradient(circle at 0 50%,transparent 7px,var(--tk) 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,var(--tk) 7.5px) right/51% 100% no-repeat}
+.cn-t.blank::before,.cn-t.blank::after{display:none}
+@media(hover:hover){.cn-t:not(.sel):not(.blank):hover{--tk:#fffdf5;background:radial-gradient(circle at 0 50%,transparent 7px,var(--tk) 7.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 7px,var(--tk) 7.5px) right/51% 100% no-repeat}}
+.cn-row{position:relative;box-shadow:inset 0 3px 0 rgba(255,255,255,.4),inset 0 -2px 0 rgba(0,0,0,.06)}
+.cn-row::before,.cn-row::after{content:"";position:absolute;bottom:-7px;width:13px;height:13px;border-radius:50%;background:#1e293b;border:3px solid #94a3b8;box-sizing:border-box;z-index:1}
+.cn-row::before{left:16%}.cn-row::after{right:16%}
+@media(max-width:700px){.cn-board{grid-template-columns:repeat(4,minmax(0,1fr))}.cn-t,.cn-t.blank{padding:2px 2px 2px 9px;font-size:clamp(10.5px,3vw,16px);hyphens:manual;overflow-wrap:anywhere;background:radial-gradient(circle at 0 50%,transparent 4px,var(--tk) 4.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 4px,var(--tk) 4.5px) right/51% 100% no-repeat}.cn-t::before{left:5px;top:8px;bottom:8px}.cn-t::after{display:none}}
 </style>
 </head>
 <body>
