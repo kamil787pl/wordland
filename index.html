@@ -794,11 +794,11 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .tw-fl i::after{content:"";position:absolute;right:-1px;top:-34px;width:2px;height:31px;background:#94a3b8}
 .tw-fl i::before{content:"";position:absolute;right:-4px;top:-40px;width:8px;height:8px;border-radius:50%;background:#64748b;z-index:1}
 .tw-fl i.on::before{background:#fde047;box-shadow:0 0 9px #fde047}
-.tw-man,.tw-man.go{--p:calc(var(--up)/var(--n)*100%);position:absolute;bottom:auto;top:-50px;left:var(--p);margin:0;width:auto;transform:translateX(calc(var(--up)/var(--n)*-100%));font-size:0;filter:drop-shadow(0 3px 3px rgba(0,0,0,.45))}
+.tw-man,.tw-man.go{--p:calc(var(--up)/var(--n)*100%);position:absolute;bottom:auto;top:-50px;left:var(--p);margin:0;width:auto;transform:translateX(calc(var(--up)/var(--n)*-100% - var(--up)/var(--n)*16px));font-size:0;filter:drop-shadow(0 3px 3px rgba(0,0,0,.45))}
 .tw-man.go{animation:twtr .9s var(--ease-out)}
-@keyframes twtr{from{left:calc(var(--from)/var(--n)*100%);transform:translateX(calc(var(--from)/var(--n)*-100%))}}
+@keyframes twtr{from{left:calc(var(--from)/var(--n)*100%);transform:translateX(calc(var(--from)/var(--n)*-100% - var(--from)/var(--n)*16px))}}
 .cn-tower.slip .tw-man{animation:twsh .4s}
-@keyframes twsh{25%{transform:translateX(calc(var(--up)/var(--n)*-100% - 4px)) rotate(-1.5deg)}75%{transform:translateX(calc(var(--up)/var(--n)*-100% + 4px)) rotate(1.5deg)}}
+@keyframes twsh{25%{transform:translateX(calc(var(--up)/var(--n)*-100% - var(--up)/var(--n)*16px - 4px)) rotate(-1.5deg)}75%{transform:translateX(calc(var(--up)/var(--n)*-100% - var(--up)/var(--n)*16px + 4px)) rotate(1.5deg)}}
 .tw-svg{display:block;width:108px;height:54px;overflow:visible}
 .tw-wh{transform-box:fill-box;transform-origin:center;animation:twwh .7s linear infinite}
 @keyframes twwh{to{transform:rotate(360deg)}}
@@ -806,7 +806,7 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .tw-smk circle:nth-child(2){animation-delay:.5s}.tw-smk circle:nth-child(3){animation-delay:1s}
 @keyframes twsmk{0%{opacity:.85;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(-14px,-16px) scale(1.7)}}
 .tw-hr{position:absolute;right:-40px;top:-14px;font-size:22px;font-style:normal;animation:floaty 1.2s ease-in-out infinite}
-@media(min-width:701px){.cn-t{min-height:58px}}
+@media(min-width:701px){.cn-t{min-height:58px}.cn-row,.cn-over .cn-row{min-height:0;padding:7px 10px}}
 .cn-tower.top .tw-man.go{animation-duration:2s;animation-timing-function:cubic-bezier(.45,.05,.3,1)}
 .cn-tower.top .tw-hr{animation:twpop .6s 1.9s both,floaty 1.2s 2.5s ease-in-out infinite}
 @keyframes twpop{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}
@@ -2580,7 +2580,7 @@ function cnTower(wait){
   CN.ush=up;
   return '<div class="cn-tower'+(CN.shake?' slip':'')+(up===N?' top':'')+'" role="img" aria-label="Stacja '+up+' z '+N+'" style="--n:'+N+';--up:'+up+';--from:'+prev+'">'
    +'<div class="tw-top"><span id="cn-pace">'+(CN.over?(CN.won?cnMedal(CN.ms,sp)||'🏁':'—'):cnPaceTxt())+'</span></div><div class="tw-roof">🏁</div>'
-   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+cnTrain()+(up===N?'<i class="tw-hr">🎉</i>':'')+'</b></div></div>';
+   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+cnTrain()+'</b></div></div>';
 }
 function renderConn(){
   const root=$('v-conn');if(!root)return;
