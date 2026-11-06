@@ -36,8 +36,8 @@ with sync_playwright() as pw:
     pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof') and 'Ranga WordElf' in pg.inner_text('#v-prof')
     pg.evaluate("show('home')");pg.wait_for_timeout(200);res['ranking na glownej ma WordElf i Razem']=all(x in pg.locator('.cn-lbp').first.inner_text() for x in ('WordElf','Razem'))
     res['suma przy plomieniu']=pg.evaluate("totalPts()>0&&document.getElementById('pt-pts').textContent.includes('pkt')") or pg.evaluate("ptsChip(),document.getElementById('pt-pts').innerHTML.length>10")
-    res['trofea 20']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==20
-    res['pokoj z trofeami']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==20 and pg.evaluate("document.querySelectorAll('#v-prof .rm-t.on').length")>=0
+    res['trofea 20']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==25
+    res['pokoj z trofeami']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==25 and pg.evaluate("document.querySelectorAll('#v-prof .rm-t.on').length")>=0
     res['punkty lokalne']=pg.evaluate("SV.elf.pts")>0
     pg.evaluate("show('elf');elNewR()");pg.click('.el-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
     print({k:v for k,v in res.items() if v is not True});print('OK',errs)
