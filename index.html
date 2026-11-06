@@ -828,6 +828,19 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 /* płynniejsze przejścia: animacja wejścia tylko dla pierwszych bloków, reszta strony głównej rysowana dopiero przy przewinięciu */
 #v-home.in>*:nth-child(n+6){animation:none}
 #v-home>*:nth-child(n+7){content-visibility:auto;contain-intrinsic-size:auto 400px}
+/* WordLinks: ekran startowy z konduktorem (jak w WordElf i WordClimb) */
+.cn-start{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center;color:#fff;background:rgba(10,20,42,.8);backdrop-filter:none;border-radius:0}
+.cn-start p{margin:0;max-width:360px;font-size:15px;font-weight:500}
+.cn-cast{width:98px}.cn-cast svg{display:block;width:100%;height:auto;overflow:visible;animation:cdbob 2.4s ease-in-out infinite}
+.cd-arm{transform-box:view-box;transform-origin:84px 88px;animation:cdwave 1.3s ease-in-out infinite alternate}
+.cd-head{animation:cdnod 2.4s ease-in-out infinite}
+@keyframes cdwave{from{transform:rotate(-7deg)}to{transform:rotate(9deg)}}
+@keyframes cdbob{50%{transform:translateY(-4px)}}
+@keyframes cdnod{50%{transform:translate(60px,53px)}}
+.cn-start button{min-height:50px;padding:0 34px;border:0;border-radius:12px;background:var(--amb);color:#3a2600;font:800 17px "Figtree",system-ui,sans-serif;box-shadow:0 3px 0 #c98100;cursor:pointer}
+.cn-start button.g{background:transparent;box-shadow:none;color:#c9d6f2;min-height:36px;padding:4px 12px;font-size:14px;font-weight:700}
+@media(prefers-reduced-motion:reduce){.cn-cast svg,.cd-arm,.cd-head{animation:none}}
+@media(max-width:700px){.cn-cast{width:80px}}
 </style>
 </head>
 <body>
@@ -2577,6 +2590,18 @@ async function cnChal(withTime){
 setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const q=document.getElementById('cn-pts');if(q)q.textContent=cnPtsOf(cnTotal(),CN.mode==='sprint');const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
 function cnPaceTxt(){const t=cnTotal(),m=cnMeds(CN.mode==='sprint').find(x=>t<x[0]);return m?m[1]+' '+cnFmt(m[0]-t):ic('flag')}
 /* pociąg: każda odgadnięta grupa to kolejna stacja (sprint: 12 stacji) */
+const CND_SVG='<svg viewBox="0 0 120 170" aria-hidden="true"><ellipse cx="60" cy="164" rx="34" ry="5" fill="rgba(0,0,0,.3)"/>'
+  +'<rect x="42" y="126" width="15" height="32" rx="6" fill="#1e1b4b"/><rect x="63" y="126" width="15" height="32" rx="6" fill="#1e1b4b"/><ellipse cx="48" cy="158" rx="10" ry="5" fill="#111827"/><ellipse cx="72" cy="158" rx="10" ry="5" fill="#111827"/>'
+  +'<rect x="31" y="76" width="58" height="60" rx="16" fill="#4c2fb8"/><path d="M52 76h16l-8 24z" fill="#fff"/><path d="M58 82h4l1.4 14-3.4 5-3.4-5z" fill="#ef4444"/><path d="M31 120q29 8 58 0v8q-29 8-58 0z" fill="#3b2490"/>'
+  +'<circle cx="49" cy="108" r="2.6" fill="#fbbf24"/><circle cx="71" cy="108" r="2.6" fill="#fbbf24"/><circle cx="49" cy="120" r="2.6" fill="#fbbf24"/><circle cx="71" cy="120" r="2.6" fill="#fbbf24"/>'
+  +'<path d="M49 80Q40 98 51 108" fill="none" stroke="#fbbf24" stroke-width="1.8"/><rect x="47" y="106" width="9" height="5" rx="2.4" fill="#fbbf24"/>'
+  +'<path d="M36 88Q24 102 25 117" fill="none" stroke="#4c2fb8" stroke-width="14" stroke-linecap="round"/><path d="M26 108l-4 0" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/><circle cx="25" cy="121" r="6.5" fill="#f3c9a0"/>'
+  +'<g class="cd-arm"><rect x="97" y="2" width="4" height="50" rx="2" fill="#8a5f33"/><circle cx="99" cy="14" r="15" fill="#22c55e" stroke="#fff" stroke-width="3"/><path d="M92 14l5 5 9-10" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M84 88Q96 78 98 56" fill="none" stroke="#4c2fb8" stroke-width="14" stroke-linecap="round"/><path d="M95 66l7 1" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/><circle cx="98" cy="52" r="6.6" fill="#f3c9a0"/></g>'
+  +'<g class="cd-head" transform="translate(60 52)"><rect x="-6" y="14" width="12" height="12" fill="#e9b88a"/><circle cx="-19" cy="3" r="4.6" fill="#f3c9a0"/><circle cx="19" cy="3" r="4.6" fill="#f3c9a0"/><circle cx="0" cy="2" r="19" fill="#f3c9a0"/>'
+  +'<circle cx="-7" cy="3" r="4.2" fill="#fff"/><circle cx="7" cy="3" r="4.2" fill="#fff"/><circle cx="-6.6" cy="3.6" r="2.3" fill="#2a1a0e"/><circle cx="7.4" cy="3.6" r="2.3" fill="#2a1a0e"/><circle cx="-6" cy="2.8" r=".9" fill="#fff"/><circle cx="8" cy="2.8" r=".9" fill="#fff"/>'
+  +'<path d="M-12 -3L-3 -4.4M12 -3L3 -4.4" stroke="#5a3a1e" stroke-width="1.8" stroke-linecap="round"/><circle cx="-12" cy="9" r="3.2" fill="#f09a9a" opacity=".6"/><circle cx="12" cy="9" r="3.2" fill="#f09a9a" opacity=".6"/>'
+  +'<path d="M-10 10Q0 8 10 10Q6 15 0 14Q-6 15 -10 10z" fill="#6b3f1d"/><path d="M-5 16Q0 20 5 16" fill="none" stroke="#2a1a0e" stroke-width="1.8" stroke-linecap="round"/>'
+  +'<path d="M-22 -4Q-22 -27 0 -28Q22 -27 22 -4z" fill="#3b2490"/><rect x="-23" y="-10" width="46" height="6.4" rx="2" fill="#1e1b4b"/><rect x="-23" y="-7.6" width="46" height="1.6" fill="#fbbf24"/><path d="M-20 -4Q0 3 20 -4L20 -1Q0 7 -20 -1z" fill="#0f172a"/><circle cx="0" cy="-16" r="6" fill="#fbbf24"/><path d="M0 -20l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#b45309"/></g></svg>';
 const cnTrain=()=>'<svg class="tw-svg" viewBox="0 -16 112 56" aria-hidden="true">'
   +'<g class="tw-smk"><circle cx="90" cy="-4" r="3.4"/><circle cx="92" cy="-4" r="3.4"/><circle cx="94" cy="-4" r="3.4"/></g>'
   +'<g class="tw-car"><rect x="1" y="9" width="33" height="19" rx="3" fill="#7c5ce6"/><rect x="1" y="9" width="33" height="4" rx="2" fill="#4c2fb8"/><rect x="1" y="24" width="33" height="3" fill="#3b2490"/>'
@@ -2630,7 +2655,7 @@ function renderConn(){
   }
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
   const act=!CN.over&&!wait;
-  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+cnTower(wait)+conf+(showEnd?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
+  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+cnTower(wait)+conf+(wait?'<div class="cn-start"><div class="cn-cast">'+CND_SVG+'</div><p><b>Wsiadać, proszę!</b> '+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Znajdź 4 grupy po 4 słówka, a każda z nich to kolejna stacja. Słówka pokażą się po starcie, wtedy ruszy też czas.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+(showEnd?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+''+'</div></div>')+'</div>'
    +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+(fin?(CN.won?'Wszystkie grupy znalezione! Pociąg dojeżdża na stację końcową…':'Koniec szans. Zaraz zobaczysz wszystkie odpowiedzi…'):CN.msg)+'</div></div>'
    +'<div class="gbar">'+(showEnd?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>'+ic('bulb')+'<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
