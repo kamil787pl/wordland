@@ -36,7 +36,7 @@ with sync_playwright() as pw:
     # pełny widok HUD
     pg.evaluate("start(%d)"%i);pg.wait_for_timeout(300);pg.evaluate("hide()");pg.screenshot(path=S+'/stage_hud.png')
     # mała kategoria => 1 etap jak dawniej
-    j=pg.evaluate("CATS.findIndex(c=>plan(c.w.length).length===1)");pg.evaluate(f"start({j})");res['1 etap']=pg.evaluate("({needs,NEED})")
+    j=pg.evaluate("CATS.push({n:'Mini',e:'🧪',l:'A1',w:[['a','aa'],['b','bb'],['c','cc'],['d','dd'],['e','ee']]})-1");pg.evaluate(f"start({j})");res['1 etap']=pg.evaluate("({needs,NEED})")
     # 300 klatek bez błędów
     pg.wait_for_timeout(1500)
     res['errors']=errs

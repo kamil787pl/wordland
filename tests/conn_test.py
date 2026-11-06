@@ -85,14 +85,14 @@ with sync_playwright() as pw:
     res['odznaka zapisana']=pg.evaluate("SV.cn.bd.p")==1
     # wieżowiec
     pg.evaluate("cnMode('sprint')");pg.wait_for_timeout(100)
-    res['wiezowiec: sprint ma 12 pieter']=pg.locator('.tw-fl i').count()==12 and pg.get_attribute('.cn-tower','aria-label')=='Piętro 0 z 12'
+    res['pociag: sprint ma 12 pieter']=pg.locator('.tw-fl i').count()==12 and pg.get_attribute('.cn-tower','aria-label')=='Stacja 0 z 12'
     pg.click('.cn-start .pri');pg.wait_for_timeout(100)
     pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(100)
-    res['wiezowiec: pietro po grupie']=pg.get_attribute('.cn-tower','aria-label')=='Piętro 1 z 12' and pg.locator('.tw-fl i.on').count()==1
+    res['pociag: pietro po grupie']=pg.get_attribute('.cn-tower','aria-label')=='Stacja 1 z 12' and pg.locator('.tw-fl i.on').count()==1
     for _ in range(3):
         pg.evaluate(solve);pg.click('.gbar .pri');pg.wait_for_timeout(80)
-    res['wiezowiec: kolejna lamiglowka kontynuuje wspinaczke']=pg.get_attribute('.cn-tower','aria-label')=='Piętro 4 z 12'
-    res['wiezowiec: pace medal']=pg.inner_text('#cn-pace')[:1] in '🥇🥈🥉🏁'
+    res['pociag: kolejna lamiglowka kontynuuje wspinaczke']=pg.get_attribute('.cn-tower','aria-label')=='Stacja 4 z 12'
+    res['pociag: pace medal']=pg.inner_text('#cn-pace')[:1] in '🥇🥈🥉🏁'
     # seria i odznaka tygodnia
     pg.evaluate("(()=>{const y=new Date();y.setDate(y.getDate()-1);const c=SV.cn;c.s=6;c.last=ymd(y);c.d=null;CNmode='daily';CN=null;renderConn()})()");pg.click('.cn-start .pri');pg.wait_for_timeout(100)
     for _ in range(4):

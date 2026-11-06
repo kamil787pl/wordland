@@ -774,6 +774,18 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .cl-hold.bad{background:linear-gradient(135deg,#f43f5e,#be123c);border-color:#fda4af;color:#fff;box-shadow:0 6px 20px rgba(244,63,94,.4)}
 .cl-hold.ok kbd,.cl-hold.bad kbd{background:rgba(255,255,255,.25);color:#fff}
 .cl-hold.ans{outline:0;border-color:#6ee7b7;box-shadow:0 0 0 3px rgba(110,231,183,.35)}
+/* WordLinks: pociąg jedzie po torach (poziomy pasek nad planszą, bez wspinaczki) */
+.gs-body{flex-direction:column;align-items:stretch}
+.cn-tower{width:100%;max-width:560px;margin:0 auto;height:46px;flex-direction:row;align-self:auto;gap:10px;align-items:center}
+.tw-top{height:auto;order:1}.tw-roof{order:3;height:auto;font-size:20px}
+.tw-fl{order:2;flex:1;width:auto;height:16px;flex-direction:row-reverse;border:0;border-radius:0;background:linear-gradient(#94a3b8,#94a3b8) 0 3px/100% 2px no-repeat,linear-gradient(#94a3b8,#94a3b8) 0 11px/100% 2px no-repeat}
+.tw-fl i,.tw-fl i:first-child{border:0;border-right:2px solid rgba(255,255,255,.4);background-size:100% 100%;background-position:0 0;background-image:repeating-linear-gradient(90deg,#7c5a3a 0 3px,transparent 3px 9px)}
+.tw-fl i:last-child{border-right:0}
+.tw-fl i.on{background-image:repeating-linear-gradient(90deg,#fbbf24 0 3px,transparent 3px 9px)}
+.tw-man{bottom:auto;top:-13px;left:calc(var(--up)/var(--n)*100%);margin-left:-14px;font-size:22px}
+.tw-man.go{animation:twright .8s var(--ease-out)}
+.tw-tr{display:inline-block;transform:scaleX(-1)}
+@keyframes twright{from{left:calc(var(--from)/var(--n)*100%)}}
 </style>
 </head>
 <body>
@@ -1499,7 +1511,7 @@ function heroIn(i){
   const vis=cl?'<img class="hshot" src="assets/card-cl.webp" width="800" height="480" alt="Plansza WordClimb: wspinacz na ścianie z chwytami i odpowiedziami"><span class="fchip c1">'+ic('check')+'12 kroków do szczytu</span><span class="fchip c2">⛺</span><span class="fchip c3">★★★</span>'
    :wc?'<img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">'+ic('flag')+'Boss</span>'
    :el?'<img class="hshot" src="assets/wordelf.webp" width="800" height="480" alt="Plansza WordElf: skrzat pakuje prezenty z półki do worka Mikołaja"><span class="fchip c1">'+ic('check')+'teddy bear = miś</span><span class="fchip c2">🎅</span><span class="fchip c3">'+ic('gift')+'Worek 3/6</span>'
-   :'<img class="hshot" src="assets/wordlinks.webp" width="960" height="458" alt="Plansza WordLinks z 16 słówekmi do pogrupowania"><span class="fchip c1">'+ic('grid')+'Piętro 5/12</span><span class="fchip c2">🥇</span><span class="fchip c3">'+ic('clock')+''+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
+   :'<img class="hshot" src="assets/wordlinks.webp" width="960" height="458" alt="Plansza WordLinks z 16 słówekmi do pogrupowania"><span class="fchip c1">'+ic('grid')+'Stacja 5/12</span><span class="fchip c2">🥇</span><span class="fchip c3">'+ic('clock')+''+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
   return '<div class="hc hs">'+txt+'</div><div class="hvis hs'+(wc?'':' wl')+'">'+vis+'</div>';
 }
 function heroGo(i){
@@ -2521,13 +2533,13 @@ async function cnChal(withTime){
 }
 setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const q=document.getElementById('cn-pts');if(q)q.textContent=cnPtsOf(cnTotal(),CN.mode==='sprint');const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
 function cnPaceTxt(){const t=cnTotal(),m=cnMeds(CN.mode==='sprint').find(x=>t<x[0]);return m?m[1]+' '+cnFmt(m[0]-t):ic('flag')}
-/* wspinaczka: każda odgadnięta grupa to jedno piętro wyżej (sprint: 12 pięter) */
+/* pociąg: każda odgadnięta grupa to kolejna stacja (sprint: 12 stacji) */
 function cnTower(wait){
   const sp=CN.mode==='sprint',N=sp?12:4,base=sp?(SPN.n-1)*4:0,up=wait?0:CN.over&&CN.won?N:base+CN.up,prev=CN.ush==null?up:CN.ush;
   CN.ush=up;
-  return '<div class="cn-tower'+(CN.shake?' slip':'')+(up===N?' top':'')+'" role="img" aria-label="Piętro '+up+' z '+N+'" style="--n:'+N+';--up:'+up+';--from:'+prev+'">'
+  return '<div class="cn-tower'+(CN.shake?' slip':'')+(up===N?' top':'')+'" role="img" aria-label="Stacja '+up+' z '+N+'" style="--n:'+N+';--up:'+up+';--from:'+prev+'">'
    +'<div class="tw-top"><span id="cn-pace">'+(CN.over?(CN.won?cnMedal(CN.ms,sp)||'🏁':'—'):cnPaceTxt())+'</span></div><div class="tw-roof">🏁</div>'
-   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+(up===N?'🎉':'🧗')+'</b></div></div>';
+   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+(up===N?'🎉':'<span class="tw-tr">🚂</span>')+'</b></div></div>';
 }
 function renderConn(){
   const root=$('v-conn');if(!root)return;
