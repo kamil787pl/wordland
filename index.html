@@ -786,6 +786,29 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .tw-man.go{animation:twright .8s var(--ease-out)}
 .tw-tr{display:inline-block;transform:scaleX(-1)}
 @keyframes twright{from{left:calc(var(--from)/var(--n)*100%)}}
+/* WordLinks: większy, szczegółowy pociąg na torach */
+.cn-tower{height:80px;max-width:600px;align-items:flex-end;padding-bottom:4px;box-sizing:border-box}.tw-top,.tw-roof{margin-bottom:-7px}.tw-fl{margin-bottom:6px}
+.tw-roof{font-size:30px}.tw-fl{height:16px;overflow:visible;background:none;border-top:3px solid #cbd5e1;border-radius:2px;box-shadow:0 1px 0 #0b1426}
+.tw-fl i,.tw-fl i:first-child{position:relative;border:0;background:repeating-linear-gradient(90deg,#7c5a3a 0 4px,transparent 4px 11px) 0 3px/100% 9px no-repeat}
+.tw-fl i.on{background:repeating-linear-gradient(90deg,#fbbf24 0 4px,transparent 4px 11px) 0 3px/100% 9px no-repeat}
+.tw-fl i::after{content:"";position:absolute;right:-1px;top:-34px;width:2px;height:31px;background:#94a3b8}
+.tw-fl i::before{content:"";position:absolute;right:-4px;top:-40px;width:8px;height:8px;border-radius:50%;background:#64748b;z-index:1}
+.tw-fl i.on::before{background:#fde047;box-shadow:0 0 9px #fde047}
+.tw-man,.tw-man.go{--p:calc(var(--up)/var(--n)*100%);position:absolute;bottom:auto;top:-50px;left:var(--p);margin:0;width:auto;transform:translateX(calc(var(--up)/var(--n)*-100%));font-size:0;filter:drop-shadow(0 3px 3px rgba(0,0,0,.45))}
+.tw-man.go{animation:twtr .9s var(--ease-out)}
+@keyframes twtr{from{left:calc(var(--from)/var(--n)*100%);transform:translateX(calc(var(--from)/var(--n)*-100%))}}
+.cn-tower.slip .tw-man{animation:twsh .4s}
+@keyframes twsh{25%{transform:translateX(calc(var(--up)/var(--n)*-100% - 4px)) rotate(-1.5deg)}75%{transform:translateX(calc(var(--up)/var(--n)*-100% + 4px)) rotate(1.5deg)}}
+.tw-svg{display:block;width:108px;height:54px;overflow:visible}
+.tw-wh{transform-box:fill-box;transform-origin:center;animation:twwh .7s linear infinite}
+@keyframes twwh{to{transform:rotate(360deg)}}
+.tw-smk circle{transform-box:fill-box;transform-origin:center;fill:#fff;opacity:0;animation:twsmk 1.6s ease-out infinite}
+.tw-smk circle:nth-child(2){animation-delay:.5s}.tw-smk circle:nth-child(3){animation-delay:1s}
+@keyframes twsmk{0%{opacity:.85;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(-14px,-16px) scale(1.7)}}
+.tw-hr{position:absolute;right:-6px;top:-8px;font-size:22px;font-style:normal;animation:floaty 1.2s ease-in-out infinite}
+@media(min-width:701px){.cn-t{min-height:58px}}
+@media(prefers-reduced-motion:reduce){.tw-wh,.tw-smk circle,.tw-man.go{animation:none}}
+@media(max-width:700px){.cn-tower{height:76px}.tw-svg{width:84px;height:42px}.tw-man,.tw-man.go{top:-39px}.tw-fl i::after{top:-30px;height:27px}.tw-fl i::before{top:-36px}}
 </style>
 </head>
 <body>
@@ -2534,12 +2557,27 @@ async function cnChal(withTime){
 setInterval(()=>{if(view==='conn'&&CN&&!CN.over&&CN.t0){const e=document.getElementById('cn-time');if(e)e.textContent=cnFmt(cnTotal());const q=document.getElementById('cn-pts');if(q)q.textContent=cnPtsOf(cnTotal(),CN.mode==='sprint');const p=document.getElementById('cn-pace');if(p)p.textContent=cnPaceTxt()}},250);
 function cnPaceTxt(){const t=cnTotal(),m=cnMeds(CN.mode==='sprint').find(x=>t<x[0]);return m?m[1]+' '+cnFmt(m[0]-t):ic('flag')}
 /* pociąg: każda odgadnięta grupa to kolejna stacja (sprint: 12 stacji) */
+const cnTrain=()=>'<svg class="tw-svg" viewBox="0 -16 112 56" aria-hidden="true">'
+  +'<g class="tw-smk"><circle cx="90" cy="-4" r="3.4"/><circle cx="92" cy="-4" r="3.4"/><circle cx="94" cy="-4" r="3.4"/></g>'
+  +'<g class="tw-car"><rect x="1" y="9" width="33" height="19" rx="3" fill="#7c5ce6"/><rect x="1" y="9" width="33" height="4" rx="2" fill="#4c2fb8"/><rect x="1" y="24" width="33" height="3" fill="#3b2490"/>'
+  +[5,15,25].map(x=>'<rect x="'+x+'" y="14" width="6" height="7" rx="1.6" fill="#fde68a"/>').join('')
+  +'<rect x="34" y="23" width="5" height="2.4" fill="#475569"/><g class="tw-wh"><circle cx="9" cy="32" r="4.2" fill="#1e293b"/><circle cx="9" cy="32" r="1.4" fill="#94a3b8"/></g><g class="tw-wh"><circle cx="26" cy="32" r="4.2" fill="#1e293b"/><circle cx="26" cy="32" r="1.4" fill="#94a3b8"/></g></g>'
+  +'<g transform="translate(38 0)"><rect x="0" y="12" width="14" height="16" rx="2" fill="#312e81"/><path d="M1 12Q4 6 7 8Q11 5 13 12z" fill="#0f172a"/>'
+  +'<rect x="14" y="6" width="19" height="22" rx="2.4" fill="#5b3fd1"/><rect x="12" y="3.6" width="23" height="3.6" rx="1.8" fill="#2e1a7a"/><rect x="18" y="10" width="10" height="9" rx="1.8" fill="#bae6fd"/><path d="M18 10L23 19L18 19zM24 10L28 10L28 14z" fill="#fff" opacity=".45"/>'
+  +'<rect x="33" y="13" width="29" height="15" rx="6" fill="#6d4fe0"/><rect x="33" y="22" width="29" height="6" fill="#4c2fb8"/><rect x="40" y="13" width="2.6" height="15" fill="#fbbf24"/><rect x="52" y="13" width="2.6" height="15" fill="#fbbf24"/>'
+  +'<circle cx="46" cy="12" r="4.4" fill="#fbbf24"/><circle cx="45" cy="10.8" r="1.4" fill="#fde68a"/><rect x="54" y="4" width="6.6" height="10" rx="1" fill="#1e1b4b"/><path d="M52.6 3.4h9.4l-1.6 -3.4h-6.2z" fill="#0f172a"/>'
+  +'<circle cx="62.4" cy="20" r="3.2" fill="#fde047"/><circle cx="62.4" cy="20" r="6" fill="#fde047" opacity=".25"/><path d="M60 29L69 36H58z" fill="#94a3b8"/>'
+  +'<rect x="14" y="28" width="46" height="2.4" rx="1" fill="#475569"/>'
+  +'<g class="tw-wh"><circle cx="23" cy="31" r="6.4" fill="#1e293b"/><circle cx="23" cy="31" r="2.2" fill="#fbbf24"/><path d="M23 25V37M17 31H29" stroke="#94a3b8" stroke-width="1"/></g>'
+  +'<g class="tw-wh"><circle cx="42" cy="31" r="6.4" fill="#1e293b"/><circle cx="42" cy="31" r="2.2" fill="#fbbf24"/><path d="M42 25V37M36 31H48" stroke="#94a3b8" stroke-width="1"/></g>'
+  +'<g class="tw-wh"><circle cx="56" cy="33" r="4.2" fill="#1e293b"/><circle cx="56" cy="33" r="1.4" fill="#94a3b8"/></g>'
+  +'<g class="tw-wh"><circle cx="6" cy="32" r="4.2" fill="#1e293b"/><circle cx="6" cy="32" r="1.4" fill="#94a3b8"/></g></g></svg>';
 function cnTower(wait){
   const sp=CN.mode==='sprint',N=sp?12:4,base=sp?(SPN.n-1)*4:0,up=wait?0:CN.over&&CN.won?N:base+CN.up,prev=CN.ush==null?up:CN.ush;
   CN.ush=up;
   return '<div class="cn-tower'+(CN.shake?' slip':'')+(up===N?' top':'')+'" role="img" aria-label="Stacja '+up+' z '+N+'" style="--n:'+N+';--up:'+up+';--from:'+prev+'">'
    +'<div class="tw-top"><span id="cn-pace">'+(CN.over?(CN.won?cnMedal(CN.ms,sp)||'🏁':'—'):cnPaceTxt())+'</span></div><div class="tw-roof">🏁</div>'
-   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+(up===N?'🎉':'<span class="tw-tr">🚂</span>')+'</b></div></div>';
+   +'<div class="tw-fl">'+Array.from({length:N},(_,k)=>'<i class="'+(N-k<=up?'on':'')+'"></i>').join('')+'<b class="tw-man'+(prev!==up?' go':'')+'">'+cnTrain()+(up===N?'<i class="tw-hr">🎉</i>':'')+'</b></div></div>';
 }
 function renderConn(){
   const root=$('v-conn');if(!root)return;
