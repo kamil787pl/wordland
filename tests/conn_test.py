@@ -103,7 +103,7 @@ with sync_playwright() as pw:
     pg.evaluate("show('home');heroGo(1)");pg.wait_for_timeout(300)
     res['home: seria i rekord']='Seria: 7' in pg.inner_text('.hchips') and 'rekord' in pg.inner_text('.hchips')
     # ranking z zalogowanym
-    pg.evaluate("sb={rpc:async()=>({data:[]})};U={id:'u1',nick:'Ja'};CNB.t=Date.now();CNB.rows=[{nick:'Ala<b>',ms:61000,miss:0,me:false},{nick:'Ja',ms:75000,miss:1,me:true}];show('conn')");pg.wait_for_timeout(200)
+    pg.evaluate("sb={rpc:async()=>({data:[]})};U={id:'u1',nick:'Ja'};CN.rev=0;CNB.t=Date.now();CNB.rows=[{nick:'Ala<b>',ms:61000,miss:0,me:false},{nick:'Ja',ms:75000,miss:1,me:true}];show('conn')");pg.wait_for_timeout(200)
     res['ranking: wiersze i escape']=pg.locator('.cn-lb li').count()==2 and pg.locator('.cn-lb b').first.inner_text()=='Ala<b>' and pg.locator('.cn-lb li.me').count()==1
     # wyzwanie przez link
     pg.evaluate("cnNew();cnStart()");pg.wait_for_timeout(100)

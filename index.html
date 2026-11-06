@@ -805,8 +805,11 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .tw-smk circle{transform-box:fill-box;transform-origin:center;fill:#fff;opacity:0;animation:twsmk 1.6s ease-out infinite}
 .tw-smk circle:nth-child(2){animation-delay:.5s}.tw-smk circle:nth-child(3){animation-delay:1s}
 @keyframes twsmk{0%{opacity:.85;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(-14px,-16px) scale(1.7)}}
-.tw-hr{position:absolute;right:-6px;top:-8px;font-size:22px;font-style:normal;animation:floaty 1.2s ease-in-out infinite}
+.tw-hr{position:absolute;right:-40px;top:-14px;font-size:22px;font-style:normal;animation:floaty 1.2s ease-in-out infinite}
 @media(min-width:701px){.cn-t{min-height:58px}}
+.cn-tower.top .tw-man.go{animation-duration:2s;animation-timing-function:cubic-bezier(.45,.05,.3,1)}
+.cn-tower.top .tw-hr{animation:twpop .6s 1.9s both,floaty 1.2s 2.5s ease-in-out infinite}
+@keyframes twpop{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.tw-wh,.tw-smk circle,.tw-man.go{animation:none}}
 @media(max-width:700px){.cn-tower{height:76px}.tw-svg{width:84px;height:42px}.tw-man,.tw-man.go{top:-39px}.tw-fl i::after{top:-30px;height:27px}.tw-fl i::before{top:-36px}}
 </style>
@@ -2437,7 +2440,7 @@ function cnFinish(won){
     SPN.acc=cnTotal();SPN.n++;SPN.miss+=CN.miss;SPN.hints+=CN.hints||0;
     const g=cnBuild('sprint');if(g){g.go=1;g.t0=Date.now();g.msg='Łamigłówka '+SPN.n+' z 3 – czas leci dalej!';CN=g;cnFx('win');return}
   }
-  CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';
+  CN.ms=cnTotal();CN.over=1;CN.won=won;CN.conf=won;CN.msg='';CN.rev=Date.now()+(won?3400:2600);setTimeout(()=>{if(view==='conn'&&CN&&CN.over)renderConn()},CN.rev-Date.now()+40);
   if(CN.mode==='sprint'){CN.miss+=SPN.miss;CN.hints=(CN.hints||0)+SPN.hints}
   if(CN.mode==='daily'||CN.mode==='random'||CN.mode==='sprint'){CN.pts=won?cnPtsOf(CN.ms,CN.mode==='sprint'):0;cnAwardPts(CN.mode,CN.pts,CN.ms,won)}else CN.pts=null;
   if(won)cnFx('win');
@@ -2593,7 +2596,7 @@ function renderConn(){
   const medalOf=CN.over&&CN.won?cnMedal(CN.ms,sp):'';
   const chal='<div class="cn-chal">Wyzwanie czasowe:'+cnMeds(sp).map(m=>'<em class="'+(medalOf===m[1]?'got':'')+'">'+m[1]+' '+cnFmt(m[0])+'</em>').join('')+'<small>+10 s za błąd, +15 s za podpowiedź</small></div>';
   const solved=CN.solved.map(g=>{const G=CN.groups[g];return'<div class="cn-row'+(CN.newG.includes(g)?' new':'')+'" style="background:'+CNC[G.c]+';--e:'+CNE2[G.c]+'"><b>'+esc(G.e)+' '+esc(G.n)+'</b><span>'+G.w.map(esc).join(', ')+'</span><small>'+G.pl.map(esc).join(' · ')+'</small></div>'}).join('');
-  const wait=!CN.over&&!CN.go;
+  const wait=!CN.over&&!CN.go,fin=!!(CN.over&&CN.rev&&Date.now()<CN.rev),showEnd=CN.over&&!fin;
   const lab=sp?ic('bolt')+'Sprint '+SPN.n+'/3':CN.mode==='asg'?ic('book')+'Zadanie: '+esc(CN.title):CN.mode==='chal'?ic('target')+'Wyzwanie'+(CN.f?' od '+esc(CN.f):'')+': '+(CN.t?'pobij '+cnFmt(CN.t):'na czas'):CN.mode==='daily'?'Puzzle dnia':'Losowa'+(CNlvl?' '+CNlvl:'');
   const hud='<div class="gs-hud"><span class="gs-t">'+mark+'WordLinks</span><span class="gs-m">'+lab+'</span><span class="gs-s">'+ic('clock')+'<b id="cn-time">'+cnFmt(cnTotal())+'</b>'+(CN.over?(CN.pts!=null?'<i>'+ic('star','f pt')+CN.pts+'</i>':''):(CN.mode==='chal'||CN.mode==='asg'?'':'<i title="Tyle punktów dostaniesz, jeśli ukończysz teraz. Maleje z czasem.">'+ic('star','f pt')+'<span id="cn-pts">'+(CN.go?cnPtsOf(cnTotal(),CN.mode==='sprint'):cnPtsMax(CN.mode==='sprint'))+'</span></i>'))+'<i>🏆 '+(bestMs?cnFmt(bestMs):'–')+'</i></span></div>';
   const tiles=wait?Array.from({length:16},(_,i)=>'<span class="cn-t blank" style="--i:'+i+'" aria-hidden="true">?</span>').join(''):CN.tiles.map((t,i)=>'<button class="cn-t'+(CN.sel.includes(i)?' sel':'')+(t===CN.hl?' hint':'')+(CN.fresh?' fresh':'')+'" style="--i:'+i+'" aria-pressed="'+CN.sel.includes(i)+'" onclick="cnTap('+i+')">'+esc(t.w)+'</button>').join('');
@@ -2610,11 +2613,11 @@ function renderConn(){
   }
   if(live()&&(!CN.go||CN.over)&&(!CNB.t||Date.now()-CNB.t>60000))setTimeout(cnLoadBoard,0);
   const act=!CN.over&&!wait;
-  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+cnTower(wait)+conf+(CN.over?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
-   +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+CN.msg+'</div></div>'
-   +'<div class="gbar">'+(CN.over?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>'+ic('bulb')+'<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
+  root.innerHTML=head+'<div class="gstage cn-stage">'+hud+'<div class="gs-body">'+cnTower(wait)+conf+(showEnd?'<div class="cn-over">'+end+'<div class="cn-board">'+solved+'</div></div>':'<div class="cn-wrap"><div class="cn-board'+(CN.shake?' shake':'')+'" id="cn-board">'+solved+tiles+(wait?'<div class="cn-start"><p>'+(sp?'3 łamigłówki pod rząd, jeden łączny czas. ':'')+'Słówka pokażą się po starcie. Czas liczy się od kliknięcia.</p><button class="pri" onclick="cnStart()">Start</button><button class="g" onclick="cnChal(0)">Skopiuj link wyzwania</button></div>':'')+'</div></div>')+'</div>'
+   +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+(fin?(CN.won?'Wszystkie grupy znalezione! Pociąg dojeżdża na stację końcową…':'Koniec szans. Zaraz zobaczysz wszystkie odpowiedzi…'):CN.msg)+'</div></div>'
+   +'<div class="gbar">'+(showEnd?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>'+ic('bulb')+'<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
-   +chal+stats+bd+(!CN.go||CN.over?wbHtml('wl')+cnBoardHtml():'');
+   +chal+stats+bd+(!CN.go||showEnd?wbHtml('wl')+cnBoardHtml():'');
   CN.fresh=0;CN.conf=0;
 }
 /* ===== WORDELF: skrzat pakuje prezenty ===== */

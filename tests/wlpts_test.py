@@ -9,7 +9,7 @@ with sync_playwright() as pw:
     res['przed startem: max 300']=pg.inner_text('#cn-pts')=='300'
     pg.click('.cn-start .pri');pg.evaluate("CN.t0=Date.now()-120000");pg.wait_for_timeout(400)
     res['w trakcie maleje (po 2:00 ok 180)']=170<=int(pg.inner_text('#cn-pts'))<=181
-    SOLVE="for(let g=0;g<4;g++){CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);cnSubmit()}"
+    SOLVE="for(let g=0;g<4;g++){CN.sel=CN.tiles.map((t,i)=>t.g===g?i:-1).filter(i=>i>=0);cnSubmit()}CN.rev=0;renderConn()"
     pg.evaluate(SOLVE);pg.wait_for_timeout(300)
     r=pg.evaluate("[CN.pts,CN.gain,SV.cn.pts,CN.won]");res['gra 1 (ok 2:00): pkt, zysk, suma']=r;res['gra 1 ok']=170<=r[0]<=181 and r[1]==r[0] and r[2]==r[0]
     res['karta']='do rankingu dziś' in pg.inner_text('#v-conn')
@@ -22,7 +22,7 @@ with sync_playwright() as pw:
     res['karta: lepszy wynik dzis']='lepszy wynik' in pg.inner_text('#v-conn')
     # porazka: 0 pkt
     pg.evaluate("cnNew()");pg.click('.cn-start .pri')
-    pg.evaluate("for(let k=0;k<4&&!CN.over;k++){const a=CN.tiles.map((t,i)=>[t.g,i]),g0=a.filter(x=>x[0]===CN.tiles[0].g).slice(0,2),g1=a.filter(x=>x[0]!==CN.tiles[0].g).slice(0,2);CN.sel=[...g0,...g1].map(x=>x[1]);cnSubmit()}")
+    pg.evaluate("for(let k=0;k<4&&!CN.over;k++){const a=CN.tiles.map((t,i)=>[t.g,i]),g0=a.filter(x=>x[0]===CN.tiles[0].g).slice(0,2),g1=a.filter(x=>x[0]!==CN.tiles[0].g).slice(0,2);CN.sel=[...g0,...g1].map(x=>x[1]);cnSubmit()}CN.rev=0;renderConn()")
     res['porazka: 0 pkt']=pg.evaluate("[CN.over,CN.won,CN.pts]")==[1,0,0]
     # wyzwanie nie daje punktow
     pg.evaluate("CN=cnFromObj({g:CN.groups.map(g=>[g.n,g.e,g.w,g.pl]),t:0,f:''});CN.mode='chal';CNmode='chal';renderConn()");pg.click('.cn-start .pri');pg.evaluate(SOLVE);pg.wait_for_timeout(200)
