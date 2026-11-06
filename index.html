@@ -506,7 +506,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
   @keyframes twright{from{left:calc(var(--from)/var(--n)*100%)}}
 }
 .hvis.wl .fchip.c1{left:auto;right:-12px;top:42%;bottom:auto}
-.gc.feat.rev .gimg{object-fit:contain;background:linear-gradient(160deg,#16233b,#26427a)}
+@media(min-width:641px){.gc.feat.rev .tag{right:calc(53.5% + 12px)}}
 
 .tp-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tp-bar select{flex:1;min-width:180px;width:auto!important}
 .tp-tabs{margin:12px 0 0}.tp-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tp-row input{flex:1;min-width:150px}
@@ -1331,7 +1331,7 @@ function wod(){const all=[];CATS.forEach(c=>{if(c.l)c.w.forEach(w=>all.push(w))}
 function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(!x||(!x.r&&!x.w))n++;else if(x.b>=4)m++;else l++});return{m,l,n,t:ws.length}}
 const GAMES=[
  {n:'WordCraft',k:'wc',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/hero-game.webp',go:'openGame()'},
- {n:'WordLinks',k:'wl',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/wordlinks.webp',go:"show('conn')"},
+ {n:'WordLinks',k:'wl',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/wordlinks-card.webp',go:"show('conn')"},
  {n:'WordElf',k:'el',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/wordelf.webp',go:"show('elf')"},
  {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
  {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
