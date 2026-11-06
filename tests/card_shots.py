@@ -23,4 +23,8 @@ with sync_playwright() as pw:
     for _ in range(2):
         i=pg.evaluate("EL.shelf.findIndex(s=>!s.used&&EL.list.some(e=>e.k===s.k&&e.got<e.need))");pg.locator('button.el-it').nth(i).click();pg.wait_for_timeout(700)
     pg.evaluate(HF);save(pg.locator('#v-elf .gstage').screenshot(),'el')
+    pg.evaluate("show('climb');clLvl('A2');clStart()");pg.wait_for_timeout(200)
+    for _ in range(5):
+        pg.evaluate("CL.between&&clNext();clTap(CL.cur.ok)");pg.wait_for_timeout(800)
+    pg.evaluate("CL.between&&clNext()");pg.wait_for_timeout(600);pg.evaluate(HF);save(pg.locator('#v-climb .gstage').screenshot(),'cl')
     print('OK',errs)
