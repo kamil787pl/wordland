@@ -880,6 +880,7 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 @media(max-width:700px){#cv:has(.ov.on .card .g){min-height:520px}}
 .stars .i{width:28px;height:28px;margin:0 2px}.stars .i.pt{color:#f0a000}
 .card .wl .i{width:15px;height:15px;margin-right:6px;vertical-align:-.2em}
+.rep-doc{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}.rep-doc h3{margin:0;font-size:20px}.rep-doc h4{margin:16px 0 6px;font-size:15px}.rep-d{margin:2px 0 12px;color:var(--mut)}.rep-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}.rep-k div{border:1px solid var(--line);border-radius:12px;padding:8px 12px}.rep-k b{display:block;font-size:22px}.rep-k span{font-size:12px;color:var(--mut)}.rep-n{margin:12px 0;padding:10px 12px;border-radius:12px;background:var(--pri-t)}.rep-t{width:100%;border-collapse:collapse;font-size:14px}.rep-t th,.rep-t td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--line)}.rep-t th{font-size:12px;color:var(--mut)}.rep-doc ul{margin:0;padding-left:20px}
 </style>
 </head>
 <body>
@@ -1865,7 +1866,7 @@ function renderTeach(){
   const catHTML=tbHTML()+((e||TP.nc)?tFormHTML(e):'');
   if(TP.cls===null)tpInit();
   const c=tpCur(),cat=TP.tab==='cat';
-  const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz grupę powyżej. Uczniowie dołączą kodem grupy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
+  const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz grupę powyżej. Uczniowie dołączą kodem grupy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='rep'?tpRep(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
   root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2>'+tpShell(body);
   if(cat){if(tDraft&&$('tc-n')){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
 }
@@ -2026,7 +2027,7 @@ async function tpInit(){
   TP.busy=0;await tpLoad();
 }
 async function tpLoad(){
-  TP.d=null;TP.det=null;TP.open=null;TP.del=null;TP.add=null;TP.sel=new Set();TP.delSel=0;TP.ast={};TP.tg=null;
+  TP.d=null;TP.det=null;TP.rep=null;TP.open=null;TP.del=null;TP.add=null;TP.sel=new Set();TP.delSel=0;TP.ast={};TP.tg=null;
   if(TP.cur){
     try{const [s,h,a,as]=await Promise.all([sb.rpc('class_students',{p_class:TP.cur}),sb.rpc('class_hard_words',{p_class:TP.cur}),sb.rpc('class_activity',{p_class:TP.cur}),sb.from('assignments').select('id,kind,title,category_id,groups,due,targets,created_at').eq('class_id',TP.cur).order('created_at',{ascending:false})]);
       TP.d={s:s.data||[],h:h.data||[],a:a.data||[],as:as.data||[]};
@@ -2186,6 +2187,63 @@ function tpDetHTML(){
   b+='<h5 class="tp-h">Hasło i grupa</h5><div class="tp-row"><input id="tp-pw" type="text" maxlength="72" autocomplete="off" spellcheck="false" aria-label="Nowe hasło" placeholder="nowe hasło"><button class="nb" onclick="$(\'tp-pw\').value=tpGen()">Generuj</button><button class="nb" onclick="tpReset()">Zmień hasło</button></div><p id="tp-m" role="status"></p>'
    +'<div class="wa"><button class="nb dng" onclick="tpRemove()">'+(t.del?'Kliknij jeszcze raz, aby usunąć z grupy':'Usuń z grupy')+'</button><button class="nb" onclick="TP.det=null;renderTeach()">Zamknij</button></div></div>';
   return b;
+}
+
+/* ===== RAPORTY (tydzień) ===== */
+const repIso=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const repFmt=n=>{const d=new Date();d.setDate(d.getDate()-n);return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear()};
+const repRange=()=>repFmt(6)+' – '+repFmt(0);
+function repWeek(d){const days=(d.days||[]).filter(x=>String(x.day)>=repIso(6)),act=days.filter(x=>x.answers>0).length,ans=days.reduce((n,x)=>n+x.answers,0),cor=days.reduce((n,x)=>n+x.correct,0);return{act,ans,cor,acc:ans?Math.round(100*cor/ans):null}}
+function repNote(w){
+  if(!w.ans)return 'W tym tygodniu nie było nauki. Warto umówić krótką, codzienną powtórkę (5 minut).';
+  const a=[w.act>=5?'Bardzo regularna nauka ('+w.act+' z 7 dni).':w.act>=3?'Nauka w '+w.act+' dniach tygodnia, warto dołożyć 1–2 krótkie sesje.':'Nauka tylko w '+w.act+(w.act===1?' dniu':' dniach')+' tygodnia, lepiej uczyć się krócej, ale częściej.'];
+  a.push(w.acc>=85?'Skuteczność bardzo dobra.':w.acc>=65?'Skuteczność dobra, część słówek wymaga powtórki.':'Skuteczność niska, zalecana powtórka trudnych słówek.');
+  return a.join(' ')
+}
+async function repSel(v){
+  TP.rep={u:v,d:null};renderTeach();if(v==='all')return;
+  try{const r=await sb.rpc('student_detail',{p_class:TP.cur,p_user:v});if(r.error)throw r.error;TP.rep.d=r.data}catch(e){TP.rep.err=1}
+  renderTeach()
+}
+function repData(c){
+  const R=TP.rep||{u:'all'},S=TP.d.s;
+  if(R.u==='all'){
+    const act=S.filter(x=>x.answers_7d>0),a7=S.reduce((n,x)=>n+x.answers_7d,0),all=S.reduce((n,x)=>n+x.answers,0),cor=S.reduce((n,x)=>n+x.correct,0);
+    const rows=S.slice().sort((x,y)=>y.answers_7d-x.answers_7d).map(x=>[x.nick,String(x.answers_7d),tpPct(x.correct,x.answers),String(x.mastered),String(x.stars)]);
+    const hard=TP.d.h.slice(0,8).map(w=>w.en+' = '+w.pl+' ('+w.wrong+' błędów)');
+    const late=S.filter(x=>!x.last_day||String(x.last_day)<repIso(6)).map(x=>x.nick);
+    const t=['Uczniów: '+S.length+', aktywnych w tym tygodniu: '+act.length,'Odpowiedzi w tygodniu: '+a7,'Skuteczność ogółem: '+tpPct(cor,all)];
+    const note=late.length?'Bez nauki w tym tygodniu: '+late.join(', ')+'.':'Wszyscy uczniowie uczyli się w tym tygodniu.';
+    return{title:'Raport grupy „'+c.name+'”',kpi:[['Uczniowie',S.length],['Aktywni w tygodniu',act.length],['Odpowiedzi (7 dni)',a7],['Skuteczność ogółem',tpPct(cor,all)]],head:['Uczeń','Odp. 7 dni','Skuteczność','Opanowane','Gwiazdki'],rows,hardT:'Najtrudniejsze słówka grupy',hard,note,txt:t}
+  }
+  const s=S.find(x=>x.user_id===R.u),d=R.d;if(!s||!d)return null;
+  const w=repWeek(d),hard=(d.hard||[]).slice(0,8).map(x=>x.en+' = '+x.pl+' ('+x.wrong+' błędów)');
+  const rows=(d.cats||[]).map(x=>[x.emoji+' '+x.name,String(x.stars),String(x.hard||0)]);
+  return{title:'Raport ucznia: '+s.nick,kpi:[['Dni z nauką (z 7)',w.act],['Odpowiedzi (7 dni)',w.ans],['Skuteczność (7 dni)',w.acc==null?'–':w.acc+'%'],['Opanowane słówka',s.mastered]],head:['Kategoria','Gwiazdki','Hard'],rows,hardT:'Słówka do powtórki',hard,note:repNote(w),
+   wl:Object.keys(d.wl||{}).length?'WordLinks, najlepsze czasy: '+Object.entries(d.wl).map(([k,v])=>({bt:'Dzienna',all:'Losowa',sp:'Sprint'}[k]||k)+' '+cnFmt(v)).join(', '):'',
+   txt:['Dni z nauką: '+w.act+' z 7','Odpowiedzi: '+w.ans+(w.acc==null?'':', skuteczność '+w.acc+'%'),'Opanowane słówka: '+s.mastered+', gwiazdki: '+s.stars]}
+}
+function repDoc(x,pr){
+  const tb=x.rows.length?'<table class="rep-t"><thead><tr>'+x.head.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+x.rows.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table>':'<p>Brak danych do pokazania.</p>';
+  return '<div class="rep-doc" id="rep-doc"><h3>'+esc(x.title)+'</h3><p class="rep-d">WordLand · tydzień '+repRange()+'</p><div class="rep-k">'+x.kpi.map(k=>'<div><b>'+esc(String(k[1]))+'</b><span>'+esc(k[0])+'</span></div>').join('')+'</div><p class="rep-n">'+esc(x.note)+'</p>'+tb
+   +'<h4>'+esc(x.hardT)+'</h4>'+(x.hard.length?'<ul>'+x.hard.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ul>':'<p>Brak błędów.</p>')+(x.wl?'<p>'+esc(x.wl)+'</p>':'')+'</div>'
+}
+function repTxt(){const c=tpCur(),x=repData(c);if(!x)return '';return x.title+'\nTydzień '+repRange()+'\n\n'+x.txt.join('\n')+'\n\n'+x.note+(x.hard.length?'\n\n'+x.hardT+':\n- '+x.hard.join('\n- '):'')+'\n\nWordLand'}
+function repCopy(){tpCopy(repTxt(),'Skopiowano tekst raportu.')}
+function repPrint(){
+  const e=$('rep-doc');if(!e)return;
+  const f=document.createElement('iframe');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);
+  const d=f.contentDocument;d.open();d.write('<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>Raport WordLand</title><style>'+REPCSS+'</style></head><body>'+e.outerHTML+'</body></html>');d.close();
+  setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(x){}setTimeout(()=>f.remove(),1500)},200)
+}
+const REPCSS='body{font:14px/1.5 Arial,sans-serif;color:#16233b;margin:24px}h3{font-size:22px;margin:0}h4{margin:18px 0 6px}.rep-d{color:#5b6b8a;margin:2px 0 14px}.rep-k{display:flex;gap:10px;flex-wrap:wrap}.rep-k div{flex:1;min-width:110px;border:1px solid #c5cfe1;border-radius:10px;padding:8px 12px}.rep-k b{display:block;font-size:22px}.rep-k span{font-size:12px;color:#5b6b8a}.rep-n{margin:14px 0;padding:10px 12px;background:#eef3ff;border-radius:10px}.rep-t{width:100%;border-collapse:collapse}.rep-t th,.rep-t td{border-bottom:1px solid #dde3f0;padding:6px 8px;text-align:left}.rep-t th{font-size:12px;color:#5b6b8a}ul{margin:0;padding-left:20px}';
+function tpRep(c){
+  const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
+  const R=TP.rep||(TP.rep={u:'all'}),x=repData(c);
+  return '<div class="panel"><h4>'+ic('book')+'Raport tygodniowy</h4><p class="lg" style="margin:0 0 10px">Ostatnie 7 dni ('+repRange()+'). Wyślij rodzicowi tekst albo zapisz raport jako PDF (Drukuj → Zapisz jako PDF).</p>'
+   +'<div class="wa" style="margin:0 0 12px"><label class="vh" for="rep-u">Raport dla</label><select id="rep-u" onchange="repSel(this.value)"><option value="all"'+(R.u==='all'?' selected':'')+'>Cała grupa</option>'+d.s.map(s=>'<option value="'+s.user_id+'"'+(R.u===s.user_id?' selected':'')+'>'+esc(s.nick)+'</option>').join('')+'</select>'
+   +'<button class="nb" onclick="repCopy()"'+(x?'':' disabled')+'>'+ic('edit')+'Kopiuj tekst</button><button class="gbtn" onclick="repPrint()"'+(x?'':' disabled')+'>'+ic('book')+'Drukuj / PDF</button></div><p id="tp-m" role="status"></p>'
+   +(R.err?'<p class="lg">Nie udało się wczytać danych ucznia.</p>':x?repDoc(x):'<p class="lg">Wczytuję…</p>')+'</div>'
 }
 async function tpReset(){
   const p=$('tp-pw').value;if(p.length<6)return tpMsg('Nowe hasło musi mieć co najmniej 6 znaków.');
@@ -2371,7 +2429,8 @@ function helpHTML(){
     +hpFig('wyniki','Lista zadań z podsumowaniem wyników','Lista zadań: przy każdym liczba uczniów, którzy je zrobili, i przycisk „Wyniki”.')
     +'<h4>Jak to widzi uczeń</h4><p>Zadania pojawiają się na górze strony głównej w panelu „Zadania od korepetytora” (z przyciskiem „Zrób zadanie”). Po wykonaniu zadanie <b>znika ze strony głównej</b>, a w Profilu zostaje jako zrobione.</p>'
     +hpFig('uczen-home','Strona główna ucznia z zadaniami od korepetytora','Widok ucznia: zadania od korepetytora są na samej górze strony głównej.')
-    +hpTip('Zadania nie da się edytować. Jeśli pomyliłeś się, usuń je i utwórz nowe. Zadanie dla wybranych uczniów oznaczone jest etykietą „dla N uczn.”.'));
+    +hpTip('Zadania nie da się edytować. Jeśli pomyliłeś się, usuń je i utwórz nowe. Zadanie dla wybranych uczniów oznaczone jest etykietą „dla N uczn.”.')
+    +'<h4>Raporty tygodniowe</h4><p>W zakładce <i>Raporty</i> wybierasz „Cała grupa” albo jednego ucznia i dostajesz podsumowanie ostatnich 7 dni: dni z nauką, liczbę odpowiedzi, skuteczność, opanowane słówka, słówka do powtórki i krótki komentarz. <b>Kopiuj tekst</b> daje gotową wiadomość dla rodzica, a <b>Drukuj / PDF</b> otwiera okno drukowania (wybierz „Zapisz jako PDF”). Raport zawiera tylko nick ucznia.</p>');
   const s8=hpSec('kategorie',8,'Baza słówek i własne kategorie',
     '<p>Zakładka <i>Kategorie</i> to cała baza słówek: gotowe kategorie WordLand (poziomy A1, A2, B1) i Twoje własne. Kategorie możesz <b>wyszukiwać</b> (po nazwie albo słówku) i <b>filtrować</b> według poziomu. Przy każdej jest <b>Podgląd</b> słówek i przycisk <b>Zadaj</b>, który od razu otwiera nowe zadanie z tą kategorią. Gotową kategorię możesz też skopiować do swoich przyciskiem <b>Kopiuj do moich</b> i dopasować do klasy.</p>'
     +'<p>Własne kategorie od razu pojawiają się w grach uczniów (WordCraft, WordLinks) i możesz je zadawać jako zadania.</p>'
@@ -2407,7 +2466,7 @@ function helpHTML(){
   return '<div class="hp">'+hero+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+'</div>';
 }
 function tpShell(body){
-  const tabs=[['ov','Dziś'],['stu','Uczniowie'],['asg','Zadania'],['cat','Kategorie'],['help','Poradnik']];
+  const tabs=[['ov','Dziś'],['stu','Uczniowie'],['asg','Zadania'],['rep','Raporty'],['cat','Kategorie'],['help','Poradnik']];
   return tpBar()+'<div class="seg tp-tabs" role="group" aria-label="Sekcje panelu">'+tabs.map(t=>'<button type="button" class="'+(TP.tab===t[0]?'on':'')+'" aria-pressed="'+(TP.tab===t[0])+'" onclick="tpTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div><div id="t-body">'+body+'</div>';
 }
 function tpBar(){

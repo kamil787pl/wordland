@@ -237,6 +237,14 @@ with sync_playwright() as pw:
     pg.click('button:has-text("Zadaj zadanie wybranym")');pg.wait_for_timeout(200);res['formularz dla wybranych']='jan_n' in pg.inner_text('.tp-add')
     pg.fill('#ta-t','Tylko Jan');pg.click('button:has-text("Zadaj wybranym")');pg.wait_for_timeout(700)
     res['zadanie celowane']=[(a['title'],a['targets']==[next(u['id'] for n,u in users.items() if n=='jan_n')]) for a in ASG if a['title']=='Tylko Jan']
+    pg.click('.tp-tabs button:has-text("Raporty")');pg.wait_for_timeout(300)
+    res['raport grupy']=pg.inner_text('#rep-doc')[:160]
+    res['raport grupy: tytul i tabela']='Raport grupy' in pg.inner_text('#rep-doc h3') and pg.locator('#rep-doc tbody tr').count()>=1
+    nk=pg.eval_on_selector('#rep-u','e=>e.options[1].value');pg.select_option('#rep-u',nk);pg.wait_for_timeout(500)
+    res['raport ucznia']=pg.inner_text('#rep-doc')[:200]
+    res['raport ucznia: tytul']='Raport ucznia' in pg.inner_text('#rep-doc h3')
+    res['raport: tekst do skopiowania']=pg.evaluate("repTxt()")[:120]
+    pg.screenshot(path=S+'/panel-raport.png')
     pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(200);res['lista zadan: podsumowanie']=pg.inner_text('.tp-a >> nth=0')[:140]
     pg.click('.tp-tabs button:has-text("Kategorie")');pg.wait_for_timeout(100)
     pg.click('button:has-text("Zadaj") >> nth=0');pg.wait_for_timeout(200);res['bank: zadaj otwiera formularz']={'tab':pg.evaluate('TP.tab'),'tytul':pg.input_value('#ta-t'),'wybrana':pg.evaluate("$('ta-c0').selectedOptions[0].text"),'grup_poziomow':pg.locator('#ta-c0 optgroup').count()}
