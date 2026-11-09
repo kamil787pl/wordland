@@ -14,7 +14,7 @@ with sync_playwright() as pw:
     pg.goto(URL);pg.wait_for_timeout(2500);pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(2500)
     pg.evaluate("document.getElementById('pt').style.visibility='hidden'")
     pg.evaluate("show('game');openGame();start(0)");pg.wait_for_timeout(1200);pg.keyboard.press('t');pg.wait_for_timeout(1800)
-    save(pg.locator('#wrap').screenshot(),'wc',0)
+    save(pg.locator('#cv').screenshot(),'wc',0)
     pg.evaluate("show('conn');cnMode('random')");pg.wait_for_timeout(300);pg.click('.cn-start .pri');pg.wait_for_timeout(200)
     pg.evaluate("CN.sel=CN.tiles.map((t,i)=>t.g===CN.tiles[0].g?i:-1).filter(i=>i>=0);cnSubmit()");pg.wait_for_timeout(700)
     pg.evaluate("CN.t0=Date.now()-41000;document.getElementById('cn-time').textContent=cnFmt(41000)")

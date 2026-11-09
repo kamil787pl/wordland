@@ -841,6 +841,45 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 .cn-start button.g{background:transparent;box-shadow:none;color:#c9d6f2;min-height:36px;padding:4px 12px;font-size:14px;font-weight:700}
 @media(prefers-reduced-motion:reduce){.cn-cast svg,.cd-arm,.cd-head{animation:none}}
 @media(max-width:700px){.cn-cast{width:80px}}
+/* WordCraft: ramka i okna jak w pozostałych grach (.gstage, .gs-hud, ciemna nakładka, przyciski .pri) */
+#wrap.wc-stage{aspect-ratio:auto;max-width:960px;background:#16233b}
+#cv{position:relative;line-height:0}
+#wrap.wc-stage canvas{border:0;border-radius:0;box-shadow:none}
+#wrap.fsx .gs-hud{display:none}
+#wrap.fsx #cv{width:min(100vw,calc(100vh*5/3))}
+#wrap.fsx.px #cv{width:min(100vw,calc(100dvh*5/3))}
+#wrap.fsx canvas{width:100%}
+#cv .ov{line-height:1.3;background:rgba(10,20,42,.8)}
+#ov .card{width:min(94%,440px);padding:16px;border:0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.4);font-family:"Figtree",system-ui,sans-serif}
+#ov .card h1{font:800 30px/1 "Figtree",system-ui,sans-serif;letter-spacing:-.5px;color:var(--ink);-webkit-text-stroke:0;text-shadow:none}
+#ov .card h2{font-size:19px;font-weight:800;color:var(--ink)}
+#ov .card .sub{color:var(--mut);font-weight:600;margin:4px 0}
+.wc-rk{display:inline-flex;align-items:center;gap:2px;margin:4px 0 8px;padding:5px 12px;border-radius:999px;background:#fff4d6;color:#7a5200;font-weight:800;font-size:14px}
+#ov .card button{border:1px solid var(--line);border-radius:12px;box-shadow:none;background:#fff;color:var(--ink);font:700 15px "Figtree",system-ui,sans-serif;transition:background .15s}
+#ov .card button:hover:not(:disabled){transform:none;box-shadow:none;background:var(--pri-t)}
+#ov .card button:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+#ov .card button.g{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;background:var(--sf);color:var(--ink);font-weight:700;font-size:15px;padding:8px 14px;margin:4px 2px}
+#ov .card button.pri{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;margin:10px 0 4px;background:var(--amb);border:0;color:#3a2600;font-weight:800;font-size:17px;box-shadow:0 3px 0 #c98100}
+#ov .card button.pri:hover:not(:disabled){background:var(--amb);filter:brightness(1.05);box-shadow:0 3px 0 #c98100}
+#ov .card button.pri:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #c98100}
+.wc-2{display:flex;gap:8px;justify-content:center}.wc-2 button{flex:1}
+details.grp{border:1px solid var(--line);border-radius:14px;box-shadow:none;margin:8px 0;text-align:left}
+details.grp summary{padding:10px 12px;background:#f4f7fd;font-weight:800;color:var(--ink);box-shadow:inset 4px 0 0 var(--lc,#2e9d4f)}
+details.grp[data-l="A1"] summary{background:#f4f7fd;--lc:#2e9d4f}
+details.grp[data-l="A2"] summary{background:#f4f7fd;--lc:#f0a000}
+details.grp[data-l="B1"] summary{background:#f4f7fd;--lc:#e0503f}
+details.grp[data-l="Własne"] summary{background:#f4f7fd;--lc:#7a5cff}
+details.grp summary::before{content:"";width:7px;height:7px;margin:0 10px 0 2px;border:solid var(--mut);border-width:0 2px 2px 0;transform:rotate(-45deg);transition:transform .15s}
+details.grp[open] summary::before{transform:rotate(45deg)}
+#ov .card button.lv{background:#fff;border-top:1px solid var(--line);border-radius:0;font-weight:700;align-items:center}
+#ov .card button.lv:hover:not(:disabled){background:var(--pri-t)}
+#ov .card .lvr{border-top:0}
+#ov .card .lvr .lv.hd{width:128px;background:#fff1ef;border-left:1px solid var(--line);color:#a3321f}
+#ov .card .lvr .lv.hd:hover:not(:disabled){background:#ffe0db}
+.lv span{display:inline-flex;align-items:center;gap:6px}.lv .i{width:15px;height:15px;margin:0}.lv .i.dim,.stars .i.dim{color:#d3d9e6}.lv .i.pt{color:#f0a000}
+@media(max-width:700px){#cv:has(.ov.on .card .g){min-height:520px}}
+.stars .i{width:28px;height:28px;margin:0 2px}.stars .i.pt{color:#f0a000}
+.card .wl .i{width:15px;height:15px;margin-right:6px;vertical-align:-.2em}
 </style>
 </head>
 <body>
@@ -893,7 +932,7 @@ html[data-season=winter] .hero::after{inset:0;width:auto;height:auto;border-radi
 <main id="v-elf" class="pv" hidden></main>
 <main id="v-climb" class="pv" hidden></main>
 <section id="v-game" hidden>
-<div id="wrap"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div>
+<div id="wrap" class="gstage wc-stage"><div class="gs-hud"><span class="gs-t"><svg class="i"><use href="#i-cube"/></svg>WordCraft</span><span class="gs-m" id="wc-m">Wybierz kategorię</span><span class="gs-s"><svg class="i f pt"><use href="#i-star"/></svg><b id="wc-p">0</b></span></div><div id="cv"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div></div>
 <p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
 <div id="ctl">
   <button id="bl" aria-label="Lewo">◀ <kbd>A</kbd></button>
@@ -1123,28 +1162,30 @@ function build(i){
   parts=[];fl=[];fadeT=RM?0:30;invT=0;bump=null;clearKeys();cp={got:got.slice(),score,right,asked,seen:seen.slice(),inv,gems};
   tut=SV.tut?-1:0;tg=null;state='play';hide();if(tut<0)toast((HARD?'HARD · ':'')+(needs.length>1?'Etap '+(stage+1)+'/'+needs.length+' · ':'')+TH[th].n+' · uderz głową w złote bloki „?”');
 }
-function card(h){const pp=state!=='quiz'&&(state!=='boss'||h.includes('blokuje'));ov.innerHTML='<div class="card'+(pp?' pop':'')+'">'+h+'</div>';ov.classList.remove('b');ov.classList.add('on')}
-function hide(){ov.classList.remove('on')}
+function wcHud(){const m=document.getElementById('wc-m'),p=document.getElementById('wc-p');if(!m)return;const c=CATS[lvl];m.textContent=state==='menu'||!c?'Wybierz kategorię':c.n+(HARD?' · HARD':'');p.textContent=wcFmtP(wcPts())}
+function card(h){const pp=state!=='quiz'&&(state!=='boss'||h.includes('blokuje'));ov.innerHTML='<div class="card'+(pp?' pop':'')+'">'+h+'</div>';ov.classList.remove('b');ov.classList.add('on');wcHud()}
+function hide(){ov.classList.remove('on');wcHud()}
 function mT(d){if(!d.open)return;SV.o=d.dataset.l;save();document.querySelectorAll('#ov details.grp').forEach(x=>{if(x!==d)x.open=false})}
 function snap(fn,w,h,sc){try{const c=document.createElement('canvas');c.width=w;c.height=h;const old=ctx,sv=[p.face,p.on,p.vx];ctx=c.getContext('2d');ctx.scale(sc,sc);fn();ctx=old;p.face=sv[0];p.on=sv[1];p.vx=sv[2];return c.toDataURL()}catch(e){return ''}}
 function mhead(){if(!MI)MI={h:snap(()=>{p.face=1;p.on=true;p.vx=0;drawPlayer(14,10)},108,112,2.6),f:snap(()=>drawFluff({c:'#f2a03d',vx:1},5,9,0),112,96,3.2)};return '<div class="mh"><img src="'+MI.h+'" alt=""><h1>WordCraft</h1><img class="fl" src="'+MI.f+'" alt=""></div>'}
+const wcStars=s=>[1,2,3].map(i=>ic('star','f '+(i<=s?'pt':'dim'))).join('');
 function menu(){
   if(CATS.length&&CATS[CATS.length-1].tmp){CATS.pop();if(SV.s)SV.s.length=Math.min(SV.s.length,CATS.length)}
   state='menu';const S=SV.s||[],gr=[];
   CATS.forEach((c,i)=>{const L=c.l||'Własne';let g=gr.find(x=>x.L===L);if(!g)gr.push(g={L,a:[]});g.a.push(i)});
-  const open=gr.some(g=>g.L===SV.o)?SV.o:(gr.find(g=>g.a.some(i=>!(S[i]>0)))||gr[0]).L;
-  card(mhead()+'<p class="sub">Kop, skacz i zbieraj angielskie słówka</p><p class="sub" style="margin-top:-4px">⭐ '+wcFmtP(wcPts())+' pkt · '+wcRank(wcPts()).t+'</p>'+gr.map(g=>{
+  const nx=Math.max(0,CATS.findIndex((c,i)=>!c.tmp&&!(S[i]>0))),open=gr.some(g=>g.L===SV.o)?SV.o:(gr.find(g=>g.a.some(i=>!(S[i]>0)))||gr[0]).L;
+  card(mhead()+'<p class="sub">Kop, skacz i zbieraj angielskie słówka</p><p class="wc-rk">'+ic('star','f pt')+wcFmtP(wcPts())+' pkt · '+wcRank(wcPts()).t+'</p>'+gr.map(g=>{
     const st=g.a.reduce((n,i)=>n+(S[i]||0),0),done=g.a.filter(i=>S[i]>0).length;
     return '<details class="grp" data-l="'+g.L+'" '+(g.L===open?'open':'')+' ontoggle="mT(this)"><summary><b>'+(g.L==='Własne'?'Własne kategorie':'Poziom '+g.L)+'</b><span>'+done+'/'+g.a.length+' ukończone · ★ '+st+'</span></summary>'
-      +g.a.map(i=>{const c=CATS[i],s=S[i]||0;const hs=(SV.h||[])[i]||0;return '<div class="lvr"><button class="lv" onclick="start('+i+')"><span>'+c.e+' '+c.n+'</span><span>'+'★'.repeat(s)+'<u>'+'★'.repeat(3-s)+'</u></span></button><button class="lv hd" onclick="start('+i+',1)" title="Hard: bez podpowiedzi, wpisywanie i słuchanie"><span>Hard</span><span>'+'★'.repeat(hs)+'<u>'+'★'.repeat(3-hs)+'</u></span></button></div>'}).join('')+'</details>';
-  }).join('')+'<p class="wl" style="font-size:12px;margin:6px 0">Hard: te same słówka, ale bez podpowiedzi – wpisujesz, słuchasz i układasz zdania.</p><button class="g" onclick="SV.tut=0;start(0)">❓ Samouczek</button> <button class="g" onclick="stats()">📊 Postępy</button>');
+      +g.a.map(i=>{const c=CATS[i],s=S[i]||0;const hs=(SV.h||[])[i]||0;return '<div class="lvr"><button class="lv" onclick="start('+i+')"><span>'+c.e+' '+c.n+'</span><span>'+wcStars(s)+'</span></button><button class="lv hd" onclick="start('+i+',1)" title="Hard: bez podpowiedzi, wpisywanie i słuchanie"><span>'+ic('flame')+'Hard</span><span>'+wcStars(hs)+'</span></button></div>'}).join('')+'</details>';
+  }).join('')+'<p class="wl" style="font-size:12px;margin:6px 0">Hard: te same słówka, ale bez podpowiedzi – wpisujesz, słuchasz i układasz zdania.</p><button class="pri" onclick="start('+nx+')">'+ic('play')+'Graj: '+CATS[nx].e+' '+CATS[nx].n+'</button><div class="wc-2"><button class="g" onclick="SV.tut=0;start(0)">'+ic('bulb')+'Samouczek</button><button class="g" onclick="stats()">'+ic('trophy')+'Postępy</button></div>');
 }
 function fail(){const wb=state==='boss';state='end';card('<h2>Koniec serc 💔</h2><p>Spokojnie – każda próba to powtórka słówek.'+(wb?' Zebrane słówka zostają, wracasz do bossa.':needs.length>1?' Wracasz na początek tego etapu ('+(stage+1)+'/'+needs.length+'), a zebrane wcześniej słówka zostają.':'')+'</p><button class="g" onclick="'+(wb?'retryBoss()':'retryStage()')+'">'+(wb?'Do bossa':needs.length>1?'Spróbuj etap ponownie':'Spróbuj ponownie')+'</button> '+(wb||needs.length>1?'<button class="g" onclick="start(lvl,HARD)">Od początku</button> ':'')+'<button class="g" onclick="menu()">Menu</button>')}
 function win(){
   state='end';const acc=asked?Math.round(100*right/asked):100,st=acc>=90?3:acc>=70?2:1;fxConfetti({n:st*20+20});
   if(HARD){SV.h=SV.h||[];SV.h[lvl]=Math.max(SV.h[lvl]||0,st);save();pushHard(lvl)}else{SV.s=SV.s||[];SV.s[lvl]=Math.max(SV.s[lvl]||0,st);save();pushStars(lvl)}
   [523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'square',.05),i*140));
-  card('<h2>Boss pokonany! 🏆<br>'+(HARD?'Hard ukończony! ':'Poziom ukończony! ')+' <span class="stars">'+[1,2,3].map(i=>'<i style="--d:'+(i*.18+.3)+'s"'+(i<=st?' class="on">★':'>☆')+'</i>').join('')+'</span></h2><p>Trafność: '+acc+'% ('+right+'/'+asked+') · Punkty w tej grze: <b>'+wcFmtP(runPts)+'</b></p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div>'+(lvl<CATS.length-1?'<button class="g" onclick="start(lvl+1,HARD)">Następna kategoria ▶</button> ':'')+'<button class="g" onclick="start(lvl,HARD)">Jeszcze raz</button> <button class="g" onclick="menu()">Menu</button>');
+  card('<h2>Boss pokonany! 🏆<br>'+(HARD?'Hard ukończony! ':'Poziom ukończony! ')+' <span class="stars">'+[1,2,3].map(i=>'<i style="--d:'+(i*.18+.3)+'s"'+(i<=st?' class="on">'+ic('star','f pt'):'>'+ic('star','f dim'))+'</i>').join('')+'</span></h2><p>Trafność: '+acc+'% ('+right+'/'+asked+') · Punkty w tej grze: <b>'+wcFmtP(runPts)+'</b></p><div class="wl">'+got.map(w=>w[0]+' = <b>'+w[1]+'</b>').join(' · ')+'</div>'+(lvl<CATS.length-1?'<button class="pri" onclick="start(lvl+1,HARD)">Następna kategoria'+ic('play')+'</button> ':'')+'<button class="g" onclick="start(lvl,HARD)">Jeszcze raz</button> <button class="g" onclick="menu()">Menu</button>');
 }
 /* quiz */
 function ask(tx,ty){
@@ -1242,7 +1283,7 @@ function stats(){
   CATS.forEach(c=>c.w.forEach(w=>{const m=SV.m[w[0]+'='+w[1]];if(m)all.push({p:w[0],e:w[1],b:m.b,r:m.r,w:m.w})}));
   const total=CATS.reduce((s,c)=>s+c.w.length,0),mast=all.filter(x=>x.b>=4).length,learn=all.filter(x=>x.b>0&&x.b<4).length;
   const hard=all.filter(x=>x.w>0).sort((x,y)=>(y.w-y.r*.5)-(x.w-x.r*.5)).slice(0,8);
-  card('<h2>📊 Twoje postępy</h2><p>Opanowane: <b>'+mast+'</b> · W nauce: <b>'+learn+'</b> · Wszystkich: '+total+'</p><div class="bar"><i style="width:'+Math.round(100*mast/total)+'%"></i></div>'+(hard.length?'<h2>Najtrudniejsze słówka</h2><div class="wl">'+hard.map(x=>x.p+' = <b>'+x.e+'</b> ('+x.r+'✓ '+x.w+'✗)').join('<br>')+'</div>':'<p>Zagraj kilka poziomów, a tu pojawią się statystyki.</p>')+'<h2>🏆 Osiągnięcia</h2><div class="wl">'+Object.keys(ACH).map(k=>(SV.a&&SV.a[k]?'✅ ':'⬜ ')+ACH[k][0]+' – '+ACH[k][1]).join('<br>')+'</div><p id="am"></p><button class="g" onclick="rev()">🔁 Powtórka trudnych słówek</button> <button class="g" onclick="menu()">Wróć</button>');
+  card('<h2>Twoje postępy</h2><p>Opanowane: <b>'+mast+'</b> · W nauce: <b>'+learn+'</b> · Wszystkich: '+total+'</p><div class="bar"><i style="width:'+Math.round(100*mast/total)+'%"></i></div>'+(hard.length?'<h2>Najtrudniejsze słówka</h2><div class="wl">'+hard.map(x=>x.p+' = <b>'+x.e+'</b> ('+x.r+'✓ '+x.w+'✗)').join('<br>')+'</div>':'<p>Zagraj kilka poziomów, a tu pojawią się statystyki.</p>')+'<h2>Osiągnięcia</h2><div class="wl">'+Object.keys(ACH).map(k=>(SV.a&&SV.a[k]?ic('check','ok'):ic('circle'))+ACH[k][0]+' – '+ACH[k][1]).join('<br>')+'</div><p id="am"></p><button class="g" onclick="rev()">'+ic('repeat')+'Powtórka trudnych słówek</button> <button class="g" onclick="menu()">Wróć</button>');
 }
 function rev(){
   const L=[];CATS.forEach(c=>c.w.forEach(w=>{const m=SV.m[w[0]+'='+w[1]];if(m&&m.b<4)L.push([m.b-m.w*.5,w])}));
