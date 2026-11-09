@@ -47,7 +47,7 @@ with sync_playwright() as pw:
     res['oskarzenie wymaga przesluchania wszystkich']=True
     pg.evaluate("HS.sel=[2,3];HS.sus=0;hsAccuse()");res['Tom przesluchany, reszta nie: odrzucone']=pg.evaluate("HS.over")==0 and 'każdego' in pg.evaluate("HS.msg")
     pg.evaluate("hsBack();hsApp('laptop');hsOpen(11);hsPick(hsIt(11).a);hsBack();hsBack();hsBoard();HS.sus=0;hsAsk();for(let i=0;i<8;i++)hsAskTap(i)");pg.wait_for_timeout(50)
-    res['Tom etap 3: przyznanie sie']=pg.evaluate("HS.int[0]")==3 and 'cake' in pg.inner_text('.hs-ov')
+    res['Tom etap 3: wykreca sie']=pg.evaluate("HS.int[0]")==3 and 'project' in pg.inner_text('.hs-ov')
     pg.evaluate("for(const i of [4,5,7,8,9])HS.done[i]=1;HS.v='board';renderHeist()")
     for sus,n in ((1,6),(2,6),(3,6)):
         pg.evaluate("HS.v='board';renderHeist();HS.sus=%d;hsAsk();for(let i=0;i<%d;i++)hsAskTap(i)"%(sus,n))

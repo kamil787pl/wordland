@@ -3220,7 +3220,7 @@ const HSW=[['wpół do','half past'],['kwadrans do','quarter to'],['pożyczać',
 const HSQS=[[
  {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was in the library."},
  {w:["Why","did","you","arrive","at","a","quarter","to","three?"],need:[3],r:"OK, I was in the gym. I played basketball."},
- {w:["Why","do","you","have","the","art","room","key?"],need:[10,11],r:"OK, OK! I took the cake. It was a surprise for Ms Brown!"}],[
+ {w:["Why","do","you","have","the","art","room","key?"],need:[10,11],r:"Um... I borrowed it for a project. That is all!"}],[
  {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was at the dentist."},
  {w:["Who","has","your","red","jacket","today?"],need:[7],r:"Tom has it. I lent it to him."},
  {w:["Why","did","you","lend","it","to","Tom?"],need:[4],r:"He was cold in the gym. I was at the dentist, look at my card!"}],[
@@ -3283,7 +3283,7 @@ function hsAsk(){
 }
 function hsAskTap(k){
   const a=HS.ask,q=a&&HSQS[a.i][Math.min(a.s,2)];if(HS.v!=='ask'||!a||a.s!==HS.int[a.i]||!q||a.pick.length>=q.w.length||a.pick.includes(k))return;
-  if(k===a.pick.length){a.pick.push(k);cnFx('ok');if(a.pick.length===q.w.length){HS.int[a.i]++;const n=HSS[a.i].n;HS.msg=a.i===0&&HS.int[0]<3?'Tom zmienił wersję. Zbierz kolejne dowody.':HS.int[a.i]>=3?(a.i===0?'Tom się przyznał!':n+' ma już wszystko powiedziane.'):'Odpowiedź zapisana: '+n+'.'}}
+  if(k===a.pick.length){a.pick.push(k);cnFx('ok');if(a.pick.length===q.w.length){HS.int[a.i]++;const n=HSS[a.i].n;HS.msg=a.i===0&&HS.int[0]<3?'Tom zmienił wersję. Zbierz kolejne dowody.':HS.int[a.i]>=3?(a.i===0?'Tom się plącze. Czy to wystarczy, by go oskarżyć?':n+' ma już wszystko powiedziane.'):'Odpowiedź zapisana: '+n+'.'}}
   else{HS.err++;HS.msg='Zły szyk. Zacznij od słowa pytającego.';cnFx('bad')}
   renderHeist()
 }
@@ -3433,7 +3433,7 @@ function hsAskH(){
   return h
 }
 function hsWin(){
-  return'<h3>Sprawa rozwiązana!</h3><p class="hs-fin">To był Tom. Chciał udekorować tort jako niespodziankę. Tort stoi w sali plastycznej z napisem „Happy Birthday, Ms Brown!”.</p><div class="hs-dlg"><p>'+hsAv('tom',30)+'<span><b>Tom:</b> I took the cake. It was a surprise for your birthday!</span></p></div><div class="hs-sms"><small>Ms Brown → Ty</small><div>Thank you, detective! The cake is in the art room. Come and have a piece!</div></div><div class="hs-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=HS.stars?'pt':'dim'))).join('')+'</div><div class="hs-tiles"><div><b>'+hsFmt(HS.secs)+'</b><small>czas (wzorcowy 10:00)</small></div><div><b>'+HS.err+'</b><small>błędy</small></div><div><b>'+HS.hint+'</b><small>podpowiedzi</small></div></div><div class="hs-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+HS.pts+'</b></div><small class="hs-gain">'+hsAwardHtml()+'</small><div class="hs-words2"><b>Słówka ze sprawy (trafiły do powtórek):</b>'+HSW.map(w=>'<span>'+esc(w[1])+' = '+esc(w[0])+'</span>').join('')+'</div>'
+  return'<h3>Sprawa rozwiązana!</h3><p class="hs-fin">To był Tom. Chciał udekorować tort jako niespodziankę. Tort stoi w sali plastycznej z napisem „Happy Birthday, Ms Brown!”.</p><div class="hs-sms"><small>Ms Brown → Ty</small><div>Thank you, detective! The cake is in the art room. Come and have a piece!</div></div><div class="hs-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=HS.stars?'pt':'dim'))).join('')+'</div><div class="hs-tiles"><div><b>'+hsFmt(HS.secs)+'</b><small>czas (wzorcowy 10:00)</small></div><div><b>'+HS.err+'</b><small>błędy</small></div><div><b>'+HS.hint+'</b><small>podpowiedzi</small></div></div><div class="hs-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+HS.pts+'</b></div><small class="hs-gain">'+hsAwardHtml()+'</small><div class="hs-words2"><b>Słówka ze sprawy (trafiły do powtórek):</b>'+HSW.map(w=>'<span>'+esc(w[1])+' = '+esc(w[0])+'</span>').join('')+'</div>'
 }
 function renderHeist(){
   const root=$('v-heist');if(!root)return;if(!HS)hsNew();
