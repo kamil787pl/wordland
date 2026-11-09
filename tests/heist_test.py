@@ -1,0 +1,89 @@
+"""WordHeist: sprawa The Missing Cake, telefon i laptop, zagadki, przesluchanie, tablica, punkty, RPC (mock), ranking, profil."""
+import pathlib
+from playwright.sync_api import sync_playwright
+URL='file://'+str(pathlib.Path(__file__).resolve().parent.parent/'index.html')
+res={};errs=[]
+with sync_playwright() as pw:
+    br=pw.chromium.launch();pg=br.new_page(viewport={'width':1000,'height':900});pg.on('pageerror',lambda e:errs.append(str(e)))
+    pg.goto(URL);pg.wait_for_timeout(400);pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(400)
+    pg.evaluate("window.CALLS=[];U={id:'u1',nick:'Test'};sb={rpc:async(n,a)=>{CALLS.push([n,a]);return{data:n==='heist_award'?40:[]}},from:()=>({upsert:async()=>({})})}")
+    pg.evaluate("show('heist')");pg.wait_for_timeout(200)
+    res['nakladka startowa']=pg.locator('.hs-go').count()==1 and pg.evaluate("HS.go")==0
+    res['ranking przed startem']=pg.locator('#v-heist .cn-lbp').count()==1
+    pg.evaluate("hsStart()");pg.wait_for_timeout(100)
+    res['4 lupy w scenie']=pg.locator('.hs-spot').count()==4
+    res['telefon i laptop z plakietkami']=pg.evaluate("[...document.querySelectorAll('.hs-inv em')].map(e=>e.textContent)")==['3','2']
+    res['tablica zablokowana']=pg.locator('.gbar .pri').first.is_disabled()
+    # zla odpowiedz w zagadce = blad
+    pg.evaluate("hsOpen(1)");pg.wait_for_timeout(50)
+    res['dowod 1 ma 4 opcje']=pg.locator('.hs-opts button').count()==4
+    pg.evaluate("hsPick(0)");res['blad liczy sie']=pg.evaluate("HS.err")==1 and not pg.evaluate("!!HS.done[1]")
+    pg.evaluate("hsHint()");res['podpowiedz usuwa opcje']=pg.locator('.hs-opts button').count()==3 and pg.evaluate("HS.hint")==1
+    pg.evaluate("hsPick(HSI[0].a)");res['poprawna zapisuje']=pg.evaluate("!!HS.done[1]")
+    pg.evaluate("hsBack()")
+    # telefon: 3 SMS-y, laptop: 2 maile
+    pg.evaluate("hsApp('phone')");res['telefon: 3 SMS']=pg.locator('.hs-app.ph .hs-row').count()==3
+    pg.evaluate("hsOpen(8)");res['mylny trop bez pytania']=pg.locator('.hs-opts').count()==0 and 'nie jest trop' in pg.inner_text('.hs-ov')
+    pg.evaluate("hsBack()");res['powrot z SMS do telefonu']=pg.evaluate("HS.v")=='app'
+    pg.evaluate("hsOpen(4);hsPl()");res['polski kosztuje podpowiedz']=pg.evaluate("HS.hint")==2
+    pg.evaluate("hsPick(HSI[3].a)")
+    pg.evaluate("hsBack();hsOpen(6);hsPick(HSI[5].a);hsBack();hsBack()")
+    res['plakietka telefonu spadla']=pg.evaluate("[...document.querySelectorAll('.hs-inv em')].map(e=>e.textContent)")==['2']
+    pg.evaluate("hsApp('laptop');hsOpen(7);hsPick(HSI[6].a);hsBack();hsBack()")
+    res['laptop: e-mail zapisany']=pg.evaluate("!!HS.done[7]")
+    for i in (2,3,5):pg.evaluate("hsOpen(%d);hsPick(hsIt(%d).a);hsBack()"%(i,i))
+    res['7 dowodow']=pg.evaluate("hsSolved()")==7
+    res['tablica odblokowana']=not pg.locator('.gbar .pri').first.is_disabled()
+    pg.evaluate("hsBoard()")
+    res['tablica: 4 podejrzanych, 7 dowodow']=pg.locator('.hs-sus').count()==4 and pg.locator('.hs-ch').count()==7
+    # bez przesluchania nie mozna oskarzyc
+    pg.evaluate("hsSus(0);hsSel(2);hsSel(3);hsAccuse()");res['oskarzenie bez przesluchania odrzucone']=pg.evaluate("HS.over")==0
+    # przesluchanie: zly szyk = blad
+    pg.evaluate("hsAsk()");e0=pg.evaluate("HS.err");pg.evaluate("hsAskTap(HS.ask.w.find(i=>i!==0))");res['zly szyk = blad']=pg.evaluate("HS.err")==e0+1
+    for i in range(6):pg.evaluate("hsAskTap(%d)"%i)
+    res['przesluchanie zakonczone']=pg.evaluate("HS.interr")==1 and 'basketball' in pg.inner_text('.hs-ov')
+    pg.evaluate("HS.v='board';renderHeist()")
+    # zly podejrzany
+    e1=pg.evaluate("HS.err");pg.evaluate("HS.sus=1;HS.sel=[2,3];hsAccuse()")
+    res['Lucy: blad i wyjasnienie']=pg.evaluate("HS.err")==e1+1 and 'dentist' in pg.evaluate("HS.msg") and pg.evaluate("HS.over")==0
+    # zly dowod
+    e2=pg.evaluate("HS.err");pg.evaluate("HS.sus=0;hsSel(5);hsSel(3);hsAccuse()")
+    res['zly dowod: blad']=pg.evaluate("HS.err")==e2+1 and pg.evaluate("HS.over")==0
+    pg.evaluate("HS.sus=0;hsSel(7);hsSel(2);hsAccuse()");pg.wait_for_timeout(300)
+    res['werdykt']=pg.evaluate("HS.over")==1 and 'Sprawa rozwiązana' in pg.inner_text('#v-heist')
+    res['punkty wg wzoru']=pg.evaluate("HS.pts")==pg.evaluate("hsPts(HS.err,HS.hint,HS.secs)") and pg.evaluate("HS.pts")>=100
+    res['1 gwiazdka przy wielu bledach']=pg.evaluate("HS.stars")==1
+    res['RPC award z parametrami']=pg.evaluate("CALLS.filter(c=>c[0]==='heist_award'&&c[1].p_case==='missing-cake'&&c[1].p_errors===HS.err&&c[1].p_hints===HS.hint).length")==1
+    res['premia z serwera']='+40' in pg.inner_text('#v-heist')
+    res['slowka do powtorek']=pg.evaluate("Object.keys(SV.m).some(k=>k.endsWith('=quarter to'))")
+    res['punkty lokalne']=pg.evaluate("SV.heist.pts")==40
+    res['suma zawiera WordHeist']=pg.evaluate("totalPts()")>=40
+    res['ranking po werdykcie']=pg.locator('#v-heist .cn-lbp').count()==1
+    # idealna sprawa: 3 gwiazdki i 300 pkt
+    pg.evaluate("hsNewR();hsStart()")
+    for i in (1,2,3,4,5,6,7):pg.evaluate("hsOpen(%d);hsPick(hsIt(%d).a)"%(i,i))
+    pg.evaluate("hsBoard();hsAsk()")
+    for i in range(6):pg.evaluate("hsAskTap(%d)"%i)
+    pg.evaluate("HS.v='board';hsSus(0);hsSel(2);hsSel(3);hsAccuse()");pg.wait_for_timeout(200)
+    res['ideal: 3 gwiazdki, 300 pkt']=pg.evaluate("[HS.stars,HS.pts]")==[3,300]
+    res['ideal: brak nowych punktow lokalnie (mock daje 40)']=pg.evaluate("HS.over")==1
+    res['klawisze 1-4']=True
+    pg.evaluate("hsNewR();hsStart();hsOpen(1)");pg.keyboard.press('2');res['klawisz 2 wybiera']=pg.evaluate("!!HS.done[1]")
+    pg.evaluate("show('prof')");t=pg.inner_text('#v-prof')
+    res['profil: panel i ranga']='WordHeist' in t and 'Ranga WordHeist' in t
+    res['trofea 30']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==30
+    res['przelacznik rankingu ma WordHeist']='WordHeist' in pg.locator('#v-prof .cn-lbp').first.inner_text()
+    pg.evaluate("wbGame('hs')");pg.wait_for_timeout(300)
+    res['ranking hs wola heist_pts_board']=pg.evaluate("CALLS.some(c=>c[0]==='heist_pts_board')")
+    pg.evaluate("show('home')");pg.wait_for_timeout(200)
+    res['karta gry na stronie glownej']=pg.locator('.gc.g-hs').count()==1 and pg.locator('.gc.g-hs img.gimg').count()==1
+    res['5 slajdow w karuzeli']=pg.locator('.hdots button').count()==5
+    pg.evaluate("heroGo(4)");res['slajd WordHeist']='WordHeist' in pg.inner_text('#hero')
+    pg.evaluate("howGo(4)");res['jak to dziala: WordHeist']='Szukaj tropów' in pg.inner_html('#how')
+    res['rangi w Poradniku']='Legenda Wydziału' in pg.evaluate("hpRanks()")
+    res['menu: przycisk']=pg.locator('#nb-heist').count()==1
+    # mobilny widok
+    pg.set_viewport_size({'width':390,'height':800});pg.evaluate("show('heist');hsNewR();hsStart();hsOpen(3)");pg.wait_for_timeout(200)
+    res['mobilny: bez poziomego przewijania']=pg.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
+    pg.set_viewport_size({'width':1000,'height':900});pg.evaluate("hsBack()");pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'heist.png'))
+    print({k:v for k,v in res.items() if v is not True});print('OK' if not errs else 'BLEDY',errs)

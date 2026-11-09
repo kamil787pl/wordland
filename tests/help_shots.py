@@ -7,7 +7,7 @@ with sync_playwright() as pw:
     pg.goto(URL);pg.wait_for_timeout(3500)
     pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(3500)
     hide="document.getElementById('pt').style.visibility='hidden'"
-    pg.evaluate("SV.cn={p:3,w:3,s:2,b:2,last:'',bt:0,br:{},pts:1250};SV.elf={p:2,perf:1,pts:620,r3:{A1:95000}};SV.climb={p:3,perf:1,pts:840,st:{A1:3,A2:2}};SV.ok=120;SV.s=[3,2,1,0,0,0,0,0,0,0,0,0];show('home')");pg.wait_for_timeout(600)
+    pg.evaluate("SV.cn={p:3,w:3,s:2,b:2,last:'',bt:0,br:{},pts:1250};SV.elf={p:2,perf:1,pts:620,r3:{A1:95000}};SV.climb={p:3,perf:1,pts:840,st:{A1:3,A2:2}};SV.heist={p:2,perf:1,fast:1,st:3,pts:380};SV.ok=120;SV.s=[3,2,1,0,0,0,0,0,0,0,0,0];show('home')");pg.wait_for_timeout(600)
     pg.evaluate(hide);pg.locator('#v-home .hero').screenshot(path=O+'help-home-hero.png')
     pg.locator('#v-home .cards').screenshot(path=O+'help-home-gry.png')
     pg.evaluate("show('conn');cnMode('random')");pg.wait_for_timeout(300);pg.click('.cn-start .pri');pg.wait_for_timeout(200)
@@ -21,6 +21,7 @@ with sync_playwright() as pw:
     for _ in range(5):
         pg.evaluate("CL.between&&clNext();clTap(CL.cur.ok)");pg.wait_for_timeout(800)
     pg.evaluate("CL.between&&clNext()");pg.wait_for_timeout(600);pg.locator('#v-climb .gstage').screenshot(path=O+'help-climb.png')
+    pg.evaluate("show('heist');hsNewR();hsStart();hsOpen(1);hsPick(HSI[0].a);hsBack();hsOpen(3);hsPick(HSI[2].a);hsBack()");pg.wait_for_timeout(400);pg.locator('#v-heist .gstage').screenshot(path=O+'help-heist.png')
     pg.evaluate("show('prof')");pg.wait_for_timeout(500);pg.locator('#v-prof .room').screenshot(path=O+'help-pokoj.png')
     pg.evaluate("show('game');openGame()");pg.wait_for_timeout(800);pg.locator('#v-game').screenshot(path=O+'help-wc.png')
     print('OK',errs)

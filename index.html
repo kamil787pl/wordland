@@ -881,6 +881,87 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 .stars .i{width:28px;height:28px;margin:0 2px}.stars .i.pt{color:#f0a000}
 .card .wl .i{width:15px;height:15px;margin-right:6px;vertical-align:-.2em}
 .rep-doc{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}.rep-doc h3{margin:0;font-size:20px}.rep-doc h4{margin:16px 0 6px;font-size:15px}.rep-d{margin:2px 0 12px;color:var(--mut)}.rep-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}.rep-k div{border:1px solid var(--line);border-radius:12px;padding:8px 12px}.rep-k b{display:block;font-size:22px}.rep-k span{font-size:12px;color:var(--mut)}.rep-n{margin:12px 0;padding:10px 12px;border-radius:12px;background:var(--pri-t)}.rep-t{width:100%;border-collapse:collapse;font-size:14px}.rep-t th,.rep-t td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--line)}.rep-t th{font-size:12px;color:var(--mut)}.rep-doc ul{margin:0;padding-left:20px}
+/* ===== WordHeist ===== */
+.gc.g-hs{--g:#b45309;--gt:#fef3c7;--gd:#92400e}
+.cn-seg button.on.g-hs{background:#b45309}
+.gpn.g-hs{border-left:4px solid #b45309}.gpn.g-hs .gph h4 svg{color:#b45309}
+.hs-stage{background:linear-gradient(160deg,#16233b,#26427a);color:#fff}
+.hs-stage .gs-body{position:relative;display:block;padding:12px 14px;overflow:hidden}
+.hs-wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px;height:100%;align-items:center}
+.hs-scene{position:relative;aspect-ratio:5/3;align-self:center;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.18)}
+.hs-bg{position:absolute;inset:0;width:100%;height:100%}
+.hs-room{position:absolute;left:10px;bottom:8px;font-size:12px;font-weight:700;color:#c9d6f2}
+.hs-spot{position:absolute;width:38px;height:38px;margin:-19px 0 0 -19px;padding:0;border-radius:50%;border:2px solid #ffc247;background:rgba(255,194,71,.28);color:#ffc247;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation}
+.hs-spot .i{width:18px;height:18px;stroke-width:2.4}
+.hs-spot::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #ffc247;opacity:0;animation:hsring 1.8s ease-out infinite}
+.hs-spot.ok{border-color:#b7f0c6;background:rgba(46,157,79,.9);color:#fff}.hs-spot.ok::after{display:none}
+.hs-spot.glow::after,.hs-inv.glow{opacity:1;animation:hsring .9s ease-out infinite}
+.hs-inv.glow{box-shadow:0 0 0 3px #ffc247}
+@keyframes hsring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.hs-side{display:flex;flex-direction:column;gap:8px;min-width:0}
+.hs-side h5{margin:2px 0 0;display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#c9d6f2}
+.hs-bub{padding:10px 12px;border-radius:4px 14px 14px 14px;background:#fff8e6;color:#16233b;font-size:13px;line-height:1.4}
+.hs-bub b{display:block;font-size:12px;color:#8a5a00;margin-bottom:2px}.hs-bub small{display:block;margin-top:4px;color:#5b6b8a;font-size:12px}
+.hs-bub.big{font-size:16px;max-width:480px;text-align:left}
+.hs-invs{display:flex;gap:8px}
+.hs-inv{position:relative;flex:1;height:58px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.14);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:800 11px "Figtree",system-ui,sans-serif;cursor:pointer;touch-action:manipulation}
+.hs-inv .i{width:22px;height:22px}
+.hs-inv em{position:absolute;right:-6px;top:-6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#e0503f;color:#fff;font:800 11px "Figtree",system-ui,sans-serif;font-style:normal;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.hs-chips{display:flex;flex-wrap:wrap;gap:6px}
+.hs-chip{min-width:34px;height:26px;padding:0 8px;border-radius:8px;border:2px dashed rgba(255,255,255,.3);box-sizing:border-box;font-size:11px;font-weight:700;display:inline-flex;align-items:center}
+.hs-chip.on{border:0;background:#fff8e6;color:#16233b}
+.hs-ov{position:absolute;inset:0;z-index:5;overflow:auto;padding:14px 18px;background:rgba(15,22,40,.97);display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.hs-ov>*{width:100%;max-width:580px;margin-left:auto;margin-right:auto}
+.hs-ov.mid{align-items:center;justify-content:center;text-align:center}
+.hs-ov.mid p{max-width:460px;margin:0;color:#e3ebfa;font-size:15px}
+.hs-go{height:48px;padding:0 30px;border:0;border-radius:12px;background:#f5a300;color:#3a2600;font:800 16px "Figtree",system-ui,sans-serif;box-shadow:0 3px 0 #c98100;cursor:pointer;width:auto!important}
+.hs-doc{padding:14px 16px;border-radius:8px;background:#fff8e6;color:#16233b;font-size:15px;line-height:1.5;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.hs-ctx{display:block;margin-top:8px;color:#8a5a00;font-weight:700}
+.hs-note{font:600 17px "Figtree",system-ui,sans-serif}.hs-note.card{font-weight:800}
+.hs-cam{background:#0b1220;color:#7bf0a6;margin:-14px -16px;padding:14px 16px;border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace}.hs-cam span{font-size:12px;color:#e0503f}.hs-cam p{margin:6px 0 0;font-size:15px}
+.hs-sheet table{width:100%;margin:8px 0;border-collapse:collapse}.hs-sheet th{text-align:left;font-size:11px;color:#5b6b8a}.hs-sheet td,.hs-sheet th{padding:5px 0;border-bottom:1px dashed #d6c9a5}.hs-sheet td:last-child,.hs-sheet th:last-child{text-align:right}.hs-sheet tr.hl{background:rgba(245,163,0,.18);font-weight:800}
+.hs-sheet button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:0;border-radius:10px;background:#f5a300;color:#3a2600;font:800 13px "Figtree",system-ui,sans-serif;cursor:pointer}.hs-sheet p{margin:6px 0 0;font-style:italic;color:#5b6b8a;font-size:13px}
+.hs-sms small,.hs-mail small{display:block;color:#5b6b8a;font-weight:700;font-size:12px;margin-bottom:6px}
+.hs-sms div{display:inline-block;padding:9px 13px;border-radius:14px 14px 14px 4px;background:#2358d6;color:#fff;font-weight:600}
+.hs-mail b{display:block;font-size:16px}.hs-mail p{margin:8px 0 0}
+.hs-link{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.3);border-radius:10px;background:transparent;color:#c9d6f2;font:700 13px "Figtree",system-ui,sans-serif;cursor:pointer}
+.hs-pl{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.1);color:#e3ebfa;font-size:14px}
+.hs-nt{margin:0;color:#ffd978;font-weight:700}
+.hs-q{padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);text-align:center}.hs-q small{display:block;color:#8fe3f2;font-weight:700;font-size:12px}.hs-q b{font-size:18px}
+.hs-opts{display:flex;flex-direction:column;gap:8px}
+.hs-opts button{display:flex;align-items:center;gap:12px;min-height:44px;padding:6px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font:700 15px "Figtree",system-ui,sans-serif;text-align:left;cursor:pointer;touch-action:manipulation}
+.hs-opts kbd{flex:none;width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.14);color:#8fe3f2;font:700 12px "Figtree",system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+.hs-opts button.ok{background:rgba(46,157,79,.35);border:2px solid #5ad47e}.hs-opts button.bad{background:rgba(224,80,63,.3);border:2px solid #e0503f}
+.hs-why{margin:0;display:flex;gap:8px;align-items:flex-start;color:#b7f0c6;font-weight:700;font-size:14px}
+.hs-app{border-radius:14px;overflow:hidden;background:#f4f6fb;color:#16233b}.hs-app.ph{max-width:360px!important;border:4px solid #3b4a6b;background:#0c1220;color:#fff;border-radius:26px}
+.hs-appbar{display:flex;align-items:center;gap:8px;padding:10px 14px;font-weight:800;font-size:14px;background:rgba(0,0,0,.08)}.hs-app.ph .hs-appbar{background:rgba(255,255,255,.08)}
+.hs-row{position:relative;display:flex;flex-direction:column;gap:2px;width:100%;padding:10px 38px 10px 14px;border:0;border-bottom:1px solid rgba(128,140,170,.3);background:transparent;color:inherit;text-align:left;font:600 14px "Figtree",system-ui,sans-serif;cursor:pointer}
+.hs-row b{font-size:12px;color:#5b6b8a}.hs-app.ph .hs-row b{color:#9fc0ff}.hs-row.new span{font-weight:800}
+.hs-row i{position:absolute;right:14px;top:50%;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:#e0503f}.hs-row .i{position:absolute;right:12px;top:50%;margin-top:-9px}
+.hs-lead{margin:0;color:#c9d6f2;font-size:14px;font-weight:600}
+.hs-suss{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hs-sus{display:grid;grid-template-columns:36px 1fr;column-gap:8px;padding:8px 10px;border-radius:12px;border:3px solid transparent;background:#fff8e6;color:#16233b;text-align:left;font-family:"Figtree",system-ui,sans-serif;cursor:pointer}
+.hs-sus span{grid-row:1/3;width:36px;height:36px;border-radius:50%;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.hs-sus b{font-size:14px}.hs-sus small{color:#5b6b8a;font-size:11px;font-weight:600}.hs-sus em{grid-column:1/3;margin-top:4px;font-style:normal;font-size:11px;font-weight:700;color:#1e7a3c}
+.hs-sus.on{border-color:#e0503f;box-shadow:0 0 0 3px rgba(224,80,63,.3)}
+.hs-ov h5{margin:2px 0 0;font-size:12px;font-weight:800;color:#8fe3f2}
+.hs-chs{display:flex;flex-wrap:wrap;gap:8px}
+.hs-ch{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#c9d6f2;font:700 13px "Figtree",system-ui,sans-serif;cursor:pointer}
+.hs-ch.on{background:#f5a300;border-color:#f5a300;color:#3a2600;font-weight:800}.hs-ch .i{width:14px;height:14px}
+.hs-st{margin:0;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#ffd978}
+.hs-sent{min-height:46px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.1);font-size:18px;font-weight:800;text-align:center}
+.hs-words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hs-words button{height:42px;padding:0 16px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font:700 16px "Figtree",system-ui,sans-serif;cursor:pointer}.hs-words button:disabled{opacity:.3}
+.hs-dlg{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.1)}.hs-dlg p{margin:4px 0;font-size:15px}.hs-dlg .you{color:#9fc0ff;font-style:italic}.hs-dlg small{display:block;margin-top:6px;color:#ffd978;font-weight:700}
+.hs-ov.win h3{margin:0;font:800 clamp(22px,3.4vw,30px) "Figtree",system-ui,sans-serif}
+.hs-stars{display:flex;gap:6px;justify-content:center}.hs-stars .i{width:40px;height:40px}.hs-stars .i.dim{color:rgba(255,255,255,.2)}
+.hs-tiles{display:flex;gap:10px;justify-content:center}.hs-tiles div{min-width:92px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.1)}.hs-tiles b{display:block;font-size:20px}.hs-tiles small{font-size:11px;color:#c9d6f2}
+.hs-pts{display:flex;align-items:center;gap:8px;justify-content:center;font-weight:800}.hs-pts b{font-size:26px;color:#ffd978}.hs-gain{color:#c9d6f2}
+.hs-fin{font-size:14px!important}
+.hs-words2{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;font-size:12px}.hs-words2 b{width:100%;color:#c9d6f2}.hs-words2 span{padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.12);font-weight:700}
+@media(max-width:699px){.hs-wrap{grid-template-columns:1fr}.hs-stage .gs-body{min-height:560px}.hs-suss{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.hs-spot::after,.hs-inv.glow{animation:none}}
+.cn-lbp .cn-seg,.hwtabs{display:flex;flex-wrap:wrap;width:fit-content;max-width:100%;box-sizing:border-box}
 </style>
 </head>
 <body>
@@ -922,9 +1003,9 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM17 9l5 6M22 9l-5 6"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
 <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
-<symbol id="i-peak" viewBox="0 0 24 24"><path d="M2 20l7-12 4 6 2-3 7 9zM9 8l2 3.5M15 11l1.5 2.5"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+<symbol id="i-peak" viewBox="0 0 24 24"><path d="M2 20l7-12 4 6 2-3 7 9zM9 8l2 3.5M15 11l1.5 2.5"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19.5h20"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></symbol>
 </defs></svg>
-<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-climb" onclick="show('climb')" title="WordClimb"><svg class="i"><use href="#i-peak"/></svg><span class="t">WordClimb</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel korepetytora" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Korepetytor</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="pchips"><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button><button class="fire pts" id="pt-pts" onclick="show('prof')" aria-label="Suma punktów"></button></span></header>
+<header id="pt"><span class="brand"><b><svg class="i"><use href="#i-cap"/></svg></b>WordLand</span><button class="nb" id="nb-home" onclick="show('home')" title="Portal"><svg class="i"><use href="#i-home"/></svg><span class="t">Portal</span></button><button class="nb" id="nb-prof" onclick="show('prof')" title="Profil"><svg class="i"><use href="#i-user"/></svg><span class="t">Profil</span></button><button class="nb" id="nb-game" onclick="openGame()" title="WordCraft"><svg class="i"><use href="#i-cube"/></svg><span class="t">WordCraft</span></button><button class="nb" id="nb-conn" onclick="show('conn')" title="WordLinks"><svg class="i"><use href="#i-grid"/></svg><span class="t">WordLinks</span></button><button class="nb" id="nb-elf" onclick="show('elf')" title="WordElf"><svg class="i"><use href="#i-gift"/></svg><span class="t">WordElf</span></button><button class="nb" id="nb-climb" onclick="show('climb')" title="WordClimb"><svg class="i"><use href="#i-peak"/></svg><span class="t">WordClimb</span></button><button class="nb" id="nb-heist" onclick="show('heist')" title="WordHeist"><svg class="i"><use href="#i-search"/></svg><span class="t">WordHeist</span></button><button class="nb" id="nb-teach" onclick="show('teach')" title="Panel korepetytora" hidden><svg class="i"><use href="#i-tool"/></svg><span class="t">Korepetytor</span></button><button class="nb" id="nb-user" onclick="userBtn()"><svg class="i"><use href="#i-login"/></svg><span class="t">Zaloguj</span></button><span class="pchips"><button class="fire" id="pt-fire" onclick="show('prof')" aria-label="Seria nauki"></button><button class="fire pts" id="pt-pts" onclick="show('prof')" aria-label="Suma punktów"></button></span></header>
 <main id="v-home" class="pv"></main>
 <main id="v-prof" class="pv" hidden></main>
 <main id="v-auth" class="pv" hidden></main>
@@ -932,6 +1013,7 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 <main id="v-conn" class="pv" hidden></main>
 <main id="v-elf" class="pv" hidden></main>
 <main id="v-climb" class="pv" hidden></main>
+<main id="v-heist" class="pv" hidden></main>
 <section id="v-game" hidden>
 <div id="wrap" class="gstage wc-stage"><div class="gs-hud"><span class="gs-t"><svg class="i"><use href="#i-cube"/></svg>WordCraft</span><span class="gs-m" id="wc-m">Wybierz kategorię</span><span class="gs-s"><svg class="i f pt"><use href="#i-star"/></svg><b id="wc-p">0</b></span></div><div id="cv"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div></div>
 <p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
@@ -1579,18 +1661,21 @@ const GAMES=[
  {n:'WordLinks',k:'wl',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/card-wl.webp',go:"show('conn')"},
  {n:'WordElf',k:'el',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/card-el.webp',go:"show('elf')"},
  {n:'WordClimb',k:'cl',e:'peak',d:'Wspinaj się na szczyt: wybieraj dobre tłumaczenia, łap chwyty i unikaj poślizgów. Po drodze czekają obozy!',on:1,feat:1,rev:1,img:'assets/card-cl.webp',go:"show('climb')"},
+ {n:'WordHeist',k:'hs',e:'search',d:'Rozwiąż sprawę detektywistyczną po angielsku: czytaj SMS-y i e-maile, słuchaj świadków i wskaż sprawcę.',on:1,feat:1,img:'assets/card-hs.webp',go:"show('heist')"},
  {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
  {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
 
 /* karuzela na stronie głównej */
 let HI=0,hT=0;
 function heroIn(i){
-  const wc=i===0,el=i===2,cl=i===3;
-  const txt=cl?'<span class="eyebrow">Nowa gra</span><h2>WordClimb</h2><p>Wspinaj się po górach: wybieraj dobre tłumaczenia, łap chwyty i unikaj poślizgów. Po drodze czekają obozy!</p><div class="hbtns"><button class="hbtn" onclick="show(\'climb\')">'+ic('peak')+'Graj w WordClimb</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+clHomeSub()+'</li><li>'+ic('book')+'Poziomy A1–B1</li><li>'+ic('flag')+'Obozy i szczyt</li></ul>'
+  const wc=i===0,el=i===2,cl=i===3,hs=i===4;
+  const txt=hs?'<span class="eyebrow">Nowa gra</span><h2>WordHeist</h2><p>Zaginął tort! Czytaj SMS-y i e-maile, słuchaj świadków i znajdź sprawcę. Angielski jest Twoim narzędziem śledztwa.</p><div class="hbtns"><button class="hbtn" onclick="show(\'heist\')">'+ic('search')+'Graj w WordHeist</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+hsHomeSub()+'</li><li>'+ic('book')+'Poziom A2</li><li>'+ic('phone')+'Telefon i laptop</li></ul>'
+   :cl?'<span class="eyebrow">Nowa gra</span><h2>WordClimb</h2><p>Wspinaj się po górach: wybieraj dobre tłumaczenia, łap chwyty i unikaj poślizgów. Po drodze czekają obozy!</p><div class="hbtns"><button class="hbtn" onclick="show(\'climb\')">'+ic('peak')+'Graj w WordClimb</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+clHomeSub()+'</li><li>'+ic('book')+'Poziomy A1–B1</li><li>'+ic('flag')+'Obozy i szczyt</li></ul>'
    :wc?'<span class="eyebrow">Portal do nauki angielskiego</span><h2>'+(U?'Cześć, '+U.nick+'!':'Ucz się angielskiego, grając')+'</h2><p>Zbieraj słówka w grze, odpowiadaj na pytania i pokonuj bossów. Postępy liczą się w całym portalu.</p><div class="hbtns"><button class="hbtn" onclick="openGame()">'+ic('cube')+'Graj w WordCraft</button>'+(U?'':'<button class="hghost" onclick="goAuth(0)">Mam już konto</button>')+'</div><ul class="hchips"><li>Poziomy A1–B1</li><li>Tryb Hard</li><li>Własne kategorie korepetytora</li></ul>'
    :el?'<span class="eyebrow">Nowa gra na święta</span><h2>WordElf</h2><p>Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!</p><div class="hbtns"><button class="hbtn" onclick="show(\'elf\')">'+ic('gift')+'Graj w WordElf</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+elHomeSub()+'</li><li>'+ic('book')+'Poziomy A1–B1</li><li>'+ic('clock')+'Gra na czas</li></ul>'
    :'<span class="eyebrow">Nowa gra</span><h2>WordLinks</h2><p>Znajdź 4 grupy po 4 słówka z tej samej kategorii. Puzzle dnia i wyzwanie na czas.</p><div class="hbtns"><button class="hbtn" onclick="show(\'conn\')">'+ic('grid')+'Graj w WordLinks</button></div><ul class="hchips"><li class="rec">'+ic('trophy')+(cnBestAll()?'Twój rekord: '+cnFmt(cnBestAll())+' '+cnMedal(cnBestAll()):'Pobij 1:30 i zdobądź złoty medal')+'</li><li>'+(cnDailyDone()?ic('check','ok')+'Dzisiejsza ukończona':ic('clock')+'Czeka puzzle dnia')+'</li>'+(cnStreak()?'<li>'+ic('flame')+'Seria: '+cnStreak()+' '+(cnStreak()===1?'dzień':'dni')+'</li>':'<li>'+ic('bolt')+'Sprint na czas</li>')+'</ul>';
-  const vis=cl?'<img class="hshot" src="assets/card-cl.webp" width="800" height="480" alt="Plansza WordClimb: wspinacz na ścianie z chwytami i odpowiedziami"><span class="fchip c1">'+ic('check')+'12 kroków do szczytu</span><span class="fchip c2">⛺</span><span class="fchip c3">★★★</span>'
+  const vis=hs?'<img class="hshot" src="assets/card-hs.webp" width="800" height="480" alt="Plansza WordHeist: pokój nauczycielski z tropami, telefon i laptop w ekwipunku"><span class="fchip c1">'+ic('check')+'a quarter to three</span><span class="fchip c2">🔎</span><span class="fchip c3">'+ic('phone')+'3 SMS-y</span>'
+   :cl?'<img class="hshot" src="assets/card-cl.webp" width="800" height="480" alt="Plansza WordClimb: wspinacz na ścianie z chwytami i odpowiedziami"><span class="fchip c1">'+ic('check')+'12 kroków do szczytu</span><span class="fchip c2">⛺</span><span class="fchip c3">★★★</span>'
    :wc?'<img class="hshot" src="assets/hero-game.webp" width="800" height="480" alt="Zrzut z gry WordCraft: postać zbiera słówka w świecie z klocków"><span class="fchip c1">'+ic('check')+'fish = ryba</span><span class="fchip c2">★★★</span><span class="fchip c3">'+ic('flag')+'Boss</span>'
    :el?'<img class="hshot" src="assets/wordelf.webp" width="800" height="480" alt="Plansza WordElf: skrzat pakuje prezenty z półki do worka Mikołaja"><span class="fchip c1">'+ic('check')+'teddy bear = miś</span><span class="fchip c2">🎅</span><span class="fchip c3">'+ic('gift')+'Worek 3/6</span>'
    :'<img class="hshot" src="assets/wordlinks.webp" width="960" height="458" alt="Plansza WordLinks z 16 słówekmi do pogrupowania"><span class="fchip c1">'+ic('grid')+'Stacja 5/12</span><span class="fchip c2">🥇</span><span class="fchip c3">'+ic('clock')+''+(cnBestAll()?cnFmt(cnBestAll()):'1:30')+'</span>';
@@ -1603,21 +1688,22 @@ function heroGo(i){
   h.querySelectorAll('.hdots button').forEach((b,k)=>b.classList.toggle('on',k===i));
   heroTick();
 }
-function heroTick(){clearTimeout(hT);if(!RM)hT=setTimeout(()=>{if(view==='home'&&!document.hidden&&!$('hero').matches(':hover'))heroGo((HI+1)%4);else heroTick()},6000)}
+function heroTick(){clearTimeout(hT);if(!RM)hT=setTimeout(()=>{if(view==='home'&&!document.hidden&&!$('hero').matches(':hover'))heroGo((HI+1)%5);else heroTick()},6000)}
 const HOW=[
  [['cube','Zbieraj','Uderzaj głową w złote bloki „?” i zbieraj słówka po drodze.'],['target','Odpowiadaj','Wybieraj tłumaczenie, wpisuj z pamięci lub układaj zdania.'],['trophy','Pokonaj bossa','Zdobywaj gwiazdki na każdym poziomie, od A1 do B1.']],
  [['play','Kliknij Start','Dopiero wtedy pokażą się 16 słówek i ruszy czas. Każdego dnia jest nowa łamigłówka.'],['target','Połącz w grupy','Zaznacz 4 słówka z jednej kategorii i zatwierdź. Błąd to +10 s, masz 4 szanse.'],['trophy','Pobij rekord','Zdobywaj medale za czas, wspinaj się w rankingu i wyzywaj znajomych.']]];
 HOW.push([['book','Czytaj listę','Sprawdź, jakie prezenty ma spakować skrzat. Na wyższych poziomach są liczby albo opisy.'],['gift','Klikaj prezenty','Wybierz na półce właściwe rzeczy, a polecą do worka. Błąd to +5 s.'],['trophy','Wyślij sanie','Przejdź 3 rundy, coraz trudniejsze, a Mikołaj odleci. Im szybciej i bez błędów, tym lepiej.']]);
 HOW.push([['book','Czytaj słówko','Na górze jest słówko, a pod nim cztery odpowiedzi. Na B1 trafiają się też zdania z luką.'],['peak','Łap chwyty','Dobra odpowiedź to krok w górę. Pomyłka to poślizg, a słówko wróci w powtórkach.'],['flag','Zdobądź szczyt','Dojdź do 12 kroków, odpoczywając w obozach. Mniej poślizgów to więcej gwiazdek i punktów.']]);
+HOW.push([['search','Szukaj tropów','Klikaj lupy w pokoju oraz telefon i laptop z ekwipunku. Czytaj SMS-y i e-maile po angielsku.'],['bulb','Rozwiąż zagadki','Każdy trop ma pytanie. Pomyłka odejmuje punkty, a pomaga podpowiedź lub polskie tłumaczenie.'],['flag','Wskaż sprawcę','Przesłuchaj podejrzanego, a na tablicy wybierz osobę i dwa dowody. Mniej błędów to więcej gwiazdek.']]);
 function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+ic(x[0])+'<h4>'+x[1]+'</h4><p>'+x[2]+'</p></div>').join('')}
 function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
-  const HH=myAsgHTML()+'<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1,2,3].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
+  const HH=myAsgHTML()+'<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1,2,3,4].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b data-n="'+st+'">'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b data-n="'+stars+'">'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
   +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.k?' g-'+g.k:'')+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" decoding="async" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():g.n==='WordClimb'?clHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
-  +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button><button role="tab" onclick="howGo(3)">'+ic('peak')+'WordClimb</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
+  +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button><button role="tab" onclick="howGo(3)">'+ic('peak')+'WordClimb</button><button role="tab" onclick="howGo(4)">'+ic('search')+'WordHeist</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla korepetytora</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel korepetytora</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
   const vh=$('v-home');if(vh._h!==HH){vh.innerHTML=HH;vh._h=HH}
@@ -1625,7 +1711,7 @@ function renderHome(){
   if(Date.now()-(window.HFX||0)>8000){window.HFX=Date.now();document.querySelectorAll('#v-home .stats3 b[data-n]').forEach(b=>countUp(b,+b.dataset.n))}
 }
 function gpanel(ic_,name,stats,badges,btns){
-  return '<div class="panel gpn g-'+({WordCraft:'wc',WordLinks:'wl',WordElf:'el',WordClimb:'cl'}[name]||'x')+'"><div class="gph"><h4>'+ic(ic_)+name+'</h4><div class="gpb">'+btns+'</div></div><div class="wlp">'
+  return '<div class="panel gpn g-'+({WordCraft:'wc',WordLinks:'wl',WordElf:'el',WordClimb:'cl',WordHeist:'hs'}[name]||'x')+'"><div class="gph"><h4>'+ic(ic_)+name+'</h4><div class="gpb">'+btns+'</div></div><div class="wlp">'
    +stats.map(x=>'<div class="stat"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('')+'</div>'
    +'<div class="cn-bd lab" style="margin:12px 0 0">'+badges.map(x=>'<span class="'+(x[2]?'on':'')+'" title="'+x[1]+'">'+x[0]+'<small>'+x[1].split(':')[0].replace(/^[^\p{L}\s]+\s*/u,'')+'</small></span>').join('')+'</div></div>';
 }
@@ -1649,17 +1735,17 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+clProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.climb&&SV.climb.pts)||0,CLR,'WordClimb','Punkty za trasę: do 300 (A1), 400 (A2) lub 500 (B1). Liczą się odpowiedzi poprawne od pierwszego razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdej górze.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
+  +myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+clProfile()+hsProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.heist&&SV.heist.pts)||0,HSR,'WordHeist','Punkty za sprawę: do 300. Liczą się: rozwiązanie (100), brak błędów (+80), brak podpowiedzi (+60) i czas poniżej 6 minut (+60). Do rankingu liczy się najlepszy wynik dnia.')+rankPanel((SV.climb&&SV.climb.pts)||0,CLR,'WordClimb','Punkty za trasę: do 300 (A1), 400 (A2) lub 500 (B1). Liczą się odpowiedzi poprawne od pierwszego razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdej górze.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
   +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem korepetytorem i mam kod</a></p>':'');
 }
 function show(v){
-  view=v;['home','prof','game','auth','teach','conn','elf','climb'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  view=v;['home','prof','game','auth','teach','conn','elf','climb','heist'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   ptsChip();clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
-  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='game'&&state==='menu')menu();
+  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='heist')renderHeist();if(v==='game'&&state==='menu')menu();
   if((v==='home'||v==='prof')&&live()&&ROLE!=='teacher'&&Date.now()-(MY.t||0)>30000)myLoad();
   window.scrollTo(0,0);
 }
@@ -1703,7 +1789,7 @@ async function loadUser(u,prev){
     const asc=days.map(x=>x.day).sort();let run=0,best=0,prevD=null;
     asc.forEach(d=>{run=prevD&&(Date.parse(d)-Date.parse(prevD))/864e5===1?run+1:1;best=Math.max(best,run);prevD=d});
     SV.st=asc.length?{last:asc[asc.length-1],n:run,best}:null;
-    myLoad();await cnSync();elSync();clSync();
+    myLoad();await cnSync();elSync();clSync();hsSync();
   }catch(e){}
   save();
 }
@@ -1913,7 +1999,7 @@ async function tSave(){
 const WCR=[[0,'Nowicjusz'],[500,'Górnik'],[1500,'Poszukiwacz'],[3500,'Odkrywca'],[7000,'Mistrz słówek'],[15000,'Legenda']];
 function wcSum(a){return (a||[]).reduce((x,y)=>x+(y||0),0)}
 const TR=[[0,'Uczeń'],[1000,'Zawodnik'],[4000,'Ekspert'],[10000,'Mistrz portalu'],[25000,'Gwiazda WordLand'],[50000,'Legenda WordLand']];
-function totalPts(){return wcPts()+((SV.cn&&SV.cn.pts)||0)+((SV.elf&&SV.elf.pts)||0)+((SV.climb&&SV.climb.pts)||0)}
+function totalPts(){return wcPts()+((SV.cn&&SV.cn.pts)||0)+((SV.elf&&SV.elf.pts)||0)+((SV.climb&&SV.climb.pts)||0)+((SV.heist&&SV.heist.pts)||0)}
 var PTSN=null,PTSR=0,PTSE=0;
 function ptsChip(){const f=$('pt-pts');if(!f)return;const n=totalPts(),mk=v=>ic('star','f pt')+wcFmtP(v)+'<span class="fd">\u00a0pkt</span>';f.title=f.ariaLabel='Suma punktów ze wszystkich gier: '+wcFmtP(n)+' ('+wcRank(n,TR).t+'). Kliknij, aby zobaczyć profil.';
   if(PTSN!==null&&n>PTSN&&!RM){const a=PTSN,t0=performance.now();PTSE=t0+800;cancelAnimationFrame(PTSR);(function s(t){const k=Math.min(1,(t-t0)/800);f.innerHTML=mk(Math.round(a+(n-a)*(1-Math.pow(1-k,3))));if(k<1)PTSR=requestAnimationFrame(s)})(t0);f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}
@@ -1937,10 +2023,10 @@ function ptsFx(){
   const e=document.createElement('div');e.className='ptsfx';e.textContent='+10 pkt';e.setAttribute('aria-hidden','true');document.body.appendChild(e);setTimeout(()=>e.remove(),900);
 }
 let WB={game:'sum',scope:'week',data:{},t:{},l:0,err:0};
-function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn();if(view==='elf')renderElf();if(view==='climb')renderClimb()}
+function wbRefresh(){if(view==='home')renderHome();if(view==='prof')renderProf();if(view==='conn')renderConn();if(view==='elf')renderElf();if(view==='climb')renderClimb();if(view==='heist')renderHeist()}
 async function wbLoad(g){
   g=g||WB.game;if(!live()||ROLE==='teacher'||WB.l)return;const k=g+':'+WB.scope;WB.l=1;WB.t[k]=Date.now();
-  try{const r=await sb.rpc(({sum:'total_pts_board',wc:'wc_board',wl:'wl_pts_board',el:'elf_pts_board',cl:'climb_pts_board'})[g],{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
+  try{const r=await sb.rpc(({sum:'total_pts_board',wc:'wc_board',wl:'wl_pts_board',el:'elf_pts_board',cl:'climb_pts_board',hs:'heist_pts_board'})[g],{p_scope:WB.scope});WB.err=r.error?1:0;if(!r.error)WB.data[k]=r.data||[]}catch(e){WB.err=1}
   WB.l=0;wbRefresh();
 }
 function wbTab(sc,g){WB.scope=sc;WB.err=0;wbLoad(g);wbRefresh()}
@@ -1948,19 +2034,19 @@ function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
 function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
-  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf'],['cl','WordClimb']].map(x=>'<button class="'+(g===x[0]?'on':'')+' g-'+x[0]+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
+  const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf'],['cl','WordClimb'],['hs','WordHeist']].map(x=>'<button class="'+(g===x[0]?'on':'')+' g-'+x[0]+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
   const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja grupa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
   if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
-    const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf, WordClimb).',class:'Suma punktów uczniów z Twojej grupy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej grupy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej grupy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej grupy.'},cl:{week:'Punkty za wspinaczkę z ostatnich 7 dni (najlepszy wynik dnia na każdej górze).',all:'Wszystkie punkty zdobyte w WordClimb.',class:'Punkty uczniów z Twojej grupy.'}}[g][WB.scope];
+    const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf, WordClimb, WordHeist).',class:'Suma punktów uczniów z Twojej grupy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej grupy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej grupy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej grupy.'},hs:{week:'Punkty za sprawy z ostatnich 7 dni (najlepszy wynik dnia w każdej sprawie).',all:'Wszystkie punkty zdobyte w WordHeist.',class:'Punkty uczniów z Twojej grupy.'},cl:{week:'Punkty za wspinaczkę z ostatnich 7 dni (najlepszy wynik dnia na każdej górze).',all:'Wszystkie punkty zdobyte w WordClimb.',class:'Punkty uczniów z Twojej grupy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
     else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej grupie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod grupy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
     else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
     b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
   }
-  return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf',cl:'WordClimb'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
+  return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf',cl:'WordClimb',hs:'WordHeist'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
 }
 function medalSvg(i,n){const c=TRC[Math.min(4,Math.floor(i*5/n))],id='md'+(++TSV);return'<svg viewBox="0 0 48 58" aria-hidden="true"><defs><radialGradient id="'+id+'" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="'+cmix(c,.6,255)+'"/><stop offset=".55" stop-color="'+c+'"/><stop offset="1" stop-color="'+cmix(c,.32,0)+'"/></radialGradient></defs><path d="M13 30l-6 24 9-5 5 7 6-22z" fill="#cf3f4b"/><path d="M35 30l6 24-9-5-5 7-6-22z" fill="#2457d6"/><ellipse cx="24" cy="46" rx="14" ry="2" fill="#000" opacity=".12"/><circle cx="24" cy="23" r="19" fill="url(#'+id+')"/><circle cx="24" cy="23" r="14.5" fill="none" stroke="'+cmix(c,.4,255)+'" stroke-width="1.6" opacity=".7"/><ellipse cx="17" cy="13" rx="6" ry="3.4" transform="rotate(-35 17 13)" fill="#fff" opacity=".5"/><text x="24" y="29.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#000" opacity=".22">'+(i+1)+'</text><text x="24" y="28.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#fff">'+(i+1)+'</text></svg>'}
 function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel rkp"><div class="rkm">'+medalSvg(r.i,(R||WCR).length)+'</div><div class="rkb"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div></div>'}
@@ -2361,7 +2447,7 @@ async function tpAsgSave(){
   catch(e){tpMsg(TPE[e&&e.message]||'Nie udało się zapisać zadania.')}
 }
 /* ===== PORADNIK KOREPETYTORA (zakładka w panelu) ===== */
-const HPS={climb:[900,540],dodaj:[900,690],dzis:[900,1005],elf:[900,540],'home-gry':[900,1100],'home-hero':[900,339],klasa:[900,1005],konta:[900,878],kreator:[900,1100],pokoj:[900,612],szczegoly:[900,1100],'uczen-home':[900,1100],'uczen-profil':[900,1100],uczniowie:[900,621],wc:[900,688],wl:[900,540],wyniki:[900,625],zadanie:[900,847],'zadanie-wl':[900,1100]};
+const HPS={heist:[900,540],climb:[900,540],dodaj:[900,690],dzis:[900,1005],elf:[900,540],'home-gry':[900,1100],'home-hero':[900,339],klasa:[900,1005],konta:[900,878],kreator:[900,1100],pokoj:[900,612],szczegoly:[900,1100],'uczen-home':[900,1100],'uczen-profil':[900,1100],uczniowie:[900,621],wc:[900,688],wl:[900,540],wyniki:[900,625],zadanie:[900,847],'zadanie-wl':[900,1100]};
 const hpFig=(n,alt,cap)=>'<figure class="hp-fig"><img src="assets/help/'+n+'.webp" width="'+HPS[n][0]+'" height="'+HPS[n][1]+'" alt="'+alt+'" loading="lazy"><figcaption>'+cap+'</figcaption></figure>';
 const hpSteps=a=>'<ol class="hp-st">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ol>';
 const hpTip=(t,k)=>'<div class="hp-tip'+(k?' '+k:'')+'">'+ic(k==='warn'?'alert':'bulb',k==='warn'?'warn':'pt')+'<div>'+t+'</div></div>';
@@ -2369,7 +2455,7 @@ const hpSec=(id,n,t,body)=>'<section class="panel hp-s" id="hp-'+id+'"><h3><span
 function hpGo(id){const e=document.getElementById('hp-'+id);if(e)e.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
 function hpRanks(){
   const row=(nm,R)=>'<tr><th>'+nm+'</th><td>'+R.map(r=>'<span class="hp-rk"><b>'+r[1]+'</b> '+(r[0]?wcFmtP(r[0])+' pkt':'start')+'</span>').join('')+'</td></tr>';
-  return '<div class="tp-tw"><table class="tp-tb hp-tb"><tbody>'+row('Razem',TR)+row('WordCraft',WCR)+row('WordLinks',WLR)+row('WordElf',ELR)+row('WordClimb',CLR)+'</tbody></table></div>'
+  return '<div class="tp-tw"><table class="tp-tb hp-tb"><tbody>'+row('Razem',TR)+row('WordCraft',WCR)+row('WordLinks',WLR)+row('WordElf',ELR)+row('WordClimb',CLR)+row('WordHeist',HSR)+'</tbody></table></div>'
 }
 function helpHTML(){
   const toc=[['start','Szybki start'],['portal','Czym jest WordLand'],['konto','Konto korepetytora'],['klasy','Grupy'],['uczniowie','Uczniowie'],['dzis','Zakładka Dziś'],['zadania','Zadania'],['kategorie','Własne kategorie'],['gry','Gry'],['punkty','Punkty i rankingi'],['uczen','Oczami ucznia'],['prywatnosc','Bezpieczeństwo'],['faq','Pytania i odpowiedzi']];
@@ -2384,11 +2470,12 @@ function helpHTML(){
   const s2=hpSec('portal',2,'Czym jest WordLand',
     '<p>WordLand to portal do nauki angielskiego (poziomy <b>A1–B1</b>) w formie gier. Uczeń zbiera słówka, odpowiada na pytania i zdobywa punkty, rangi oraz trofea. Ty, jako korepetytor, zakładasz grupy, zadajesz zadania i widzisz, jak idzie uczniom. Portal działa w przeglądarce, na komputerze i telefonie, bez instalacji.</p>'
     +hpFig('home-hero','Strona główna portalu z baner i przyciskiem Graj','Strona główna ucznia: baner z grami, a pod nim zadania od korepetytora, seria dni i słówko dnia.')
-    +'<h4>Cztery gry w jednym portalu</h4><div class="tp-tw"><table class="tp-tb hp-tb"><thead><tr><th>Gra</th><th>Na czym polega</th><th>Co ćwiczy</th></tr></thead><tbody>'
+    +'<h4>Pięć gier w jednym portalu</h4><div class="tp-tw"><table class="tp-tb hp-tb"><thead><tr><th>Gra</th><th>Na czym polega</th><th>Co ćwiczy</th></tr></thead><tbody>'
     +'<tr><th>'+ic('cube')+'WordCraft</th><td>Platformówka 2D w świecie z bloków. Uczeń zbiera słówka z bloków „?”, dociera do flagi i pokonuje bossa.</td><td>Słownictwo: tłumaczenie, wpisywanie z pamięci, układanie zdań, zdania z lukami.</td></tr>'
     +'<tr><th>'+ic('grid')+'WordLinks</th><td>Łamigłówka: 16 słówek do połączenia w 4 grupy po 4 z tej samej kategorii. Liczy się czas.</td><td>Kategoryzowanie, szybkie rozpoznawanie słów, pewność.</td></tr>'
     +'<tr><th>'+ic('gift')+'WordElf</th><td>Skrzat pakuje prezenty z listy Mikołaja. Po trzech rundach sanie odlatują.</td><td>Nazwy przedmiotów, liczby i liczba mnoga, czytanie opisów.</td></tr>'
     +'<tr><th>'+ic('peak')+'WordClimb</th><td>Wspinaczka na szczyt w 12 krokach z dwoma obozami. Uczeń wybiera poprawne tłumaczenie, a pomyłka to poślizg.</td><td>Tłumaczenie w obie strony, formy czasowników i zdania z luką (B1).</td></tr>'
+    +'<tr><th>'+ic('search')+'WordHeist</th><td>Gra detektywistyczna po angielsku. Uczeń szuka tropów w pokoju, czyta SMS-y w telefonie i e-maile na laptopie, przesłuchuje podejrzanego i wskazuje sprawcę.</td><td>Czytanie, godziny, past simple, przyimki; krótki, potoczny angielski (SMS) i formalny (e-mail).</td></tr>'
     +'</tbody></table></div>'+hpFig('home-gry','Karty gier na stronie głównej','Karty gier na stronie głównej. Każda ma przycisk „Graj”, a pod nim rekord ucznia.')
     +'<p>Szczegóły każdej gry opisuje sekcja <a href="#" onclick="hpGo(\'gry\');return false">Gry</a>.</p>');
   const s3=hpSec('konto',3,'Konto korepetytora',
@@ -2446,11 +2533,13 @@ function helpHTML(){
     +'<h4>'+ic('gift')+'WordElf</h4>'+hpFig('elf','Półka z prezentami i worek Mikołaja w grze WordElf','WordElf: kliknij prezenty z listy na półce, a trafią do worka Mikołaja.')
     +'<ul><li>Gra ma <b>3 rundy</b>. Każda następna ma dłuższą listę i większą półkę.</li><li><b>A1</b>: lista z nazwami (np. „teddy bear”). <b>A2</b>: liczby i liczba mnoga (np. „3 candies”, trzeba kliknąć 3 razy). <b>B1</b>: opisy zamiast nazw (np. „it keeps you dry when it rains”).</li><li>Błąd to <b>+5 s</b>. Po trzeciej rundzie sanie Mikołaja odlatują, a uczeń widzi czas, gwiazdki i słówka z tłumaczeniem.</li></ul>'
     +'<h4>'+ic('peak')+'WordClimb</h4>'+hpFig('climb','Wspinacz na ścianie i cztery przyciski z odpowiedziami w grze WordClimb','WordClimb: wybierz poprawne tłumaczenie, a wspinacz zrobi krok w górę.')
-    +'<ul><li>Trasa ma <b>12 kroków</b> i dwa obozy (po 4. i 8. kroku). Poprawna odpowiedź to krok w górę, a pomyłka to <b>poślizg</b>: uczeń nic nie traci, a słówko trafia do powtórek. Nie ma limitu czasu.</li><li><b>A1</b>: 3 odpowiedzi do wyboru. <b>A2</b>: 4 odpowiedzi. <b>B1</b>: 4 trudniejsze odpowiedzi (podobne formy) oraz zdania z luką.</li><li>Słówka w jednej trasie <b>nie powtarzają się</b>. Słówka z poślizgów pojawiają się u Ciebie w „Najtrudniejszych słówkach”.</li><li>Na koniec uczeń dostaje do 3 gwiazdek (3 = bez poślizgu) i punkty.</li></ul>');
+    +'<ul><li>Trasa ma <b>12 kroków</b> i dwa obozy (po 4. i 8. kroku). Poprawna odpowiedź to krok w górę, a pomyłka to <b>poślizg</b>: uczeń nic nie traci, a słówko trafia do powtórek. Nie ma limitu czasu.</li><li><b>A1</b>: 3 odpowiedzi do wyboru. <b>A2</b>: 4 odpowiedzi. <b>B1</b>: 4 trudniejsze odpowiedzi (podobne formy) oraz zdania z luką.</li><li>Słówka w jednej trasie <b>nie powtarzają się</b>. Słówka z poślizgów pojawiają się u Ciebie w „Najtrudniejszych słówkach”.</li><li>Na koniec uczeń dostaje do 3 gwiazdek (3 = bez poślizgu) i punkty.</li></ul>'
+    +'<h4>'+ic('search')+'WordHeist</h4>'+hpFig('heist','Pokój nauczycielski z tropami oraz telefon i laptop w ekwipunku w grze WordHeist','WordHeist: klikaj lupy w pokoju oraz telefon i laptop, żeby zebrać dowody po angielsku.')
+    +'<ul><li>Pierwsza sprawa, <b>The Missing Cake</b> (poziom A2), trwa 5–10 minut: zniknął tort nauczycielki i trzeba wskazać sprawcę.</li><li>Dowody leżą w pokoju (lodówka, kamera, lista obecności, tablica) oraz w <b>ekwipunku</b>: telefon pokazuje SMS-y, a laptop e-maile. Czerwona plakietka to liczba nieprzeczytanych wiadomości. Część wiadomości to mylne tropy.</li><li>Każdy dowód ma pytanie po angielsku. Błąd odejmuje punkty. Uczeń może użyć <b>podpowiedzi</b> lub <b>polskiego tłumaczenia</b> (też kosztuje podpowiedź).</li><li>Po zebraniu 4 dowodów otwiera się tablica: uczeń przesłuchuje podejrzanego (układa pytanie z rozsypanych słów), wybiera osobę i dwa dowody, które ją obciążają.</li><li>Słówka ze sprawy (np. <i>quarter to</i>, <i>half past</i>, <i>borrow</i>) trafiają do powtórek, a pomyłki widzisz w „Najtrudniejszych słówkach”.</li></ul>');
   const s10=hpSec('punkty',10,'Punkty, rangi, rankingi i trofea',
-    '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li><li><b>WordClimb</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za trasę. Liczą się odpowiedzi poprawne od razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.</li></ul>'
+    '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li><li><b>WordClimb</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za trasę. Liczą się odpowiedzi poprawne od razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.</li><li><b>WordHeist</b>: do 300 pkt za sprawę: 100 za rozwiązanie, +80 bez błędu, +60 bez podpowiedzi, +60 za czas poniżej 6 minut. Do rankingu liczy się najlepszy wynik dnia w każdej sprawie.</li></ul>'
     +'<h4>Rangi</h4><p>Za sumę punktów uczeń awansuje na kolejne rangi (osobno w każdej grze i ogólnie):</p>'+hpRanks()
-    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks, WordElf i WordClimb, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja grupa</b>. Ranking grupy pokazuje tylko uczniów z tej samej grupy co oglądający.</p>'
+    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks, WordElf, WordClimb i WordHeist, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja grupa</b>. Ranking grupy pokazuje tylko uczniów z tej samej grupy co oglądający.</p>'
     +'<h4>Pokój i trofea</h4>'+hpFig('pokoj','Pokój ucznia z półką pucharów za rangi','Profil ucznia: „Mój pokój”. Każda zdobyta ranga to puchar na półce.')
     +'<p>Suma punktów jest też stale widoczna w górnym menu, obok płomienia z liczbą dni nauki z rzędu.</p>'
     +hpTip('Rankingi działają tylko dla zalogowanych uczniów. Konto korepetytora nie jest w nich uwzględniane.'));
@@ -2869,7 +2958,7 @@ const ROOM_SVG=`<svg class="rm-scene" viewBox="0 0 340 250" aria-hidden="true">
 <rect x="298" y="176" width="26" height="30" rx="3" fill="#c0643a"/><rect x="296" y="172" width="30" height="7" rx="2" fill="#d6764a"/><ellipse cx="311" cy="166" rx="24" ry="12" fill="#3f9a56"/><ellipse cx="298" cy="150" rx="9" ry="18" fill="#4fb36a" transform="rotate(-22 298 150)"/><ellipse cx="324" cy="148" rx="9" ry="19" fill="#2f8a48" transform="rotate(20 324 148)"/><ellipse cx="311" cy="142" rx="8" ry="18" fill="#58c07a"/>
 </svg>`;
 function roomHTML(){
-  const G=[['star','Wszystkie gry',totalPts(),TR],['cube','WordCraft',wcPts(),WCR],['grid','WordLinks',(SV.cn&&SV.cn.pts)||0,WLR],['gift','WordElf',(SV.elf&&SV.elf.pts)||0,ELR],['peak','WordClimb',(SV.climb&&SV.climb.pts)||0,CLR]];
+  const G=[['star','Wszystkie gry',totalPts(),TR],['cube','WordCraft',wcPts(),WCR],['grid','WordLinks',(SV.cn&&SV.cn.pts)||0,WLR],['gift','WordElf',(SV.elf&&SV.elf.pts)||0,ELR],['peak','WordClimb',(SV.climb&&SV.climb.pts)||0,CLR],['search','WordHeist',(SV.heist&&SV.heist.pts)||0,HSR]];
   let got=0,tot=0;
   const rows=G.map(g=>{const r=g[3],idx=r.reduce((a,x,k)=>g[2]>=x[0]?k:a,0);
     return'<div class="rm-row"><div class="rm-lab">'+ic(g[0])+'<b>'+g[1]+'</b><small>'+r[idx][1]+'</small></div><div class="rm-slots">'+r.slice(1).map((x,k)=>{const on=idx>=k+1;tot++;if(on)got++;return'<div class="rm-t'+(on?' on':'')+'" title="'+(on?g[1]+': '+x[1]:'Zdobądź '+wcFmtP(x[0])+' pkt w '+g[1])+'">'+trophySvg(k+1,on)+'<small>'+(on?x[1]:wcFmtP(x[0])+' pkt')+'</small></div>'}).join('')+'</div></div>'}).join('');
@@ -3085,6 +3174,183 @@ addEventListener('keydown',e=>{
   if(view!=='climb'||!CL||e.ctrlKey||e.metaKey||e.altKey)return;
   if(e.key>='1'&&e.key<='4'){clTap(+e.key-1);return}
   if(e.key==='Enter'&&!(e.target&&/BUTTON|INPUT|TEXTAREA/.test(e.target.tagName))){if(!CL.go&&!CL.over)clStart();else if(CL.between)clNext()}
+});
+/* ===== WORDHEIST: sprawy detektywistyczne po angielsku ===== */
+let HS=null;
+const HSR=[[0,'Stażysta'],[500,'Detektyw'],[2000,'Inspektor'],[5000,'Komisarz'],[12000,'Szef Wydziału'],[25000,'Legenda Wydziału']];
+const HSCASE='missing-cake',HSPAR=360,HSMAX=300;
+const hsPts=(err,hint,secs)=>100+(err<=0?80:0)+(hint<=0?60:0)+(secs<=HSPAR?60:0);
+const HSS=[
+ {k:'tom',n:'Tom',r:'uczeń, 6B',c:'#2358d6',al:'Alibi: biblioteka'},
+ {k:'lucy',n:'Lucy',r:'uczennica, 6B',c:'#c2185b',al:'Alibi: dentysta',ex:'I was at the dentist, look at my card.'},
+ {k:'green',n:'Mr Green',r:'nauczyciel WF',c:'#00796b',al:'Alibi: sala gimnastyczna',ex:'I was in the gym with twenty students.'},
+ {k:'ola',n:'Ola',r:'sprzątaczka',c:'#6a1b9a',al:'Alibi: zielony fartuch',ex:'I never wear a red jacket.'}];
+/* dowody: src = gdzie leży (scena: fridge/cam/sheet/board, ekwipunek: phone/laptop); q=null to mylny trop */
+const HSI=[
+ {id:1,src:'fridge',n:'Fridge note',s:'notatka',k:'note',t:"Happy birthday to me! The cake is in the fridge. Please don't touch it. I'm back at half past three.",pl:'Wszystkiego najlepszego dla mnie! Tort jest w lodówce. Proszę go nie ruszać. Wracam o wpół do czwartej.',q:'What time is Ms Brown back?',qp:'O której wraca pani Brown?',o:['At half past two','At half past three','At a quarter to three',"At three o'clock"],a:1,why:'half past three = 3:30 (wpół do czwartej).',w:['wpół do','half past'],nope:'Notatka mówi tylko, kiedy wróci pani Brown.'},
+ {id:2,src:'cam',n:'Camera 2:20',s:'kamera',k:'cam',t:'2:20 p.m. A person in a red jacket goes into the room and comes out with a big box.',pl:'14:20. Osoba w czerwonej kurtce wchodzi do pokoju i wychodzi z dużym pudłem.',q:'What does the person wear and carry?',qp:'Co ma na sobie i niesie ta osoba?',o:['A red jacket and a big box','A red jacket and a small bag','A blue jacket and a big box','A green coat and a small box'],a:0,why:'red jacket = czerwona kurtka, big box = duże pudło.',w:['kurtka','jacket']},
+ {id:3,src:'sheet',n:'Sign-in sheet',s:'lista obecności',k:'sheet',t:'Tom Baker? He arrived at a quarter to three.',pl:'Tom Baker? Przyszedł za kwadrans trzecia.',q:'When did Tom really arrive at the library?',qp:'Kiedy Tom naprawdę przyszedł do biblioteki?',o:["At two o'clock",'At a quarter past two','At a quarter to three','At a quarter to four'],a:2,why:'a quarter to three = 2:45 (za kwadrans trzecia). A quarter past two to 2:15.',w:['kwadrans do','quarter to']},
+ {id:4,src:'phone',n:"Tom's SMS",s:'SMS Toma',k:'sms',f:'Tom → Lucy',t:"I was in the library from two o'clock!",pl:'Byłem w bibliotece od drugiej!',ctx:'Lista obecności: Tom Baker, a quarter to three.',q:'Is Tom telling the truth?',qp:'Czy Tom mówi prawdę?',o:["Yes, he was there at two o'clock",'No, he arrived at a quarter to three','Yes, he was there at half past three','We cannot say'],a:1,why:'Tom pisze, że był od 2:00, a lista obecności mówi 2:45. Skłamał.',w:['biblioteka','library'],nope:'To tylko wersja Toma. Potrzebujesz dowodu, który ją obala.'},
+ {id:5,src:'board',n:'Dentist card',s:'karta dentysty',k:'card',t:'Lucy Adams – Dentist – Thursday, 2:00 p.m.',pl:'Lucy Adams – dentysta – czwartek, 14:00.',q:"Where was Lucy at two o'clock?",qp:'Gdzie była Lucy o drugiej?',o:['At the dentist','At the library','In the gym','At home'],a:0,why:'dentist = dentysta. Lucy ma alibi.',w:['dentysta','dentist'],nope:'Karta dentysty zdejmuje podejrzenie z Lucy, ale nic nie mówi o Tomie.'},
+ {id:6,src:'phone',n:"Lucy's SMS",s:'SMS Lucy',k:'sms',f:'Lucy → Tom',t:"You can borrow my red jacket today, it's cold in the gym!",pl:'Możesz pożyczyć moją czerwoną kurtkę, w sali jest zimno!',q:"Who has Lucy's red jacket today?",qp:'Kto ma dziś czerwoną kurtkę Lucy?',o:['Tom','Lucy','Mr Green','Ola'],a:0,why:'borrow = pożyczyć. Lucy pisze do Toma, więc to on pożyczył kurtkę.',w:['pożyczać','borrow']},
+ {id:7,src:'laptop',n:'Gym e-mail: 5A',s:'e-mail o sali',k:'mail',f:'School office',sub:'Gym booking for Thursday',t:'The gym is booked for class 5A on Thursday from 2:00 to 3:00 p.m. Please do not use it for other lessons.',pl:'Sala gimnastyczna jest zarezerwowana dla klasy 5A w czwartek od 14:00 do 15:00. Prosimy nie używać jej na inne lekcje.',q:'Who has the gym on Thursday at two o\'clock?',qp:'Kto ma salę gimnastyczną w czwartek o drugiej?',o:['Class 6B','Class 5A','Mr Green and Tom','Nobody'],a:1,why:'booked for class 5A = zarezerwowana dla 5A. Tom jest z 6B, więc kłamał o koszykówce.',w:['sala gimnastyczna','gym']},
+ {id:8,src:'phone',n:'Mum SMS',s:'SMS od mamy',k:'sms',f:'Mum → Tom',t:"Don't forget your lunch box, Tom!",pl:'Nie zapomnij pudełka na lunch, Tom!',q:null},
+ {id:9,src:'laptop',n:'Canteen e-mail',s:'jadłospis',k:'mail',f:'Canteen',sub:'Lunch menu for next week',t:'Soup on Monday, pizza on Tuesday, fish on Friday.',pl:'Zupa w poniedziałek, pizza we wtorek, ryba w piątek.',q:null}];
+const HSW=[['wpół do','half past'],['kwadrans do','quarter to'],['pożyczać','borrow'],['alibi','alibi'],['dowód','evidence'],['podejrzany','suspect']];
+const HSQ=["Where","were","you","at","two","o'clock?"],HSPROOF=[2,3,6,7],HSEV=HSI.filter(x=>x.q);
+const hsIt=id=>HSI.find(x=>x.id===id);
+function hsNew(){HS={go:0,v:'scene',app:'',cur:0,done:{},seen:{},pl:{},hid:{},wr:{},bad:{},err:0,hint:0,t0:0,tEnd:0,interr:0,sus:-1,sel:[],ask:null,msg:'',glow:'',over:0};return HS}
+function hsSecs(){return HS.go&&HS.t0?Math.max(0,Math.round(((HS.over?HS.tEnd:Date.now())-HS.t0)/1000)):0}
+function hsFmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function hsSolved(){return HSEV.filter(x=>HS.done[x.id]).length}
+function hsStart(){if(!HS||HS.go)return;HS.go=1;HS.t0=Date.now();renderHeist()}
+function hsNewR(){hsNew();renderHeist()}
+function hsSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderHeist()}
+function hsOpen(id){if(!HS.go||HS.over)return;HS.cur=id;HS.seen[id]=1;HS.v='item';HS.msg='';HS.glow='';renderHeist()}
+function hsApp(a){if(!HS.go||HS.over)return;HS.app=a;HS.v='app';HS.msg='';HS.glow='';renderHeist()}
+function hsBack(){const it=hsIt(HS.cur);if(HS.v==='item'&&it&&(it.src==='phone'||it.src==='laptop')){HS.v='app';HS.app=it.src}else{HS.v='scene';HS.app=''}HS.msg='';renderHeist()}
+function hsSay(){const it=hsIt(HS.cur);if(it)speak(it.t)}
+function hsPl(){const it=hsIt(HS.cur);if(!it||HS.pl[it.id])return;HS.pl[it.id]=1;if(it.q&&!HS.done[it.id])HS.hint++;renderHeist()}
+function hsPick(k){
+  const it=hsIt(HS.cur);if(!HS.go||HS.over||HS.v!=='item'||!it||!it.q||HS.done[it.id]||(HS.hid[it.id]||[]).includes(k)||k<0||k>=it.o.length)return;
+  if(k===it.a){HS.done[it.id]=1;HS.msg='Dowód zapisany: '+it.n;cnFx('ok')}
+  else{HS.err++;HS.bad[it.id]=1;HS.wr[it.id]=k;HS.msg='To nie to. Przeczytaj jeszcze raz.';cnFx('bad')}
+  renderHeist()
+}
+function hsHint(){
+  if(!HS.go||HS.over)return;
+  if(HS.v==='item'){const it=hsIt(HS.cur);if(!it||!it.q||HS.done[it.id])return;const h=HS.hid[it.id]||(HS.hid[it.id]=[]);const c=it.o.map((_,k)=>k).filter(k=>k!==it.a&&!h.includes(k));if(c.length<2)return;h.push(elShuf(c)[0]);HS.hint++;HS.msg='Jedna zła odpowiedź zniknęła.'}
+  else if(HS.v==='scene'){const n=HSEV.find(x=>!HS.done[x.id]);if(!n)return;HS.glow=n.src;HS.hint++;HS.msg='Zajrzyj tam, gdzie świeci.'}
+  else if(HS.v==='board'){HS.hint++;HS.msg=HS.interr?'Szukaj dowodów na kurtkę, kamerę, bibliotekę i salę.':'Najpierw przesłuchaj podejrzanego.'}
+  else return;
+  renderHeist()
+}
+function hsBoard(){if(!HS.go||HS.over||hsSolved()<4)return;HS.v='board';HS.msg='';HS.glow='';renderHeist()}
+function hsSus(i){if(HS.v!=='board')return;HS.sus=HS.sus===i?-1:i;renderHeist()}
+function hsSel(id){
+  if(HS.v!=='board')return;const i=HS.sel.indexOf(id);
+  if(i>=0)HS.sel.splice(i,1);else if(HS.sel.length<2)HS.sel.push(id);else{HS.msg='Wybierz tylko 2 dowody. Odznacz jeden.'}
+  renderHeist()
+}
+function hsAsk(){if(!HS.go||HS.over)return;HS.ask={w:elShuf(HSQ.map((_,i)=>i)),pick:[]};HS.v='ask';HS.msg='';renderHeist()}
+function hsAskTap(i){
+  const a=HS.ask;if(HS.v!=='ask'||!a||HS.interr||a.pick.includes(i))return;
+  if(i===a.pick.length){a.pick.push(i);cnFx('ok');if(a.pick.length===HSQ.length){HS.interr=1;HS.msg='Tom odpowiada…'}}
+  else{HS.err++;HS.msg='Zły szyk. Zacznij od słowa pytającego.';cnFx('bad')}
+  renderHeist()
+}
+function hsAccuse(){
+  if(!HS.go||HS.over||HS.v!=='board')return;
+  if(!HS.interr){HS.msg='Najpierw przesłuchaj podejrzanego.';return renderHeist()}
+  if(HS.sus<0||HS.sel.length!==2){HS.msg='Wybierz podejrzanego i 2 dowody.';return renderHeist()}
+  const s=HSS[HS.sus];
+  if(s.k!=='tom'){HS.err++;HS.msg=s.n+': „'+s.ex+'” To nie ten podejrzany.';HS.sus=-1;HS.sel=[];cnFx('bad');return renderHeist()}
+  const bad=HS.sel.find(id=>!HSPROOF.includes(id));
+  if(bad){HS.err++;HS.msg=hsIt(bad).nope;HS.sel=[];cnFx('bad');return renderHeist()}
+  hsFinish()
+}
+function hsFinish(){
+  const e=HS;e.over=1;e.tEnd=Date.now();e.v='win';e.secs=hsSecs();e.pts=hsPts(e.err,e.hint,e.secs);e.stars=e.err===0&&e.hint===0?3:e.err<=2?2:1;
+  const c=SV.heist||(SV.heist={p:0,perf:0,fast:0,st:0});c.p++;if(!e.err)c.perf++;if(e.secs<=HSPAR)c.fast=(c.fast||0)+1;c.st=Math.max(c.st||0,e.stars);
+  HSEV.forEach(x=>hsRec(x.w,!e.bad[x.id]));hsRec(HSW[3],true);hsRec(HSW[4],true);hsRec(HSW[5],true);
+  save();hsAward(e);cnFx('win');fxConfetti({n:64});renderHeist()
+}
+function hsRec(w,ok){const k=w[0]+'='+w[1],m=SV.m[k]||(SV.m[k]={b:0,r:0,w:0});if(ok){m.r++;m.b=Math.min(5,m.b+1)}else{m.w++;m.b=Math.max(0,m.b-2)}touchDay(ok);pushWord(k)}
+function hsAward(e){
+  const c=SV.heist,t=ymd(new Date());if(!c.pd||c.pd.d!==t)c.pd={d:t,m:{}};
+  const loc=Math.max(0,e.pts-(c.pd.m[HSCASE]||0));c.pd.m[HSCASE]=Math.max(c.pd.m[HSCASE]||0,e.pts);
+  const done=g=>{e.gain=g;c.pts=(c.pts||0)+g;save();WB.t={};if(view==='heist'&&HS===e)renderHeist()};
+  if(live())sb.rpc('heist_award',{p_case:HSCASE,p_errors:e.err,p_hints:e.hint,p_secs:e.secs}).then(r=>done(!r.error&&typeof r.data==='number'?r.data:loc)).catch(()=>done(loc));else done(loc)
+}
+async function hsSync(){if(!live())return;try{const r=await sb.rpc('heist_my_points');if(typeof r.data==='number'){const c=SV.heist||(SV.heist={p:0,perf:0,fast:0,st:0});c.pts=r.data;save()}}catch(e){}}
+function hsHomeSub(){const c=SV.heist||{};return c.p?'Sprawy: '+c.p+' · gwiazdki '+(c.st||0)+'/3':'Twoja pierwsza sprawa czeka'}
+function hsProfile(){
+  const c=SV.heist||{p:0,perf:0,fast:0,st:0};
+  return gpanel('search','WordHeist',[[(c.st||0)+'/3','gwiazdki sprawy 1'],[wcFmtP(c.pts||0),'punkty · '+wcRank(c.pts||0,HSR).t],[c.p||0,'rozwiązane sprawy']],
+   [['🔎','Pierwsza sprawa: wskaż sprawcę',(c.p||0)>0],['⭐','Bez błędu i bez podpowiedzi: 3 gwiazdki',(c.perf||0)>0&&(c.st||0)>=3],['⏱️','Szybki detektyw: sprawa w 6 minut',(c.fast||0)>0]],
+   '<button class="nb" onclick="show(\'heist\')">Graj</button>')
+}
+const hsAwardHtml=()=>HS.gain==null?'liczę…':HS.gain>0?'+'+HS.gain+' do rankingu dziś':'masz dziś już lepszy wynik w tej sprawie';
+const HSSCENE=`<svg class="hs-bg" viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect width="600" height="250" fill="#3d5486"/><rect y="250" width="600" height="110" fill="#1c2338"/><rect y="244" width="600" height="8" fill="#2a3556"/>
+<rect x="20" y="30" width="120" height="95" rx="6" fill="#9ccaf0" stroke="#1c2338" stroke-width="5"/><path d="M80 30v95M20 78h120" stroke="#1c2338" stroke-width="4"/>
+<circle cx="185" cy="60" r="22" fill="#fff8e6" stroke="#1c2338" stroke-width="4"/><path d="M185 46v15l9 6" stroke="#16233b" stroke-width="3" fill="none" stroke-linecap="round"/>
+<rect x="212" y="26" width="116" height="94" rx="5" fill="#b7824a" stroke="#6b4a2b" stroke-width="5"/><rect x="228" y="42" width="58" height="40" fill="#fff8e6" transform="rotate(-3 257 62)"/><path d="M236 54h40M236 62h34M236 70h38" stroke="#8a7a5a" stroke-width="2.5"/><rect x="294" y="48" width="26" height="30" fill="#cde4ff" transform="rotate(4 307 63)"/><circle cx="257" cy="42" r="3.4" fill="#d6403a"/>
+<rect x="380" y="34" width="86" height="60" rx="5" fill="#0b1220" stroke="#3b4a6b" stroke-width="4"/><path d="M390 76h66M390 66h50" stroke="#2fa05a" stroke-width="3"/><circle cx="452" cy="46" r="4" fill="#e0503f"/><rect x="418" y="94" width="10" height="12" fill="#3b4a6b"/>
+<rect x="482" y="40" width="92" height="204" rx="9" fill="#dfe6f2" stroke="#1c2338" stroke-width="4"/><path d="M482 116h92" stroke="#1c2338" stroke-width="4"/><rect x="560" y="64" width="6" height="30" rx="3" fill="#7a869f"/><rect x="560" y="136" width="6" height="44" rx="3" fill="#7a869f"/><rect x="496" y="134" width="40" height="44" fill="#fff3b0" transform="rotate(-4 516 156)"/>
+<rect x="36" y="238" width="260" height="14" rx="3" fill="#8a6238"/><rect x="50" y="252" width="10" height="64" fill="#6b4a2b"/><rect x="272" y="252" width="10" height="64" fill="#6b4a2b"/><ellipse cx="120" cy="236" rx="46" ry="7" fill="#e8e8e8"/><circle cx="96" cy="234" r="2.6" fill="#8a5a2b"/><circle cx="118" cy="237" r="2" fill="#8a5a2b"/><circle cx="140" cy="233" r="2.4" fill="#8a5a2b"/><rect x="198" y="226" width="26" height="12" rx="3" fill="#11182b"/>
+<rect x="312" y="272" width="156" height="10" rx="3" fill="#6b4a2b"/><rect x="326" y="282" width="8" height="48" fill="#52381f"/><rect x="446" y="282" width="8" height="48" fill="#52381f"/><rect x="330" y="246" width="50" height="28" fill="#fff8e6" transform="rotate(-3 355 260)"/><path d="M338 254h34M338 261h28" stroke="#8a7a5a" stroke-width="2.5"/></svg>`;
+const HSSP={fridge:[87.5,42,'lodówka'],cam:[70,18,'kamera'],sheet:[59,72,'lista obecności'],board:[45,20,'tablica ogłoszeń']};
+function hsScene(){
+  const sp=Object.keys(HSSP).map(k=>{const it=HSI.find(x=>x.src===k),d=HS.done[it.id];return'<button class="hs-spot'+(d?' ok':'')+(HS.glow===k?' glow':'')+'" style="left:'+HSSP[k][0]+'%;top:'+HSSP[k][1]+'%" '+(d?'':'')+'onclick="hsOpen('+it.id+')" aria-label="'+HSSP[k][2]+(d?' (zbadane)':'')+'">'+ic(d?'check':'search')+'</button>'}).join('');
+  const unread=a=>HSI.filter(x=>x.src===a&&!HS.seen[x.id]).length;
+  const inv=[['phone','Telefon'],['laptop','Laptop']].map(x=>{const n=unread(x[0]);return'<button class="hs-inv'+(HS.glow===x[0]?' glow':'')+'" onclick="hsApp(\''+x[0]+'\')">'+ic(x[0])+'<span>'+x[1]+'</span>'+(n?'<em>'+n+'</em>':'')+'</button>'}).join('');
+  const slots=HSEV.map(x=>HS.done[x.id]?'<span class="hs-chip on">'+esc(x.n)+'</span>':'<span class="hs-chip"></span>').join('');
+  return'<div class="hs-wrap"><div class="hs-scene">'+HSSCENE+sp+'<span class="hs-room">Pokój nauczycielski</span></div><div class="hs-side"><div class="hs-bub"><b>Ms Brown</b>My birthday cake has disappeared! It was in the fridge at two o\'clock. Who took it?<small>Mój tort zniknął! O drugiej był w lodówce. Kto go wziął?</small></div><h5>Ekwipunek</h5><div class="hs-invs">'+inv+'</div><h5>Dowody <b>'+hsSolved()+' / '+HSEV.length+'</b></h5><div class="hs-chips">'+slots+'</div></div></div>'
+}
+function hsDoc(it){
+  if(it.k==='note')return'<div class="hs-note">'+esc(it.t)+'</div>';
+  if(it.k==='cam')return'<div class="hs-cam"><span>● REC · CAM 2 · staff room</span><p>'+esc(it.t)+'</p></div>';
+  if(it.k==='card')return'<div class="hs-note card">'+esc(it.t)+'</div>';
+  if(it.k==='sheet')return'<div class="hs-sheet"><b>Library sign-in sheet</b><table><tr><th>NAME</th><th>ARRIVED</th></tr><tr><td>Mia Clark</td><td>ten past two</td></tr><tr class="hl"><td>Tom Baker</td><td>a quarter to three</td></tr><tr><td>Ben Hall</td><td>half past three</td></tr></table><button onclick="hsSay()">'+ic('volume')+'Posłuchaj bibliotekarki</button><p>„'+esc(it.t)+'”</p></div>';
+  if(it.k==='sms')return'<div class="hs-sms"><small>'+esc(it.f)+'</small><div>'+esc(it.t)+'</div></div>';
+  return'<div class="hs-mail"><small>From: '+esc(it.f)+'</small><b>'+esc(it.sub)+'</b><p>'+esc(it.t)+'</p></div>'
+}
+function hsItem(){
+  const it=hsIt(HS.cur),done=HS.done[it.id],hid=HS.hid[it.id]||[];
+  let h='<div class="hs-doc">'+hsDoc(it)+(it.ctx?'<small class="hs-ctx">'+esc(it.ctx)+'</small>':'')+'</div>';
+  h+=HS.pl[it.id]?'<p class="hs-pl">'+esc(it.pl)+'</p>':'<button class="hs-link" onclick="hsPl()">'+ic('book')+'Pokaż po polsku'+(it.q&&!done?' (podpowiedź)':'')+'</button>';
+  if(!it.q)return h+'<p class="hs-nt">To nie jest trop w tej sprawie.</p>';
+  h+='<div class="hs-q"><small>'+esc(it.qp)+'</small><b>'+esc(it.q)+'</b></div><div class="hs-opts">'+it.o.map((t,k)=>hid.includes(k)?'':'<button class="'+(done&&k===it.a?'ok':HS.wr[it.id]===k&&!done?'bad':'')+'" '+(done?'disabled ':'')+'onclick="hsPick('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(t)+'</button>').join('')+'</div>';
+  return h+(done?'<p class="hs-why">'+ic('check','ok')+esc(it.why)+'</p>':'')
+}
+function hsAppH(){
+  const ph=HS.app==='phone',list=HSI.filter(x=>x.src===HS.app);
+  return'<div class="hs-app '+(ph?'ph':'lp')+'"><div class="hs-appbar">'+ic(ph?'phone':'laptop')+(ph?'Telefon · SMS-y':'Laptop nauczyciela · e-maile')+'</div>'+list.map(x=>'<button class="hs-row'+(HS.seen[x.id]?'':' new')+(HS.done[x.id]?' got':'')+'" onclick="hsOpen('+x.id+')"><b>'+esc(x.f)+'</b><span>'+esc(ph?x.t:x.sub)+'</span>'+(HS.done[x.id]?ic('check','ok'):HS.seen[x.id]?'':'<i></i>')+'</button>').join('')+'</div>'
+}
+function hsBoardH(){
+  const sus=HSS.map((s,i)=>'<button class="hs-sus'+(HS.sus===i?' on':'')+'" onclick="hsSus('+i+')"><span style="background:'+s.c+'">'+s.n[0]+'</span><b>'+s.n+'</b><small>'+s.r+'</small><em>'+s.al+'</em></button>').join('');
+  const chips=HSEV.filter(x=>HS.done[x.id]).map(x=>'<button class="hs-ch'+(HS.sel.includes(x.id)?' on':'')+'" onclick="hsSel('+x.id+')">'+(HS.sel.includes(x.id)?ic('check'):'')+esc(x.n)+'</button>').join('');
+  return'<p class="hs-lead">Kto wziął tort? Wybierz podejrzanego i dwa dowody, które go obciążają.</p><div class="hs-suss">'+sus+'</div><h5>Dowody przeciw'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+' (wybierz 2)</h5><div class="hs-chs">'+chips+'</div><p class="hs-st">'+ic(HS.interr?'check':'alert',HS.interr?'ok':'warn')+(HS.interr?'Podejrzany przesłuchany.':'Najpierw przesłuchaj podejrzanego (przycisk poniżej).')+'</p>'
+}
+function hsAskH(){
+  const a=HS.ask,sent=a.pick.map(i=>HSQ[i]).join(' ');
+  let h='<p class="hs-lead">Ułóż pytanie do Toma z rozsypanych słów.</p><div class="hs-sent">'+esc(sent)+'</div><div class="hs-words">'+a.w.map(i=>'<button '+(a.pick.includes(i)||HS.interr?'disabled ':'')+'onclick="hsAskTap('+i+')">'+esc(HSQ[i])+'</button>').join('')+'</div>';
+  if(HS.interr)h+='<div class="hs-dlg"><p><b>Tom:</b> I was in the library.</p><p class="you">Sign-in sheet: a quarter to three…</p><p><b>Tom:</b> OK, I was in the gym. I played basketball.</p><small>Tom zmienił wersję. Wróć na tablicę i wybierz dowody, które obalają obie.</small></div>';
+  return h
+}
+function hsWin(){
+  return'<h3>Sprawa rozwiązana!</h3><p class="hs-fin">To był Tom. Chciał udekorować tort jako niespodziankę. Tort stoi w sali plastycznej z napisem „Happy Birthday, Ms Brown!”.</p><div class="hs-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=HS.stars?'pt':'dim'))).join('')+'</div><div class="hs-tiles"><div><b>'+hsFmt(HS.secs)+'</b><small>czas (wzorcowy 6:00)</small></div><div><b>'+HS.err+'</b><small>błędy</small></div><div><b>'+HS.hint+'</b><small>podpowiedzi</small></div></div><div class="hs-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+HS.pts+'</b></div><small class="hs-gain">'+hsAwardHtml()+'</small><div class="hs-words2"><b>Słówka ze sprawy (trafiły do powtórek):</b>'+HSW.map(w=>'<span>'+esc(w[1])+' = '+esc(w[0])+'</span>').join('')+'</div>'
+}
+function renderHeist(){
+  const root=$('v-heist');if(!root)return;if(!HS)hsNew();
+  const sec=hsSecs(),est=HS.over?HS.pts:hsPts(HS.err,HS.hint,sec),v=HS.v;
+  const head='<div class="cn-top"><span></span><button class="cn-snd" onclick="hsSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+ic('search')+'WordHeist</span><span class="gs-m">Sprawa 1 · The Missing Cake · A2</span><span class="gs-s">'+ic('clock')+'<b id="hs-time">'+hsFmt(sec)+'</b><i title="Tyle punktów dostaniesz, jeśli skończysz teraz. Maleje z błędami, podpowiedziami i czasem.">'+ic('star','f pt')+'<span id="hs-pts">'+est+'</span></i></span></div>';
+  let ov='',body='';
+  if(!HS.go)ov='<div class="hs-ov mid"><div class="hs-bub big"><b>Ms Brown</b>My birthday cake has disappeared! It was in the fridge at two o\'clock. Who took it?<small>Mój tort urodzinowy zniknął! O drugiej był w lodówce. Kto go wziął?</small></div><p>Przeszukaj pokój nauczycielski, telefon i laptop. Czytaj po angielsku, rozwiązuj zagadki, przesłuchaj podejrzanego i wskaż sprawcę. Błąd nie kończy gry, ale odejmuje punkty. Wzorcowy czas: 6 minut.</p><button class="hs-go" onclick="hsStart()">Zacznij sprawę</button></div>';
+  else{
+    body=hsScene();
+    if(v==='item')ov='<div class="hs-ov">'+hsItem()+'</div>';
+    else if(v==='app')ov='<div class="hs-ov">'+hsAppH()+'</div>';
+    else if(v==='board')ov='<div class="hs-ov">'+hsBoardH()+'</div>';
+    else if(v==='ask')ov='<div class="hs-ov">'+hsAskH()+'</div>';
+    else if(v==='win')ov='<div class="hs-ov mid win">'+hsWin()+'</div>'
+  }
+  const sc=v==='scene',it=v==='item'?hsIt(HS.cur):null,canHint=HS.go&&!HS.over&&(sc?hsSolved()<HSEV.length:v==='board'?1:it&&it.q&&!HS.done[it.id]&&(it.o.length-(HS.hid[it.id]||[]).length)>2);
+  let bar;
+  if(!HS.go)bar='';
+  else if(v==='win')bar='<button class="pri" onclick="hsNewR()">Zagraj jeszcze raz</button>';
+  else if(sc)bar='<button onclick="hsHint()" '+(canHint?'':'disabled ')+'>'+ic('bulb')+'Podpowiedź</button><button class="pri" onclick="hsBoard()" '+(hsSolved()>=4?'':'disabled ')+'>'+(hsSolved()>=4?'Tablica dowodów':'Dowody '+hsSolved()+'/4')+'</button>';
+  else if(v==='item')bar='<button onclick="hsHint()" '+(canHint?'':'disabled ')+'>'+ic('bulb')+'Podpowiedź</button><button '+(it&&HS.done[it.id]||it&&!it.q?'class="pri" ':'')+'onclick="hsBack()">'+(it&&(HS.done[it.id]||!it.q)?'Dalej':'Zamknij')+'</button>';
+  else if(v==='board')bar='<button onclick="hsAsk()">Przesłuchaj Toma</button><button class="pri" onclick="hsAccuse()">Oskarż'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+'</button><button onclick="hsHint()">'+ic('bulb')+'</button><button onclick="hsBack()">Wróć</button>';
+  else bar='<button class="pri" onclick="'+(v==='ask'?"HS.v='board';renderHeist()":'hsBack()')+'">'+(v==='ask'?'Wróć do tablicy':'Zamknij')+'</button>';
+  root.innerHTML=head+'<div class="gstage hs-stage'+(HS.over?' over':'')+'">'+hud+'<div class="gs-body">'+body+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(HS.msg)+'</div></div>'+(bar?'<div class="gbar">'+bar+'</div>':'')+'</div><p class="gtips">Cel: wskaż sprawcę i dowody. Klikaj lupy w pokoju oraz telefon i laptop. W zagadkach klawisze 1–4 też działają.</p>'+((!HS.go||HS.over)?wbHtml('hs'):'')
+}
+setInterval(()=>{if(view==='heist'&&HS&&HS.go&&!HS.over){const e=document.getElementById('hs-time');if(e)e.textContent=hsFmt(hsSecs());const q=document.getElementById('hs-pts');if(q)q.textContent=hsPts(HS.err,HS.hint,hsSecs())}},500);
+addEventListener('keydown',e=>{
+  if(view!=='heist'||!HS||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key>='1'&&e.key<='4')hsPick(+e.key-1);
+  else if(e.key==='Enter'&&!HS.go&&!(e.target&&/BUTTON|INPUT|TEXTAREA/.test(e.target.tagName)))hsStart()
 });
 show('home');initCloud();
 if(location.hash.startsWith('#wl=')){const g=cnFromLink(location.hash);if(g){CN=g;CNmode='chal';show('conn')}history.replaceState(null,'',location.pathname+location.search)}

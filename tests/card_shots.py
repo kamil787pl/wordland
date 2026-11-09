@@ -27,4 +27,6 @@ with sync_playwright() as pw:
     for _ in range(5):
         pg.evaluate("CL.between&&clNext();clTap(CL.cur.ok)");pg.wait_for_timeout(800)
     pg.evaluate("CL.between&&clNext()");pg.wait_for_timeout(600);pg.evaluate(HF);save(pg.locator('#v-climb .gstage').screenshot(),'cl')
+    pg.evaluate("show('heist');hsNewR();hsStart();hsOpen(1);hsPick(HSI[0].a);hsBack();hsOpen(3);hsPick(HSI[2].a);hsBack();hsOpen(5);hsPick(HSI[4].a);hsBack()");pg.wait_for_timeout(400)
+    pg.evaluate(HF);save(pg.locator('#v-heist .gstage').screenshot(),'hs')
     print('OK',errs)

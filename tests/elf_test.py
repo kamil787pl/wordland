@@ -34,10 +34,10 @@ with sync_playwright() as pw:
         res[lvl+' punkty']=pg.evaluate("EL.pts>=10&&EL.pts<=elPtsMax(EL.lvl)") and 'Punkty:' in pg.inner_text('#v-elf') and pg.locator('#v-elf .cn-lbp').count()==1
     res['rekordy zapisane']=pg.evaluate("Object.keys(SV.elf.r3).length")==3
     pg.evaluate("show('prof')");res['profil']='WordElf' in pg.inner_text('#v-prof') and 'Ranga WordElf' in pg.inner_text('#v-prof')
-    pg.evaluate("show('home')");pg.wait_for_timeout(200);res['ranking na glownej ma WordElf i Razem']=all(x in pg.locator('.cn-lbp').first.inner_text() for x in ('WordElf','Razem'))
+    pg.evaluate("show('home')");pg.wait_for_timeout(200);res['ranking na glownej ma WordElf i Razem']=all(x in pg.locator('.cn-lbp').first.text_content() for x in ('WordElf','Razem'))
     res['suma przy plomieniu']=pg.evaluate("totalPts()>0&&document.getElementById('pt-pts').textContent.includes('pkt')") or pg.evaluate("ptsChip(),document.getElementById('pt-pts').innerHTML.length>10")
-    res['trofea 20']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==25
-    res['pokoj z trofeami']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==25 and pg.evaluate("document.querySelectorAll('#v-prof .rm-t.on').length")>=0
+    res['trofea 20']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==30
+    res['pokoj z trofeami']=pg.evaluate("show('prof'),document.querySelectorAll('#v-prof .rm-t').length")==30 and pg.evaluate("document.querySelectorAll('#v-prof .rm-t.on').length")>=0
     res['punkty lokalne']=pg.evaluate("SV.elf.pts")>0
     pg.evaluate("show('elf');elNewR()");pg.click('.el-start .pri');pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'elf.png'))
     print({k:v for k,v in res.items() if v is not True});print('OK',errs)

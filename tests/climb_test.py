@@ -41,7 +41,7 @@ with sync_playwright() as pw:
     res['suma zawiera WordClimb']=pg.evaluate("totalPts()")>=pg.evaluate("SV.climb.pts")
     pg.evaluate("show('prof')");t=pg.inner_text('#v-prof')
     res['profil']='WordClimb' in t and 'Ranga WordClimb' in t
-    res['trofea 25']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==25
+    res['trofea 25']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==30
     res['przelacznik rankingu ma WordClimb']='WordClimb' in pg.locator('#v-prof .cn-lbp').first.inner_text()
     pg.evaluate("wbGame('cl')");pg.wait_for_timeout(300)
     res['ranking cl wola climb_pts_board']=pg.evaluate("CALLS.some(c=>c[0]==='climb_pts_board')")
