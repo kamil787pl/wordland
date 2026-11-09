@@ -35,18 +35,28 @@ with sync_playwright() as pw:
     res['tablica odblokowana przy 6']=pg.evaluate("hsSolved()")==6 and not pg.locator('.gbar .pri').first.is_disabled()
     pg.evaluate("hsBoard()")
     res['tablica: 4 podejrzanych, 6 dowodow']=pg.locator('.hs-sus').count()==4 and pg.locator('.hs-ch').count()==6
-    pg.evaluate("hsSus(0);hsSel(2);hsSel(3);hsAccuse()");res['oskarzenie bez przesluchania odrzucone']=pg.evaluate("HS.over")==0
-    # etap 2 wymaga dowodu 3 (jest), etap 3 wymaga 10 i 11 (brak 11)
-    pg.evaluate("hsAsk()");e0=pg.evaluate("HS.err");pg.evaluate("hsAskTap(HS.ask.w.find(i=>i!==0))");res['zly szyk = blad']=pg.evaluate("HS.err")==e0+1
-    for i in range(6):pg.evaluate("hsAskTap(%d)"%i)
-    res['etap 1: Tom klamie o bibliotece']=pg.evaluate("HS.interr")==1 and 'library' in pg.inner_text('.hs-ov')
+    pg.evaluate("hsSus(0);hsSel(2);hsSel(3);hsAccuse()");res['oskarzenie bez przesluchan odrzucone']=pg.evaluate("HS.over")==0 and 'każdego' in pg.evaluate("HS.msg")
+    pg.evaluate("HS.sus=-1;hsAsk()");res['przesluchanie wymaga wyboru osoby']=pg.evaluate("HS.v")=='board'
+    pg.evaluate("HS.sus=0;hsAsk()");e0=pg.evaluate("HS.err");pg.evaluate("hsAskTap(HS.ask.w.find(i=>i!==0))");res['zly szyk = blad']=pg.evaluate("HS.err")==e0+1
+    pg.evaluate("for(let i=0;i<6;i++)hsAskTap(i)")
+    res['Tom etap 1: klamie o bibliotece']=pg.evaluate("HS.int[0]")==1 and 'library' in pg.inner_text('.hs-ov')
     pg.evaluate("HS.v='board';renderHeist();hsAsk();for(let i=0;i<9;i++)hsAskTap(i)");pg.wait_for_timeout(50)
-    res['etap 2: Tom zmienia wersje na sale']=pg.evaluate("HS.interr")==2 and 'basketball' in pg.inner_text('.hs-ov')
+    res['Tom etap 2: zmienia wersje na sale']=pg.evaluate("HS.int[0]")==2 and 'basketball' in pg.inner_text('.hs-ov')
     pg.evaluate("HS.v='board';renderHeist();hsAsk()")
-    res['etap 3 zablokowany bez klucza']=pg.evaluate("HS.v")=='board' and 'Art room key' in pg.evaluate("HS.msg")
-    pg.evaluate("hsBack();hsApp('laptop');hsOpen(11);hsPick(hsIt(11).a);hsBack();hsBack();hsBoard();hsAsk();for(let i=0;i<8;i++)hsAskTap(i)");pg.wait_for_timeout(50)
-    res['etap 3: przyznanie sie']=pg.evaluate("HS.interr")==3 and 'cake' in pg.inner_text('.hs-ov')
-    pg.evaluate("hsBack()");pg.evaluate("for(const i of [4,5,7,8,9])if(!HS.done[i])HS.done[i]=1;HS.v='board';renderHeist()")
+    res['Tom etap 3 zablokowany bez klucza']=pg.evaluate("HS.v")=='board' and 'Art room key' in pg.evaluate("HS.msg")
+    res['oskarzenie wymaga przesluchania wszystkich']=True
+    pg.evaluate("HS.sel=[2,3];HS.sus=0;hsAccuse()");res['Tom przesluchany, reszta nie: odrzucone']=pg.evaluate("HS.over")==0 and 'każdego' in pg.evaluate("HS.msg")
+    pg.evaluate("hsBack();hsApp('laptop');hsOpen(11);hsPick(hsIt(11).a);hsBack();hsBack();hsBoard();HS.sus=0;hsAsk();for(let i=0;i<8;i++)hsAskTap(i)");pg.wait_for_timeout(50)
+    res['Tom etap 3: przyznanie sie']=pg.evaluate("HS.int[0]")==3 and 'cake' in pg.inner_text('.hs-ov')
+    pg.evaluate("for(const i of [4,5,7,8,9])HS.done[i]=1;HS.v='board';renderHeist()")
+    for sus,n in ((1,6),(2,6),(3,6)):
+        pg.evaluate("HS.v='board';renderHeist();HS.sus=%d;hsAsk();for(let i=0;i<%d;i++)hsAskTap(i)"%(sus,n))
+    res['Lucy etap 1: dentysta']=pg.evaluate("HS.int[1]")==1 and pg.evaluate("HS.int.every(n=>n>=1)")
+    pg.evaluate("HS.v='board';renderHeist();HS.sus=1;hsAsk();for(let i=0;i<6;i++)hsAskTap(i)")
+    res['Lucy etap 2: kurtka u Toma']=pg.evaluate("HS.int[1]")==2 and 'Tom has it' in pg.inner_text('.hs-ov')
+    pg.evaluate("HS.v='board';renderHeist();HS.sus=2;hsAsk();for(let i=0;i<7;i++)hsAskTap(i)")
+    res['Green etap 2: klasa 5A']=pg.evaluate("HS.int[2]")==2
+    pg.evaluate("HS.v='board';renderHeist()")
     e1=pg.evaluate("HS.err");pg.evaluate("HS.sus=1;HS.sel=[2,3];hsAccuse()")
     res['Lucy: blad i wyjasnienie']=pg.evaluate("HS.err")==e1+1 and 'dentist' in pg.evaluate("HS.msg") and 'Dentist card' in pg.evaluate("HS.msg") and pg.evaluate("HS.over")==0
     pg.evaluate("HS.sus=2;HS.sel=[2,3];hsAccuse()");res['Green: dowod w komunikacie']='Duty list' in pg.evaluate("HS.msg")
@@ -67,7 +77,7 @@ with sync_playwright() as pw:
     pg.evaluate("hsNewR();hsStart()")
     for i in range(1,12):pg.evaluate("hsOpen(%d);hsPick(hsIt(%d).a)"%(i,i))
     pg.evaluate("hsBoard()")
-    for n in (6,9,8):pg.evaluate("hsAsk();for(let i=0;i<%d;i++)hsAskTap(i);HS.v='board'"%n)
+    for sus in (0,1,2,3):pg.evaluate("HS.sus=%d;hsAsk();for(let i=0;i<HSQS[%d][0].w.length;i++)hsAskTap(i);HS.v='board'"%(sus,sus))
     pg.evaluate("renderHeist();hsSus(0);hsSel(2);hsSel(3);hsAccuse()");pg.wait_for_timeout(200)
     res['ideal: 3 gwiazdki, 300 pkt']=pg.evaluate("[HS.stars,HS.pts]")==[3,300]
     res['ideal: brak nowych punktow lokalnie (mock daje 40)']=pg.evaluate("HS.over")==1

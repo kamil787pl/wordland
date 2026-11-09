@@ -945,6 +945,7 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 .hs-sus b{font-size:14px}.hs-sus small{color:#5b6b8a;font-size:11px;font-weight:600}.hs-sus em{grid-column:1/3;margin-top:4px;font-style:normal;font-size:11px;font-weight:700;color:#1e7a3c}
 .hs-sus.on{border-color:#e0503f;box-shadow:0 0 0 3px rgba(224,80,63,.3)}
 .hs-ov h5{margin:2px 0 0;font-size:12px;font-weight:800;color:#8fe3f2}
+.hs-lead{display:flex;gap:8px;align-items:center}.hs-sus i{display:block;font-style:normal;font-size:11px;font-weight:700;color:#8fe3f2;margin-top:2px}
 .hs-chs{display:flex;flex-wrap:wrap;gap:8px}
 .hs-ch{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#c9d6f2;font:700 13px "Figtree",system-ui,sans-serif;cursor:pointer}
 .hs-ch.on{background:#f5a300;border-color:#f5a300;color:#3a2600;font-weight:800}.hs-ch .i{width:14px;height:14px}
@@ -1708,7 +1709,7 @@ const HOW=[
  [['play','Kliknij Start','Dopiero wtedy pokażą się 16 słówek i ruszy czas. Każdego dnia jest nowa łamigłówka.'],['target','Połącz w grupy','Zaznacz 4 słówka z jednej kategorii i zatwierdź. Błąd to +10 s, masz 4 szanse.'],['trophy','Pobij rekord','Zdobywaj medale za czas, wspinaj się w rankingu i wyzywaj znajomych.']]];
 HOW.push([['book','Czytaj listę','Sprawdź, jakie prezenty ma spakować skrzat. Na wyższych poziomach są liczby albo opisy.'],['gift','Klikaj prezenty','Wybierz na półce właściwe rzeczy, a polecą do worka. Błąd to +5 s.'],['trophy','Wyślij sanie','Przejdź 3 rundy, coraz trudniejsze, a Mikołaj odleci. Im szybciej i bez błędów, tym lepiej.']]);
 HOW.push([['book','Czytaj słówko','Na górze jest słówko, a pod nim cztery odpowiedzi. Na B1 trafiają się też zdania z luką.'],['peak','Łap chwyty','Dobra odpowiedź to krok w górę. Pomyłka to poślizg, a słówko wróci w powtórkach.'],['flag','Zdobądź szczyt','Dojdź do 12 kroków, odpoczywając w obozach. Mniej poślizgów to więcej gwiazdek i punktów.']]);
-HOW.push([['search','Szukaj tropów','Klikaj lupy w pokoju oraz telefon i laptop z ekwipunku. Czytaj SMS-y i e-maile po angielsku.'],['bulb','Rozwiąż zagadki','Każdy trop ma pytanie. Pomyłka odejmuje punkty, a pomaga podpowiedź lub polskie tłumaczenie.'],['flag','Wskaż sprawcę','Przesłuchaj podejrzanego, a na tablicy wybierz osobę i dwa dowody. Mniej błędów to więcej gwiazdek.']]);
+HOW.push([['search','Szukaj tropów','Klikaj lupy w pokoju oraz telefon i laptop z ekwipunku. Czytaj SMS-y i e-maile po angielsku.'],['bulb','Rozwiąż zagadki','Każdy trop ma pytanie. Pomyłka odejmuje punkty, a pomaga podpowiedź lub polskie tłumaczenie.'],['flag','Wskaż sprawcę','Przesłuchaj wszystkich podejrzanych, a na tablicy wybierz sprawcę i dwa dowody. Mniej błędów to więcej gwiazdek.']]);
 function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+ic(x[0])+'<h4>'+x[1]+'</h4><p>'+x[2]+'</p></div>').join('')}
 function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
 function renderHome(){
@@ -2489,7 +2490,7 @@ function helpHTML(){
     +'<tr><th>'+ic('grid')+'WordLinks</th><td>Łamigłówka: 16 słówek do połączenia w 4 grupy po 4 z tej samej kategorii. Liczy się czas.</td><td>Kategoryzowanie, szybkie rozpoznawanie słów, pewność.</td></tr>'
     +'<tr><th>'+ic('gift')+'WordElf</th><td>Skrzat pakuje prezenty z listy Mikołaja. Po trzech rundach sanie odlatują.</td><td>Nazwy przedmiotów, liczby i liczba mnoga, czytanie opisów.</td></tr>'
     +'<tr><th>'+ic('peak')+'WordClimb</th><td>Wspinaczka na szczyt w 12 krokach z dwoma obozami. Uczeń wybiera poprawne tłumaczenie, a pomyłka to poślizg.</td><td>Tłumaczenie w obie strony, formy czasowników i zdania z luką (B1).</td></tr>'
-    +'<tr><th>'+ic('search')+'WordHeist</th><td>Gra detektywistyczna po angielsku. Uczeń szuka tropów w pokoju, czyta SMS-y w telefonie i e-maile na laptopie, przesłuchuje podejrzanego i wskazuje sprawcę.</td><td>Czytanie, godziny, past simple, przyimki; krótki, potoczny angielski (SMS) i formalny (e-mail).</td></tr>'
+    +'<tr><th>'+ic('search')+'WordHeist</th><td>Gra detektywistyczna po angielsku. Uczeń szuka tropów w pokoju, czyta SMS-y w telefonie i e-maile na laptopie, przesłuchuje podejrzanych i wskazuje sprawcę.</td><td>Czytanie, godziny, past simple, przyimki; krótki, potoczny angielski (SMS) i formalny (e-mail).</td></tr>'
     +'</tbody></table></div>'+hpFig('home-gry','Karty gier na stronie głównej','Karty gier na stronie głównej. Każda ma przycisk „Graj”, a pod nim rekord ucznia.')
     +'<p>Szczegóły każdej gry opisuje sekcja <a href="#" onclick="hpGo(\'gry\');return false">Gry</a>.</p>');
   const s3=hpSec('konto',3,'Konto korepetytora',
@@ -2549,7 +2550,7 @@ function helpHTML(){
     +'<h4>'+ic('peak')+'WordClimb</h4>'+hpFig('climb','Wspinacz na ścianie i cztery przyciski z odpowiedziami w grze WordClimb','WordClimb: wybierz poprawne tłumaczenie, a wspinacz zrobi krok w górę.')
     +'<ul><li>Trasa ma <b>12 kroków</b> i dwa obozy (po 4. i 8. kroku). Poprawna odpowiedź to krok w górę, a pomyłka to <b>poślizg</b>: uczeń nic nie traci, a słówko trafia do powtórek. Nie ma limitu czasu.</li><li><b>A1</b>: 3 odpowiedzi do wyboru. <b>A2</b>: 4 odpowiedzi. <b>B1</b>: 4 trudniejsze odpowiedzi (podobne formy) oraz zdania z luką.</li><li>Słówka w jednej trasie <b>nie powtarzają się</b>. Słówka z poślizgów pojawiają się u Ciebie w „Najtrudniejszych słówkach”.</li><li>Na koniec uczeń dostaje do 3 gwiazdek (3 = bez poślizgu) i punkty.</li></ul>'
     +'<h4>'+ic('search')+'WordHeist</h4>'+hpFig('heist','Pokój nauczycielski z tropami oraz telefon i laptop w ekwipunku w grze WordHeist','WordHeist: klikaj lupy w pokoju oraz telefon i laptop, żeby zebrać dowody po angielsku.')
-    +'<ul><li>Pierwsza sprawa, <b>The Missing Cake</b> (poziom A2), trwa 8–12 minut: zniknął tort nauczycielki i trzeba wskazać sprawcę.</li><li>Dowody leżą w pokoju (lodówka, kamera, lista obecności, tablica, grafik dyżurów) oraz w <b>ekwipunku</b>: telefon pokazuje SMS-y, a laptop e-maile. Czerwona plakietka to liczba nieprzeczytanych wiadomości. Część wiadomości to mylne tropy.</li><li>Każdy dowód ma pytanie po angielsku. Błąd odejmuje punkty. Uczeń może użyć <b>podpowiedzi</b> lub <b>polskiego tłumaczenia</b> (też kosztuje podpowiedź).</li><li>Po zebraniu 6 z 11 dowodów otwiera się tablica: uczeń przesłuchuje Toma w trzech etapach (układa pytania z rozsypanych słów, a kolejne etapy wymagają nowych dowodów), wybiera osobę i dwa dowody, które ją obciążają.</li><li>Słówka ze sprawy (np. <i>quarter to</i>, <i>half past</i>, <i>borrow</i>) trafiają do powtórek, a pomyłki widzisz w „Najtrudniejszych słówkach”.</li></ul>');
+    +'<ul><li>Pierwsza sprawa, <b>The Missing Cake</b> (poziom A2), trwa 8–12 minut: zniknął tort nauczycielki i trzeba wskazać sprawcę.</li><li>Dowody leżą w pokoju (lodówka, kamera, lista obecności, tablica, grafik dyżurów) oraz w <b>ekwipunku</b>: telefon pokazuje SMS-y, a laptop e-maile. Czerwona plakietka to liczba nieprzeczytanych wiadomości. Część wiadomości to mylne tropy.</li><li>Każdy dowód ma pytanie po angielsku. Błąd odejmuje punkty. Uczeń może użyć <b>podpowiedzi</b> lub <b>polskiego tłumaczenia</b> (też kosztuje podpowiedź).</li><li>Po zebraniu 6 z 11 dowodów otwiera się tablica: uczeń przesłuchuje wszystkich czterech podejrzanych (układa pytania z rozsypanych słów, każdy ma 3 etapy, a kolejne etapy wymagają nowych dowodów), a potem wybiera sprawcę i dwa dowody, które go obciążają.</li><li>Słówka ze sprawy (np. <i>quarter to</i>, <i>half past</i>, <i>borrow</i>) trafiają do powtórek, a pomyłki widzisz w „Najtrudniejszych słówkach”.</li></ul>');
   const s10=hpSec('punkty',10,'Punkty, rangi, rankingi i trofea',
     '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li><li><b>WordClimb</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za trasę. Liczą się odpowiedzi poprawne od razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.</li><li><b>WordHeist</b>: do 300 pkt za sprawę: 100 za rozwiązanie, +80 bez błędu, +60 bez podpowiedzi, +60 za czas poniżej 6 minut. Do rankingu liczy się najlepszy wynik dnia w każdej sprawie.</li></ul>'
     +'<h4>Rangi</h4><p>Za sumę punktów uczeń awansuje na kolejne rangi (osobno w każdej grze i ogólnie):</p>'+hpRanks()
@@ -3215,11 +3216,20 @@ const HSI=[
  {id:12,src:'phone',n:'Mum SMS',s:'SMS od mamy',k:'sms',f:'Mum → Tom',tm:'12:30 p.m.',t:"Don't forget your lunch box, Tom!",pl:'Nie zapomnij pudełka na lunch, Tom!',q:null},
  {id:13,src:'laptop',n:'Canteen e-mail',s:'jadłospis',k:'mail',f:'Canteen',sub:'Lunch menu for next week',t:'Soup on Monday, pizza on Tuesday, fish on Friday.',pl:'Zupa w poniedziałek, pizza we wtorek, ryba w piątek.',q:null}];
 const HSW=[['wpół do','half past'],['kwadrans do','quarter to'],['pożyczać','borrow'],['alibi','alibi'],['dowód','evidence'],['podejrzany','suspect'],['klucz','key'],['sala plastyczna','art room'],['sprzątać','clean']];
-/* przesłuchanie: 3 etapy, każdy to pytanie z rozsypanych słów; need = dowody potrzebne do etapu */
-const HSQS=[
+/* przesłuchanie: każdy z 4 podejrzanych ma 3 etapy (pytanie z rozsypanych słów); need = dowody potrzebne do etapu; HSQS[indeks w HSS] */
+const HSQS=[[
  {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was in the library."},
  {w:["Why","did","you","arrive","at","a","quarter","to","three?"],need:[3],r:"OK, I was in the gym. I played basketball."},
- {w:["Why","do","you","have","the","art","room","key?"],need:[10,11],r:"OK, OK! I took the cake. It was a surprise for Ms Brown!"}];
+ {w:["Why","do","you","have","the","art","room","key?"],need:[10,11],r:"OK, OK! I took the cake. It was a surprise for Ms Brown!"}],[
+ {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was at the dentist."},
+ {w:["Who","has","your","red","jacket","today?"],need:[7],r:"Tom has it. I lent it to him."},
+ {w:["Why","did","you","lend","it","to","Tom?"],need:[4],r:"He was cold in the gym. I was at the dentist, look at my card!"}],[
+ {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was in the gym."},
+ {w:["Who","was","in","the","gym","with","you?"],need:[5],r:"Class 5A. Look at the duty list."},
+ {w:["Did","you","see","a","boy","in","a","red","jacket?"],need:[10],r:"No, I did not. Only class 5A was there."}],[
+ {w:["Where","were","you","at","two","o'clock?"],need:[],r:"I was cleaning the canteen."},
+ {w:["What","do","you","wear","at","work?"],need:[9],r:"A green apron. I never wear a red jacket."},
+ {w:["Did","you","see","the","cake?"],need:[11],r:"No. But a boy asked me about the art room key."}]];
 const HSPROOF=[2,3,7,8,10,11],HSEV=HSI.filter(x=>x.q);
 const HSAV={
  tom:{bg:'#2358d6',skin:'#f1c7a0',top:'#3f7de0',hair:'<path d="M13.5 20c-1-9 5-13 10.5-13s11.5 4 10.5 13c-2-3-4-5-6-5.5-3 2-8 2-10 0-2 .5-3.5 2.5-5 5.5z" fill="#5a3a1e"/><path d="M19 8l2-3 2 3M26 8l3-2-.5 3.5" stroke="#5a3a1e" stroke-width="2" fill="none" stroke-linecap="round"/>'},
@@ -3230,7 +3240,7 @@ const HSAV={
  brown:{bg:'#f5a300',skin:'#f1c7a0',top:'#f08a2c',back:'<circle cx="24" cy="7" r="5.5" fill="#8a5a3a"/>',hair:'<path d="M13.5 20c0-9 5-12 10.5-12s10.5 3 10.5 12c-2-3-4-5-10.5-5s-8.5 2-10.5 5z" fill="#8a5a3a"/>',front:'<g fill="none" stroke="#c0392b" stroke-width="1.2"><circle cx="20" cy="22" r="3.4"/><circle cx="28" cy="22" r="3.4"/><path d="M23.4 22h1.2"/></g>'}};
 function hsAv(k,z){const a=HSAV[k];return'<svg class="hs-av" viewBox="0 0 48 48" width="'+z+'" height="'+z+'" aria-hidden="true"><defs><clipPath id="hsav-'+k+'"><circle cx="24" cy="24" r="24"/></clipPath></defs><g clip-path="url(#hsav-'+k+')"><rect width="48" height="48" fill="'+a.bg+'"/>'+(a.back||'')+'<path d="M6 48c0-9 8-13 18-13s18 4 18 13z" fill="'+a.top+'"/><rect x="20" y="28" width="8" height="8" rx="3" fill="'+a.skin+'"/><ellipse cx="24" cy="21" rx="9.5" ry="10.5" fill="'+a.skin+'"/>'+a.hair+'<circle cx="20.2" cy="22" r="1.3" fill="#2a1a0e"/><circle cx="27.8" cy="22" r="1.3" fill="#2a1a0e"/><path d="M20.5 27c2 2 5 2 7 0" stroke="#2a1a0e" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="17.2" cy="25" r="2" fill="#ef8a8a" opacity=".45"/><circle cx="30.8" cy="25" r="2" fill="#ef8a8a" opacity=".45"/>'+(a.front||'')+'</g></svg>'}
 const hsIt=id=>HSI.find(x=>x.id===id);
-function hsNew(){HS={go:0,v:'scene',app:'',cur:0,done:{},seen:{},pl:{},hid:{},wr:{},bad:{},err:0,hint:0,t0:0,tEnd:0,interr:0,sus:-1,sel:[],ask:null,msg:'',glow:'',over:0};return HS}
+function hsNew(){HS={go:0,v:'scene',app:'',cur:0,done:{},seen:{},pl:{},hid:{},wr:{},bad:{},err:0,hint:0,t0:0,tEnd:0,int:[0,0,0,0],sus:-1,sel:[],ask:null,msg:'',glow:'',over:0};return HS}
 function hsSecs(){return HS.go&&HS.t0?Math.max(0,Math.round(((HS.over?HS.tEnd:Date.now())-HS.t0)/1000)):0}
 function hsFmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function hsSolved(){return HSEV.filter(x=>HS.done[x.id]).length}
@@ -3252,7 +3262,7 @@ function hsHint(){
   if(!HS.go||HS.over)return;
   if(HS.v==='item'){const it=hsIt(HS.cur);if(!it||!it.q||HS.done[it.id])return;const h=HS.hid[it.id]||(HS.hid[it.id]=[]);const c=it.o.map((_,k)=>k).filter(k=>k!==it.a&&!h.includes(k));if(c.length<2)return;h.push(elShuf(c)[0]);HS.hint++;HS.msg='Jedna zła odpowiedź zniknęła.'}
   else if(HS.v==='scene'){const n=HSEV.find(x=>!HS.done[x.id]);if(!n)return;HS.glow=n.src;HS.hint++;HS.msg='Zajrzyj tam, gdzie świeci.'}
-  else if(HS.v==='board'){HS.hint++;HS.msg=HS.interr?'Szukaj dowodów na kurtkę, kamerę, bibliotekę, salę i klucz.':'Najpierw przesłuchaj podejrzanego.'}
+  else if(HS.v==='board'){HS.hint++;HS.msg=hsQAll()?'Szukaj dowodów, które obalają wersję sprawcy: kurtka, kamera, lista obecności, sala, klucz.':'Najpierw przesłuchaj każdego podejrzanego (wybierz go i kliknij Przesłuchaj).'}
   else return;
   renderHeist()
 }
@@ -3263,20 +3273,23 @@ function hsSel(id){
   if(i>=0)HS.sel.splice(i,1);else if(HS.sel.length<2)HS.sel.push(id);else{HS.msg='Wybierz tylko 2 dowody. Odznacz jeden.'}
   renderHeist()
 }
+const hsQAll=()=>HS.int.every(n=>n>=1);
 function hsAsk(){
-  if(!HS.go||HS.over)return;const n=HS.interr,q=HSQS[Math.min(n,2)];
-  if(n<3){const m=q.need.filter(id=>!HS.done[id]);if(m.length){HS.msg='Najpierw zbierz dowód: '+m.map(id=>hsIt(id).n).join(', ')+'.';return renderHeist()}}
-  HS.ask={s:n,w:elShuf(q.w.map((_,i)=>i)),pick:[]};HS.v='ask';HS.msg='';renderHeist()
+  if(!HS.go||HS.over)return;const i=HS.sus;
+  if(i<0){HS.msg='Najpierw wybierz podejrzanego, którego chcesz przesłuchać.';return renderHeist()}
+  const n=HS.int[i];
+  if(n<3){const m=HSQS[i][n].need.filter(id=>!HS.done[id]);if(m.length){HS.msg='Najpierw zbierz dowód: '+m.map(id=>hsIt(id).n).join(', ')+'.';return renderHeist()}}
+  HS.ask={i,s:n,w:elShuf(HSQS[i][Math.min(n,2)].w.map((_,k)=>k)),pick:[]};HS.v='ask';HS.msg='';renderHeist()
 }
-function hsAskTap(i){
-  const a=HS.ask,q=a&&HSQS[Math.min(a.s,2)];if(HS.v!=='ask'||!a||a.s!==HS.interr||!q||a.pick.length>=q.w.length||a.pick.includes(i))return;
-  if(i===a.pick.length){a.pick.push(i);cnFx('ok');if(a.pick.length===q.w.length){HS.interr++;HS.msg=HS.interr>=3?'Tom się przyznał!':'Tom zmienił wersję. Zbierz kolejne dowody.'}}
+function hsAskTap(k){
+  const a=HS.ask,q=a&&HSQS[a.i][Math.min(a.s,2)];if(HS.v!=='ask'||!a||a.s!==HS.int[a.i]||!q||a.pick.length>=q.w.length||a.pick.includes(k))return;
+  if(k===a.pick.length){a.pick.push(k);cnFx('ok');if(a.pick.length===q.w.length){HS.int[a.i]++;const n=HSS[a.i].n;HS.msg=a.i===0&&HS.int[0]<3?'Tom zmienił wersję. Zbierz kolejne dowody.':HS.int[a.i]>=3?(a.i===0?'Tom się przyznał!':n+' ma już wszystko powiedziane.'):'Odpowiedź zapisana: '+n+'.'}}
   else{HS.err++;HS.msg='Zły szyk. Zacznij od słowa pytającego.';cnFx('bad')}
   renderHeist()
 }
 function hsAccuse(){
   if(!HS.go||HS.over||HS.v!=='board')return;
-  if(HS.interr<3){HS.msg='Najpierw przesłuchaj Toma do końca ('+HS.interr+'/3).';return renderHeist()}
+  if(!hsQAll()){HS.msg='Najpierw przesłuchaj każdego podejrzanego (co najmniej jedno pytanie).';return renderHeist()}
   if(HS.sus<0||HS.sel.length!==2){HS.msg='Wybierz podejrzanego i 2 dowody.';return renderHeist()}
   const s=HSS[HS.sus];
   if(s.k!=='tom'){HS.err++;HS.msg=s.n+': „'+s.ex+'” To nie ten podejrzany. '+(HS.done[s.ev]?'Sprawdź dowód: '+hsIt(s.ev).n+'.':'Poszukaj dowodu, który to potwierdza.');HS.sus=-1;HS.sel=[];cnFx('bad');return renderHeist()}
@@ -3407,16 +3420,16 @@ function hsAppH(){
   return'<div class="hs-app '+(ph?'ph':'lp')+'"><div class="hs-appbar">'+ic(ph?'phone':'laptop')+(ph?'Telefon · SMS-y':'Laptop nauczyciela · e-maile')+'</div>'+list.map(x=>'<button class="hs-row'+(HS.seen[x.id]?'':' new')+(HS.done[x.id]?' got':'')+'" onclick="hsOpen('+x.id+')">'+(HSAV[x.f.split(' ')[0].toLowerCase()]?hsAv(x.f.split(' ')[0].toLowerCase(),34):'<span class="hs-ic">'+ic('mail')+'</span>')+'<b>'+esc(x.f)+'</b><span>'+esc(ph?x.t:x.sub)+'</span>'+(HS.done[x.id]?ic('check','ok'):HS.seen[x.id]?'':'<i></i>')+'</button>').join('')+'</div>'
 }
 function hsBoardH(){
-  const sus=HSS.map((s,i)=>'<button class="hs-sus'+(HS.sus===i?' on':'')+'" onclick="hsSus('+i+')"><span>'+hsAv(s.k,36)+'</span><b>'+s.n+'</b><small>'+s.r+'</small><em>'+s.al+'</em></button>').join('');
+  const sus=HSS.map((s,i)=>'<button class="hs-sus'+(HS.sus===i?' on':'')+'" onclick="hsSus('+i+')"><span>'+hsAv(s.k,36)+'</span><b>'+s.n+'</b><small>'+s.r+'</small><em>'+s.al+'</em><i>Pytania: '+HS.int[i]+'/3</i></button>').join('');
   const chips=HSEV.filter(x=>HS.done[x.id]).map(x=>'<button class="hs-ch'+(HS.sel.includes(x.id)?' on':'')+'" onclick="hsSel('+x.id+')">'+(HS.sel.includes(x.id)?ic('check'):'')+esc(x.n)+'</button>').join('');
-  return'<p class="hs-lead">Kto wziął tort? Wybierz podejrzanego i dwa dowody, które go obciążają.</p><div class="hs-suss">'+sus+'</div><h5>Dowody przeciw'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+' (wybierz 2)</h5><div class="hs-chs">'+chips+'</div><p class="hs-st">'+ic(HS.interr>=3?'check':'alert',HS.interr>=3?'ok':'warn')+(HS.interr>=3?'Tom przesłuchany do końca.':'Przesłuchanie Toma: '+HS.interr+'/3 (przycisk poniżej).')+'</p>'
+  return'<p class="hs-lead">Kto wziął tort? Przesłuchaj podejrzanych, potem wybierz sprawcę i dwa dowody, które go obciążają.</p><div class="hs-suss">'+sus+'</div><h5>Dowody przeciw'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+' (wybierz 2)</h5><div class="hs-chs">'+chips+'</div><p class="hs-st">'+ic(hsQAll()?'check':'alert',hsQAll()?'ok':'warn')+(hsQAll()?'Każdy przesłuchany. Kolejne pytania odblokują dowody.':'Przesłuchaj każdego co najmniej raz ('+HS.int.filter(n=>n>=1).length+'/4).')+'</p>'
 }
 function hsAskH(){
-  const a=HS.ask,q=HSQS[Math.min(a.s,2)],full=a.pick.length>=q.w.length,sent=a.pick.map(i=>q.w[i]).join(' ');
-  let h='<p class="hs-lead">'+(full&&HS.interr>=3?'Przesłuchanie zakończone.':'Ułóż pytanie do Toma z rozsypanych słów ('+(a.s+1)+'/3).')+'</p>';
-  if(!full)h+='<div class="hs-sent">'+esc(sent)+'</div><div class="hs-words">'+a.w.map(i=>'<button '+(a.pick.includes(i)?'disabled ':'')+'onclick="hsAskTap('+i+')">'+esc(q.w[i])+'</button>').join('')+'</div>';
-  h+='<div class="hs-dlg">'+HSQS.slice(0,HS.interr).map(x=>'<p class="you">'+esc(x.w.join(' '))+'</p><p>'+hsAv('tom',30)+'<span><b>Tom:</b> '+esc(x.r)+'</span></p>').join('')+'</div>';
-  if(HS.interr&&HS.interr<3)h+='<small class="hs-ctx">Tom zmienił wersję. Wróć na tablicę i zbierz dowody, które obalają obie.</small>';
+  const a=HS.ask,S=HSS[a.i],Q=HSQS[a.i],q=Q[Math.min(a.s,2)],full=a.pick.length>=q.w.length,done=HS.int[a.i]>=3,sent=a.pick.map(k=>q.w[k]).join(' ');
+  let h='<p class="hs-lead">'+hsAv(S.k,30)+' '+esc(S.n)+': '+(done&&full||done&&a.s>=3?'przesłuchanie zakończone.':'ułóż pytanie z rozsypanych słów ('+(a.s+1)+'/3).')+'</p>';
+  if(!full)h+='<div class="hs-sent">'+esc(sent)+'</div><div class="hs-words">'+a.w.map(k=>'<button '+(a.pick.includes(k)?'disabled ':'')+'onclick="hsAskTap('+k+')">'+esc(q.w[k])+'</button>').join('')+'</div>';
+  h+='<div class="hs-dlg">'+Q.slice(0,HS.int[a.i]).map(x=>'<p class="you">'+esc(x.w.join(' '))+'</p><p>'+hsAv(S.k,30)+'<span><b>'+esc(S.n)+':</b> '+esc(x.r)+'</span></p>').join('')+'</div>';
+  if(a.i===0&&HS.int[0]&&HS.int[0]<3)h+='<small class="hs-ctx">Tom zmienił wersję. Wróć na tablicę i zbierz dowody, które obalają obie.</small>';
   return h
 }
 function hsWin(){
@@ -3442,7 +3455,7 @@ function renderHeist(){
   else if(v==='win')bar='<button class="pri" onclick="hsNewR()">Zagraj jeszcze raz</button>';
   else if(sc)bar='<button onclick="hsHint()" '+(canHint?'':'disabled ')+'>'+ic('bulb')+'Podpowiedź</button><button class="pri" onclick="hsBoard()" '+(hsSolved()>=6?'':'disabled ')+'>'+(hsSolved()>=6?'Tablica dowodów':'Dowody '+hsSolved()+'/6')+'</button>';
   else if(v==='item')bar='<button onclick="hsHint()" '+(canHint?'':'disabled ')+'>'+ic('bulb')+'Podpowiedź</button><button '+(it&&HS.done[it.id]||it&&!it.q?'class="pri" ':'')+'onclick="hsBack()">'+(it&&(HS.done[it.id]||!it.q)?'Dalej':'Zamknij')+'</button>';
-  else if(v==='board')bar='<button onclick="hsAsk()">Przesłuchaj Toma ('+HS.interr+'/3)</button><button class="pri" onclick="hsAccuse()">Oskarż'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+'</button><button onclick="hsHint()">'+ic('bulb')+'</button><button onclick="hsBack()">Wróć</button>';
+  else if(v==='board')bar='<button onclick="hsAsk()">Przesłuchaj'+(HS.sus>=0?': '+HSS[HS.sus].n+' ('+HS.int[HS.sus]+'/3)':'')+'</button><button class="pri" onclick="hsAccuse()">Oskarż'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+'</button><button onclick="hsHint()">'+ic('bulb')+'</button><button onclick="hsBack()">Wróć</button>';
   else bar='<button class="pri" onclick="'+(v==='ask'?"HS.v='board';renderHeist()":'hsBack()')+'">'+(v==='ask'?'Wróć do tablicy':'Zamknij')+'</button>';
   root.innerHTML=head+'<div class="gstage hs-stage'+(HS.over?' over':'')+'">'+hud+'<div class="gs-body">'+body+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(HS.msg)+'</div></div>'+(bar?'<div class="gbar">'+bar+'</div>':'')+'</div><p class="gtips">Cel: wskaż sprawcę i dowody. Klikaj lupy w pokoju oraz telefon i laptop. W zagadkach klawisze 1–4 też działają.</p>'+((!HS.go||HS.over)?wbHtml('hs'):'')
 }
