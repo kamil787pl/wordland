@@ -1832,7 +1832,7 @@ function tCollect(){
   return{w:w.slice(0,300),bad,badS};
 }
 function tFormHTML(e){
-  return '<div class="panel wiz"><h4>'+(e?ic('edit')+'Edycja kategorii: '+esc(e.n):ic('plus')+'Nowa kategoria')+'</h4>'
+  return '<div class="panel wiz" id="tc-form"><h4>'+(e?ic('edit')+'Edycja kategorii: '+esc(e.n):ic('plus')+'Nowa kategoria')+'</h4>'
   +'<section class="stp"><h5><b>1</b>Nazwa i ikona</h5><div class="nm"><div><label for="tc-n">Nazwa kategorii</label><input id="tc-n" type="text" maxlength="40" placeholder="np. Sport"></div><div><label for="tc-e">Ikona</label><input id="tc-e" type="text" maxlength="4" placeholder="📚"></div></div>'
   +'<div class="emo" role="group" aria-label="Wybierz ikonę">'+EMO.map(x=>'<button type="button" onclick="tEmo(this.textContent)">'+x+'</button>').join('')+'</div></section>'
   +'<section class="stp"><h5><b>2</b>Poziom</h5><div class="seg" id="tc-seg" role="group" aria-label="Poziom">'+L4.map(x=>'<button type="button" data-v="'+x[0]+'" class="'+(tLvl===x[0]?'on':'')+'" onclick="tLvlSet(this.dataset.v)">'+(x[0]||'Bez poziomu')+'</button>').join('')+'</div><p class="lg" id="tc-lvd">'+LVD[tLvl]+'</p>'
@@ -1842,7 +1842,7 @@ function tFormHTML(e){
   +'<div class="wa"><button type="button" class="nb" onclick="tAdd(1,1)">'+ic('plus')+'Dodaj słówko</button><button type="button" class="nb" onclick="tAdd(5,1)">+5 wierszy</button><button type="button" class="nb" onclick="tPasteToggle()">'+ic('book')+'Wklej z Excela</button><span id="tc-cnt" class="cnt"></span></div>'
   +'<div id="tc-pbox" hidden><p class="lg" style="margin:10px 0 6px">Wklej kolumny skopiowane z Excela lub Arkuszy Google: polski, angielski i opcjonalnie zdanie z luką. Możesz też pisać w linii <b>polskie=angielskie</b>.</p><textarea id="tc-w" spellcheck="false" placeholder="samolot&#9;plane&#9;I travel by ___.&#10;statek&#9;ship"></textarea><button type="button" class="nb" style="margin-top:8px" onclick="tImport()">Dodaj do listy</button></div>'
   +'<p class="lg" style="margin:10px 0 0">Wskazówka: Enter w ostatnim wierszu dodaje nowy. Zdanie z luką musi zawierać <b>___</b> w miejscu brakującego słowa.</p></section>'
-  +'<p id="tc-m"></p><div class="wa"><button class="gbtn" onclick="tSave()">'+(e?'Zapisz zmiany':'Zapisz kategorię')+'</button>'+(e?'<button class="nb" onclick="tCancel()">Anuluj edycję</button>':'')+'</div></div>';
+  +'<p id="tc-m"></p><div class="wa"><button class="gbtn" onclick="tSave()">'+(e?'Zapisz zmiany':'Zapisz kategorię')+'</button>'+'<button class="nb" onclick="tCancel()">'+(e?'Anuluj edycję':'Anuluj')+'</button></div></div>';
 }
 const L4=[['','Własne (bez poziomu)'],['A1','A1'],['A2','A2'],['B1','B1']];
 function tmsg(t,ok){const e=$('tc-m');if(e){e.textContent=t;e.className=ok?'ok':''}}
@@ -1867,14 +1867,12 @@ function renderTeach(){
   tSync();
   const mine=CATS.filter(c=>c.own&&c.own===U.id),e=tEdit&&mine.find(c=>c.id===tEdit);
   if(!tRows){tRows=e?e.w.map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''})):[blankRow(),blankRow(),blankRow(),blankRow()];tLvl=e?(e.l||''):'';tDraft=e?{n:e.n,e:e.e,nh:!!e.nh}:null}
-  const catHTML=''
-  +'<div class="panel"><h4>Moje kategorie ('+mine.length+')</h4>'+(mine.length?mine.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+c.n+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(c.l?'<span class="tag2">'+c.l+'</span>':'')+(c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span><button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button></div>').join(''):'<p class="lg">Nie masz jeszcze własnych kategorii. Dodaj pierwszą poniżej.</p>')+'</div>'
-  +bankHTML()+tFormHTML(e);
+  const catHTML=tbHTML()+((e||TP.nc)?tFormHTML(e):'');
   if(TP.cls===null)tpInit();
   const c=tpCur(),cat=TP.tab==='cat';
   const body=TP.tab==='help'?helpHTML():cat?catHTML:!TP.cls?'<div class="panel">Wczytuję…</div>':!c?'<div class="panel">Utwórz grupę powyżej. Uczniowie dołączą kodem grupy, a konta możesz też założyć sam w zakładce Uczniowie.</div>':TP.tab==='ov'?tpOv(c):TP.tab==='stu'?tpStu(c):tpAsg(c);
   root.innerHTML='<h2>'+ic('tool')+'Panel korepetytora</h2>'+tpShell(body);
-  if(cat){if(tDraft){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
+  if(cat){if(tDraft&&$('tc-n')){$('tc-n').value=tDraft.n;$('tc-e').value=tDraft.e;$('tc-nh').checked=tDraft.nh}tCount()}
 }
 async function claimTeacher(){
   const code=$('tc-code').value.trim();if(!code)return tmsg('Wpisz kod.');
@@ -1883,8 +1881,8 @@ async function claimTeacher(){
     if(r.data===true){ROLE='teacher';show('teach')}else tmsg('Nieprawidłowy kod.')}
   catch(e){tmsg('Nie udało się. Spróbuj ponownie.')}
 }
-function tStart(id){tSync();tEdit=id;tDel=null;tRows=null;tDraft=null;renderTeach();window.scrollTo(0,document.body.scrollHeight)}
-function tCancel(){tEdit=null;tRows=null;tDraft=null;renderTeach()}
+function tStart(id){tSync();tEdit=id;tDel=null;tRows=null;tDraft=null;renderTeach();tFocus()}
+function tCancel(){tEdit=null;TP.nc=0;tRows=null;tDraft=null;renderTeach()}
 async function tPub(id){const c=CATS.find(x=>x.id===id);if(!c)return;try{await sb.from('categories').update({is_public:c.pub===false}).eq('id',id);await loadBank();renderTeach()}catch(e){}}
 async function tDelete(id){
   if(tDel!==id){tDel=id;renderTeach();return}
@@ -1911,7 +1909,7 @@ async function tSave(){
       const r=await sb.from('categories').insert({slug:'u-'+U.id.slice(0,6)+'-'+Date.now().toString(36),name,emoji,level,no_hint:nh,is_public:true,owner:U.id,sort:100}).select('id').single();if(r.error)throw r.error;
       const q=await sb.from('words').insert(pw.w.map(w=>({category_id:r.data.id,pl:w[0],en:w[1],sentence:w[2]||null,trap:w[3]||null})));if(q.error)throw q.error;
     }
-    tRows=null;tDraft=null;tLvl='';await loadBank();renderTeach();tmsg('Zapisano w bazie: '+name+(pw.bad?' (pominięto '+pw.bad+' niepełnych wierszy)':''),1);
+    tRows=null;tDraft=null;tLvl='';TP.nc=0;TP.cm='Zapisano w bazie: '+name+(pw.bad?' (pominięto '+pw.bad+' niepełnych wierszy)':'');await loadBank();renderTeach();
   }catch(e){tmsg('Błąd zapisu: '+((e&&e.message)||'sieć'))}
 }
 
@@ -2016,7 +2014,7 @@ function myClassHTML(){
    +'<div class="tp-row" style="margin-top:8px"><input id="my-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Kod grupy" placeholder="Kod grupy, np. K7M2QX" onkeydown="if(event.key===\'Enter\')myJoin()"><button class="nb" onclick="myJoin()">Dołącz</button></div><p id="my-m" role="status" style="min-height:20px;margin:6px 0 0;font-weight:600;color:var(--red)"></p></div>';
 }
 /* ===== PANEL KOREPETYTORA: grupy, uczniowie, zadania ===== */
-const TP={pre:0,pv:0,bk:0,tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,tg:null,open:null,del:null,busy:0,ast:{},q:'',sort:'nick',fil:'all',sel:new Set(),delSel:0,hmsg:''};
+const TP={cm:'',pre:0,pv:0,nc:0,cf:'',cq:'',tab:'ov',cls:null,cur:null,d:null,det:null,new:0,add:null,asgNew:0,tg:null,open:null,del:null,busy:0,ast:{},q:'',sort:'nick',fil:'all',sel:new Set(),delSel:0,hmsg:''};
 const TPE={forbidden:'Brak uprawnień do tej grupy.',category:'Ta kategoria jest niedostępna.',groups:'Błędne grupy słówek.',limit:'Osiągnięto limit grup.',targets:'Wybrani uczniowie nie są w tej grupie.'};
 const tpGen=()=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(const x of crypto.getRandomValues(new Uint8Array(8)))s+=a[x%a.length];return s};
 const tpCur=()=>(TP.cls||[]).find(c=>c.id===TP.cur);
@@ -2214,13 +2212,47 @@ function catOpts(sel){
   return lv.map(L=>{const a=ok.filter(x=>(x.l||'')===L);return a.length?'<optgroup label="'+(L?LVN[L]:'Własne i bez poziomu')+'">'+a.map(x=>'<option value="'+x.id+'"'+(x.id===sel?' selected':'')+'>'+esc(x.e)+' '+esc(x.n)+' ('+x.w.length+')</option>').join('')+'</optgroup>':''}).join('');
 }
 function tpBank(id){TP.bk=0;TP.pre=id;TP.asgNew='category';TP.tg=null;TP.tab='asg';renderTeach();window.scrollTo(0,0)}
-function tpBkT(d){TP.bk=d.open;d.querySelector('summary .lg').textContent=d.open?'· zwiń':'· rozwiń'}
 function tpPv(id){TP.pv=TP.pv===id?0:id;renderTeach()}
-function bankHTML(){
-  const L=['A1','A2','B1'],all=CATS.filter(c=>!c.own&&!c.tmp&&c.l);
-  return '<details class="panel" '+(TP.bk?'open':'')+' ontoggle="tpBkT(this)"><summary style="cursor:pointer;list-style:none"><h4 style="margin:0;display:flex;align-items:center;gap:8px">'+ic('book')+'Bank WordLand ('+all.reduce((s,c)=>s+c.w.length,0)+' słówek)<span class="lg" style="font-weight:600">'+(TP.bk?'· zwiń':'· rozwiń')+'</span></h4></summary><p class="lg" style="margin:8px 0 6px">Gotowe kategorie dla uczniów. Kliknij „Podgląd”, aby zobaczyć słówka, albo „Zadaj”, aby przydzielić kategorię grupie.</p>'
-   +L.map(l=>{const a=all.filter(c=>c.l===l);return a.length?'<h5 class="tp-h">'+LVN[l]+' · '+a.reduce((s,c)=>s+c.w.length,0)+' słówek</h5>'+a.map(c=>'<div class="crow"><span class="ct">'+c.e+' <b>'+esc(c.n)+'</b> <span class="lg">'+c.w.length+' słówek</span></span><button class="nb" onclick="tpPv('+c.id+')" aria-expanded="'+(TP.pv===c.id)+'">'+ic(TP.pv===c.id?'eyeoff':'eye')+(TP.pv===c.id?'Ukryj':'Podgląd')+'</button><button class="nb" onclick="tpBank('+c.id+')">'+ic('target')+'Zadaj</button></div>'+(TP.pv===c.id?'<p class="lg" style="margin:0 0 8px">'+c.w.map(w=>'<b>'+esc(w[1])+'</b> '+esc(w[0])).join(' · ')+'</p>':'')).join(''):''}).join('')+'</details>';
+const TBF=[['','Wszystkie'],['A1','A1'],['A2','A2'],['B1','B1'],['own','Moje']];
+function tbGroups(){
+  const q=(TP.cq||'').trim().toLowerCase(),f=TP.cf||'',g={own:[],A1:[],A2:[],B1:[]};
+  CATS.forEach(c=>{
+    if(c.tmp)return;const own=c.own&&c.own===U.id;if(!own&&(c.own||!c.l))return;
+    if(f==='own'?!own:(f&&c.l!==f))return;
+    if(q&&!(c.n.toLowerCase().includes(q)||c.w.some(w=>w[0].toLowerCase().includes(q)||w[1].toLowerCase().includes(q))))return;
+    (own?g.own:g[c.l]||g.own).push(c);
+  });
+  return g;
 }
+function tbRow(c){
+  const own=c.own&&c.own===U.id,o=TP.pv===c.id;
+  return '<div class="crow"><span class="ct">'+c.e+' <b>'+esc(c.n)+'</b> <span class="lg">'+c.w.length+' słówek</span>'+(own&&c.l?'<span class="tag2">'+c.l+'</span>':'')+(own&&c.pub===false?'<span class="tag2" style="background:#ddd">ukryta</span>':'')+'</span>'
+   +'<button class="nb" onclick="tpPv('+c.id+')" aria-expanded="'+o+'">'+ic(o?'eyeoff':'eye')+(o?'Zwiń':'Podgląd')+'</button><button class="nb" onclick="tpBank('+c.id+')">'+ic('target')+'Zadaj</button>'
+   +(own?'<button class="nb" onclick="tStart('+c.id+')">'+ic('edit')+'Edytuj</button><button class="nb" onclick="tPub('+c.id+')">'+(c.pub===false?ic('eye')+'Pokaż uczniom':ic('eyeoff')+'Ukryj')+'</button><button class="nb dng" onclick="tDelete('+c.id+')">'+(tDel===c.id?ic('alert')+'Na pewno usunąć?':ic('trash')+'Usuń')+'</button>':'<button class="nb" onclick="tCopy('+c.id+')">'+ic('plus')+'Kopiuj do moich</button>')+'</div>'
+   +(o?'<p class="lg" style="margin:0 0 8px">'+c.w.map(w=>'<b>'+esc(w[1])+'</b> '+esc(w[0])).join(' · ')+'</p>':'');
+}
+function tbList(){
+  const g=tbGroups(),sum=a=>a.reduce((s,c)=>s+c.w.length,0);
+  const out=[['own','Moje kategorie'],['A1',LVN.A1],['A2',LVN.A2],['B1',LVN.B1]].filter(x=>g[x[0]].length).map(x=>'<h5 class="tp-h">'+x[1]+' · '+g[x[0]].length+' kat. · '+sum(g[x[0]])+' słówek</h5>'+g[x[0]].map(tbRow).join('')).join('');
+  return out||'<p class="lg">'+((TP.cf==='own'&&!TP.cq)?'Nie masz jeszcze własnych kategorii. Kliknij „Nowa kategoria” albo skopiuj gotową z banku.':'Nic nie znaleziono. Zmień filtr lub wyszukiwane słowo.')+'</p>';
+}
+function tbRefresh(){const e=$('tb-list');if(e)e.innerHTML=tbList()}
+function tbF(v){TP.cf=v;renderTeach()}
+function tbHTML(){
+  const all=CATS.filter(c=>!c.tmp&&(c.l&&!c.own||c.own===U.id)),n=all.reduce((s,c)=>s+c.w.length,0);
+  const cm=TP.cm;TP.cm='';return '<div class="panel"><h4>'+ic('book')+'Baza słówek ('+n+' słówek w '+all.length+' kategoriach)</h4><p class="lg" style="margin:0 0 10px">Gotowe kategorie WordLand i Twoje własne. <b>Podgląd</b> pokazuje słówka, <b>Zadaj</b> przydziela kategorię grupie, a <b>Kopiuj do moich</b> tworzy edytowalną kopię gotowej kategorii.</p>'+(cm?'<p class="ok" role="status" style="margin:0 0 10px">'+esc(cm)+'</p>':'')
+   +'<div class="tp-row"><input id="tb-q" type="text" autocomplete="off" maxlength="40" placeholder="Szukaj kategorii lub słówka…" aria-label="Szukaj w bazie słówek" value="'+esc(TP.cq)+'" oninput="TP.cq=this.value;tbRefresh()"><button class="gbtn" onclick="tNew()">'+ic('plus')+'Nowa kategoria</button></div>'
+   +'<div class="seg" role="group" aria-label="Filtr poziomu" style="margin:10px 0 4px">'+TBF.map(x=>'<button type="button" class="'+((TP.cf||'')===x[0]?'on':'')+'" onclick="tbF(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>'
+   +'<div id="tb-list">'+tbList()+'</div></div>';
+}
+function tNew(){tSync();tEdit=null;tDel=null;tRows=null;tDraft=null;tLvl='';TP.nc=1;renderTeach();tFocus()}
+function tCopy(id){
+  const c=CATS.find(x=>x.id===id);if(!c)return;tSync();
+  const f=$('tc-rows');if(f)f.remove();
+  tEdit=null;tDel=null;TP.nc=1;tRows=c.w.slice(0,300).map(w=>({pl:w[0],en:w[1],s:w[2]||'',t:w[3]||''}));tLvl=c.l||'';tDraft={n:c.n+' (moja)',e:c.e,nh:!!c.nh};
+  renderTeach();tFocus();
+}
+function tFocus(){const f=$('tc-form');if(f)f.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
 function tpAsg(c){
   const d=TP.d;if(!d)return '<div class="panel">Wczytuję…</div>';
   const opt=catOpts(),optC=catOpts(TP.pre);
@@ -2345,11 +2377,11 @@ function helpHTML(){
     +'<h4>Jak to widzi uczeń</h4><p>Zadania pojawiają się na górze strony głównej w panelu „Zadania od korepetytora” (z przyciskiem „Zrób zadanie”). Po wykonaniu zadanie <b>znika ze strony głównej</b>, a w Profilu zostaje jako zrobione.</p>'
     +hpFig('uczen-home','Strona główna ucznia z zadaniami od korepetytora','Widok ucznia: zadania od korepetytora są na samej górze strony głównej.')
     +hpTip('Zadania nie da się edytować. Jeśli pomyliłeś się, usuń je i utwórz nowe. Zadanie dla wybranych uczniów oznaczone jest etykietą „dla N uczn.”.'));
-  const s8=hpSec('kategorie',8,'Własne kategorie słówek',
-    '<p>Oprócz gotowych kategorii możesz tworzyć własne, np. słownictwo z aktualnego rozdziału. Od razu pojawiają się w grach uczniów (WordCraft, WordLinks) i możesz je zadawać jako zadania.</p>'
-    +'<p>W zakładce <i>Kategorie</i> rozwiń <b>Bank WordLand</b>: to gotowe kategorie podzielone na poziomy A1, A2 i B1. <b>Podgląd</b> pokazuje wszystkie słówka kategorii, a <b>Zadaj</b> od razu otwiera nowe zadanie z wybraną kategorią. Przy wyborze kategorii w zadaniach lista jest pogrupowana według poziomów.</p>'
+  const s8=hpSec('kategorie',8,'Baza słówek i własne kategorie',
+    '<p>Zakładka <i>Kategorie</i> to cała baza słówek: gotowe kategorie WordLand (poziomy A1, A2, B1) i Twoje własne. Kategorie możesz <b>wyszukiwać</b> (po nazwie albo słówku) i <b>filtrować</b> według poziomu. Przy każdej jest <b>Podgląd</b> słówek i przycisk <b>Zadaj</b>, który od razu otwiera nowe zadanie z tą kategorią. Gotową kategorię możesz też skopiować do swoich przyciskiem <b>Kopiuj do moich</b> i dopasować do klasy.</p>'
+    +'<p>Własne kategorie od razu pojawiają się w grach uczniów (WordCraft, WordLinks) i możesz je zadawać jako zadania.</p>'
     +hpFig('kreator','Kreator nowej kategorii słówek','Kreator kategorii: nazwa, ikona, poziom i lista słówek ze zdaniami z luką.')
-    +hpSteps(['Wejdź w <i>Kategorie</i> i wypełnij <b>nazwę</b>, wybierz <b>ikonę</b> i <b>poziom</b> (Bez poziomu, A1, A2, B1).','Dodaj słówka: <b>polski</b>, <b>angielski</b> i opcjonalnie <b>zdanie z luką</b> (w miejscu brakującego słowa wpisz ___). Enter w ostatnim wierszu dodaje nowy.','Szybciej: kliknij <b>Wklej z Excela</b> i wklej wiele wierszy naraz. Kolumny oddziel tabulatorem, średnikiem albo znakiem „=”. Błędne wiersze są pomijane.','Kliknij <b>Zapisz kategorię</b>. Potrzeba co najmniej <b>4 słówek</b>.'])
+    +hpSteps(['W zakładce <i>Kategorie</i> kliknij <b>Nowa kategoria</b>, wpisz <b>nazwę</b>, wybierz <b>ikonę</b> i <b>poziom</b> (Bez poziomu, A1, A2, B1).','Dodaj słówka: <b>polski</b>, <b>angielski</b> i opcjonalnie <b>zdanie z luką</b> (w miejscu brakującego słowa wpisz ___). Enter w ostatnim wierszu dodaje nowy.','Szybciej: kliknij <b>Wklej z Excela</b> i wklej wiele wierszy naraz. Kolumny oddziel tabulatorem, średnikiem albo znakiem „=”. Błędne wiersze są pomijane.','Kliknij <b>Zapisz kategorię</b>. Potrzeba co najmniej <b>4 słówek</b>.'])
     +'<ul><li><b>Trudniej</b>: zaznacz opcję ukrywania polskiego tłumaczenia w zdaniach z luką, jeśli ma być trudniej.</li><li><b>Edytuj</b>: zmienisz słówka, poziom i ikonę. <b>Ukryj / Pokaż uczniom</b>: ukryta kategoria jest niewidoczna dla ogółu, ale uczniowie, którym ją zadałeś, nadal ją widzą.</li><li><b>Usuń</b>: wymaga potwierdzenia.</li></ul>'
     +hpTip('Dobre zdania z luką uczą słów w kontekście. Przykład: „I kick the ___.” dla słowa <i>ball</i>.'));
   const s9=hpSec('gry',9,'Gry: zasady w pigułce',

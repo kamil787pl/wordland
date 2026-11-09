@@ -152,8 +152,15 @@ with sync_playwright() as pw:
     pg.evaluate("show('prof')");res['korepetytor: profil bez linku']='mam kod' not in pg.inner_text('#v-prof')
     pg.evaluate("show('teach')");pg.wait_for_timeout(300)
     res['panel: 4 zakladki']=pg.locator('.tp-tabs button').all_inner_texts();pg.click('.tp-tabs button:has-text("Kategorie")')
-    res['bank: panel']='Bank WordLand' in pg.inner_text('#v-teach')
-    pg.click('details.panel summary');pg.click('button:has-text("Podgląd") >> nth=0');res['bank: podglad slow']='dog' in pg.inner_text('#v-teach');pg.wait_for_timeout(600);pg.screenshot(path=S+'/panel-bank.png',full_page=True);pg.click('details.panel summary')
+    res['baza: panel']='Baza słówek' in pg.inner_text('#v-teach')
+    pg.click('button:has-text("Podgląd") >> nth=0');res['baza: podglad slow']='dog' in pg.inner_text('#v-teach');pg.wait_for_timeout(600);pg.screenshot(path=S+'/panel-bank.png',full_page=True);pg.click('button:has-text("Zwiń")')
+    pg.set_viewport_size({'width':390,'height':844});pg.wait_for_timeout(400);pg.screenshot(path=S+'/panel-bank-m.png',full_page=True);res['baza: mobile bez poziomego przewijania']=pg.evaluate('document.documentElement.scrollWidth<=innerWidth+1');pg.set_viewport_size({'width':1000,'height':900});pg.wait_for_timeout(300)
+    pg.fill('#tb-q','dog');res['baza: szukanie po slowku']=pg.locator('#tb-list .crow').count()>=1
+    pg.fill('#tb-q','zzzz');res['baza: brak wynikow']='Nic nie znaleziono' in pg.inner_text('#tb-list');pg.fill('#tb-q','')
+    pg.click('#v-teach .seg button:has-text("A2")');res['baza: filtr A2 bez A1']='Zwierzęta' not in pg.inner_text('#tb-list');pg.click('#v-teach .seg button:has-text("Wszystkie")')
+    pg.click('button:has-text("Kopiuj do moich") >> nth=0');pg.wait_for_timeout(200);res['baza: kopia do kreatora']={'nazwa':pg.input_value('#tc-n'),'wiersze':pg.locator('#tc-rows .wr').count(),'poziom':pg.inner_text('#tc-seg button.on')};pg.click('#tc-form button:has-text("Anuluj")')
+    res['baza: kreator ukryty domyslnie']=pg.locator('#tc-form').count()==0
+    pg.click('button:has-text("Nowa kategoria")')
     # nowa kategoria (kreator)
     res['kreator: 4 puste wiersze']=pg.locator('#tc-rows .wr').count()
     pg.fill('#tc-n','Sport');pg.click('.emo button >> nth=10');res['ikona z listy']=pg.input_value('#tc-e')
@@ -173,7 +180,7 @@ with sync_playwright() as pw:
     HS('#v-teach',S+'/help-kreator.png')
     pg.screenshot(path=S+'/wiz.png',full_page=True)
     pg.click('button:has-text("Zapisz kategorię")');pg.wait_for_timeout(900)
-    res['po zapisie']={'komunikat':pg.inner_text('#tc-m'),'w_bazie':[(c['name'],c['emoji'],c['level'],[w['en'] for w in c['words']]) for c in cats if c['owner']],'w_grze':pg.evaluate("CATS.filter(c=>c.own).map(c=>c.n+':'+c.w.length)")}
+    res['po zapisie']={'komunikat':pg.locator('p[role=status].ok').first.inner_text(),'w_bazie':[(c['name'],c['emoji'],c['level'],[w['en'] for w in c['words']]) for c in cats if c['owner']],'w_grze':pg.evaluate("CATS.filter(c=>c.own).map(c=>c.n+':'+c.w.length)")}
     # edycja: usuń wiersz, zmień zdanie
     pg.click('button:has-text("Edytuj")');pg.wait_for_timeout(300)
     res['edycja: wypelnione']={'nazwa':pg.input_value('#tc-n'),'ikona':pg.input_value('#tc-e'),'poziom_on':pg.inner_text('#tc-seg button.on'),'wiersze':pg.locator('#tc-rows .wr').count(),'pierwszy':pg.locator('#tc-rows .wr .p').first.input_value()}
@@ -232,7 +239,7 @@ with sync_playwright() as pw:
     res['zadanie celowane']=[(a['title'],a['targets']==[next(u['id'] for n,u in users.items() if n=='jan_n')]) for a in ASG if a['title']=='Tylko Jan']
     pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(200);res['lista zadan: podsumowanie']=pg.inner_text('.tp-a >> nth=0')[:140]
     pg.click('.tp-tabs button:has-text("Kategorie")');pg.wait_for_timeout(100)
-    pg.click('details.panel summary');pg.click('button:has-text("Zadaj") >> nth=0');pg.wait_for_timeout(200);res['bank: zadaj otwiera formularz']={'tab':pg.evaluate('TP.tab'),'tytul':pg.input_value('#ta-t'),'wybrana':pg.evaluate("$('ta-c0').selectedOptions[0].text"),'grup_poziomow':pg.locator('#ta-c0 optgroup').count()}
+    pg.click('button:has-text("Zadaj") >> nth=0');pg.wait_for_timeout(200);res['bank: zadaj otwiera formularz']={'tab':pg.evaluate('TP.tab'),'tytul':pg.input_value('#ta-t'),'wybrana':pg.evaluate("$('ta-c0').selectedOptions[0].text"),'grup_poziomow':pg.locator('#ta-c0 optgroup').count()}
     pg.click('button:has-text("Anuluj")');pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(100)
     pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
     pg.check('.tp-st:has-text("leniwy") input');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(150);pot2=pg.is_visible('text=Kliknij jeszcze raz: usunąć');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(700)
