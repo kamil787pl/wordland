@@ -7,7 +7,7 @@ with sync_playwright() as pw:
     br=pw.chromium.launch();pg=br.new_page(viewport={'width':1000,'height':900});pg.on('pageerror',lambda e:errs.append(str(e)))
     pg.goto(URL);pg.wait_for_timeout(400);pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(400)
     pg.evaluate("window.CALLS=[];U={id:'u1',nick:'Test'};sb={rpc:async(n,a)=>{CALLS.push([n,a]);return{data:n==='heist_award'?40:[]}},from:()=>({upsert:async()=>({})})}")
-    pg.evaluate("show('heist')");pg.wait_for_timeout(200)
+    pg.evaluate("hsNew(0);show('heist')");pg.wait_for_timeout(200)
     res['nakladka startowa']=pg.locator('.hs-go').count()==1 and pg.evaluate("HS.go")==0
     res['ranking przed startem']=pg.locator('#v-heist .cn-lbp').count()==1
     pg.evaluate("hsStart()");pg.wait_for_timeout(100)
@@ -53,7 +53,7 @@ with sync_playwright() as pw:
         pg.evaluate("HS.v='board';renderHeist();HS.sus=%d;hsAsk();for(let i=0;i<%d;i++)hsAskTap(i)"%(sus,n))
     res['Lucy etap 1: dentysta']=pg.evaluate("HS.int[1]")==1 and pg.evaluate("HS.int.every(n=>n>=1)")
     pg.evaluate("HS.v='board';renderHeist();HS.sus=1;hsAsk();for(let i=0;i<6;i++)hsAskTap(i)")
-    res['Lucy etap 2: kurtka u Toma']=pg.evaluate("HS.int[1]")==2 and 'Tom has it' in pg.inner_text('.hs-ov')
+    res['Lucy etap 2: dentysta mowi']=pg.evaluate("HS.int[1]")==2 and 'Everything is OK' in pg.inner_text('.hs-ov')
     pg.evaluate("HS.v='board';renderHeist();HS.sus=2;hsAsk();for(let i=0;i<7;i++)hsAskTap(i)")
     res['Green etap 2: klasa 5A']=pg.evaluate("HS.int[2]")==2
     pg.evaluate("HS.v='board';renderHeist()")
@@ -74,7 +74,7 @@ with sync_playwright() as pw:
     res['suma zawiera WordHeist']=pg.evaluate("totalPts()")>=40
     res['ranking po werdykcie']=pg.locator('#v-heist .cn-lbp').count()==1
     # idealna sprawa: 3 gwiazdki i 300 pkt
-    pg.evaluate("hsNewR();hsStart()")
+    pg.evaluate("hsNewR(0);hsStart()")
     for i in range(1,12):pg.evaluate("hsOpen(%d);hsPick(hsIt(%d).a)"%(i,i))
     pg.evaluate("hsBoard()")
     for sus in (0,1,2,3):pg.evaluate("HS.sus=%d;hsAsk();for(let i=0;i<HSQS[%d][0].w.length;i++)hsAskTap(i);HS.v='board'"%(sus,sus))
@@ -82,7 +82,7 @@ with sync_playwright() as pw:
     res['ideal: 3 gwiazdki, 300 pkt']=pg.evaluate("[HS.stars,HS.pts]")==[3,300]
     res['ideal: brak nowych punktow lokalnie (mock daje 40)']=pg.evaluate("HS.over")==1
     res['klawisze 1-4']=True
-    pg.evaluate("hsNewR();hsStart();hsOpen(1)");pg.keyboard.press('2');res['klawisz 2 wybiera']=pg.evaluate("!!HS.done[1]")
+    pg.evaluate("hsNewR(0);hsStart();hsOpen(1)");pg.keyboard.press('2');res['klawisz 2 wybiera']=pg.evaluate("!!HS.done[1]")
     pg.evaluate("show('prof')");t=pg.inner_text('#v-prof')
     res['profil: panel i ranga']='WordHeist' in t and 'Ranga WordHeist' in t
     res['trofea 30']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==30
@@ -97,7 +97,24 @@ with sync_playwright() as pw:
     res['rangi w Poradniku']='Legenda Wydziału' in pg.evaluate("hpRanks()")
     res['menu: przycisk']=pg.locator('#nb-heist').count()==1
     # mobilny widok
-    pg.set_viewport_size({'width':390,'height':800});pg.evaluate("show('heist');hsNewR();hsStart();hsOpen(3)");pg.wait_for_timeout(200)
+    pg.set_viewport_size({'width':390,'height':800});pg.evaluate("show('heist');hsNewR(0);hsStart();hsOpen(3)");pg.wait_for_timeout(200)
     res['mobilny: bez poziomego przewijania']=pg.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
     pg.set_viewport_size({'width':1000,'height':900});pg.evaluate("hsBack()");pg.screenshot(path=str(pathlib.Path(__file__).parent/'out'/'heist.png'))
+    # 4 warianty: kazdy da sie rozwiazac, sprawca roznie, zly sprawca odrzucony, losowanie nie powtarza wariantu
+    for vi in range(4):
+        pg.evaluate("hsNewR(%d);hsStart()"%vi)
+        c=pg.evaluate("HSV.c");res['wariant %d: sprawca %s, 11 dowodow, 13 elementow'%(vi,c)]=pg.evaluate("HSEV.length")==11 and pg.evaluate("HSI.length")==13 and pg.evaluate("HSI.every(x=>x&&x.id)")
+        res['wariant %d: kazdy dowod ma poprawna odpowiedz'%vi]=pg.evaluate("HSEV.every(x=>x.o[x.a]&&x.o.length===4)")
+        res['wariant %d: kazdy podejrzany ma 3 etapy'%vi]=pg.evaluate("HSQS.length===4&&HSQS.every(q=>q.length===3&&q.every(e=>e.w.length>3&&e.r))")
+        pg.evaluate("for(let i=1;i<=11;i++){hsOpen(i);hsPick(hsIt(i).a)}hsBoard()")
+        for sus in range(4):pg.evaluate("HS.sus=%d;hsAsk();for(let i=0;i<HSQS[%d][0].w.length;i++)hsAskTap(i);HS.v='board'"%(sus,sus))
+        pg.evaluate("renderHeist()")
+        wrong=pg.evaluate("HSS.findIndex(s=>s.k!==HSV.c)");e=pg.evaluate("HS.err")
+        pg.evaluate("HS.sus=%d;HS.sel=[2,3];hsAccuse()"%wrong);res['wariant %d: zly sprawca odrzucony'%vi]=pg.evaluate("HS.over")==0 and pg.evaluate("HS.err")==e+1 and pg.evaluate("!!HSS[%d].ev&&HS.msg.includes(hsIt(HSS[%d].ev).n)"%(wrong,wrong))
+        pg.evaluate("HS.sus=HSS.findIndex(s=>s.k===HSV.c);HS.sel=[];hsSel(11);hsSel(2);hsAccuse()");pg.wait_for_timeout(200)
+        res['wariant %d: wygrana z zakonczeniem'%vi]=pg.evaluate("HS.over")==1 and pg.evaluate("HSV.room")in pg.inner_html('#v-heist')
+    seen=set()
+    for _ in range(12):
+        v0=pg.evaluate("HSVI");pg.evaluate("hsNewR()");seen.add(pg.evaluate("HSVI"));res['bez powtorki wariantu']=pg.evaluate("HSVI")!=v0 and res.get('bez powtorki wariantu',True)
+    res['losowanie daje rozne warianty']=len(seen)>=3
     print({k:v for k,v in res.items() if v is not True});print('OK' if not errs else 'BLEDY',errs)

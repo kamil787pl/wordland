@@ -21,7 +21,7 @@ with sync_playwright() as pw:
     for _ in range(5):
         pg.evaluate("CL.between&&clNext();clTap(CL.cur.ok)");pg.wait_for_timeout(800)
     pg.evaluate("CL.between&&clNext()");pg.wait_for_timeout(600);pg.locator('#v-climb .gstage').screenshot(path=O+'help-climb.png')
-    pg.evaluate("show('heist');hsNewR();hsStart();hsOpen(1);hsPick(HSI[0].a);hsBack();hsOpen(3);hsPick(HSI[2].a);hsBack()");pg.wait_for_timeout(400);pg.locator('#v-heist .gstage').screenshot(path=O+'help-heist.png')
+    pg.evaluate("show('heist');hsNewR(0);hsStart();hsOpen(1);hsPick(HSI[0].a);hsBack();hsOpen(3);hsPick(HSI[2].a);hsBack()");pg.wait_for_timeout(400);pg.locator('#v-heist .gstage').screenshot(path=O+'help-heist.png')
     pg.evaluate("show('prof')");pg.wait_for_timeout(500);pg.locator('#v-prof .room').screenshot(path=O+'help-pokoj.png')
     pg.evaluate("show('game');openGame()");pg.wait_for_timeout(800);pg.locator('#v-game').screenshot(path=O+'help-wc.png')
     print('OK',errs)
