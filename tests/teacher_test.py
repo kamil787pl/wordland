@@ -152,6 +152,8 @@ with sync_playwright() as pw:
     pg.evaluate("show('prof')");res['korepetytor: profil bez linku']='mam kod' not in pg.inner_text('#v-prof')
     pg.evaluate("show('teach')");pg.wait_for_timeout(300)
     res['panel: 4 zakladki']=pg.locator('.tp-tabs button').all_inner_texts();pg.click('.tp-tabs button:has-text("Kategorie")')
+    res['bank: panel']='Bank WordLand' in pg.inner_text('#v-teach')
+    pg.click('details.panel summary');pg.click('button:has-text("Podgląd") >> nth=0');res['bank: podglad slow']='dog' in pg.inner_text('#v-teach');pg.wait_for_timeout(600);pg.screenshot(path=S+'/panel-bank.png',full_page=True);pg.click('details.panel summary')
     # nowa kategoria (kreator)
     res['kreator: 4 puste wiersze']=pg.locator('#tc-rows .wr').count()
     pg.fill('#tc-n','Sport');pg.click('.emo button >> nth=10');res['ikona z listy']=pg.input_value('#tc-e')
@@ -229,6 +231,9 @@ with sync_playwright() as pw:
     pg.fill('#ta-t','Tylko Jan');pg.click('button:has-text("Zadaj wybranym")');pg.wait_for_timeout(700)
     res['zadanie celowane']=[(a['title'],a['targets']==[next(u['id'] for n,u in users.items() if n=='jan_n')]) for a in ASG if a['title']=='Tylko Jan']
     pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(200);res['lista zadan: podsumowanie']=pg.inner_text('.tp-a >> nth=0')[:140]
+    pg.click('.tp-tabs button:has-text("Kategorie")');pg.wait_for_timeout(100)
+    pg.click('details.panel summary');pg.click('button:has-text("Zadaj") >> nth=0');pg.wait_for_timeout(200);res['bank: zadaj otwiera formularz']={'tab':pg.evaluate('TP.tab'),'tytul':pg.input_value('#ta-t'),'wybrana':pg.evaluate("$('ta-c0').selectedOptions[0].text"),'grup_poziomow':pg.locator('#ta-c0 optgroup').count()}
+    pg.click('button:has-text("Anuluj")');pg.click('.tp-tabs button:has-text("Zadania")');pg.wait_for_timeout(100)
     pg.click('.tp-tabs button:has-text("Uczniowie")');pg.wait_for_timeout(200)
     pg.check('.tp-st:has-text("leniwy") input');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(150);pot2=pg.is_visible('text=Kliknij jeszcze raz: usunąć');pg.click('.tp-bulk button.dng');pg.wait_for_timeout(700)
     res['usuniecie zaznaczonych']={'potwierdzenie':pot2,'zostalo':pg.locator('.tp-st').count()}
