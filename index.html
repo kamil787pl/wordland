@@ -997,36 +997,6 @@ let BASE=CATS.length;
 const cl=(s,n=40)=>String(s==null?'':s).replace(/[<>&"`]/g,'').trim().slice(0,n);
 function norm(c){try{const w=(c.w||[]).map(x=>{const q=[cl(x[0]),cl(x[1])],z=cl(x[2],90);if(z.includes('___'))q.push(z);return q}).filter(x=>x[0]&&x[1]).slice(0,40);if(w.length<4)return null;return{n:cl(c.n)||'Moja kategoria',e:cl(c.e).slice(0,4)||'⭐',w}}catch(e){return null}}
 SV.c=(Array.isArray(SV.c)?SV.c:[]).map(norm).filter(Boolean);SV.c.forEach(c=>CATS.push(c));
-/* administrator */
-function admin(){show('teach');return;
-  state='menu';
-  if(ROLE==='teacher'){adm2();return}
-  if(!SV.pin)card('<h2>Tryb administratora</h2><p>Ustaw PIN (min. 4 znaki):</p><input id="pin" type="password"><p id="am"></p><button class="g" onclick="setPin()">Ustaw PIN</button> <button class="g" onclick="menu()">Wróć</button>');
-  else card('<h2>Tryb administratora</h2><input id="pin" type="password" placeholder="PIN"><p id="am"></p><button class="g" onclick="chkPin()">Wejdź</button> <button class="g" onclick="menu()">Wróć</button>');
-}
-function setPin(){const v=document.getElementById('pin').value;if(v.length<4){document.getElementById('am').textContent='Za krótki PIN';return}SV.pin=v;save();adm2()}
-function chkPin(){if(document.getElementById('pin').value===SV.pin)adm2();else document.getElementById('am').textContent='Zły PIN'}
-function adm2(m){
-  const cs=SV.c||[];
-  card('<h2>Nowa kategoria</h2><input id="cn" placeholder="Nazwa (np. Podróże)"><input id="ce" placeholder="Emoji (np. ✈️)" maxlength="4"><textarea id="cw" rows="6" placeholder="Jedno słówko w linii (min. 4):\npolskie=angielskie\nsamolot=plane=I travel by ___."></textarea><p id="am">'+(m||'')+'</p><button class="g" onclick="addCat()">Zapisz kategorię</button>'
-  +cs.map((c,i)=>'<p>'+c.e+' '+c.n+' ('+c.w.length+') <button class="g" onclick="delCat('+i+')">Usuń</button></p>').join('')
-  +dbList()+'<h2>Kod do udostępnienia</h2><textarea id="ci" rows="3">'+(cs.length?JSON.stringify(cs):'')+'</textarea><button class="g" onclick="impCat()">Wczytaj kod</button> <button class="g" onclick="menu()">Wróć</button>');
-}
-function addCat(){
-  const w=document.getElementById('cw').value.split('\n').map(l=>l.split('=')).filter(x=>x.length>=2);
-  const c=norm({n:document.getElementById('cn').value,e:document.getElementById('ce').value,w});
-  if(!c){document.getElementById('am').textContent='Potrzeba min. 4 linii: polskie=angielskie';return}
-  if(canDB()){saveCatDB(c);return}
-  SV.c.push(c);CATS.push(c);save();adm2('Zapisano: '+c.n);
-}
-function delCat(i){SV.c.splice(i,1);CATS.splice(BASE+i,1);if(SV.s)SV.s.splice(BASE+i,1);save();adm2('Usunięto kategorię')}
-function impl(){state='menu';card('<h2>Wczytaj kategorię</h2><p>Wklej kod od korepetytora:</p><textarea id="ci" rows="5"></textarea><p id="am"></p><button class="g" onclick="impCat(1)">Wczytaj</button> <button class="g" onclick="menu()">Wróć</button>')}
-function impCat(b){
-  try{const a=JSON.parse(document.getElementById('ci').value);let n=0;
-    (Array.isArray(a)?a:[]).forEach(x=>{const c=norm(x);if(c&&!CATS.some(y=>y.n===c.n)){SV.c.push(c);CATS.push(c);n++}});save();
-    if(b)document.getElementById('am').textContent='Wczytano kategorii: '+n;else adm2('Wczytano kategorii: '+n);
-  }catch(e){document.getElementById('am').textContent='Nieprawidłowy kod'}
-}
 /* boss */
 function startBoss(){
   state='boss';clearKeys();bq=shuffle(got.slice());bhp=bmax=bq.length;bflash=bhit=0;answered=true;bph=1;bcnt=0;bsh=0;bpr=[];bshk=0;phit=0;say(BS().hi);beep(110,.5,'sawtooth',.06,70);
@@ -1814,22 +1784,6 @@ async function logout(){
   U=null;ROLE='student';MY={cls:null,asg:null};SKEY='wc2';try{SV=JSON.parse(localStorage.getItem(SKEY)||'{}')}catch(e){SV={}}SV.m=SV.m||{};
   await loadBank();start(0);menu();show('home');
 }
-function dbList(){
-  if(!U||ROLE!=='teacher')return'<p class="lg" style="font-size:12px;margin:10px 0">'+(U?'':'Zaloguj się kontem korepetytora, aby zapisywać kategorie w bazie dla wszystkich uczniów.')+'</p>';
-  const mine=CATS.filter(c=>c.own&&c.own===U.id);
-  return'<h2>☁️ Moje kategorie w bazie</h2>'+(mine.length?mine.map(c=>'<p>'+c.e+' '+c.n+' ('+c.w.length+') <button class="g" onclick="delCatDB('+c.id+')">Usuń</button></p>').join(''):'<p>Brak – dodaj pierwszą powyżej (zapisze się w bazie dla wszystkich uczniów).</p>');
-}
-async function saveCatDB(c){
-  const am=document.getElementById('am');if(am)am.textContent='Zapisuję w bazie…';
-  try{
-    const r=await sb.from('categories').insert({slug:'u-'+U.id.slice(0,6)+'-'+Date.now().toString(36),name:c.n,emoji:c.e,is_public:true,owner:U.id,sort:100}).select('id').single();
-    if(r.error)throw r.error;
-    const seen=new Set(),rows=[];c.w.forEach(w=>{const k=w[0]+'='+w[1];if(!seen.has(k)){seen.add(k);rows.push({category_id:r.data.id,pl:w[0],en:w[1],sentence:w[2]||null})}});
-    const q=await sb.from('words').insert(rows);if(q.error)throw q.error;
-    await loadBank();adm2('Zapisano w bazie: '+c.n);
-  }catch(e){adm2('Błąd zapisu: '+(e&&e.message||'sieć'))}
-}
-async function delCatDB(id){try{await sb.from('categories').delete().eq('id',id);await loadBank();adm2('Usunięto kategorię')}catch(e){adm2('Błąd usuwania')}}
 /* ===== PANEL KOREPETYTORA (w portalu) ===== */
 let tEdit=null,tDel=null;
 
