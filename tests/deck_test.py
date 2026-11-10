@@ -97,6 +97,8 @@ with sync_playwright() as pw:
     res['odpowiedzi zapisuja postep slowka we wspolnej bazie portalu']=pg.evaluate("(()=>{"+ST+"DK.hand[0]=C('Rakieta');dkPlay(0);const w=DK.task.t.w,k=w[0]+'='+w[1],r0=(SV.m[k]||{r:0}).r;dkAns(DK.task.t.ok);dkPlace();return SV.m[k].r===r0+1})()")
     pg.evaluate("dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='p';DK.en=6;DK.hand[0]=DKCARDS.find(c=>c.w==='Rakieta');renderDeck();dkPlay(0)");pg.wait_for_timeout(150)
     res['nakladka pokazuje zagrywana karte (nazwa kosmiczna)']=pg.locator('.dk-tcw .dk-h.big strong').inner_text().lower()=='rakieta'
+    res['kazda z 64 kart ma wlasna ikone SVG (nie emoji)']=pg.evaluate("DKCARDS.length===64&&DKCARDS.every(c=>DKIC[c.w]&&dkIc(c).startsWith('<svg'))")
+    res['nakladka i reka renderuja ikone SVG']=pg.evaluate("document.querySelectorAll('.dk-tcw .dk-h.big .dart svg.dic').length===1")
     for l in ['A1','A2','B1']:
         pg.evaluate("show('deck');dkLvl('%s')"%l);pg.wait_for_timeout(100)
         res['poziom '+l+': talia z kart <= poziomu']=pg.evaluate("DK.deck.concat(DK.hand).every(c=>c.lv<=DKL[DK.lvl])")
