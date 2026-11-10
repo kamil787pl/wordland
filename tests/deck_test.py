@@ -6,7 +6,7 @@ res={};errs=[]
 with sync_playwright() as pw:
     br=pw.chromium.launch();pg=br.new_page(viewport={'width':1000,'height':900});pg.on('pageerror',lambda e:errs.append(str(e)))
     pg.goto(URL);pg.wait_for_timeout(400);pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(400)
-    res['katalog: 60 kart, zadania poprawne']=pg.evaluate("DKCARDS.length===60&&DKCARDS.every(c=>{const t=dkTask(c,'B1');return t.opts.length===4&&t.opts[t.ok]&&new Set(t.opts).size===4})")
+    res['katalog: 64 karty (w tym 4 zaklecia), zadania poprawne']=pg.evaluate("DKCARDS.length===64&&DKCARDS.every(c=>{const t=dkTask(c,'B1');return t.opts.length===4&&t.opts[t.ok]&&new Set(t.opts).size===4})")
     res['talie: 10 kart na kazdym poziomie']=pg.evaluate("['A1','A2','B1'].every(l=>dkDeck(l).length===10&&new Set(dkDeck(l).map(c=>c.id)).size===10)")
     res['pole: 4 miejsca na karty']=pg.evaluate("(()=>{dkNew('A1');return DK.field[0].length===4&&DK.field[1].length===4})()")
     res['czasownik: opcje to rozne czasowniki, bez podpowiedzi w karcie']=pg.evaluate("""(()=>{const c=DKCARDS.find(x=>x.w==='swim');let ok=1;for(let i=0;i<40;i++){const t=dkTask(c,'B1');if(!t.gap||t.opts.length!==4||t.opts[t.ok]!=='swim')ok=0;if(t.opts.filter(o=>/^(swim|swims|swam|swimming|swum)$/.test(o)).length>2)ok=0}
@@ -60,6 +60,38 @@ with sync_playwright() as pw:
         pg.evaluate("dkEnd()")
         pg.wait_for_function("DK.ph!=='x'&&DK.ph!=='b'||DK.over",timeout=20000)
     res['pojedynek z rywalem na starcie tez sie konczy']=pg.evaluate("DK.over===1&&DK.turn<=8")
+    # --- nowe mechaniki
+    ST="dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='p';DK.en=6;const C=w=>DKCARDS.find(c=>c.w===w);"
+    res['podglad przewagi: +1 / -1 / prosto w serca']=pg.evaluate("(()=>{"+ST+"DK.field[0][0]=dkInst(C('cat'),'full');DK.field[1][0]=dkInst(C('run'),'full');DK.field[0][1]=dkInst(C('run'),'full');DK.field[1][1]=dkInst(C('cat'),'full');DK.field[0][2]=dkInst(C('dog'),'full');renderDeck();return document.querySelectorAll('.dk-row.p .adv.up').length===1&&document.querySelectorAll('.dk-row.p .adv.dn').length===1&&document.querySelectorAll('.dk-row.p .adv.open').length===1&&document.querySelectorAll('.dk-row.e .adv.dn').length===1})()")
+    res['ruch karty: 1 energii, raz na turę, zamiana i puste pole']=pg.evaluate("(()=>{"+ST+"DK.field[0][0]=dkInst(C('cat'),'full');DK.field[0][1]=dkInst(C('dog'),'full');renderDeck();dkMove(0);const sel=DK.mv===0;dkMove(2);const a=DK.field[0][2]&&DK.field[0][2].c.w==='cat'&&!DK.field[0][0]&&DK.en===5&&DK.moved;dkMove(1);dkMove(0);return sel&&a&&DK.mv==null&&DK.en===5})()")
+    pg.evaluate("dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='p';DK.en=6;DK.field[0][0]=dkInst(DKCARDS.find(c=>c.w==='cat'),'full');renderDeck()")
+    pg.locator('.dk-row.p .dk-m').first.click();pg.wait_for_timeout(100)
+    res['ruch karty: klik w karte pokazuje pola docelowe']=pg.locator('.dk-slot.pick.mv').count()==3
+    res['zaklecia: leczenie, wzmocnienie, zamrozenie, obrazenia']=pg.evaluate("(()=>{"+ST+"DK.hero[0]=10;dkCast(0,C('medicine'),'full',0);const h=DK.hero[0]===14;DK.field[0][0]=dkInst(C('cat'),'full');DK.field[0][1]=dkInst(C('dog'),'full');const a0=DK.field[0][0].atk;dkCast(0,C('strength'),'full',0);const b=DK.field[0][0].atk===a0+2&&DK.field[0][1].atk===C('dog').atk+2;DK.field[1][0]=dkInst(C('run'),'full');DK.field[1][2]=dkInst(C('big'),'full');dkCast(0,C('frost'),'full',0);const f=DK.field[1][0].frozen&&DK.field[1][2].frozen;dkCast(0,C('storm'),'half',0);return h&&b&&f&&DK.hero[1]===18})()")
+    res['zaklecie z reki: dziala od razu, nie zajmuje pola, zabiera energie']=pg.evaluate("(()=>{"+ST+"DK.hand[0]=C('storm');dkPlay(0);dkAns(DK.task.t.ok);dkPlace();return DK.hero[1]===17&&!DK.place&&DK.en===3&&DK.field[0].every(x=>!x)&&DK.hand.length===3})()")
+    res['seria 3 dobrych odpowiedzi: +1 energii']=pg.evaluate("(()=>{"+ST+"DK.streak=2;DK.hand[0]=C('cat');dkPlay(0);dkAns(DK.task.t.ok);dkPlace();return DK.streak===0&&DK.en===7&&!!DK.place})()")
+    res['pomylka zeruje serie']=pg.evaluate("(()=>{"+ST+"DK.streak=2;DK.hand[0]=C('cat');dkPlay(0);const t=DK.task.t;const w=k=>t.opts.map((_,j)=>j).filter(j=>j!==t.ok&&!t.dis[j])[0];dkAns(w());dkAns(w());dkPlace();return DK.streak===0&&DK.st.bad===1&&!!DK.miss[C('cat').id]})()")
+    res['trudne zadanie: wpisanie slowa, podpowiedz, druga szansa, bonus']=pg.evaluate("(()=>{"+ST+"DK.hand[0]=C('cat');dkPlay(0);dkHard(1);const T=DK.task.t;dkTyp('dogg');const h=T.tries===1&&/c/.test(T.hint)&&!T.done;dkTyp(' CAT ');const half=T.done==='half';dkPlace();const m=DK.place&&DK.place.b===0&&DK.place.mode==='half';DK.place=null;DK.hand[0]=C('dog');dkPlay(0);dkHard(1);dkTyp('dog');dkPlace();return h&&half&&m&&DK.place.b===1&&DK.place.mode==='full'})()")
+    res['trudne zadanie: bonus +1 moc i +1 tarcza na karcie']=pg.evaluate("(()=>{"+ST+"DK.hand[0]=C('cat');dkPlay(0);dkHard(1);dkTyp('cat');dkPlace();dkPut(0);const x=DK.field[0][0];return x.atk===C('cat').atk+1&&x.hp===C('cat').hp+1})()")
+    pg.evaluate("dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='p';DK.en=6;DK.hand[0]=DKCARDS.find(c=>c.w==='cat');renderDeck();dkPlay(0);dkHard(1)");pg.wait_for_timeout(150)
+    res['trudne zadanie: pole tekstowe w nakladce']=pg.locator('#dk-in').count()==1 and pg.locator('.dk-hint,.dk-typ').count()>=1
+    res['plan bota (B1): stawia rzeczownik naprzeciw czasownika gracza']=pg.evaluate("(()=>{"+ST+"DK.ben=6;DK.bhand=[C('cat')];DK.field[0][2]=dkInst(C('run'),'full');let ok=1;for(let i=0;i<25;i++){const p=dkPlan(1);if(!p||p.s!==2)ok=0}return !!ok})()")
+    res['bot rzuca zaklecie zamiast wystawiac karte, gdy ma tylko je']=pg.evaluate("(()=>{"+ST+"DK.ben=6;DK.bhand=[C('storm')];const p=dkPlan(1);return p&&p.s===-1&&p.c.w==='storm'})()")
+    pg.evaluate("dkNew('A2');DK.first=0;DK.go=1;DK.over=1;DK.ph='x';DK.hero=[5,0];DK.res='l';DK.miss={[DKCARDS.find(c=>c.w==='cat').id]:1,[DKCARDS.find(c=>c.w==='swim').id]:1};renderDeck()");pg.wait_for_timeout(150)
+    res['koniec: lista bledow i Powtorz teraz']=pg.locator('.dk-miss li').count()==2 and pg.locator('.dk-ov.end .dk-go').count()==1
+    pg.click('.dk-ov.end .dk-go');pg.wait_for_timeout(150)
+    res['powtorka: pytania z odpowiedziami']=pg.locator('.dk-opts button').count()>=3
+    pg.evaluate("dkDAns(DK.drill.t.ok)");pg.wait_for_timeout(900)
+    pg.evaluate("dkDAns(DK.drill.t.ok)");pg.wait_for_timeout(900)
+    res['powtorka: koniec i wynik 2/2']=pg.evaluate("DK.drill&&DK.drill.fin&&DK.drill.ok===2")
+    pg.evaluate("dkDClose()");pg.wait_for_timeout(100)
+    res['powtorka: zamkniecie czysci poprawione slowka']=pg.evaluate("!DK.drill&&Object.keys(DK.miss).length===0")
+    pg.evaluate("""(()=>{dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='x';const C=w=>DKCARDS.find(c=>c.w===w);window.__a=dkInst(C('dog'),'full');window.__b=dkInst(C('cat'),'full');window.__f=dkInst(C('fish'),'full');window.__g=dkInst(C('tree'),'full');window.__f.frozen=1;
+      DK.field[0][0]=window.__a;DK.field[1][0]=window.__b;DK.field[0][1]=window.__f;DK.field[1][1]=window.__g;window.__done=0;dkCombat(()=>{window.__done=1})})()""")
+    pg.wait_for_function("window.__done===1",timeout=15000)
+    res['walka jednoczesna: obie karty dostaja obrazenia od siebie']=pg.evaluate("(()=>{const C=w=>DKCARDS.find(c=>c.w===w);return __a.hp===C('dog').hp-C('cat').atk&&__b.hp===C('cat').hp-C('dog').atk})()")
+    res['zamrozona karta nie atakuje, a po walce sie odmraza']=pg.evaluate("__g.hp===__g.mhp&&!__f.frozen")
+    res['remis w sercach rozstrzyga sila ostatnich ciosow']=pg.evaluate("(()=>{dkNew('A1');DK.hero=[0,0];DK.def=[1,3];dkFinish();return DK.res==='w'})()")
     for l in ['A1','A2','B1']:
         pg.evaluate("show('deck');dkLvl('%s')"%l);pg.wait_for_timeout(100)
         res['poziom '+l+': talia z kart <= poziomu']=pg.evaluate("DK.deck.concat(DK.hand).every(c=>c.lv<=DKL[DK.lvl])")
