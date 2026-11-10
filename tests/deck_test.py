@@ -95,6 +95,7 @@ with sync_playwright() as pw:
     res['walka jednoczesna: obie karty dostaja obrazenia od siebie']=pg.evaluate("(()=>{const C=w=>DKCARDS.find(c=>c.w===w);return __a.hp===C('Zwiadowca').hp-C('Rakieta').atk&&__b.hp===C('Rakieta').hp-C('Zwiadowca').atk})()")
     res['zamrozona karta nie atakuje, a po walce sie odmraza']=pg.evaluate("__g.hp===__g.mhp&&!__f.frozen")
     res['bitwa do 3 wygranych: 3. wygrana konczy bitwe, przycisk Nowy pojedynek']=pg.evaluate("(()=>{dkNew('A1');DK.ser.w=[2,1];DK.hero=[5,0];dkFinish();return DK.sover==='w'&&DK.ser.w[0]===3})()") and 'Nowy pojedynek' in pg.inner_text('.gbar')
+    res['podsumowanie bitwy: puchar, wynik, lista rund, statystyki']=pg.evaluate("(()=>{dkNew('A1');DK.ser.w=[2,1];DK.hero=[5,0];dkFinish();const o=document.querySelector('.dk-sum.win');return !!o&&!!o.querySelector('.dk-cup svg')&&o.querySelectorAll('.dk-rd').length===1&&o.querySelector('.dk-big b').textContent==='3'&&o.querySelectorAll('.dk-tiles>div').length===3})()")
     res['przegrana 3. runda rywala konczy bitwe porazka']=pg.evaluate("(()=>{dkNew('A1');DK.ser.w=[1,2];DK.hero=[0,5];dkFinish();return DK.sover==='l'})()")
     res['wygrana rundy (1:1 -> 2:1) nie konczy bitwy, kolejna runda zaczyna druga strona']=pg.evaluate("(()=>{dkNew('A1');DK.first=0;DK.ser.w=[1,1];DK.hero=[5,0];dkFinish();const f=DK.first;dkRound();return !DK.sover&&DK.ser.w[0]===2&&DK.first===1-f&&DK.ser.n===2})()")
     res['remis w sercach rozstrzyga sila ostatnich ciosow']=pg.evaluate("(()=>{dkNew('A1');DK.hero=[0,0];DK.def=[1,3];dkFinish();return DK.res==='w'})()")
