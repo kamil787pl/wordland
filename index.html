@@ -1264,6 +1264,23 @@ html{scrollbar-gutter:stable}
 @keyframes dkconf{to{transform:translateY(560px) rotate(540deg);opacity:.2}}
 @media(max-width:699px){.dk-cup{width:84px;height:84px}.dk-sum h3{font-size:22px}.dk-big b{font-size:34px}.dk-big span{min-width:74px}}
 @media(prefers-reduced-motion:reduce){.dk-conf i,.dk-cup{animation:none}}
+/* efekty na kartach na polu: widoczne znaczniki, poświata i błysk przy nałożeniu */
+.dk-m .stx{position:absolute;left:3px;top:16px;display:flex;flex-direction:column;gap:2px;z-index:4;align-items:flex-start}
+.dk-m .stx b{display:inline-flex;align-items:center;gap:3px;padding:1px 5px 1px 3px;border-radius:9px;font:800 9px/1.2 "Figtree",sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#0c0a24;box-shadow:0 0 6px currentColor}
+.dk-m .stx b svg{width:10px;height:10px;flex:none}.dk-m .stx b em{font-style:normal;font-size:9px;filter:none}
+.dk-m .stx .frz{background:#9fe8ff;color:#0a3a55}.dk-m .stx .up{background:#ffd666;color:#5a3300}.dk-m .stx .sh{background:#6bf0a8;color:#0a4a2a}.dk-m .stx .weak{background:#c9c2d8;color:#3a2f55}
+.dk-m.frz{background:linear-gradient(160deg,#bff3ff,#4aa8d8 50%,#bff3ff)}.dk-m.frz:before{background:radial-gradient(circle at 30% 15%,#2a5a86,#0c1a3a 78%)}
+.dk-m.frz:after{content:"";position:absolute;inset:2px;border-radius:10px;pointer-events:none;z-index:3;background:linear-gradient(135deg,rgba(190,243,255,.38),rgba(120,200,255,.12) 45%,rgba(255,255,255,.3));mix-blend-mode:screen;box-shadow:inset 0 0 14px rgba(190,243,255,.8)}
+.dk-m.frz .dic{filter:saturate(.5) brightness(1.1) drop-shadow(0 0 6px #7ae0ff)}
+.dk-m.bst:not(.frz){box-shadow:0 0 14px #ffd666,0 0 0 1.5px #ffd666}.dk-m.shd:not(.frz):not(.bst){box-shadow:0 0 14px #6bf0a8,0 0 0 1.5px #6bf0a8}.dk-m.bst.shd:not(.frz){box-shadow:0 0 14px #ffd666,0 0 0 1.5px #6bf0a8}
+.dk-m .dst u.up{box-shadow:0 0 0 2px #fff;filter:drop-shadow(0 0 5px #ffd666)}.dk-m .dst u.a.dn{filter:saturate(.4)}
+.dk-m.pop-up{animation:dkpopu .9s ease-out}.dk-m.pop-sh{animation:dkpops .9s ease-out}.dk-m.pop-frz{animation:dkpopf .9s ease-out}
+@keyframes dkpopu{0%{transform:scale(1)}25%{transform:scale(1.12);filter:brightness(1.8) drop-shadow(0 0 12px #ffd666)}100%{transform:none}}
+@keyframes dkpops{0%{transform:scale(1)}25%{transform:scale(1.1);filter:brightness(1.6) drop-shadow(0 0 12px #6bf0a8)}100%{transform:none}}
+@keyframes dkpopf{0%{transform:scale(1.15);filter:brightness(2.2)}60%{filter:brightness(1.3)}100%{transform:none}}
+@media(max-width:699px){.dk-m .stx b em{display:none}.dk-m .stx b{padding:2px}.dk-m .stx b svg{width:11px;height:11px}.dk-m .stx{top:14px}}
+@media(prefers-reduced-motion:reduce){.dk-m.pop-up,.dk-m.pop-sh,.dk-m.pop-frz{animation:none}}
+.dk-leg i.fx{display:inline-flex;width:16px;height:16px;border-radius:5px;background:#9fe8ff;color:#0a3a55;align-items:center;justify-content:center}.dk-leg i.fx svg{width:11px;height:11px}
 </style>
 </head>
 <body>
@@ -3873,7 +3890,7 @@ function dkTask(l,x){
   const opts=shuffle([ok].concat(wr));
   return{w,ci:x.ci,q,gap:gap?1:0,cap,opts,ok:opts.indexOf(ok),dis:[],tries:0,done:null}
 }
-function dkInst(c,mode,b){b=b||0;return{c,mode,atk:(mode==='full'?c.atk:mode==='half'?Math.ceil(c.atk/2):1)+b,hp:c.hp+b,mhp:c.hp+b,frozen:0}}
+function dkInst(c,mode,b){b=b||0;const a=(mode==='full'?c.atk:mode==='half'?Math.ceil(c.atk/2):1)+b;return{c,mode,atk:a,a0:a,hp:c.hp+b,mhp:c.hp+b,h0:c.hp+b,frozen:0,pop:''}}
 const DKWINS=3;
 function dkNew(l,keep){
   if(DK){clearTimeout(DK.tm);clearTimeout(DK.pt)}
@@ -3945,9 +3962,9 @@ function dkPut(s){
 function dkCast(side,c,mode,b){
   const v=dkSpV(c.fx,mode,b),me=DK.field[side],en=DK.field[1-side];let t;
   if(c.fx==='heal'){const g=Math.min(v,DKHP-DK.hero[side]);DK.hero[side]+=g;t='leczy '+g+' serc'}
-  else if(c.fx==='boost'){me.forEach(y=>{if(y)y.atk+=v});t='wszystkie karty +'+v+' mocy'}
+  else if(c.fx==='boost'){me.forEach(y=>{if(y){y.atk+=v;y.pop='up'}});t='wszystkie karty +'+v+' mocy'}
   else if(c.fx==='zap'){{const nh=DK.hero[1-side]-v;if(nh<0)DK.def[1-side]-=nh;DK.hero[1-side]=Math.max(0,nh)}DK.hit=[{side:1-side,k:-1,d:v}];t='rani serca rywala o '+v}
-  else{const n=Math.min(v,en.filter(Boolean).length);shuffle(en.filter(Boolean)).slice(0,v).forEach(y=>y.frozen=1);t='zamraża karty: '+n}
+  else{const n=Math.min(v,en.filter(Boolean).length);shuffle(en.filter(Boolean)).slice(0,v).forEach(y=>{y.frozen=1;y.pop='frz'});t='zamraża karty: '+n}
   beep(c.fx==='zap'?200:700,.18,'triangle',.07,c.fx==='zap'?90:1000);
   return(side?'Rywal rzuca ':'Rzucasz ')+c.w.toUpperCase()+': '+t+'.'
 }
@@ -3966,8 +3983,8 @@ function dkMove(k){
   DK.msg='Karta przesunięta na pole '+(k+1)+'.';beep(440,.08,'sine',.05,520);renderDeck()
 }
 function dkFx(side,x){
-  if(x.c.fx==='ally1')DK.field[side].forEach(y=>{if(y){y.hp++;y.mhp++}});
-  if(x.c.fx==='freeze')shuffle(DK.field[1-side].filter(Boolean)).slice(0,2).forEach(y=>y.frozen=1)
+  if(x.c.fx==='ally1')DK.field[side].forEach(y=>{if(y){y.hp++;y.mhp++;y.pop='sh'}});
+  if(x.c.fx==='freeze')shuffle(DK.field[1-side].filter(Boolean)).slice(0,2).forEach(y=>{y.frozen=1;y.pop='frz'})
 }
 /* walka: obie strony biją jednocześnie, pole po polu (obrażenia liczone ze stanu sprzed uderzeń), więc kolejność tur nie daje przewagi */
 function dkCombat(done){
@@ -4049,12 +4066,21 @@ function dkFinish(){
   if(DK.res==='w')beep(523,.2,'sine',.08,784);renderDeck()
 }
 const DKGEM='<svg class="dgem" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l6 5-6 9-6-9z" fill="var(--k)" stroke="#0c0a24" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 6h8M8 1v14" stroke="#fff" stroke-opacity=".5"/></svg>';
+const DKSV={frz:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M2 4.5l12 7M14 4.5l-12 7M6 2l2 2 2-2M6 14l2-2 2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',up:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14V3M3 7.5L8 2.5l5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',sh:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l5.5 2v4.5c0 3-2.3 5-5.5 6.5C4.8 13 2.5 11 2.5 8V3.5z" fill="currentColor"/></svg>',weak:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v11M3 8.5L8 13.5l5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
+function dkChips(x){
+  const a=x.atk-x.a0,h=x.mhp-x.h0,r=[];
+  if(x.frozen)r.push(['frz','Zamrożona','Zamrożona: pomija najbliższą walkę']);
+  if(a>0)r.push(['up','+'+a+' moc','Wzmocniona: +'+a+' mocy']);else if(a<0)r.push(['weak',a+' moc','Osłabiona: '+a+' mocy']);
+  if(h>0)r.push(['sh','+'+h+' tarcza','Dodatkowa tarcza: +'+h]);
+  if(x.mode==='half')r.push(['weak','½ mocy','Połowa mocy (zadanie z pomocą)']);else if(x.mode==='bad')r.push(['weak','1 moc','Zadanie błędne: tylko 1 moc']);
+  return r.length?'<span class="stx">'+r.map(c=>'<b class="'+c[0]+'" title="'+c[2]+'">'+DKSV[c[0]]+'<em>'+c[1]+'</em></b>').join('')+'</span>':''
+}
 function dkMini(x,i,side){
   if(!x)return side===0&&(DK.place||DK.mv!=null)?'<button class="dk-slot pick'+(DK.place?'':' mv')+'" onclick="'+(DK.place?'dkPut(':'dkMove(')+i+')" aria-label="'+(DK.place?'Postaw kartę':'Przesuń kartę')+' w miejscu '+(i+1)+'"><i>'+(i+1)+'</i><span>Tu</span></button>':'<div class="dk-slot"><i>'+(i+1)+'</i></div>';
   const c=x.c,nw=DK.last&&DK.last[0]===side&&DK.last[1]===i,AA=(DK.act||[]).find(a=>a.side===side&&a.k===i),A=AA?AA.ph:'',H=DK.hit&&DK.hit.find(h=>h.side===side&&h.k===i);
   const o=DK.field[1-side][i],adv=x.dead?'':!o?'<b class="adv open" title="Naprzeciw pusto: atak trafi prosto w serca">'+ic('target')+'</b>':DKADV[c.t]===o.c.t?'<b class="adv up" title="Przewaga typu: +1 do obrażeń">+1</b>':DKADV[o.c.t]===c.t?'<b class="adv dn" title="Rywal ma przewagę typu nad tą kartą">−1</b>':'',
   mvb=side===0&&DK.go&&DK.ph==='p'&&!DK.over&&!DK.task&&!DK.place;
-  return'<div class="dk-m r-'+c.rar+' t-'+c.t+(mvb?' mvb':'')+(mvb&&DK.mv===i?' sel':'')+(mvb&&DK.mv!=null&&DK.mv!==i?' swp':'')+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+(A?(A==='go'?' lg':' rc')+(side?'d':'u'):'')+(H?' hit':'')+(x.dead?' dead':'')+'" title="'+esc(c.w+' · '+DKTY[c.t]+(mvb?' · kliknij, aby przesunąć (1 energia, raz na turę)':''))+'"'+(mvb?' role="button" tabindex="0" onclick="dkMove('+i+')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();dkMove('+i+')}"':'')+'><i class="dcn"></i>'+DKGEM+'<u class="tdot"></u>'+dkIc(c)+'<strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+Math.max(0,x.hp)+'<span class="ico">'+ic('shield')+'</span></u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+(H?'<b class="dmg">-'+H.d+'</b>':'')+adv+'</div>'
+  return'<div class="dk-m r-'+c.rar+' t-'+c.t+(mvb?' mvb':'')+(mvb&&DK.mv===i?' sel':'')+(mvb&&DK.mv!=null&&DK.mv!==i?' swp':'')+(nw?' nw':'')+(x.frozen?' frz':'')+(x.pop?' pop-'+x.pop:'')+(x.atk>x.a0?' bst':'')+(x.mhp>x.h0?' shd':'')+(x.mode!=='full'?' md-'+x.mode:'')+(A?(A==='go'?' lg':' rc')+(side?'d':'u'):'')+(H?' hit':'')+(x.dead?' dead':'')+'" title="'+esc(c.w+' · '+DKTY[c.t]+(mvb?' · kliknij, aby przesunąć (1 energia, raz na turę)':''))+'"'+(mvb?' role="button" tabindex="0" onclick="dkMove('+i+')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();dkMove('+i+')}"':'')+'><i class="dcn"></i>'+DKGEM+'<u class="tdot"></u>'+dkIc(c)+'<strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a'+(x.atk>x.a0?' up':x.atk<x.a0?' dn':'')+'">'+x.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h'+(x.hp<x.mhp?' lo':'')+(x.mhp>x.h0?' up':'')+'">'+Math.max(0,x.hp)+'<span class="ico">'+ic('shield')+'</span></u></span>'+dkChips(x)+(H?'<b class="dmg">-'+H.d+'</b>':'')+adv+'</div>'
 }
 function dkOrbs(c){return'<span class="dorb" title="Klasa karty: '+c.lv+'/3">'+[1,2,3].map(k=>'<i class="'+(k<=c.lv?'on':'')+'"></i>').join('')+'</span>'}
 /* własne ikony kart (SVG 64x64, wspólna paleta); klucz = nazwa karty */
@@ -4184,6 +4210,7 @@ function dkDrillH(){
 }
 function renderDeck(){
   const root=$('v-deck');if(!root)return;if(!DK)dkNew(DKlvl);
+  const pops=DK.field.flat().filter(y=>y&&y.pop);if(pops.length)setTimeout(()=>pops.forEach(y=>y.pop=''),1000);
   const l=DK.lvl,wait=!DK.go&&!DK.over,T=DK.task&&DK.task.t,pl=DK.ph==='p'&&DK.go&&!DK.over;
   const head='<div class="cn-top"><div class="cn-seg" role="group" aria-label="Poziom">'+DKLN.map(x=>'<button class="'+(DKlvl===x?'on g-dk':'')+'" onclick="dkLvl(\''+x+'\')">'+x+'</button>').join('')+'</div><button class="cn-snd" onclick="dkSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
   const hud='<div class="gs-hud"><span class="gs-t">'+ic('cards')+'WordDeck</span><span class="gs-m">Runda '+(DK.sover?DK.ser.n:DK.over?DK.ser.n-1:DK.ser.n)+' · bitwa <b class="dk-sc">'+DK.ser.w[0]+':'+DK.ser.w[1]+'</b> · tura '+Math.min(Math.max(DK.turn,1),DKTURNS)+'/'+DKTURNS+' · '+l+'</span><span class="gs-s"><b>'+DK.hero[0]+'</b>:<b>'+DK.hero[1]+'</b></span></div>';
@@ -4205,7 +4232,7 @@ function renderDeck(){
   }
   else if(DK.over&&DK.sover)ov=dkSumH();
   else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.sover?(DK.sover==='w'?'Bitwa wygrana!':'Bitwa przegrana'):(DK.res==='w'?'Runda wygrana!':DK.res==='l'?'Runda przegrana':'Remis w rundzie'))+'</h3><p class="dk-ser">Wynik bitwy: <b>'+DK.ser.w[0]+' : '+DK.ser.w[1]+'</b> (do '+DKWINS+' wygranych rund)</p><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div>'+(()=>{const ms=Object.values(DK.miss).map(x=>x.w);return ms.length?'<p>Słówka, w których się pomyliłeś (wrócą w powtórkach):</p><ul class="dk-miss">'+ms.map(w=>'<li><b>'+esc(w[1])+'</b> '+esc(w[0])+'</li>').join('')+'</ul><button class="dk-go" onclick="dkDrill()">Powtórz teraz ('+ms.length+')</button>':'<p>Bez ani jednej pomyłki. Świetna robota!</p>'})()+'</div>';
-  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?(DK.sover?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkRound()">Następna runda</button><button onclick="dkLvl(DKlvl)">Nowa bitwa</button>'):'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task&&!DK.place?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Bitwa trwa do '+DKWINS+' wygranych rund. W rundzie odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Gdy obie strony zagrają, karty biją jednocześnie naprzeciwko siebie; Flota bije Obcych, Obcy biją Bazy, Bazy biją Flotę (+1). Klawisze 1–6 zagrywają karty z ręki. Kliknij swoją kartę na polu, aby ją przesunąć (1 energii, raz na turę). Niebieskie karty to zaklęcia: działają od razu. Trudniejsze zadanie (wpisanie słowa) daje bonus.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">'+ic('flame')+'</i> MOC: tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">'+ic('shield')+'</i> TARCZA: ile zniesie, zanim odpadnie</span><span><i class="o"></i> klasa karty (1–3)</span></div>';
+  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?(DK.sover?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkRound()">Następna runda</button><button onclick="dkLvl(DKlvl)">Nowa bitwa</button>'):'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task&&!DK.place?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Bitwa trwa do '+DKWINS+' wygranych rund. W rundzie odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Gdy obie strony zagrają, karty biją jednocześnie naprzeciwko siebie; Flota bije Obcych, Obcy biją Bazy, Bazy biją Flotę (+1). Klawisze 1–6 zagrywają karty z ręki. Kliknij swoją kartę na polu, aby ją przesunąć (1 energii, raz na turę). Niebieskie karty to zaklęcia: działają od razu. Trudniejsze zadanie (wpisanie słowa) daje bonus.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">'+ic('flame')+'</i> MOC: tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">'+ic('shield')+'</i> TARCZA: ile zniesie, zanim odpadnie</span><span><i class="o"></i> klasa karty (1–3)</span><span><i class="fx">'+DKSV.frz+'</i> znaczniki na karcie: zamrożona, +moc, +tarcza, osłabiona</span></div>';
   if(T&&T.hard&&!T.done){const e=$('dk-in');if(e)e.focus()}
   if(DK.last)DK.last=null;DK.ea=null
 }
