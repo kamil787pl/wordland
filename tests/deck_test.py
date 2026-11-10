@@ -21,12 +21,16 @@ with sync_playwright() as pw:
     res['nakladka zadania nie zdradza slowa karty']=pg.locator('.dk-tc strong').inner_text().lower()=='rzeczownik'
     res['zadanie: 3 odpowiedzi na A1']=pg.locator('.dk-opts button').count()==3
     pg.evaluate("dkAns(DK.task.t.ok)");pg.wait_for_timeout(1000)
-    res['dobra odpowiedz: karta na polu z pelna moca']=pg.evaluate("DK.field[0][0]&&DK.field[0][0].mode==='full'&&DK.field[0][0].atk===DK.field[0][0].c.atk&&DK.en===2")
-    pg.evaluate("DK.hand[0]=DKCARDS.find(c=>c.cost===1&&c.t==='n'&&c.id!==DK.field[0][0].c.id);dkPlay(0)");pg.wait_for_timeout(100)
+    res['po dobrej odpowiedzi: wybor miejsca (4 pola, energia jeszcze nie zabrana)']=pg.evaluate("!!DK.place&&DK.place.mode==='full'&&DK.en===3")and pg.locator('.dk-slot.pick').count()==4
+    res['podczas wyboru miejsca nie mozna grac ani konczyc tury']=pg.evaluate("(()=>{dkPlay(1);dkEnd();return !DK.task&&DK.ph==='p'&&!!DK.place})()")
+    pg.locator('.dk-slot.pick').nth(2).click();pg.wait_for_timeout(200)
+    res['karta stoi w wybranym miejscu (3), pelna moc, energia 2']=pg.evaluate("DK.field[0][2]&&!DK.field[0][0]&&DK.field[0][2].mode==='full'&&DK.field[0][2].atk===DK.field[0][2].c.atk&&DK.en===2&&!DK.place")
+    pg.evaluate("DK.hand[0]=DKCARDS.find(c=>c.cost===1&&c.t==='n'&&c.id!==DK.field[0][2].c.id);dkPlay(0)");pg.wait_for_timeout(100)
     pg.evaluate("const t=DK.task.t;dkAns((t.ok+1)%t.opts.length)");pg.wait_for_timeout(100)
     res['pierwsza pomylka: druga szansa']=pg.evaluate("DK.task&&DK.task.t.tries===1&&!DK.task.t.done")
     pg.evaluate("const t=DK.task.t;dkAns(t.opts.map((_,k)=>k).find(k=>k!==t.ok&&!t.dis[k]))");pg.wait_for_timeout(1700)
-    res['druga pomylka: karta potkniecia (moc 1)']=pg.evaluate("DK.field[0][1]&&DK.field[0][1].mode==='bad'&&DK.field[0][1].atk===1")
+    pg.evaluate("dkPut(1)")
+    res['druga pomylka: karta potkniecia (moc 1) w miejscu 2']=pg.evaluate("DK.field[0][1]&&DK.field[0][1].mode==='bad'&&DK.field[0][1].atk===1")
     res['za malo energii nie otwiera zadania']=pg.evaluate("DK.en=0;DK.hand[0]=DKCARDS.find(c=>c.cost===2);dkPlay(0);!DK.task")
     pg.evaluate("DK.en=2");pg.evaluate("dkEnd()");pg.wait_for_timeout(300)
     res['koniec tury: faza ataku/tura wroga']=pg.evaluate("DK.ph==='x'||DK.ph==='b'")
@@ -35,7 +39,7 @@ with sync_playwright() as pw:
     # symulacja do konca (zawsze dobre odpowiedzi)
     for i in range(12):
         if pg.evaluate("DK.over"):break
-        pg.evaluate("""(()=>{for(let k=0;k<3;k++){if(DK.task)break;const i=DK.hand.findIndex(c=>c.cost<=DK.en);if(i<0||DK.field[0].indexOf(null)<0)break;dkPlay(i);if(DK.task){dkAns(DK.task.t.ok);dkPlace()}}dkEnd()})()""")
+        pg.evaluate("""(()=>{for(let k=0;k<3;k++){if(DK.task)break;const i=DK.hand.findIndex(c=>c.cost<=DK.en);if(i<0||DK.field[0].indexOf(null)<0)break;dkPlay(i);if(DK.task){dkAns(DK.task.t.ok);dkPlace();dkPut(DK.field[0].indexOf(null))}}dkEnd()})()""")
         pg.wait_for_function("DK.ph==='p'||DK.over",timeout=20000)
     res['pojedynek konczy sie wynikiem']=pg.evaluate("DK.over===1&&['w','l','d'].includes(DK.res)&&DK.turn<=8")
     res['ekran konca i Nowy pojedynek']=pg.locator('.dk-ov.end').count()==1 and 'Nowy pojedynek' in pg.inner_text('.gbar')
