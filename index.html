@@ -1002,6 +1002,7 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 .bbr .bt{text-align:right;font:800 20px "Figtree",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#fff}
 .bbf{margin:10px 0 0;text-align:right;font:600 12px "Figtree",system-ui,sans-serif;color:#bcd2c0}
 @media(max-width:719px){.bbh .bg,.bbr .bg{display:none}.bbh,.bbr{grid-template-columns:40px minmax(0,1fr) minmax(56px,auto)}.bbh.one,.bbr.one{grid-template-columns:40px minmax(0,1fr) minmax(56px,auto)}.bs{display:flex}.cn-lbp.bb{padding:12px 10px 22px;border-width:8px}}
+.wc-cast{display:flex;justify-content:center;margin:6px 0 2px}.wc-cast img{width:128px;height:auto;animation:cdbob 2.4s ease-in-out infinite}.wc-in{margin:6px auto 12px;max-width:340px;font-weight:600;color:#2a1a0e;font-size:15px;line-height:1.4}.wc-in b{font-weight:800}
 </style>
 </head>
 <body>
@@ -1262,6 +1263,8 @@ function mT(d){if(!d.open)return;SV.o=d.dataset.l;save();document.querySelectorA
 function snap(fn,w,h,sc){try{const c=document.createElement('canvas');c.width=w;c.height=h;const old=ctx,sv=[p.face,p.on,p.vx];ctx=c.getContext('2d');ctx.scale(sc,sc);fn();ctx=old;p.face=sv[0];p.on=sv[1];p.vx=sv[2];return c.toDataURL()}catch(e){return ''}}
 function mhead(){if(!MI)MI={h:snap(()=>{p.face=1;p.on=true;p.vx=0;drawPlayer(14,10)},108,112,2.6),f:snap(()=>drawFluff({c:'#f2a03d',vx:1},5,9,0),112,96,3.2)};return '<div class="mh"><img src="'+MI.h+'" alt=""><h1>WordCraft</h1><img class="fl" src="'+MI.f+'" alt=""></div>'}
 const wcStars=s=>[1,2,3].map(i=>ic('star','f '+(i<=s?'pt':'dim'))).join('');
+let WCI=0;
+function wcIntro(){state='menu';WCI=1;mhead();card('<h1>WordCraft</h1><div class="wc-cast"><img src="'+MI.h+'" alt=""></div><p class="wc-in"><b>Do dzieła, górniku!</b> Kop bloki, skacz po platformach i zbieraj angielskie słówka. Każdą zdobycz zapiszesz, odpowiadając na pytanie, a na końcu czeka boss.</p><button class="pri" onclick="menu()">'+ic('play')+'Start</button>')}
 function menu(){
   if(CATS.length&&CATS[CATS.length-1].tmp){CATS.pop();if(SV.s)SV.s.length=Math.min(SV.s.length,CATS.length)}
   state='menu';const S=SV.s||[],gr=[];
@@ -1785,7 +1788,7 @@ function show(v){
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   ptsChip();clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
-  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='heist')renderHeist();if(v==='game'&&state==='menu')menu();
+  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='heist')renderHeist();if(v==='game'&&state==='menu'){WCI?menu():wcIntro()}
   if((v==='home'||v==='prof')&&live()&&ROLE!=='teacher'&&Date.now()-(MY.t||0)>30000)myLoad();
   window.scrollTo(0,0);
 }
