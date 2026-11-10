@@ -12,7 +12,8 @@ with sync_playwright() as pw:
     res['czasownik: opcje to rozne czasowniki, bez podpowiedzi w karcie']=pg.evaluate("""(()=>{const c=DKCARDS.find(x=>x.w==='swim');let ok=1;for(let i=0;i<40;i++){const t=dkTask(c,'B1');if(!t.gap||t.opts.length!==4||t.opts[t.ok]!=='swim')ok=0;if(t.opts.filter(o=>/^(swim|swims|swam|swimming|swum)$/.test(o)).length>2)ok=0}
       DK.task=null;return !!ok})()""")
     res['zadania roznych typow na wyzszych poziomach']=pg.evaluate("(()=>{const m=new Set();for(let i=0;i<60;i++)m.add(dkTask(DKCARDS.find(x=>x.w==='cat'),'A2').cap);return m.size>=2})()")
-    pg.evaluate("show('deck')");pg.wait_for_timeout(300)
+    res['losowanie: kto zaczyna bywa rozny']=pg.evaluate("(()=>{const f=new Set();for(let i=0;i<80;i++){dkNew('A1');f.add(DK.first)}return f.size===2})()")
+    pg.evaluate("dkNew('A1');DK.first=0;show('deck')");pg.wait_for_timeout(300)
     res['start: opis, Start i Wyjscie']=pg.locator('.dk-start .dk-go').count()==1 and pg.locator('.dk-start .xit').count()==1
     pg.click('.dk-start .pri,.dk-start .dk-go');pg.wait_for_timeout(200)
     res['po starcie: 4 karty w rece, energia 3']=pg.locator('.dk-h').count()==4 and pg.evaluate("DK.en")==3
@@ -48,6 +49,17 @@ with sync_playwright() as pw:
     res['nowy pojedynek: ekran startowy']=pg.locator('.dk-start').count()==1
     pg.click('.dk-start .xit');pg.wait_for_timeout(300)
     res['Wyjscie wraca na strone glowna']=pg.evaluate("view")=='home'
+    pg.evaluate("show('deck');dkLvl('A1');DK.first=1;dkStart()");pg.wait_for_function("DK.ph==='p'",timeout=15000)
+    res['zaczyna rywal: jego karta na polu, potem tura gracza (runda 1, energia 3)']=pg.evaluate("DK.turn===1&&DK.en===3&&DK.field[1].some(Boolean)&&DK.hand.length===4")
+    pg.evaluate("dkEnd()");pg.wait_for_function("DK.turn===2&&DK.ph==='b'||DK.turn===2&&DK.ph==='x'||DK.turn===2",timeout=15000)
+    res['po rundzie gracza zaczyna sie runda 2 od rywala']=pg.evaluate("DK.turn===2")
+    for i in range(12):
+        if pg.evaluate("DK.over"):break
+        pg.wait_for_function("DK.ph==='p'||DK.over",timeout=20000)
+        if pg.evaluate("DK.over"):break
+        pg.evaluate("dkEnd()")
+        pg.wait_for_function("DK.ph!=='x'&&DK.ph!=='b'||DK.over",timeout=20000)
+    res['pojedynek z rywalem na starcie tez sie konczy']=pg.evaluate("DK.over===1&&DK.turn<=8")
     for l in ['A1','A2','B1']:
         pg.evaluate("show('deck');dkLvl('%s')"%l);pg.wait_for_timeout(100)
         res['poziom '+l+': talia z kart <= poziomu']=pg.evaluate("DK.deck.concat(DK.hand).every(c=>c.lv<=DKL[DK.lvl])")

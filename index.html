@@ -3767,16 +3767,17 @@ function dkTask(c,l){
 function dkInst(c,mode){return{c,mode,atk:mode==='full'?c.atk:mode==='half'?Math.ceil(c.atk/2):1,hp:c.hp,mhp:c.hp,frozen:0}}
 function dkNew(l){
   if(DK)clearTimeout(DK.tm);
-  DK={lvl:l,go:0,over:0,turn:0,ph:'p',en:0,hero:[DKHP,DKHP],deck:dkDeck(l),hand:[],bdeck:dkDeck(l),bhand:[],field:[[null,null,null,null],[null,null,null,null]],ben:0,task:null,place:null,msg:'',st:{first:0,half:0,bad:0},tm:0,res:'',last:null};
+  DK={lvl:l,go:0,over:0,turn:0,ph:'p',en:0,hero:[DKHP,DKHP],deck:dkDeck(l),hand:[],bdeck:dkDeck(l),bhand:[],field:[[null,null,null,null],[null,null,null,null]],first:Math.random()<.5?0:1,ben:0,task:null,place:null,msg:'',st:{first:0,half:0,bad:0},tm:0,res:'',last:null};
   for(let i=0;i<4;i++){DK.hand.push(DK.deck.pop());DK.bhand.push(DK.bdeck.pop())}
 }
 function dkLvl(l){DKlvl=l;dkNew(l);renderDeck()}
 function dkSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderDeck()}
-function dkStart(){if(!DK||DK.go)return;DK.go=1;dkTurnP()}
+function dkStart(){if(!DK||DK.go)return;DK.go=1;DK.turn=1;DK.draw=1;DK.first?dkBotTurn():dkTurnP()}
+function dkNext(){if(DK.turn>=DKTURNS)return dkFinish();DK.turn++;DK.first?dkBotTurn():dkTurnP()}
 function dkTurnP(){
-  DK.turn++;DK.ph='p';DK.en=Math.min(6,2+DK.turn);DK.ea={g:1};
+  DK.ph='p';DK.en=Math.min(6,2+DK.turn);DK.ea={g:1};
   if(DK.turn>1&&DK.deck.length&&DK.hand.length<6)DK.hand.push(DK.deck.pop());
-  DK.msg='Twoja tura: zagraj karty za energię albo zakończ turę.';renderDeck()
+  DK.msg=(DK.draw?'Losowanie: zaczynasz Ty! ':'')+'Twoja tura: zagraj karty za energię albo zakończ turę.';DK.draw=0;renderDeck()
 }
 function dkPlay(i){
   if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task||DK.place)return;const c=DK.hand[i];if(!c)return;
@@ -3836,12 +3837,12 @@ function dkCheck(){if(DK.hero[0]<=0||DK.hero[1]<=0){dkFinish();return true}retur
 function dkEnd(){
   if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task||DK.place)return;
   DK.ph='x';DK.msg='Twoje karty ruszają do akcji!';renderDeck();
-  dkAttack(0,()=>{if(dkCheck())return;DK.tm=setTimeout(dkBotTurn,250)})
+  dkAttack(0,()=>{if(dkCheck())return;DK.first?dkNext():DK.tm=setTimeout(dkBotTurn,250)})
 }
 function dkBotTurn(){
   DK.ph='b';DK.ben=Math.min(6,2+DK.turn);
   if(DK.turn>1&&DK.bdeck.length&&DK.bhand.length<6)DK.bhand.push(DK.bdeck.pop());
-  DK.msg='Tura rywala...';renderDeck();DK.tm=setTimeout(dkBotPlay,800)
+  DK.msg=(DK.draw?'Losowanie: zaczyna rywal. ':'')+'Tura rywala...';DK.draw=0;renderDeck();DK.tm=setTimeout(dkBotPlay,800)
 }
 function dkBotPlay(){
   if(!DK||DK.over)return;
@@ -3851,7 +3852,7 @@ function dkBotPlay(){
     DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Rywal zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
   }
   DK.msg='Karty rywala ruszają do akcji!';renderDeck();
-  dkAttack(1,()=>{if(dkCheck())return;DK.turn>=DKTURNS?dkFinish():dkTurnP()})
+  dkAttack(1,()=>{if(dkCheck())return;DK.first?dkTurnP():dkNext()})
 }
 function dkFinish(){
   DK.over=1;DK.ph='x';const a=DK.hero[0],b=DK.hero[1];DK.res=a>b?'w':a<b?'l':'d';
