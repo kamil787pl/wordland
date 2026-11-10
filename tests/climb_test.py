@@ -9,7 +9,7 @@ with sync_playwright() as pw:
     pg.evaluate("window.CALLS=[];U={id:'u1',nick:'Test'};sb={rpc:async(n,a)=>{CALLS.push([n,a]);return{data:n==='climb_award'?50:[]}}}")
     for lvl,n,mx in (('A1',3,300),('A2',4,400),('B1',4,500)):
         pg.evaluate("show('climb');clLvl('%s')"%lvl);pg.wait_for_timeout(100)
-        res[lvl+' przed startem nakladka']=pg.locator('.cl-ov button').count()==1 and pg.evaluate("CL.go")==0
+        res[lvl+' przed startem nakladka']=pg.locator('.cl-ov button').count()==2 and pg.evaluate("CL.go")==0
         pg.evaluate("clStart()");pg.wait_for_timeout(100)
         res[lvl+' chwyty %d'%n]=pg.locator('button.cl-hold').count()==n
         res[lvl+' tapniecie przed startem nic nie robi']=True
