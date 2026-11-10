@@ -1036,6 +1036,78 @@ html{scrollbar-gutter:stable}
 .xit{display:inline-flex;align-items:center;gap:6px}.xit .i{width:18px;height:18px}
 .cl-ov button.xit,.el-start button.xit{background:transparent;box-shadow:none;color:#c9d6f2;height:40px;padding:0 14px;font-size:14px;font-weight:700}
 .wc-in~button.xit{background:transparent;color:var(--pri);box-shadow:none;margin-top:6px}
+/* ===== WordDeck (motyw: Kosmos) ===== */
+.cn-seg button.on.g-dk{background:#6b5cff;color:#fff}
+.dk-stage{background:radial-gradient(circle at 15% 0%,#3a2d86,transparent 45%),radial-gradient(circle at 92% 100%,#6a2a8a,transparent 40%),#0a0820;color:#eef0ff}
+.dk-stage:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 8% 14%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 8%,#cfd8ff,transparent),radial-gradient(1px 1px at 62% 20%,#fff,transparent),radial-gradient(1px 1px at 86% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 20% 52%,#fff,transparent),radial-gradient(1px 1px at 74% 58%,#cfd8ff,transparent),radial-gradient(1px 1px at 48% 86%,#fff,transparent),radial-gradient(1px 1px at 94% 80%,#fff,transparent)}
+@media(min-width:700px){.gstage.dk-stage{aspect-ratio:auto;min-height:580px}}
+.dk-stage .gs-body{position:relative;display:block;padding:10px 14px;overflow:hidden;z-index:1}
+.dk-arena{display:flex;flex-direction:column;gap:6px;height:100%;max-width:760px;margin:0 auto}
+.dk-row{display:flex;align-items:center;gap:10px}
+.dk-fld{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dk-hb{flex:none;width:74px;display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#7ee8a8}
+.dk-hb.e{color:#ff9a9a}
+.dk-hb .bar{height:6px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
+.dk-hb .bar i{display:block;height:100%;background:currentColor;transition:width .4s}
+.dk-hb b{font:800 22px "Figtree",sans-serif;line-height:1;color:#fff}
+.dk-slot{height:100px;border:1.5px dashed rgba(255,255,255,.22);border-radius:12px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.25);font:800 20px "Figtree",sans-serif}
+.dk-slot i{font-style:normal}
+.dk-m,.dk-h,.dk-tc{--k:#8d99d9;--k2:#4a5390;position:relative;border-radius:12px;background:linear-gradient(160deg,var(--k),var(--k2) 50%,var(--k));padding:2px;color:#eef0ff}
+.r-r{--k:#4cc3ff;--k2:#1b5fa8}.r-e{--k:#c27bff;--k2:#5b2aa8}.r-l{--k:#ffd666;--k2:#b4631a}
+.dk-m{height:100px;box-shadow:0 0 14px color-mix(in srgb,var(--k) 45%,transparent)}
+.dk-m,.dk-h{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center}
+.dk-m:before,.dk-h:before,.dk-tc:before{content:"";position:absolute;inset:2px;border-radius:10px;background:radial-gradient(circle at 30% 15%,#2a2366,#0c0a24 78%);z-index:0}
+.dk-m>*,.dk-h>*,.dk-tc>*{position:relative;z-index:1}
+.dk-m em,.dk-h em,.dk-tc em{font-style:normal;font-size:34px;line-height:1;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--k) 70%,transparent))}
+.dk-m strong,.dk-h strong,.dk-tc strong{font:800 12.5px "Figtree",sans-serif;line-height:1.05;padding:0 4px;text-transform:uppercase;letter-spacing:.02em}
+.dst{display:flex;gap:10px;margin-top:2px}
+.dst u{text-decoration:none;min-width:24px;padding:1px 5px;border-radius:8px;font:800 14px "Figtree",sans-serif;color:#0c0a24}
+.dst .a{background:#ff8a8a}.dst .h{background:#6bf0a8}.dst .h.lo{background:#ffd666}
+.dk-m s{position:absolute;right:5px;top:4px;text-decoration:none;font:800 13px "Figtree",sans-serif;color:#ffd666;z-index:2}
+.dk-m s.fz{left:5px;right:auto;color:#7ae0ff}.dk-m s.fz .i{width:16px;height:16px}
+.dk-m.md-bad{filter:saturate(.45)}.dk-m.frz{box-shadow:0 0 0 2px #7ae0ff,0 0 16px #7ae0ff}
+.dk-m.nw{animation:dkin .45s ease-out}
+@keyframes dkin{from{transform:translateY(-14px) scale(.8);opacity:0}to{transform:none;opacity:1}}
+.dk-mid{flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 4px;min-height:24px}
+.dk-en{display:inline-flex;align-items:center;gap:4px;color:#ffd666;font-weight:800}
+.dk-en .i{width:18px;height:18px}
+.dk-en i{width:11px;height:11px;border-radius:50%;border:1.5px solid #ffd666;opacity:.45}
+.dk-en i.on{background:#ffd666;opacity:1;box-shadow:0 0 8px #ffd666}
+.dk-turn{font-weight:800;font-size:13px;color:#b9bff0;letter-spacing:.04em;text-transform:uppercase}
+.dk-hand{flex:1;min-height:0;display:flex;gap:8px;justify-content:center;align-items:flex-end;overflow-x:auto;padding:10px 6px 4px}
+.dk-h{flex:none;width:90px;height:116px;border:0;cursor:pointer;font-family:inherit;touch-action:manipulation;box-shadow:0 0 14px color-mix(in srgb,var(--k) 45%,transparent);transition:transform .15s}
+.dk-h:hover:not(.off){transform:translateY(-6px)}
+.dk-h.off{opacity:.5;cursor:default}
+.dk-h .dco{position:absolute;left:-4px;top:-4px;z-index:2;width:26px;height:26px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 14px "Figtree",sans-serif;box-shadow:0 0 10px rgba(107,92,255,.8)}
+.dk-h .dlv{position:absolute;right:5px;top:5px;z-index:2;font:800 9px "Figtree",sans-serif;color:var(--k);letter-spacing:.08em}
+.dk-h small{font:700 9px "Figtree",sans-serif;color:var(--k);letter-spacing:.1em;text-transform:uppercase}
+.dk-h em{font-size:30px}
+.dk-ov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(8,6,28,.92)}
+.dk-tk{width:min(100%,520px);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.dk-tc{width:120px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.dk-tc em{font-size:44px}
+.dk-tc .dco{position:absolute;left:-5px;top:-5px;z-index:2;width:28px;height:28px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 15px "Figtree",sans-serif}
+.dk-fx{color:#ffe9a8;font-weight:700;font-size:13px;margin-top:-4px}
+.dk-q small{display:block;color:#b9bff0;font-weight:700;font-size:13px}
+.dk-q b{display:block;font:800 clamp(20px,3.4vw,28px) "Figtree",sans-serif;line-height:1.2;margin-top:2px}
+.dk-q .gp{display:inline-block;min-width:60px;border-bottom:3px solid #ffd666;text-decoration:none;color:#ffd666}
+.dk-opts{display:grid;gap:8px;width:100%;grid-template-columns:1fr 1fr}
+.dk-opts.n3{grid-template-columns:1fr}
+.dk-opts button{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 14px;border:1.5px solid rgba(255,255,255,.3);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;font:700 16px "Figtree",sans-serif;cursor:pointer;text-align:left;touch-action:manipulation}
+.dk-opts button:hover:not(:disabled){background:rgba(255,255,255,.2)}
+.dk-opts kbd{flex:none;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.2);font:800 12px "Figtree",sans-serif;display:flex;align-items:center;justify-content:center}
+.dk-opts button.ok{background:#1f8f5a;border-color:#6bf0a8}.dk-opts button.bad{background:#a83a3a;border-color:#ff9a9a;opacity:.8}
+.dk-tk>button.g{background:transparent;border:0;color:#b9bff0;font:700 14px "Figtree",sans-serif;cursor:pointer;min-height:40px}
+.dk-ov.end{flex-direction:column;gap:10px;text-align:center}
+.dk-ov.end h3{margin:0;font:800 clamp(24px,4vw,34px) "Figtree",sans-serif}
+.dk-tiles{display:flex;gap:10px}.dk-tiles div{min-width:92px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.1)}
+.dk-tiles b{display:block;font:800 24px "Figtree",sans-serif}.dk-tiles small{color:#b9bff0;font-size:12px}
+.dk-ov.end p{margin:0;color:#c9d6f2;max-width:360px}
+.dk-start{background:rgba(10,8,32,.86)}
+.dk-cast{width:150px}.dk-cast svg{width:100%;height:auto}
+.cn-start.dk-start button.dk-go{background:#6b5cff;color:#fff;box-shadow:0 3px 0 #3b2fb0}
+@media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:80px;height:112px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-opts{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.dk-m.nw{animation:none}.dk-h{transition:none}}
 </style>
 </head>
 <body>
@@ -1088,6 +1160,7 @@ html{scrollbar-gutter:stable}
 <main id="v-elf" class="pv" hidden></main>
 <main id="v-climb" class="pv" hidden></main>
 <main id="v-heist" class="pv" hidden></main>
+<main id="v-deck" class="pv" hidden></main>
 <section id="v-game" hidden>
 <div id="wrap" class="gstage wc-stage"><div class="gs-hud"><span class="gs-t"><svg class="i"><use href="#i-cube"/></svg>WordCraft</span><span class="gs-m" id="wc-m">Wybierz kategorię</span><span class="gs-s"><svg class="i f pt"><use href="#i-star"/></svg><b id="wc-p">0</b></span></div><div id="cv"><canvas id="c"></canvas><div class="ov on" id="ov"></div></div></div>
 <p id="rot">↻ Obróć telefon poziomo, żeby grać na większym ekranie.</p>
@@ -1817,12 +1890,12 @@ function renderProf(){
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem korepetytorem i mam kod</a></p>':'');
 }
 function show(v){
-  view=v;['prof','auth','conn','elf','climb','heist'].forEach(k=>{if(k!==v){const e=$('v-'+k);if(e&&e.firstChild)e.textContent=''}});/* ukryte widoki nie trzymają DOM; render odtwarza je ze stanu */
-  ['home','prof','game','auth','teach','conn','elf','climb','heist'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
+  view=v;['prof','auth','conn','elf','climb','heist','deck'].forEach(k=>{if(k!==v){const e=$('v-'+k);if(e&&e.firstChild)e.textContent=''}});/* ukryte widoki nie trzymają DOM; render odtwarza je ze stanu */
+  ['home','prof','game','auth','teach','conn','elf','climb','heist','deck'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   ptsChip();clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
   {const el=$('v-'+v);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('in'),900)}}
-  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='heist')renderHeist();if(v==='game'&&state==='menu'){WCI?menu():wcIntro()}
+  if(v==='home')renderHome();if(v==='prof')renderProf();if(v==='auth')renderAuth();if(v==='teach')renderTeach();if(v==='conn')renderConn();if(v==='elf')renderElf();if(v==='climb')renderClimb();if(v==='heist')renderHeist();if(v==='deck')renderDeck();if(v==='game'&&state==='menu'){WCI?menu():wcIntro()}
   if((v==='home'||v==='prof')&&live()&&ROLE!=='teacher'&&Date.now()-(MY.t||0)>30000)myLoad();
   window.scrollTo(0,0);
 }
@@ -3597,8 +3670,154 @@ addEventListener('keydown',e=>{
   if(e.key>='1'&&e.key<='4')hsPick(+e.key-1);
   else if(e.key==='Enter'&&!HS.go&&!(e.target&&/BUTTON|INPUT|TEXTAREA/.test(e.target.tagName)))hsStart()
 });
+/* ===== WORDDECK: karcianka ze słówkami (etap 1: rdzeń, pojedynek z botem) ===== */
+let DK=null,DKlvl='A1';
+const DKL={A1:1,A2:2,B1:3},DKLN=['A1','A2','B1'],DKRAR={z:'Zwykła',r:'Rzadka',e:'Epicka',l:'Legendarna'},DKTY={n:'Rzeczownik',v:'Czasownik',a:'Przymiotnik',p:'Fraza'};
+const DKADV={n:'v',v:'a',a:'n'},DKFX={ally1:'Sojusznicy +1 życia',freeze:'Zamraża 2 karty wroga'},DKTURNS=8,DKHP=20;
+/* [słowo, polski, typ n/v/a/p, poziom 1-3, koszt, rzadkość, emoji, dane (v: zdanie z luką + dobra + 3 złe; a: antonim), efekt] */
+const DKC=[
+['cat','kot','n',1,1,'z','🐱'],['dog','pies','n',1,1,'z','🐶'],['apple','jabłko','n',1,1,'z','🍎'],['book','książka','n',1,1,'z','📖'],['bread','chleb','n',1,1,'z','🍞'],['water','woda','n',1,1,'z','💧'],
+['house','dom','n',1,2,'z','🏠'],['school','szkoła','n',1,2,'z','🏫'],['sun','słońce','n',1,2,'r','☀️'],['fish','ryba','n',1,2,'z','🐟'],['tree','drzewo','n',1,2,'z','🌳'],['car','samochód','n',1,2,'r','🚗'],
+['umbrella','parasol','n',2,2,'z','☂️'],['kitchen','kuchnia','n',2,3,'z','🍳'],['museum','muzeum','n',2,3,'z','🏛️'],['library','biblioteka','n',2,3,'r','📚'],['mountain','góra','n',2,3,'r','⛰️'],['island','wyspa','n',2,3,'r','🏝️'],['airport','lotnisko','n',2,4,'r','🛫'],['elephant','słoń','n',2,4,'e','🐘',0,'ally1'],
+['neighbour','sąsiad','n',3,3,'z','🏘️'],['environment','środowisko','n',3,4,'r','🌍'],['knowledge','wiedza','n',3,4,'r','🧠'],['adventure','przygoda','n',3,4,'e','🧭',0,'ally1'],
+['eat','jeść','v',1,1,'z','🍽️',['They ___ breakfast at eight.','eat','eats','eating','ate']],['sleep','spać','v',1,1,'z','😴',['The baby is ___ now.','sleeping','sleeps','sleep','slept']],['read','czytać','v',1,1,'z','📰',['He ___ a book every week.','reads','read','reading','readed']],
+['run','biegać','v',1,2,'r','🏃',['She ___ in the park every morning.','runs','run','running','ran']],['write','pisać','v',1,2,'z','✍️',['I ___ a letter yesterday.','wrote','write','writed','writing']],['swim','pływać','v',1,2,'r','🏊',['We can ___ in the sea.','swim','swims','swam','swimming']],['open','otwierać','v',1,2,'z','🚪',['Please ___ the window.','open','opens','opened','opening']],
+['cook','gotować','v',2,3,'z','👨‍🍳',['My dad ___ dinner every Sunday.','cooks','cook','cooking','cooked']],['climb','wspinać się','v',2,3,'r','🧗',['He ___ the mountain last summer.','climbed','climb','climbing','climbs']],['travel','podróżować','v',2,3,'r','🧳',['They are going to ___ to Spain.','travel','travels','travelled','travelling']],['borrow','pożyczać (od kogoś)','v',2,3,'r','🤝',['Can I ___ your pen, please?','borrow','lend','borrows','borrowed']],
+['improve','poprawiać','v',3,4,'e','📈',['She has ___ her English a lot.','improved','improve','improving','improves'],'ally1'],['decide','decydować','v',3,4,'r','🤔',['We have ___ to move house.','decided','decide','deciding','decides']],['forget','zapominać','v',3,4,'r','🫥',['I have ___ my password.','forgotten','forget','forgot','forgetted']],
+['big','duży','a',1,1,'z','🐋','small'],['small','mały','a',1,1,'z','🐜','big'],['hot','gorący','a',1,1,'z','🔥','cold'],['cold','zimny','a',1,1,'z','🥶','hot'],['happy','szczęśliwy','a',1,2,'z','😀','sad'],['sad','smutny','a',1,2,'z','😢','happy'],['fast','szybki','a',1,2,'r','🐆','slow'],
+['tall','wysoki','a',2,2,'z','🗼','short'],['heavy','ciężki','a',2,3,'r','🏋️','light'],['dangerous','niebezpieczny','a',2,3,'r','⚠️','safe'],['expensive','drogi','a',2,3,'r','💎','cheap'],
+['generous','hojny','a',3,4,'r','🎁','mean'],['ancient','starożytny','a',3,4,'e','🏺','modern','ally1'],['reliable','niezawodny','a',3,4,'r','🔧','unreliable'],
+['good morning','dzień dobry','p',1,1,'z','🌅'],['thank you','dziękuję','p',1,1,'z','🙏'],['how are you?','jak się masz?','p',1,2,'r','👋'],
+['see you later','do zobaczenia','p',2,2,'r','🤙'],["I don't know",'nie wiem','p',2,2,'z','🤷'],['what time is it?','która jest godzina?','p',2,3,'r','⏰'],
+["it's raining cats and dogs",'leje jak z cebra','p',3,5,'l','⛈️',0,'freeze'],['break a leg','połamania nóg (powodzenia)','p',3,5,'l','🎭',0,'freeze']];
+const DKCARDS=DKC.map((c,i)=>{const [w,pl,t,lv,cost,rar,emo,data,fx]=c,b=2*cost+2+'zrel'.indexOf(rar),atk=t==='n'?b>>1:Math.ceil(b*(t==='v'?.65:t==='p'?.55:.5));return{id:i,w,pl,t,lv,cost,rar,emo,data,fx:fx||'',atk,hp:b-atk}});
+const dkPool=l=>DKCARDS.filter(c=>c.lv<=DKL[l]);
+function dkDeck(l){const p=shuffle(dkPool(l).slice()),lo=p.filter(c=>c.cost<=2),hi=p.filter(c=>c.cost>2),L=lo.slice(0,hi.length?6:10),H=hi.slice(0,10-L.length);return shuffle(L.concat(H))}
+function dkTask(c,l){
+  const n=l==='A1'?3:4;let q,ok,wr,gap=0;
+  if(c.t==='v'){q=c.data[0];gap=1;ok=c.data[1];wr=c.data.slice(2)}
+  else if(c.t==='a'){q=c.w;ok=c.data;wr=DKCARDS.filter(x=>x.t==='a'&&x.id!==c.id&&x.w!==c.data).map(x=>x.w)}
+  else{q=c.w;ok=c.pl;wr=DKCARDS.filter(x=>x.t===c.t&&x.id!==c.id&&x.pl!==c.pl).map(x=>x.pl)}
+  const opts=shuffle([ok].concat(shuffle(wr.slice()).slice(0,n-1)));
+  return{q,gap,kind:c.t,opts,ok:opts.indexOf(ok),dis:[],tries:0,done:null}
+}
+function dkInst(c,mode){return{c,mode,atk:mode==='full'?c.atk:mode==='half'?Math.ceil(c.atk/2):1,hp:c.hp,mhp:c.hp,frozen:0}}
+function dkNew(l){
+  if(DK)clearTimeout(DK.tm);
+  DK={lvl:l,go:0,over:0,turn:0,ph:'p',en:0,hero:[DKHP,DKHP],deck:dkDeck(l),hand:[],bdeck:dkDeck(l),bhand:[],field:[[null,null,null],[null,null,null]],ben:0,task:null,msg:'',st:{first:0,half:0,bad:0},tm:0,res:'',last:null};
+  for(let i=0;i<4;i++){DK.hand.push(DK.deck.pop());DK.bhand.push(DK.bdeck.pop())}
+}
+function dkLvl(l){DKlvl=l;dkNew(l);renderDeck()}
+function dkSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderDeck()}
+function dkStart(){if(!DK||DK.go)return;DK.go=1;dkTurnP()}
+function dkTurnP(){
+  DK.turn++;DK.ph='p';DK.en=Math.min(6,2+DK.turn);
+  if(DK.turn>1&&DK.deck.length&&DK.hand.length<6)DK.hand.push(DK.deck.pop());
+  DK.msg='Twoja tura: zagraj karty za energię albo zakończ turę.';renderDeck()
+}
+function dkPlay(i){
+  if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task)return;const c=DK.hand[i];if(!c)return;
+  if(c.cost>DK.en){DK.msg='Za mało energii na tę kartę ('+c.cost+').';renderDeck();return}
+  if(DK.field[0].indexOf(null)<0){DK.msg='Pole jest pełne: zakończ turę, aby karty zaatakowały.';renderDeck();return}
+  DK.task={i,t:dkTask(c,DK.lvl)};DK.msg='';renderDeck()
+}
+function dkCancel(){if(DK&&DK.task&&!DK.task.t.done){DK.task=null;renderDeck()}}
+function dkAns(k){
+  const T=DK&&DK.task&&DK.task.t;if(!T||T.done||T.dis[k])return;
+  if(k===T.ok){T.done=T.tries?'half':'full';T.pick=k;beep(660,.12,'sine',.08,880)}
+  else if(!T.tries){T.tries=1;T.dis[k]=1;DK.msg='Spróbuj jeszcze raz: poprawna odpowiedź da połowę mocy.';beep(220,.15,'sawtooth',.05)}
+  else{T.dis[k]=1;T.done='bad';T.pick=k;beep(180,.25,'sawtooth',.06)}
+  renderDeck();
+  if(T.done)DK.tm=setTimeout(dkPlace,T.done==='bad'?1500:800)
+}
+function dkMast(c,ok){try{const D=SV.deck=SV.deck||{m:{},g:0,w:0},m=D.m[c.id]=D.m[c.id]||[0,0];m[ok?0:1]++;save()}catch(e){}}
+function dkPlace(){
+  if(!DK||!DK.task)return;const T=DK.task.t,i=DK.task.i,c=DK.hand[i];if(!c){DK.task=null;return}
+  DK.hand.splice(i,1);DK.en-=c.cost;DK.st[T.done==='full'?'first':T.done]++;dkMast(c,T.done!=='bad');
+  const x=dkInst(c,T.done),s=DK.field[0].indexOf(null);DK.field[0][s]=x;DK.last=[0,s];dkFx(0,x);DK.task=null;
+  DK.msg=T.done==='full'?'Pełna moc! '+c.w+' wchodzi do gry.':T.done==='half'?'Połowa mocy: '+c.w+' wchodzi do gry osłabione.':'Pomyłka: '+c.w+' wchodzi potknięta (moc 1). Słówko wróci w powtórkach.';
+  renderDeck()
+}
+function dkFx(side,x){
+  if(x.c.fx==='ally1')DK.field[side].forEach(y=>{if(y){y.hp++;y.mhp++}});
+  if(x.c.fx==='freeze')shuffle(DK.field[1-side].filter(Boolean)).slice(0,2).forEach(y=>y.frozen=1)
+}
+function dkAtk(side){
+  const me=DK.field[side],en=DK.field[1-side];
+  for(let i=0;i<3;i++){
+    const a=me[i];if(!a)continue;if(a.frozen){a.frozen=0;continue}
+    const t=en[i],d=a.atk+(t&&DKADV[a.c.t]===t.c.t?1:0);
+    if(t){t.hp-=d;if(t.hp<=0){DK.hero[1-side]-=-t.hp;en[i]=null}}else DK.hero[1-side]-=d
+  }
+  DK.hero[0]=Math.max(0,DK.hero[0]);DK.hero[1]=Math.max(0,DK.hero[1])
+}
+function dkCheck(){if(DK.hero[0]<=0||DK.hero[1]<=0){dkFinish();return true}return false}
+function dkEnd(){
+  if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task)return;
+  DK.ph='x';DK.msg='Twoje karty atakują!';dkAtk(0);beep(330,.12,'square',.04,500);renderDeck();
+  DK.tm=setTimeout(()=>{if(dkCheck())return;dkBotTurn()},900)
+}
+function dkBotTurn(){
+  DK.ph='b';DK.ben=Math.min(6,2+DK.turn);
+  if(DK.turn>1&&DK.bdeck.length&&DK.bhand.length<6)DK.bhand.push(DK.bdeck.pop());
+  DK.msg='Tura wroga...';renderDeck();DK.tm=setTimeout(dkBotPlay,800)
+}
+function dkBotPlay(){
+  if(!DK||DK.over)return;
+  const f=DK.field[1],free=f.map((x,i)=>x?-1:i).filter(i=>i>=0),c=DK.bhand.filter(x=>x.cost<=DK.ben).sort((a,b)=>b.cost-a.cost)[0];
+  if(c&&free.length){
+    const p=DK.lvl==='A1'?.6:DK.lvl==='A2'?.75:.85,s=free[rnd(free.length)],x=dkInst(c,Math.random()<p?'full':'bad');
+    DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Wróg zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
+  }
+  DK.msg='Karty wroga atakują!';dkAtk(1);beep(150,.15,'square',.05,100);renderDeck();
+  DK.tm=setTimeout(()=>{if(dkCheck())return;DK.turn>=DKTURNS?dkFinish():dkTurnP()},900)
+}
+function dkFinish(){
+  DK.over=1;DK.ph='x';const a=DK.hero[0],b=DK.hero[1];DK.res=a>b?'w':a<b?'l':'d';
+  DK.msg=DK.res==='w'?'Wygrywasz pojedynek!':DK.res==='l'?'Wróg wygrywa tym razem.':'Remis: obaj mają tyle samo życia.';
+  try{const D=SV.deck=SV.deck||{m:{},g:0,w:0};D.g++;if(DK.res==='w')D.w++;save()}catch(e){}
+  if(DK.res==='w')beep(523,.2,'sine',.08,784);renderDeck()
+}
+function dkMini(x,i,side){
+  if(!x)return'<div class="dk-slot"><i>'+(i+1)+'</i></div>';
+  const c=x.c,nw=DK.last&&DK.last[0]===side&&DK.last[1]===i;
+  return'<div class="dk-m r-'+c.rar+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+'" title="'+esc(c.pl)+'"><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'</u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+x.hp+'</u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+'</div>'
+}
+function dkHandCard(c,i,can){
+  return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', życie '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(c.pl+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKLN[c.lv-1]+'</span><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><small>'+DKTY[c.t].slice(0,5)+'.</small><span class="dst"><u class="a">'+c.atk+'</u><u class="h">'+c.hp+'</u></span></button>'
+}
+function dkHero(side){const h=DK.hero[side];return'<div class="dk-hb'+(side?' e':'')+'"><span>'+(side?'Wróg':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
+function renderDeck(){
+  const root=$('v-deck');if(!root)return;if(!DK)dkNew(DKlvl);
+  const l=DK.lvl,wait=!DK.go&&!DK.over,T=DK.task&&DK.task.t,pl=DK.ph==='p'&&DK.go&&!DK.over;
+  const head='<div class="cn-top"><div class="cn-seg" role="group" aria-label="Poziom">'+DKLN.map(x=>'<button class="'+(DKlvl===x?'on g-dk':'')+'" onclick="dkLvl(\''+x+'\')">'+x+'</button>').join('')+'</div><button class="cn-snd" onclick="dkSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
+  const hud='<div class="gs-hud"><span class="gs-t">'+ic('cards')+'WordDeck</span><span class="gs-m">Pojedynek · tura '+Math.min(Math.max(DK.turn,1),DKTURNS)+'/'+DKTURNS+' · '+l+'</span><span class="gs-s"><b>'+DK.hero[0]+'</b>:<b>'+DK.hero[1]+'</b></span></div>';
+  const pips=[1,2,3,4,5,6].map(i=>'<i class="'+(i<=DK.en?'on':'')+'"></i>').join('');
+  const arena='<div class="dk-arena"><div class="dk-row">'+dkHero(1)+'<div class="dk-fld">'+DK.field[1].map((x,i)=>dkMini(x,i,1)).join('')+'</div></div>'
+   +'<div class="dk-mid"><span class="dk-en" title="Energia">'+ic('bolt')+pips+'<b>'+DK.en+'</b></span><span class="dk-turn">'+(DK.ph==='b'?'Tura wroga':DK.ph==='x'?'':pl?'Twoja tura':'')+'</span></div>'
+   +'<div class="dk-row">'+dkHero(0)+'<div class="dk-fld">'+DK.field[0].map((x,i)=>dkMini(x,i,0)).join('')+'</div></div>'
+   +'<div class="dk-hand">'+DK.hand.map((c,i)=>dkHandCard(c,i,pl&&!DK.task&&c.cost<=DK.en)).join('')+'</div></div>';
+  let ov='';
+  if(wait)ov='<div class="cn-start dk-start"><div class="dk-cast"><svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="48" r="26" fill="#6b5cff"/><ellipse cx="60" cy="48" rx="46" ry="11" fill="none" stroke="#ffd666" stroke-width="3" transform="rotate(-18 60 48)"/><g transform="translate(14 12) rotate(-14)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#4cc3ff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#4cc3ff"/></g><g transform="translate(78 6) rotate(12)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#c27bff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#c27bff"/></g></svg></div><p><b>Pojedynek kart!</b> Zagrywaj karty słówek za energię. Poprawna odpowiedź daje pełną moc karty, pomyłka ją osłabia. Zbij życie wroga do zera w '+DKTURNS+' turach.</p><button class="dk-go" onclick="dkStart()">Start</button><button class="g xit" onclick="show(\'home\')">'+ic('logout')+'Wyjście</button></div>';
+  else if(T){
+    const c=DK.hand[DK.task.i],cap=T.kind==='v'?'Uzupełnij zdanie':T.kind==='a'?'Przeciwieństwo słowa':'Co to znaczy po polsku?',q=T.gap?esc(T.q).replace('___','<u class="gp">?</u>'):esc(T.q);
+    ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>'+c.emo+'</em><strong>'+esc(c.w)+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b>'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
+  }
+  else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje życie</small></div><div><b>'+DK.hero[1]+'</b><small>życie wroga</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
+  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: zbij życie wroga w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p>';
+  if(DK.last)DK.last=null
+}
+addEventListener('keydown',e=>{
+  if(view!=='deck'||!DK||e.ctrlKey||e.metaKey||e.altKey)return;
+  const n=+e.key;
+  if(DK.task&&DK.task.t&&n>=1&&n<=4){dkAns(n-1);return}
+  if(e.key==='Escape'){dkCancel();return}
+  if(DK.go&&!DK.over&&!DK.task&&n>=1&&n<=6){dkPlay(n-1);return}
+  if(e.key==='Enter'&&!DK.go&&!(e.target&&/BUTTON|INPUT|TEXTAREA/.test(e.target.tagName)))dkStart()
+});
 show('home');/* skrypt Supabase jest defer: klient i chmura startują po jego załadowaniu */{const go=()=>{sbMake();initCloud()};document.readyState==='loading'?addEventListener('DOMContentLoaded',go):go()}
 if(location.hash.startsWith('#wl=')){const g=cnFromLink(location.hash);if(g){CN=g;CNmode='chal';show('conn')}history.replaceState(null,'',location.pathname+location.search)}
+if(location.hash==='#deck')show('deck');
 /* ekran startowy */
 (function(){const sp=$('splash');if(!sp)return;let seen=0;try{seen=sessionStorage.wlSplash;sessionStorage.wlSplash=1}catch(e){}
   if(seen||RM){sp.remove();return}
