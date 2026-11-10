@@ -1040,7 +1040,7 @@ html{scrollbar-gutter:stable}
 .cn-seg button.on.g-dk{background:#6b5cff;color:#fff}
 .dk-stage{background:radial-gradient(circle at 15% 0%,#3a2d86,transparent 45%),radial-gradient(circle at 92% 100%,#6a2a8a,transparent 40%),#0a0820;color:#eef0ff}
 .dk-stage:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 8% 14%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 8%,#cfd8ff,transparent),radial-gradient(1px 1px at 62% 20%,#fff,transparent),radial-gradient(1px 1px at 86% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 20% 52%,#fff,transparent),radial-gradient(1px 1px at 74% 58%,#cfd8ff,transparent),radial-gradient(1px 1px at 48% 86%,#fff,transparent),radial-gradient(1px 1px at 94% 80%,#fff,transparent)}
-@media(min-width:700px){.gstage.dk-stage{aspect-ratio:auto;min-height:580px}}
+@media(min-width:700px){.gstage.dk-stage{aspect-ratio:auto;min-height:600px}}
 .dk-stage .gs-body{position:relative;display:block;padding:10px 14px;overflow:hidden;z-index:1}
 .dk-arena{display:flex;flex-direction:column;gap:6px;height:100%;max-width:760px;margin:0 auto}
 .dk-row{display:flex;align-items:center;gap:10px}
@@ -1061,7 +1061,7 @@ html{scrollbar-gutter:stable}
 .dk-m em,.dk-h em,.dk-tc em{font-style:normal;font-size:34px;line-height:1;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--k) 70%,transparent))}
 .dk-m strong,.dk-h strong,.dk-tc strong{font:800 12.5px "Figtree",sans-serif;line-height:1.05;padding:0 4px;text-transform:uppercase;letter-spacing:.02em}
 .dst{display:flex;gap:10px;margin-top:2px}
-.dst u{text-decoration:none;min-width:24px;padding:1px 5px;border-radius:8px;font:800 14px "Figtree",sans-serif;color:#0c0a24}
+.dst u{text-decoration:none;width:32px;height:36px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:flex;flex-direction:column;align-items:center;justify-content:center;font:800 15px "Figtree",sans-serif;line-height:1;color:#0c0a24}.dst u small{font:800 5.5px "Figtree",sans-serif;letter-spacing:.06em;margin-top:1px}
 .dst .a{background:#ff8a8a}.dst .h{background:#6bf0a8}.dst .h.lo{background:#ffd666}
 .dk-m s{position:absolute;right:5px;top:4px;text-decoration:none;font:800 13px "Figtree",sans-serif;color:#ffd666;z-index:2}
 .dk-m s.fz{left:5px;right:auto;color:#7ae0ff}.dk-m s.fz .i{width:16px;height:16px}
@@ -1075,18 +1075,19 @@ html{scrollbar-gutter:stable}
 .dk-en i.on{background:#ffd666;opacity:1;box-shadow:0 0 8px #ffd666}
 .dk-turn{font-weight:800;font-size:13px;color:#b9bff0;letter-spacing:.04em;text-transform:uppercase}
 .dk-hand{flex:1;min-height:0;display:flex;gap:8px;justify-content:center;align-items:flex-end;overflow-x:auto;padding:10px 6px 4px}
-.dk-h{flex:none;width:90px;height:116px;border:0;cursor:pointer;font-family:inherit;touch-action:manipulation;box-shadow:0 0 14px color-mix(in srgb,var(--k) 45%,transparent);transition:transform .15s}
+.dk-h{flex:none;width:104px;height:138px;border:0;cursor:pointer;font-family:inherit;touch-action:manipulation;box-shadow:0 0 14px color-mix(in srgb,var(--k) 45%,transparent);transition:transform .15s}
 .dk-h:hover:not(.off){transform:translateY(-6px)}
 .dk-h.off{opacity:.5;cursor:default}
 .dk-h .dco{position:absolute;left:-4px;top:-4px;z-index:2;width:26px;height:26px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 14px "Figtree",sans-serif;box-shadow:0 0 10px rgba(107,92,255,.8)}
 .dk-h .dlv{position:absolute;right:5px;top:5px;z-index:2;font:800 9px "Figtree",sans-serif;color:var(--k);letter-spacing:.08em}
 .dk-h small{font:700 9px "Figtree",sans-serif;color:var(--k);letter-spacing:.1em;text-transform:uppercase}
-.dk-h em{font-size:30px}
+.dk-h em{font-size:30px;position:relative}.dart{position:relative;width:calc(100% - 8px);height:50px;border-radius:8px;background:radial-gradient(circle at 50% 120%,color-mix(in srgb,var(--k) 50%,#0c0a24),#0c0a24 72%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--k) 60%,transparent);margin-top:12px}.dart svg{position:absolute;inset:0;width:100%;height:100%}.dk-h .dst{width:calc(100% - 10px);justify-content:space-between;margin-top:0}.dk-h .dst u{width:36px;height:40px;font-size:17px}.dk-h .dst u small{font-size:6px}.dk-h .dst .a{background:#ff8a8a}.dk-h .dst .h{background:#6bf0a8}.dorb{display:flex;gap:3px}.dorb i{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--k);opacity:.6}.dorb i.on{background:var(--k);opacity:1;box-shadow:0 0 6px var(--k)}.dk-h.r-e:after,.dk-h.r-l:after{content:"";position:absolute;inset:2px;border-radius:10px;pointer-events:none;mix-blend-mode:screen;z-index:3;background:linear-gradient(120deg,transparent 25%,rgba(122,240,255,.28) 40%,rgba(255,122,217,.28) 55%,transparent 70%);background-size:220% 100%;animation:dkholo 4.5s linear infinite}.dk-h.r-l:after{background:linear-gradient(120deg,transparent 15%,rgba(255,226,122,.4) 32%,rgba(122,240,255,.35) 48%,rgba(255,122,217,.35) 62%,rgba(255,226,122,.4) 78%,transparent 90%);background-size:220% 100%}@keyframes dkholo{from{background-position:120% 0}to{background-position:-120% 0}}.dk-h.r-l{box-shadow:0 0 22px color-mix(in srgb,var(--k) 70%,transparent)}
 .dk-ov{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(8,6,28,.92)}
 .dk-tk{width:min(100%,520px);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .dk-tc{width:120px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .dk-tc em{font-size:44px}
 .dk-tc .dco{position:absolute;left:-5px;top:-5px;z-index:2;width:28px;height:28px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 15px "Figtree",sans-serif}
+.dk-leg{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin:0 0 12px;font-size:12.5px;color:var(--mut)}.dk-leg b{color:var(--ink)}.dk-leg span{display:inline-flex;align-items:center;gap:5px}.dk-leg i{font-style:normal;font-weight:800;font-size:10px;padding:2px 6px;border-radius:6px;color:#0c0a24}.dk-leg .c{background:#6b5cff;color:#fff;border-radius:50%}.dk-leg .a{background:#ff8a8a}.dk-leg .h{background:#6bf0a8}.dk-leg .o{width:9px;height:9px;padding:0;border-radius:50%;background:#6b5cff}
 .dk-fx{color:#ffe9a8;font-weight:700;font-size:13px;margin-top:-4px}
 .dk-q b.emo{font-size:64px;line-height:1.1}
 .dk-q small{display:block;color:#b9bff0;font-weight:700;font-size:13px}
@@ -1107,8 +1108,8 @@ html{scrollbar-gutter:stable}
 .dk-start{background:rgba(10,8,32,.86)}
 .dk-cast{width:150px}.dk-cast svg{width:100%;height:auto}
 .cn-start.dk-start button.dk-go{background:#6b5cff;color:#fff;box-shadow:0 3px 0 #3b2fb0}
-@media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:80px;height:112px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-m em{font-size:26px}.dk-m strong{font-size:10px!important;padding:0 2px}.dk-m .dst{gap:4px}.dk-m .dst u{min-width:20px;font-size:12px}.dk-slot{font-size:16px}.dk-opts{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.dk-m.nw{animation:none}.dk-h{transition:none}}
+@media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:86px;height:124px}.dk-h .dst u{width:30px;height:34px;font-size:14px}.dk-h .dst u small{display:none}.dk-h .dart{height:40px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-m em{font-size:26px}.dk-m strong{font-size:10px!important;padding:0 2px}.dk-m .dst{gap:4px}.dk-m .dst u{min-width:20px;font-size:12px}.dk-slot{font-size:16px}.dk-opts{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.dk-h:after{animation:none!important}.dk-m.nw{animation:none}.dk-h{transition:none}}
 </style>
 </head>
 <body>
@@ -3674,7 +3675,7 @@ addEventListener('keydown',e=>{
 /* ===== WORDDECK: karcianka ze słówkami (etap 1: rdzeń, pojedynek z botem) ===== */
 let DK=null,DKlvl='A1';
 const DKL={A1:1,A2:2,B1:3},DKLN=['A1','A2','B1'],DKRAR={z:'Zwykła',r:'Rzadka',e:'Epicka',l:'Legendarna'},DKTY={n:'Rzeczownik',v:'Czasownik',a:'Przymiotnik',p:'Fraza'};
-const DKADV={n:'v',v:'a',a:'n'},DKFX={ally1:'Sojusznicy +1 życia',freeze:'Zamraża 2 karty rywala'},DKTURNS=8,DKHP=20;
+const DKADV={n:'v',v:'a',a:'n'},DKFX={ally1:'Sojusznicy +1 tarczy',freeze:'Zamraża 2 karty rywala'},DKTURNS=8,DKHP=20;
 /* [słowo, polski, typ n/v/a/p, poziom 1-3, koszt, rzadkość, emoji, dane (v: zdanie z luką + dobra + 3 złe; a: antonim), efekt] */
 const DKC=[
 ['cat','kot','n',1,1,'z','🐱'],['dog','pies','n',1,1,'z','🐶'],['apple','jabłko','n',1,1,'z','🍎'],['book','książka','n',1,1,'z','📖'],['bread','chleb','n',1,1,'z','🍞'],['water','woda','n',1,1,'z','💧'],
@@ -3798,8 +3799,10 @@ function dkMini(x,i,side){
   const c=x.c,nw=DK.last&&DK.last[0]===side&&DK.last[1]===i;
   return'<div class="dk-m r-'+c.rar+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+'" title="'+esc(c.pl)+'"><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'</u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+x.hp+'</u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+'</div>'
 }
+function dkOrbs(c){const m=(SV.deck&&SV.deck.m&&SV.deck.m[c.id])||[0,0],l=Math.max(0,Math.min(5,m[0]-m[1]));return'<span class="dorb" title="Opanowanie słówka: '+l+'/5">'+[1,2,3,4,5].map(k=>'<i class="'+(k<=l?'on':'')+'"></i>').join('')+'</span>'}
 function dkHandCard(c,i,can){
-  return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', życie '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(c.pl+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKLN[c.lv-1]+'</span><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><small>'+DKTY[c.t].slice(0,5)+'.</small><span class="dst"><u class="a">'+c.atk+'</u><u class="h">'+c.hp+'</u></span></button>'
+  const fs=c.w.length>14?9:c.w.length>9?10.5:12.5;
+  return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', tarcza '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(DKTY[c.t]+' · koszt '+c.cost+' energii, moc '+c.atk+', tarcza '+c.hp+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKTY[c.t].slice(0,5)+'. · '+DKLN[c.lv-1]+'</span><div class="dart"><svg viewBox="0 0 90 56" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="45" cy="30" rx="40" ry="11" fill="none" stroke="var(--k)" stroke-opacity=".4" stroke-width="1" transform="rotate(-14 45 30)"/><ellipse cx="45" cy="30" rx="28" ry="7" fill="none" stroke="var(--k)" stroke-opacity=".55" stroke-width="1" transform="rotate(-14 45 30)"/><circle cx="80" cy="9" r="3" fill="var(--k)"/><path d="M8 8l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#fff"/></svg><em>'+c.emo+'</em></div><strong style="font-size:'+fs+'px">'+esc(c.w)+'</strong>'+dkOrbs(c)+'<span class="dst"><u class="a">'+c.atk+'<small>MOC</small></u><u class="h">'+c.hp+'<small>TARCZA</small></u></span></button>'
 }
 function dkHero(side){const h=DK.hero[side];return'<div class="dk-hb'+(side?' e':'')+'"><span>'+(side?'Rywal':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
 function renderDeck(){
@@ -3819,7 +3822,7 @@ function renderDeck(){
     ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>?</em><strong>'+DKTY[c.t]+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b class="'+(T.emo?'emo':'')+'">'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
   }
   else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
-  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p>';
+  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">MOC</i> tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">TARCZA</i> ile zniesie, zanim odpadnie</span><span><i class="o"></i> opanowanie słówka (0–5)</span></div>';
   if(DK.last)DK.last=null
 }
 addEventListener('keydown',e=>{
