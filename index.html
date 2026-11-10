@@ -1044,7 +1044,7 @@ html{scrollbar-gutter:stable}
 .dk-stage .gs-body{position:relative;display:block;padding:10px 14px;overflow:hidden;z-index:1}
 .dk-arena{display:flex;flex-direction:column;gap:6px;height:100%;max-width:760px;margin:0 auto}
 .dk-row{display:flex;align-items:center;gap:10px}
-.dk-fld{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dk-fld{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .dk-hb{flex:none;width:74px;display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#7ee8a8}
 .dk-hb.e{color:#ff9a9a}
 .dk-hb .bar{height:6px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
@@ -1088,6 +1088,7 @@ html{scrollbar-gutter:stable}
 .dk-tc em{font-size:44px}
 .dk-tc .dco{position:absolute;left:-5px;top:-5px;z-index:2;width:28px;height:28px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 15px "Figtree",sans-serif}
 .dk-fx{color:#ffe9a8;font-weight:700;font-size:13px;margin-top:-4px}
+.dk-q b.emo{font-size:64px;line-height:1.1}
 .dk-q small{display:block;color:#b9bff0;font-weight:700;font-size:13px}
 .dk-q b{display:block;font:800 clamp(20px,3.4vw,28px) "Figtree",sans-serif;line-height:1.2;margin-top:2px}
 .dk-q .gp{display:inline-block;min-width:60px;border-bottom:3px solid #ffd666;text-decoration:none;color:#ffd666}
@@ -1106,7 +1107,7 @@ html{scrollbar-gutter:stable}
 .dk-start{background:rgba(10,8,32,.86)}
 .dk-cast{width:150px}.dk-cast svg{width:100%;height:auto}
 .cn-start.dk-start button.dk-go{background:#6b5cff;color:#fff;box-shadow:0 3px 0 #3b2fb0}
-@media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:80px;height:112px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-opts{grid-template-columns:1fr}}
+@media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:80px;height:112px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-m em{font-size:26px}.dk-m strong{font-size:10px!important;padding:0 2px}.dk-m .dst{gap:4px}.dk-m .dst u{min-width:20px;font-size:12px}.dk-slot{font-size:16px}.dk-opts{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.dk-m.nw{animation:none}.dk-h{transition:none}}
 </style>
 </head>
@@ -3680,31 +3681,45 @@ const DKC=[
 ['house','dom','n',1,2,'z','🏠'],['school','szkoła','n',1,2,'z','🏫'],['sun','słońce','n',1,2,'r','☀️'],['fish','ryba','n',1,2,'z','🐟'],['tree','drzewo','n',1,2,'z','🌳'],['car','samochód','n',1,2,'r','🚗'],
 ['umbrella','parasol','n',2,2,'z','☂️'],['kitchen','kuchnia','n',2,3,'z','🍳'],['museum','muzeum','n',2,3,'z','🏛️'],['library','biblioteka','n',2,3,'r','📚'],['mountain','góra','n',2,3,'r','⛰️'],['island','wyspa','n',2,3,'r','🏝️'],['airport','lotnisko','n',2,4,'r','🛫'],['elephant','słoń','n',2,4,'e','🐘',0,'ally1'],
 ['neighbour','sąsiad','n',3,3,'z','🏘️'],['environment','środowisko','n',3,4,'r','🌍'],['knowledge','wiedza','n',3,4,'r','🧠'],['adventure','przygoda','n',3,4,'e','🧭',0,'ally1'],
-['eat','jeść','v',1,1,'z','🍽️',['They ___ breakfast at eight.','eat','eats','eating','ate']],['sleep','spać','v',1,1,'z','😴',['The baby is ___ now.','sleeping','sleeps','sleep','slept']],['read','czytać','v',1,1,'z','📰',['He ___ a book every week.','reads','read','reading','readed']],
-['run','biegać','v',1,2,'r','🏃',['She ___ in the park every morning.','runs','run','running','ran']],['write','pisać','v',1,2,'z','✍️',['I ___ a letter yesterday.','wrote','write','writed','writing']],['swim','pływać','v',1,2,'r','🏊',['We can ___ in the sea.','swim','swims','swam','swimming']],['open','otwierać','v',1,2,'z','🚪',['Please ___ the window.','open','opens','opened','opening']],
-['cook','gotować','v',2,3,'z','👨‍🍳',['My dad ___ dinner every Sunday.','cooks','cook','cooking','cooked']],['climb','wspinać się','v',2,3,'r','🧗',['He ___ the mountain last summer.','climbed','climb','climbing','climbs']],['travel','podróżować','v',2,3,'r','🧳',['They are going to ___ to Spain.','travel','travels','travelled','travelling']],['borrow','pożyczać (od kogoś)','v',2,3,'r','🤝',['Can I ___ your pen, please?','borrow','lend','borrows','borrowed']],
-['improve','poprawiać','v',3,4,'e','📈',['She has ___ her English a lot.','improved','improve','improving','improves'],'ally1'],['decide','decydować','v',3,4,'r','🤔',['We have ___ to move house.','decided','decide','deciding','decides']],['forget','zapominać','v',3,4,'r','🫥',['I have ___ my password.','forgotten','forget','forgot','forgetted']],
+['eat','jeść','v',1,1,'z','🍽️',['I\'m hungry, so I want to ___ a sandwich.',0,['sleep','swim','run']]],['sleep','spać','v',1,1,'z','😴',['It is midnight and the baby is ___ .',3,['reading','swimming','writing']]],['read','czytać','v',1,1,'z','📰',['My sister ___ a long book every week.',1,['swims','runs','sleeps']]],
+['run','biegać','v',1,2,'r','🏃',['He ___ ten kilometres every Saturday morning.',1,['sleeps','writes','opens']]],['write','pisać','v',1,2,'z','✍️',['Yesterday I ___ an e-mail to my teacher.',2,['swam','climbed','slept']]],['swim','pływać','v',1,2,'r','🏊',['We can ___ in the sea in summer.',0,['read','write','open']]],['open','otwierać','v',1,2,'z','🚪',['It is hot. Please ___ the window.',0,['eat','sleep','write']]],
+['cook','gotować','v',2,3,'z','👨‍🍳',['My dad ___ dinner for us every Sunday.',1,['climbs','swims','sleeps']]],['climb','wspinać się','v',2,3,'r','🧗',['Last summer he ___ the highest mountain in Poland.',2,['cooked','wrote','borrowed']]],['travel','podróżować','v',2,3,'r','🧳',['They want to ___ around Europe by train.',0,['cook','borrow','open']]],['borrow','pożyczać (od kogoś)','v',2,3,'r','🤝',['Can I ___ your pen? I forgot mine.',0,['climb','swim','cook']]],
+['improve','poprawiać','v',3,4,'e','📈',['She has ___ her English a lot this year.',4,['borrowed','climbed','cooked']],'ally1'],['decide','decydować','v',3,4,'r','🤔',['We have ___ to move to a new house.',4,['borrowed','cooked','climbed']]],['forget','zapominać','v',3,4,'r','🫥',['I have ___ my password. Can you help me?',4,['cooked','climbed','opened']]],
 ['big','duży','a',1,1,'z','🐋','small'],['small','mały','a',1,1,'z','🐜','big'],['hot','gorący','a',1,1,'z','🔥','cold'],['cold','zimny','a',1,1,'z','🥶','hot'],['happy','szczęśliwy','a',1,2,'z','😀','sad'],['sad','smutny','a',1,2,'z','😢','happy'],['fast','szybki','a',1,2,'r','🐆','slow'],
 ['tall','wysoki','a',2,2,'z','🗼','short'],['heavy','ciężki','a',2,3,'r','🏋️','light'],['dangerous','niebezpieczny','a',2,3,'r','⚠️','safe'],['expensive','drogi','a',2,3,'r','💎','cheap'],
 ['generous','hojny','a',3,4,'r','🎁','mean'],['ancient','starożytny','a',3,4,'e','🏺','modern','ally1'],['reliable','niezawodny','a',3,4,'r','🔧','unreliable'],
-['good morning','dzień dobry','p',1,1,'z','🌅'],['thank you','dziękuję','p',1,1,'z','🙏'],['how are you?','jak się masz?','p',1,2,'r','👋'],
-['see you later','do zobaczenia','p',2,2,'r','🤙'],["I don't know",'nie wiem','p',2,2,'z','🤷'],['what time is it?','która jest godzina?','p',2,3,'r','⏰'],
+['good morning','dzień dobry','p',1,1,'z','🌅',"Spotykasz nauczyciela rano. Co mówisz?"],['thank you','dziękuję','p',1,1,'z','🙏',"Ktoś podał Ci książkę. Co mówisz?"],['how are you?','jak się masz?','p',1,2,'r','👋',"Chcesz zapytać kolegę, jak się czuje."],
+['see you later','do zobaczenia','p',2,2,'r','🤙',"Żegnasz się z kolegą, a spotkacie się dziś później."],["I don't know",'nie wiem','p',2,2,'z','🤷',"Nie znasz odpowiedzi na pytanie nauczyciela."],['what time is it?','która jest godzina?','p',2,3,'r','⏰',"Chcesz zapytać o godzinę."],
 ["it's raining cats and dogs",'leje jak z cebra','p',3,5,'l','⛈️',0,'freeze'],['break a leg','połamania nóg (powodzenia)','p',3,5,'l','🎭',0,'freeze']];
 const DKCARDS=DKC.map((c,i)=>{const [w,pl,t,lv,cost,rar,emo,data,fx]=c,b=2*cost+2+'zrel'.indexOf(rar),atk=t==='n'?b>>1:Math.ceil(b*(t==='v'?.65:t==='p'?.55:.5));return{id:i,w,pl,t,lv,cost,rar,emo,data,fx:fx||'',atk,hp:b-atk}});
+const DKV={eat:['eat','eats','ate','eating','eaten'],sleep:['sleep','sleeps','slept','sleeping','slept'],read:['read','reads','read','reading','read'],run:['run','runs','ran','running','run'],write:['write','writes','wrote','writing','written'],swim:['swim','swims','swam','swimming','swum'],open:['open','opens','opened','opening','opened'],cook:['cook','cooks','cooked','cooking','cooked'],climb:['climb','climbs','climbed','climbing','climbed'],travel:['travel','travels','travelled','travelling','travelled'],borrow:['borrow','borrows','borrowed','borrowing','borrowed'],improve:['improve','improves','improved','improving','improved'],decide:['decide','decides','decided','deciding','decided'],forget:['forget','forgets','forgot','forgetting','forgotten']};
 const dkPool=l=>DKCARDS.filter(c=>c.lv<=DKL[l]);
 function dkDeck(l){const p=shuffle(dkPool(l).slice()),lo=p.filter(c=>c.cost<=2),hi=p.filter(c=>c.cost>2),L=lo.slice(0,hi.length?6:10),H=hi.slice(0,10-L.length);return shuffle(L.concat(H))}
 function dkTask(c,l){
-  const n=l==='A1'?3:4;let q,ok,wr,gap=0;
-  if(c.t==='v'){q=c.data[0];gap=1;ok=c.data[1];wr=c.data.slice(2)}
-  else if(c.t==='a'){q=c.w;ok=c.data;wr=DKCARDS.filter(x=>x.t==='a'&&x.id!==c.id&&x.w!==c.data).map(x=>x.w)}
-  else{q=c.w;ok=c.pl;wr=DKCARDS.filter(x=>x.t===c.t&&x.id!==c.id&&x.pl!==c.pl).map(x=>x.pl)}
-  const opts=shuffle([ok].concat(shuffle(wr.slice()).slice(0,n-1)));
-  return{q,gap,kind:c.t,opts,ok:opts.indexOf(ok),dis:[],tries:0,done:null}
+  const n=l==='A1'?3:4,hi=DKL[l]>1,P=DKCARDS.filter(x=>x.t===c.t&&x.id!==c.id&&x.lv<=DKL[l]);let q,ok,wr,cap,gap=0,emo=0;
+  if(c.t==='v'){
+    const [sen,fi,ds]=c.data;q=sen;gap=1;cap='Uzupełnij zdanie';ok=DKV[c.w][fi];
+    const alt=[...new Set(DKV[c.w])].filter(x=>x!==ok);wr=n===3?shuffle(ds.slice()).slice(0,2):[alt[rnd(alt.length)]].concat(shuffle(ds.slice()).slice(0,2))
+  }else if(c.t==='n'){
+    const m=hi?1+rnd(2):0;
+    if(m===0){q=c.w;cap='Co to znaczy po polsku?';ok=c.pl;wr=P.map(x=>x.pl)}
+    else if(m===1){q=c.pl;cap='Jak to będzie po angielsku?';ok=c.w;wr=P.map(x=>x.w)}
+    else{q=c.emo;emo=1;cap='Jak to się nazywa po angielsku?';ok=c.w;wr=P.map(x=>x.w)}
+  }else if(c.t==='a'){
+    if(hi&&Math.random()<.5){q=c.pl;cap='Jak to będzie po angielsku?';ok=c.w;wr=P.map(x=>x.w)}
+    else{q=c.w;cap='Przeciwieństwo słowa';ok=c.data;wr=P.map(x=>x.w).filter(x=>x!==c.data)}
+  }else{
+    if(c.lv<3&&c.data){q=c.data;cap='Co powiesz w tej sytuacji?';ok=c.w;wr=P.map(x=>x.w)}
+    else{q=c.w;cap='Co to znaczy po polsku?';ok=c.pl;wr=P.map(x=>x.pl)}
+  }
+  wr=[...new Set(wr)].filter(x=>x!==ok);
+  const opts=shuffle([ok].concat(shuffle(wr).slice(0,n-1)));
+  return{q,gap,emo,cap,kind:c.t,opts,ok:opts.indexOf(ok),dis:[],tries:0,done:null}
 }
 function dkInst(c,mode){return{c,mode,atk:mode==='full'?c.atk:mode==='half'?Math.ceil(c.atk/2):1,hp:c.hp,mhp:c.hp,frozen:0}}
 function dkNew(l){
   if(DK)clearTimeout(DK.tm);
-  DK={lvl:l,go:0,over:0,turn:0,ph:'p',en:0,hero:[DKHP,DKHP],deck:dkDeck(l),hand:[],bdeck:dkDeck(l),bhand:[],field:[[null,null,null],[null,null,null]],ben:0,task:null,msg:'',st:{first:0,half:0,bad:0},tm:0,res:'',last:null};
+  DK={lvl:l,go:0,over:0,turn:0,ph:'p',en:0,hero:[DKHP,DKHP],deck:dkDeck(l),hand:[],bdeck:dkDeck(l),bhand:[],field:[[null,null,null,null],[null,null,null,null]],ben:0,task:null,msg:'',st:{first:0,half:0,bad:0},tm:0,res:'',last:null};
   for(let i=0;i<4;i++){DK.hand.push(DK.deck.pop());DK.bhand.push(DK.bdeck.pop())}
 }
 function dkLvl(l){DKlvl=l;dkNew(l);renderDeck()}
@@ -3744,7 +3759,7 @@ function dkFx(side,x){
 }
 function dkAtk(side){
   const me=DK.field[side],en=DK.field[1-side];
-  for(let i=0;i<3;i++){
+  for(let i=0;i<4;i++){
     const a=me[i];if(!a)continue;if(a.frozen){a.frozen=0;continue}
     const t=en[i],d=a.atk+(t&&DKADV[a.c.t]===t.c.t?1:0);
     if(t){t.hp-=d;if(t.hp<=0){DK.hero[1-side]-=-t.hp;en[i]=null}}else DK.hero[1-side]-=d
@@ -3766,7 +3781,7 @@ function dkBotPlay(){
   if(!DK||DK.over)return;
   const f=DK.field[1],free=f.map((x,i)=>x?-1:i).filter(i=>i>=0),c=DK.bhand.filter(x=>x.cost<=DK.ben).sort((a,b)=>b.cost-a.cost)[0];
   if(c&&free.length){
-    const p=DK.lvl==='A1'?.6:DK.lvl==='A2'?.75:.85,s=free[rnd(free.length)],x=dkInst(c,Math.random()<p?'full':'bad');
+    const p=DK.lvl==='A1'?.7:DK.lvl==='A2'?.8:.9,s=free[rnd(free.length)],x=dkInst(c,Math.random()<p?'full':'bad');
     DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Rywal zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
   }
   DK.msg='Karty rywala ruszają do akcji!';dkAtk(1);beep(150,.15,'square',.05,100);renderDeck();
@@ -3800,8 +3815,8 @@ function renderDeck(){
   let ov='';
   if(wait)ov='<div class="cn-start dk-start"><div class="dk-cast"><svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="48" r="26" fill="#6b5cff"/><ellipse cx="60" cy="48" rx="46" ry="11" fill="none" stroke="#ffd666" stroke-width="3" transform="rotate(-18 60 48)"/><g transform="translate(14 12) rotate(-14)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#4cc3ff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#4cc3ff"/></g><g transform="translate(78 6) rotate(12)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#c27bff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#c27bff"/></g></svg></div><p><b>Pojedynek kart!</b> Zagrywaj karty słówek za energię. Poprawna odpowiedź daje pełną moc karty, pomyłka ją osłabia. Odbierz rywalowi wszystkie serca w '+DKTURNS+' turach.</p><button class="dk-go" onclick="dkStart()">Start</button><button class="g xit" onclick="show(\'home\')">'+ic('logout')+'Wyjście</button></div>';
   else if(T){
-    const c=DK.hand[DK.task.i],cap=T.kind==='v'?'Uzupełnij zdanie':T.kind==='a'?'Przeciwieństwo słowa':'Co to znaczy po polsku?',q=T.gap?esc(T.q).replace('___','<u class="gp">?</u>'):esc(T.q);
-    ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>'+c.emo+'</em><strong>'+esc(c.w)+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b>'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
+    const c=DK.hand[DK.task.i],cap=T.cap,q=T.gap?esc(T.q).replace('___','<u class="gp">?</u>'):esc(T.q);
+    ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>?</em><strong>'+DKTY[c.t]+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b class="'+(T.emo?'emo':'')+'">'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
   }
   else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
   root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p>';

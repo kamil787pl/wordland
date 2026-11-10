@@ -8,12 +8,17 @@ with sync_playwright() as pw:
     pg.goto(URL);pg.wait_for_timeout(400);pg.evaluate("localStorage.clear()");pg.reload();pg.wait_for_timeout(400)
     res['katalog: 60 kart, zadania poprawne']=pg.evaluate("DKCARDS.length===60&&DKCARDS.every(c=>{const t=dkTask(c,'B1');return t.opts.length===4&&t.opts[t.ok]&&new Set(t.opts).size===4})")
     res['talie: 10 kart na kazdym poziomie']=pg.evaluate("['A1','A2','B1'].every(l=>dkDeck(l).length===10&&new Set(dkDeck(l).map(c=>c.id)).size===10)")
+    res['pole: 4 miejsca na karty']=pg.evaluate("(()=>{dkNew('A1');return DK.field[0].length===4&&DK.field[1].length===4})()")
+    res['czasownik: opcje to rozne czasowniki, bez podpowiedzi w karcie']=pg.evaluate("""(()=>{const c=DKCARDS.find(x=>x.w==='swim');let ok=1;for(let i=0;i<40;i++){const t=dkTask(c,'B1');if(!t.gap||t.opts.length!==4||t.opts[t.ok]!=='swim')ok=0;if(t.opts.filter(o=>/^(swim|swims|swam|swimming|swum)$/.test(o)).length>2)ok=0}
+      DK.task=null;return !!ok})()""")
+    res['zadania roznych typow na wyzszych poziomach']=pg.evaluate("(()=>{const m=new Set();for(let i=0;i<60;i++)m.add(dkTask(DKCARDS.find(x=>x.w==='cat'),'A2').cap);return m.size>=2})()")
     pg.evaluate("show('deck')");pg.wait_for_timeout(300)
     res['start: opis, Start i Wyjscie']=pg.locator('.dk-start .dk-go').count()==1 and pg.locator('.dk-start .xit').count()==1
     pg.click('.dk-start .pri,.dk-start .dk-go');pg.wait_for_timeout(200)
     res['po starcie: 4 karty w rece, energia 3']=pg.locator('.dk-h').count()==4 and pg.evaluate("DK.en")==3
     # zagranie karty: bledna odpowiedz dwa razy -> potkniecie
     pg.evaluate("DK.hand[0]=DKCARDS.find(c=>c.cost===1&&c.t==='n');dkPlay(0)");pg.wait_for_timeout(100)
+    res['nakladka zadania nie zdradza slowa karty']=pg.locator('.dk-tc strong').inner_text().lower()=='rzeczownik'
     res['zadanie: 3 odpowiedzi na A1']=pg.locator('.dk-opts button').count()==3
     pg.evaluate("dkAns(DK.task.t.ok)");pg.wait_for_timeout(1000)
     res['dobra odpowiedz: karta na polu z pelna moca']=pg.evaluate("DK.field[0][0]&&DK.field[0][0].mode==='full'&&DK.field[0][0].atk===DK.field[0][0].c.atk&&DK.en===2")
