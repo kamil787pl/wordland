@@ -1087,7 +1087,7 @@ html{scrollbar-gutter:stable}
 .dk-tc{width:120px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .dk-tc em{font-size:44px}
 .dk-tc .dco{position:absolute;left:-5px;top:-5px;z-index:2;width:28px;height:28px;border-radius:50%;background:#6b5cff;color:#fff;display:flex;align-items:center;justify-content:center;font:800 15px "Figtree",sans-serif}
-.dk-leg{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin:0 0 12px;font-size:12.5px;color:var(--mut)}.dk-leg b{color:var(--ink)}.dk-leg span{display:inline-flex;align-items:center;gap:5px}.dk-leg i{font-style:normal;font-weight:800;font-size:10px;padding:2px 6px;border-radius:6px;color:#0c0a24}.dk-leg .c{background:#6b5cff;color:#fff;border-radius:50%}.dk-leg .a{background:#ff8a8a}.dk-leg .h{background:#6bf0a8}.dk-leg .o{width:9px;height:9px;padding:0;border-radius:50%;background:#6b5cff}
+.dk-leg{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin:0 0 12px;font-size:12.5px;color:var(--mut)}.dk-leg b{color:var(--ink)}.dk-leg span{display:inline-flex;align-items:center;gap:5px}.dk-leg i{font-style:normal;font-weight:800;font-size:10px;padding:2px 6px;border-radius:6px;color:#0c0a24;display:inline-flex}.dk-leg i .i{width:13px;height:13px}.dk-leg .c{background:#6b5cff;color:#fff;border-radius:50%}.dk-leg .a{background:#ff8a8a}.dk-leg .h{background:#6bf0a8}.dk-leg .o{width:9px;height:9px;padding:0;border-radius:50%;background:#6b5cff}
 .dk-fx{color:#ffe9a8;font-weight:700;font-size:13px;margin-top:-4px}
 .dk-q b.emo{font-size:64px;line-height:1.1}
 .dk-q small{display:block;color:#b9bff0;font-weight:700;font-size:13px}
@@ -1109,7 +1109,24 @@ html{scrollbar-gutter:stable}
 .dk-cast{width:150px}.dk-cast svg{width:100%;height:auto}
 .cn-start.dk-start button.dk-go{background:#6b5cff;color:#fff;box-shadow:0 3px 0 #3b2fb0}
 @media(max-width:699px){.dk-stage .gs-body{min-height:520px}.dk-h{width:86px;height:124px}.dk-h .dst u{width:30px;height:34px;font-size:14px}.dk-h .dst u small{display:none}.dk-h .dart{height:40px}.dk-hb{width:56px}.dk-hb b{font-size:18px}.dk-fld{gap:5px}.dk-m{height:96px}.dk-slot{height:96px}.dk-m em{font-size:26px}.dk-m strong{font-size:10px!important;padding:0 2px}.dk-m .dst{gap:4px}.dk-m .dst u{min-width:20px;font-size:12px}.dk-slot{font-size:16px}.dk-opts{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.dk-h:after{animation:none!important}.dk-m.nw{animation:none}.dk-h{transition:none}}
+.dst u .ico{display:flex;line-height:0;margin-top:1px}.dst u .ico .i{width:10px;height:10px;stroke-width:2.4}
+.dk-h .dst u .ico .i{width:12px;height:12px}
+.dmg{position:absolute;left:50%;top:18%;transform:translateX(-50%);z-index:6;text-decoration:none;font:900 22px "Figtree",sans-serif;color:#ff6b6b;text-shadow:0 2px 0 #0c0a24,0 0 10px rgba(255,107,107,.8);pointer-events:none;animation:dkdmg .9s ease-out forwards}
+.dk-hb{position:relative}.dk-hb .dmg{left:70%;top:-6px;font-size:20px}
+.dk-en{position:relative}.dk-en .dmg.en{left:auto;right:-30px;top:-4px;transform:none;font-size:17px;color:#ffd666;text-shadow:0 2px 0 #0c0a24,0 0 10px rgba(255,214,102,.8);animation-name:dkdmge}
+@keyframes dkdmg{0%{opacity:0;transform:translate(-50%,6px) scale(.6)}20%{opacity:1;transform:translate(-50%,-4px) scale(1.25)}100%{opacity:0;transform:translate(-50%,-34px) scale(1)}}
+@keyframes dkdmge{0%{opacity:0;transform:translateY(4px) scale(.6)}20%{opacity:1;transform:translateY(-2px) scale(1.2)}100%{opacity:0;transform:translateY(-22px)}}
+.dk-m.lgu{animation:dklu .3s ease-in forwards;z-index:5}.dk-m.lgd{animation:dkld .3s ease-in forwards;z-index:5}
+.dk-m.rcu{animation:dkru .34s ease-out;z-index:5}.dk-m.rcd{animation:dkrd .34s ease-out;z-index:5}
+@keyframes dklu{to{transform:translateY(-84px) scale(1.1)}}@keyframes dkld{to{transform:translateY(84px) scale(1.1)}}
+@keyframes dkru{from{transform:translateY(-84px) scale(1.1)}to{transform:none}}@keyframes dkrd{from{transform:translateY(84px) scale(1.1)}to{transform:none}}
+.dk-m.hit{animation:dkhit .42s ease-out}
+@keyframes dkhit{0%,100%{transform:none;filter:none}20%{transform:translateX(-6px);filter:brightness(2.2) saturate(2)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.dk-m.dead{animation:dkdead .5s ease-in forwards}@keyframes dkdead{0%{filter:brightness(2)}100%{opacity:0;transform:scale(.6) rotate(-6deg)}}
+.dk-hb.hit b{animation:dkhit .42s;color:#ff9a9a}.dk-hb.hit .bar i{filter:brightness(1.6)}
+.dk-en i.lose{animation:dklose .7s ease-out}@keyframes dklose{0%{transform:scale(1.9);opacity:1;background:#ff9a9a}100%{transform:scale(1);opacity:.45;background:transparent}}
+.dk-en i.gn{animation:dkgain .5s ease-out backwards}@keyframes dkgain{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.5)}100%{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.dk-m.lgu,.dk-m.lgd,.dk-m.rcu,.dk-m.rcd{animation:none}.dk-m.hit,.dk-m.dead,.dk-en i,.dmg{animation-duration:.01s}.dk-h:after{animation:none!important}.dk-m.nw{animation:none}.dk-h{transition:none}}
 </style>
 </head>
 <body>
@@ -1123,7 +1140,7 @@ html{scrollbar-gutter:stable}
 <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></symbol>
 <symbol id="i-login" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></symbol>
 <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
-<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.6-3 8-7 9.5-4-1.5-7-4.9-7-9.5V6z"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
 <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
 <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
@@ -3727,7 +3744,7 @@ function dkLvl(l){DKlvl=l;dkNew(l);renderDeck()}
 function dkSnd(){const b=$('snd');if(b)b.click();else snd=!snd;renderDeck()}
 function dkStart(){if(!DK||DK.go)return;DK.go=1;dkTurnP()}
 function dkTurnP(){
-  DK.turn++;DK.ph='p';DK.en=Math.min(6,2+DK.turn);
+  DK.turn++;DK.ph='p';DK.en=Math.min(6,2+DK.turn);DK.ea={g:1};
   if(DK.turn>1&&DK.deck.length&&DK.hand.length<6)DK.hand.push(DK.deck.pop());
   DK.msg='Twoja tura: zagraj karty za energię albo zakończ turę.';renderDeck()
 }
@@ -3749,7 +3766,7 @@ function dkAns(k){
 function dkMast(c,ok){try{const D=SV.deck=SV.deck||{m:{},g:0,w:0},m=D.m[c.id]=D.m[c.id]||[0,0];m[ok?0:1]++;save()}catch(e){}}
 function dkPlace(){
   if(!DK||!DK.task)return;const T=DK.task.t,i=DK.task.i,c=DK.hand[i];if(!c){DK.task=null;return}
-  DK.hand.splice(i,1);DK.en-=c.cost;DK.st[T.done==='full'?'first':T.done]++;dkMast(c,T.done!=='bad');
+  DK.hand.splice(i,1);DK.ea={l:[DK.en-c.cost,DK.en],n:c.cost};DK.en-=c.cost;DK.st[T.done==='full'?'first':T.done]++;dkMast(c,T.done!=='bad');
   const x=dkInst(c,T.done),s=DK.field[0].indexOf(null);DK.field[0][s]=x;DK.last=[0,s];dkFx(0,x);DK.task=null;
   DK.msg=T.done==='full'?'Pełna moc! '+c.w+' wchodzi do gry.':T.done==='half'?'Połowa mocy: '+c.w+' wchodzi do gry osłabione.':'Pomyłka: '+c.w+' wchodzi potknięta (moc 1). Słówko wróci w powtórkach.';
   renderDeck()
@@ -3758,20 +3775,31 @@ function dkFx(side,x){
   if(x.c.fx==='ally1')DK.field[side].forEach(y=>{if(y){y.hp++;y.mhp++}});
   if(x.c.fx==='freeze')shuffle(DK.field[1-side].filter(Boolean)).slice(0,2).forEach(y=>y.frozen=1)
 }
-function dkAtk(side){
-  const me=DK.field[side],en=DK.field[1-side];
-  for(let i=0;i<4;i++){
-    const a=me[i];if(!a)continue;if(a.frozen){a.frozen=0;continue}
-    const t=en[i],d=a.atk+(t&&DKADV[a.c.t]===t.c.t?1:0);
-    if(t){t.hp-=d;if(t.hp<=0){DK.hero[1-side]-=-t.hp;en[i]=null}}else DK.hero[1-side]-=d
-  }
-  DK.hero[0]=Math.max(0,DK.hero[0]);DK.hero[1]=Math.max(0,DK.hero[1])
+function dkAttack(side,done){
+  let i=0;
+  const clean=()=>DK.field.forEach(f=>f.forEach((x,j)=>{if(x&&x.dead)f[j]=null})),
+  step=()=>{
+    if(!DK)return;clean();DK.hit=null;
+    while(i<4&&(!DK.field[side][i]||(DK.field[side][i].frozen&&(DK.field[side][i].frozen=0,1))))i++;
+    if(i>=4){DK.act=null;done();return}
+    const k=i++,a=DK.field[side][k];DK.act={side,k,ph:'go'};renderDeck();
+    DK.tm=setTimeout(()=>{
+      const en=DK.field[1-side],t=en[k],d=a.atk+(t&&DKADV[a.c.t]===t.c.t?1:0),hit=[];
+      if(t){t.hp-=d;hit.push({side:1-side,k,d});if(t.hp<=0){t.dead=1;if(t.hp<0){DK.hero[1-side]+=t.hp;hit.push({side:1-side,k:-1,d:-t.hp})}}}
+      else{DK.hero[1-side]-=d;hit.push({side:1-side,k:-1,d})}
+      DK.hero=DK.hero.map(h=>Math.max(0,h));DK.act={side,k,ph:'back'};DK.hit=hit;
+      beep(side?140:300,.14,'square',.05,side?90:180);renderDeck();
+      if(DK.hero[0]<=0||DK.hero[1]<=0){DK.tm=setTimeout(()=>{clean();dkCheck()},750);return}
+      DK.tm=setTimeout(step,560)
+    },300)
+  };
+  step()
 }
 function dkCheck(){if(DK.hero[0]<=0||DK.hero[1]<=0){dkFinish();return true}return false}
 function dkEnd(){
   if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task)return;
-  DK.ph='x';DK.msg='Twoje karty ruszają do akcji!';dkAtk(0);beep(330,.12,'square',.04,500);renderDeck();
-  DK.tm=setTimeout(()=>{if(dkCheck())return;dkBotTurn()},900)
+  DK.ph='x';DK.msg='Twoje karty ruszają do akcji!';renderDeck();
+  dkAttack(0,()=>{if(dkCheck())return;DK.tm=setTimeout(dkBotTurn,250)})
 }
 function dkBotTurn(){
   DK.ph='b';DK.ben=Math.min(6,2+DK.turn);
@@ -3785,8 +3813,8 @@ function dkBotPlay(){
     const p=DK.lvl==='A1'?.7:DK.lvl==='A2'?.8:.9,s=free[rnd(free.length)],x=dkInst(c,Math.random()<p?'full':'bad');
     DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Rywal zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
   }
-  DK.msg='Karty rywala ruszają do akcji!';dkAtk(1);beep(150,.15,'square',.05,100);renderDeck();
-  DK.tm=setTimeout(()=>{if(dkCheck())return;DK.turn>=DKTURNS?dkFinish():dkTurnP()},900)
+  DK.msg='Karty rywala ruszają do akcji!';renderDeck();
+  dkAttack(1,()=>{if(dkCheck())return;DK.turn>=DKTURNS?dkFinish():dkTurnP()})
 }
 function dkFinish(){
   DK.over=1;DK.ph='x';const a=DK.hero[0],b=DK.hero[1];DK.res=a>b?'w':a<b?'l':'d';
@@ -3796,21 +3824,21 @@ function dkFinish(){
 }
 function dkMini(x,i,side){
   if(!x)return'<div class="dk-slot"><i>'+(i+1)+'</i></div>';
-  const c=x.c,nw=DK.last&&DK.last[0]===side&&DK.last[1]===i;
-  return'<div class="dk-m r-'+c.rar+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+'" title="'+esc(c.pl)+'"><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'</u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+x.hp+'</u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+'</div>'
+  const c=x.c,nw=DK.last&&DK.last[0]===side&&DK.last[1]===i,A=DK.act&&DK.act.side===side&&DK.act.k===i?DK.act.ph:'',H=DK.hit&&DK.hit.find(h=>h.side===side&&h.k===i);
+  return'<div class="dk-m r-'+c.rar+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+(A?(A==='go'?' lg':' rc')+(side?'d':'u'):'')+(H?' hit':'')+(x.dead?' dead':'')+'" title="'+esc(c.pl)+'"><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+Math.max(0,x.hp)+'<span class="ico">'+ic('shield')+'</span></u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+(H?'<b class="dmg">-'+H.d+'</b>':'')+'</div>'
 }
 function dkOrbs(c){const m=(SV.deck&&SV.deck.m&&SV.deck.m[c.id])||[0,0],l=Math.max(0,Math.min(5,m[0]-m[1]));return'<span class="dorb" title="Opanowanie słówka: '+l+'/5">'+[1,2,3,4,5].map(k=>'<i class="'+(k<=l?'on':'')+'"></i>').join('')+'</span>'}
 function dkHandCard(c,i,can){
   const fs=c.w.length>14?9:c.w.length>9?10.5:12.5;
-  return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', tarcza '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(DKTY[c.t]+' · koszt '+c.cost+' energii, moc '+c.atk+', tarcza '+c.hp+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKTY[c.t].slice(0,5)+'. · '+DKLN[c.lv-1]+'</span><div class="dart"><svg viewBox="0 0 90 56" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="45" cy="30" rx="40" ry="11" fill="none" stroke="var(--k)" stroke-opacity=".4" stroke-width="1" transform="rotate(-14 45 30)"/><ellipse cx="45" cy="30" rx="28" ry="7" fill="none" stroke="var(--k)" stroke-opacity=".55" stroke-width="1" transform="rotate(-14 45 30)"/><circle cx="80" cy="9" r="3" fill="var(--k)"/><path d="M8 8l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#fff"/></svg><em>'+c.emo+'</em></div><strong style="font-size:'+fs+'px">'+esc(c.w)+'</strong>'+dkOrbs(c)+'<span class="dst"><u class="a">'+c.atk+'<small>MOC</small></u><u class="h">'+c.hp+'<small>TARCZA</small></u></span></button>'
+  return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', tarcza '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(DKTY[c.t]+' · koszt '+c.cost+' energii, moc '+c.atk+', tarcza '+c.hp+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKTY[c.t].slice(0,5)+'. · '+DKLN[c.lv-1]+'</span><div class="dart"><svg viewBox="0 0 90 56" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="45" cy="30" rx="40" ry="11" fill="none" stroke="var(--k)" stroke-opacity=".4" stroke-width="1" transform="rotate(-14 45 30)"/><ellipse cx="45" cy="30" rx="28" ry="7" fill="none" stroke="var(--k)" stroke-opacity=".55" stroke-width="1" transform="rotate(-14 45 30)"/><circle cx="80" cy="9" r="3" fill="var(--k)"/><path d="M8 8l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#fff"/></svg><em>'+c.emo+'</em></div><strong style="font-size:'+fs+'px">'+esc(c.w)+'</strong>'+dkOrbs(c)+'<span class="dst"><u class="a">'+c.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h">'+c.hp+'<span class="ico">'+ic('shield')+'</span></u></span></button>'
 }
-function dkHero(side){const h=DK.hero[side];return'<div class="dk-hb'+(side?' e':'')+'"><span>'+(side?'Rywal':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
+function dkHero(side){const h=DK.hero[side],H=DK.hit&&DK.hit.find(x=>x.side===side&&x.k<0);return'<div class="dk-hb'+(side?' e':'')+(H?' hit':'')+'">'+(H?'<s class="dmg">-'+H.d+'</s>':'')+'<span>'+(side?'Rywal':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
 function renderDeck(){
   const root=$('v-deck');if(!root)return;if(!DK)dkNew(DKlvl);
   const l=DK.lvl,wait=!DK.go&&!DK.over,T=DK.task&&DK.task.t,pl=DK.ph==='p'&&DK.go&&!DK.over;
   const head='<div class="cn-top"><div class="cn-seg" role="group" aria-label="Poziom">'+DKLN.map(x=>'<button class="'+(DKlvl===x?'on g-dk':'')+'" onclick="dkLvl(\''+x+'\')">'+x+'</button>').join('')+'</div><button class="cn-snd" onclick="dkSnd()" aria-label="Dźwięk" title="Dźwięk">'+ic(snd?'volume':'mute')+'</button></div>';
   const hud='<div class="gs-hud"><span class="gs-t">'+ic('cards')+'WordDeck</span><span class="gs-m">Pojedynek · tura '+Math.min(Math.max(DK.turn,1),DKTURNS)+'/'+DKTURNS+' · '+l+'</span><span class="gs-s"><b>'+DK.hero[0]+'</b>:<b>'+DK.hero[1]+'</b></span></div>';
-  const pips=[1,2,3,4,5,6].map(i=>'<i class="'+(i<=DK.en?'on':'')+'"></i>').join('');
+  const ea=DK.ea||{},pips=[1,2,3,4,5,6].map(i=>'<i class="'+(i<=DK.en?'on'+(ea.g?' gn':''):ea.l&&i>ea.l[0]&&i<=ea.l[1]?'lose':'')+'"'+(ea.g?' style="animation-delay:'+(i*60)+'ms"':'')+'></i>').join('')+(ea.l?'<s class="dmg en">-'+ea.n+'</s>':'');
   const arena='<div class="dk-arena"><div class="dk-row">'+dkHero(1)+'<div class="dk-fld">'+DK.field[1].map((x,i)=>dkMini(x,i,1)).join('')+'</div></div>'
    +'<div class="dk-mid"><span class="dk-en" title="Energia">'+ic('bolt')+pips+'<b>'+DK.en+'</b></span><span class="dk-turn">'+(DK.ph==='b'?'Tura rywala':DK.ph==='x'?'':pl?'Twoja tura':'')+'</span></div>'
    +'<div class="dk-row">'+dkHero(0)+'<div class="dk-fld">'+DK.field[0].map((x,i)=>dkMini(x,i,0)).join('')+'</div></div>'
@@ -3822,8 +3850,8 @@ function renderDeck(){
     ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>?</em><strong>'+DKTY[c.t]+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b class="'+(T.emo?'emo':'')+'">'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
   }
   else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
-  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">MOC</i> tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">TARCZA</i> ile zniesie, zanim odpadnie</span><span><i class="o"></i> opanowanie słówka (0–5)</span></div>';
-  if(DK.last)DK.last=null
+  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">'+ic('flame')+'</i> MOC: tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">'+ic('shield')+'</i> TARCZA: ile zniesie, zanim odpadnie</span><span><i class="o"></i> opanowanie słówka (0–5)</span></div>';
+  if(DK.last)DK.last=null;DK.ea=null
 }
 addEventListener('keydown',e=>{
   if(view!=='deck'||!DK||e.ctrlKey||e.metaKey||e.altKey)return;
