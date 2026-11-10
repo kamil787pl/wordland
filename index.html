@@ -3673,7 +3673,7 @@ addEventListener('keydown',e=>{
 /* ===== WORDDECK: karcianka ze słówkami (etap 1: rdzeń, pojedynek z botem) ===== */
 let DK=null,DKlvl='A1';
 const DKL={A1:1,A2:2,B1:3},DKLN=['A1','A2','B1'],DKRAR={z:'Zwykła',r:'Rzadka',e:'Epicka',l:'Legendarna'},DKTY={n:'Rzeczownik',v:'Czasownik',a:'Przymiotnik',p:'Fraza'};
-const DKADV={n:'v',v:'a',a:'n'},DKFX={ally1:'Sojusznicy +1 życia',freeze:'Zamraża 2 karty wroga'},DKTURNS=8,DKHP=20;
+const DKADV={n:'v',v:'a',a:'n'},DKFX={ally1:'Sojusznicy +1 życia',freeze:'Zamraża 2 karty rywala'},DKTURNS=8,DKHP=20;
 /* [słowo, polski, typ n/v/a/p, poziom 1-3, koszt, rzadkość, emoji, dane (v: zdanie z luką + dobra + 3 złe; a: antonim), efekt] */
 const DKC=[
 ['cat','kot','n',1,1,'z','🐱'],['dog','pies','n',1,1,'z','🐶'],['apple','jabłko','n',1,1,'z','🍎'],['book','książka','n',1,1,'z','📖'],['bread','chleb','n',1,1,'z','🍞'],['water','woda','n',1,1,'z','💧'],
@@ -3754,27 +3754,27 @@ function dkAtk(side){
 function dkCheck(){if(DK.hero[0]<=0||DK.hero[1]<=0){dkFinish();return true}return false}
 function dkEnd(){
   if(!DK||!DK.go||DK.over||DK.ph!=='p'||DK.task)return;
-  DK.ph='x';DK.msg='Twoje karty atakują!';dkAtk(0);beep(330,.12,'square',.04,500);renderDeck();
+  DK.ph='x';DK.msg='Twoje karty ruszają do akcji!';dkAtk(0);beep(330,.12,'square',.04,500);renderDeck();
   DK.tm=setTimeout(()=>{if(dkCheck())return;dkBotTurn()},900)
 }
 function dkBotTurn(){
   DK.ph='b';DK.ben=Math.min(6,2+DK.turn);
   if(DK.turn>1&&DK.bdeck.length&&DK.bhand.length<6)DK.bhand.push(DK.bdeck.pop());
-  DK.msg='Tura wroga...';renderDeck();DK.tm=setTimeout(dkBotPlay,800)
+  DK.msg='Tura rywala...';renderDeck();DK.tm=setTimeout(dkBotPlay,800)
 }
 function dkBotPlay(){
   if(!DK||DK.over)return;
   const f=DK.field[1],free=f.map((x,i)=>x?-1:i).filter(i=>i>=0),c=DK.bhand.filter(x=>x.cost<=DK.ben).sort((a,b)=>b.cost-a.cost)[0];
   if(c&&free.length){
     const p=DK.lvl==='A1'?.6:DK.lvl==='A2'?.75:.85,s=free[rnd(free.length)],x=dkInst(c,Math.random()<p?'full':'bad');
-    DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Wróg zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
+    DK.bhand.splice(DK.bhand.indexOf(c),1);DK.ben-=c.cost;f[s]=x;DK.last=[1,s];dkFx(1,x);DK.msg='Rywal zagrywa: '+c.w+'.';renderDeck();DK.tm=setTimeout(dkBotPlay,850);return
   }
-  DK.msg='Karty wroga atakują!';dkAtk(1);beep(150,.15,'square',.05,100);renderDeck();
+  DK.msg='Karty rywala ruszają do akcji!';dkAtk(1);beep(150,.15,'square',.05,100);renderDeck();
   DK.tm=setTimeout(()=>{if(dkCheck())return;DK.turn>=DKTURNS?dkFinish():dkTurnP()},900)
 }
 function dkFinish(){
   DK.over=1;DK.ph='x';const a=DK.hero[0],b=DK.hero[1];DK.res=a>b?'w':a<b?'l':'d';
-  DK.msg=DK.res==='w'?'Wygrywasz pojedynek!':DK.res==='l'?'Wróg wygrywa tym razem.':'Remis: obaj mają tyle samo życia.';
+  DK.msg=DK.res==='w'?'Wygrywasz pojedynek!':DK.res==='l'?'Rywal wygrywa tym razem.':'Remis: obaj mają tyle samo serc.';
   try{const D=SV.deck=SV.deck||{m:{},g:0,w:0};D.g++;if(DK.res==='w')D.w++;save()}catch(e){}
   if(DK.res==='w')beep(523,.2,'sine',.08,784);renderDeck()
 }
@@ -3786,7 +3786,7 @@ function dkMini(x,i,side){
 function dkHandCard(c,i,can){
   return'<button class="dk-h r-'+c.rar+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', koszt '+c.cost+', moc '+c.atk+', życie '+c.hp+(c.fx?', efekt: '+DKFX[c.fx]:''))+'" title="'+esc(c.pl+(c.fx?' · '+DKFX[c.fx]:''))+'"><b class="dco">'+c.cost+'</b><span class="dlv">'+DKLN[c.lv-1]+'</span><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><small>'+DKTY[c.t].slice(0,5)+'.</small><span class="dst"><u class="a">'+c.atk+'</u><u class="h">'+c.hp+'</u></span></button>'
 }
-function dkHero(side){const h=DK.hero[side];return'<div class="dk-hb'+(side?' e':'')+'"><span>'+(side?'Wróg':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
+function dkHero(side){const h=DK.hero[side];return'<div class="dk-hb'+(side?' e':'')+'"><span>'+(side?'Rywal':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
 function renderDeck(){
   const root=$('v-deck');if(!root)return;if(!DK)dkNew(DKlvl);
   const l=DK.lvl,wait=!DK.go&&!DK.over,T=DK.task&&DK.task.t,pl=DK.ph==='p'&&DK.go&&!DK.over;
@@ -3794,17 +3794,17 @@ function renderDeck(){
   const hud='<div class="gs-hud"><span class="gs-t">'+ic('cards')+'WordDeck</span><span class="gs-m">Pojedynek · tura '+Math.min(Math.max(DK.turn,1),DKTURNS)+'/'+DKTURNS+' · '+l+'</span><span class="gs-s"><b>'+DK.hero[0]+'</b>:<b>'+DK.hero[1]+'</b></span></div>';
   const pips=[1,2,3,4,5,6].map(i=>'<i class="'+(i<=DK.en?'on':'')+'"></i>').join('');
   const arena='<div class="dk-arena"><div class="dk-row">'+dkHero(1)+'<div class="dk-fld">'+DK.field[1].map((x,i)=>dkMini(x,i,1)).join('')+'</div></div>'
-   +'<div class="dk-mid"><span class="dk-en" title="Energia">'+ic('bolt')+pips+'<b>'+DK.en+'</b></span><span class="dk-turn">'+(DK.ph==='b'?'Tura wroga':DK.ph==='x'?'':pl?'Twoja tura':'')+'</span></div>'
+   +'<div class="dk-mid"><span class="dk-en" title="Energia">'+ic('bolt')+pips+'<b>'+DK.en+'</b></span><span class="dk-turn">'+(DK.ph==='b'?'Tura rywala':DK.ph==='x'?'':pl?'Twoja tura':'')+'</span></div>'
    +'<div class="dk-row">'+dkHero(0)+'<div class="dk-fld">'+DK.field[0].map((x,i)=>dkMini(x,i,0)).join('')+'</div></div>'
    +'<div class="dk-hand">'+DK.hand.map((c,i)=>dkHandCard(c,i,pl&&!DK.task&&c.cost<=DK.en)).join('')+'</div></div>';
   let ov='';
-  if(wait)ov='<div class="cn-start dk-start"><div class="dk-cast"><svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="48" r="26" fill="#6b5cff"/><ellipse cx="60" cy="48" rx="46" ry="11" fill="none" stroke="#ffd666" stroke-width="3" transform="rotate(-18 60 48)"/><g transform="translate(14 12) rotate(-14)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#4cc3ff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#4cc3ff"/></g><g transform="translate(78 6) rotate(12)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#c27bff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#c27bff"/></g></svg></div><p><b>Pojedynek kart!</b> Zagrywaj karty słówek za energię. Poprawna odpowiedź daje pełną moc karty, pomyłka ją osłabia. Zbij życie wroga do zera w '+DKTURNS+' turach.</p><button class="dk-go" onclick="dkStart()">Start</button><button class="g xit" onclick="show(\'home\')">'+ic('logout')+'Wyjście</button></div>';
+  if(wait)ov='<div class="cn-start dk-start"><div class="dk-cast"><svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="48" r="26" fill="#6b5cff"/><ellipse cx="60" cy="48" rx="46" ry="11" fill="none" stroke="#ffd666" stroke-width="3" transform="rotate(-18 60 48)"/><g transform="translate(14 12) rotate(-14)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#4cc3ff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#4cc3ff"/></g><g transform="translate(78 6) rotate(12)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#c27bff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#c27bff"/></g></svg></div><p><b>Pojedynek kart!</b> Zagrywaj karty słówek za energię. Poprawna odpowiedź daje pełną moc karty, pomyłka ją osłabia. Odbierz rywalowi wszystkie serca w '+DKTURNS+' turach.</p><button class="dk-go" onclick="dkStart()">Start</button><button class="g xit" onclick="show(\'home\')">'+ic('logout')+'Wyjście</button></div>';
   else if(T){
     const c=DK.hand[DK.task.i],cap=T.kind==='v'?'Uzupełnij zdanie':T.kind==='a'?'Przeciwieństwo słowa':'Co to znaczy po polsku?',q=T.gap?esc(T.q).replace('___','<u class="gp">?</u>'):esc(T.q);
     ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>'+c.emo+'</em><strong>'+esc(c.w)+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+cap+'</small><b>'+q+'</b></div><div class="dk-opts n'+T.opts.length+'">'+T.opts.map((o,k)=>'<button class="'+(T.done&&k===T.ok?'ok':T.dis[k]?'bad':'')+'" '+(T.done||T.dis[k]?'disabled ':'')+'onclick="dkAns('+k+')"><kbd>'+(k+1)+'</kbd>'+esc(o)+'</button>').join('')+'</div>'+(T.done?'':'<button class="g" onclick="dkCancel()">Anuluj</button>')+'</div></div>'
   }
-  else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje życie</small></div><div><b>'+DK.hero[1]+'</b><small>życie wroga</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
-  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: zbij życie wroga w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p>';
+  else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div><p>'+(DK.st.bad?'Słówka z pomyłką ('+DK.st.bad+') wrócą w powtórkach.':'Bez ani jednej pomyłki. Świetna robota!')+'</p></div>';
+  root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Karty atakują naprzeciwko siebie; Rzeczownik bije Czasownik, Czasownik bije Przymiotnik, Przymiotnik bije Rzeczownik (+1). Klawisze 1–6 zagrywają karty z ręki.</p>';
   if(DK.last)DK.last=null
 }
 addEventListener('keydown',e=>{
