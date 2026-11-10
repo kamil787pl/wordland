@@ -977,6 +977,31 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 .hs-app.ph{background:linear-gradient(170deg,#1a2547,#0c1220);max-width:340px!important}
 .cn-lbp .cn-seg,.hwtabs{display:flex;flex-wrap:wrap;width:fit-content;max-width:100%;box-sizing:border-box}
 .hs-cast{position:relative;width:112px}.hs-cast em{position:absolute;right:-4px;top:-2px;width:30px;height:30px;border-radius:50%;background:#2e9d4f;border:2px solid #fff;display:grid;place-items:center}.hs-cast em svg{width:17px;height:17px;color:#fff;stroke:#fff}.hs-start{background:rgba(10,20,42,.95)}.hs-start p{max-width:380px}
+.cn-lbp.bb{padding:16px 16px 26px;color:#eef3e8;border:10px solid #9a6b3f;border-radius:14px;background:radial-gradient(120% 90% at 30% 10%,#2f5a47,#1d3a2e 70%);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25),inset 0 0 60px rgba(0,0,0,.35),0 6px 16px rgba(0,0,0,.25);position:relative;font-family:"Segoe Print","Bradley Hand","Comic Sans MS","Figtree",system-ui,sans-serif}
+.cn-lbp.bb::after{content:"";position:absolute;left:14px;right:14px;bottom:-10px;height:10px;border-radius:0 0 6px 6px;background:linear-gradient(#7d5430,#5e3d20)}
+.bb h4{color:#fff;font:800 20px/1.2 "Segoe Print","Bradley Hand","Comic Sans MS","Figtree",sans-serif;letter-spacing:.3px;text-shadow:0 0 1px rgba(255,255,255,.6)}.bb h4 svg{color:#ffd966}
+.bb .lg,.bb .bbcap{color:#cfe0d2;margin:8px 0 6px}
+.bb .cn-seg{background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.35);padding:3px;border-radius:12px}
+.bb .cn-seg button{color:#dbe9dd;background:transparent;border-radius:9px}.bb .cn-seg button.on{background:#f2f5ee;color:#1d3a2e}
+.bb .nb{background:#ffd966;color:#3a2600}
+.bbw{margin-top:8px;overflow-x:auto}
+.bbh,.bbr{display:grid;grid-template-columns:46px minmax(150px,1.6fr) repeat(5,minmax(52px,.7fr)) minmax(64px,.8fr);align-items:center;gap:6px}
+.bbh.one,.bbr.one{grid-template-columns:46px minmax(120px,1fr) minmax(70px,.4fr)}
+.bbh{padding:4px 8px 6px;border-bottom:2px solid rgba(255,255,255,.55);font:700 12px "Figtree",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.6px;color:#bcd2c0}.bbh .bg,.bbh span:last-child{text-align:right}
+.bbl{list-style:none;margin:0;padding:0}
+.bbr{padding:8px;border-bottom:1px dashed rgba(255,255,255,.22)}
+.bbr.me{background:rgba(255,217,102,.14);outline:2px dashed #ffd966;outline-offset:-2px;border-radius:8px}
+.bbr.top .bt{color:#ffd966}
+.bbgap{text-align:center;color:#bcd2c0;padding:2px 0}
+.bk{font-weight:800;font-size:18px;text-align:center;position:relative;color:#fff}.bk i{font-style:normal;font-size:24px;line-height:1}.bk s{display:block;text-decoration:none;font-size:11px;color:#bcd2c0}
+.bn{text-align:left;min-width:0;display:flex;flex-direction:column;gap:2px}.bn b{font-size:17px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bn b u{text-decoration:none;font:800 11px "Figtree",system-ui,sans-serif;background:#ffd966;color:#3a2600;border-radius:8px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+.bn small{text-align:left;font:600 12px "Figtree",system-ui,sans-serif;color:#bcd2c0}
+.bp{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.18);overflow:hidden;max-width:180px}.bp i{display:block;height:100%;background:#8fe3a8;border-radius:3px}
+.bs{display:none;flex-wrap:wrap;gap:4px 10px;font:600 11px "Figtree",system-ui,sans-serif;color:#dbe9dd}.bs i{font-style:normal}
+.bbr .bg{text-align:right;font:700 15px "Figtree",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#eef3e8;font-style:normal}.bbr .bg.z{color:#7f9a86}
+.bbr .bt{text-align:right;font:800 20px "Figtree",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#fff}
+.bbf{margin:10px 0 0;text-align:right;font:600 12px "Figtree",system-ui,sans-serif;color:#bcd2c0}
+@media(max-width:719px){.bbh .bg,.bbr .bg{display:none}.bbh,.bbr{grid-template-columns:40px minmax(0,1fr) minmax(56px,auto)}.bbh.one,.bbr.one{grid-template-columns:40px minmax(0,1fr) minmax(56px,auto)}.bs{display:flex}.cn-lbp.bb{padding:12px 10px 22px;border-width:8px}}
 </style>
 </head>
 <body>
@@ -2046,6 +2071,17 @@ async function wbLoad(g){
 }
 function wbTab(sc,g){WB.scope=sc;WB.err=0;wbLoad(g);wbRefresh()}
 function wbGame(g){WB.game=g;WB.err=0;wbLoad(g);wbRefresh()}
+const WBG=[['wc','Craft'],['wl','Links'],['el','Elf'],['cl','Climb'],['hs','Heist']];
+/* tablica szkolna: miejsce, uczeń z rangą i paskiem do następnej, punkty z każdej gry, suma */
+function wbBoard(rows,det){
+  const med=['🥇','🥈','🥉'],f=v=>v==null?'–':v>0?wcFmtP(v):'·',tot=rows.reduce((a,r)=>a+r.pts,0);
+  const head='<div class="bbh'+(det?'':' one')+'"><span>#</span><span>Uczeń i ranga</span>'+(det?WBG.map(x=>'<span class="bg">'+x[1]+'</span>').join(''):'')+'<span>Razem</span></div>';
+  let prev=0;
+  const li=rows.map(r=>{const k=wcRank(r.pts,TR),gap=prev&&r.rk>prev+1?'<li class="bbgap" aria-hidden="true">⋮</li>':'';prev=r.rk;
+    const mini=det?'<span class="bs">'+WBG.map(x=>'<i>'+x[1]+' '+f(r[x[0]])+'</i>').join('')+'</span>':'';
+    return gap+'<li class="bbr'+(r.me?' me':'')+(r.rk<=3?' top':'')+(det?'':' one')+'"><span class="bk">'+(r.rk<=3?'<i aria-hidden="true">'+med[r.rk-1]+'</i><s>'+r.rk+'</s>':r.rk)+'</span><span class="bn"><b>'+esc(r.nick)+(r.me?' <u>to Ty</u>':'')+'</b><small>'+esc(k.t)+(k.next?' · '+k.pct+'% do „'+esc(k.next)+'”':' · najwyższa ranga')+'</small><span class="bp"><i style="width:'+k.pct+'%"></i></span>'+mini+'</span>'+(det?WBG.map(x=>'<em class="bg'+(r[x[0]]>0?'':' z')+'">'+f(r[x[0]])+'</em>').join(''):'')+'<strong class="bt">'+wcFmtP(r.pts)+'</strong></li>'}).join('');
+  return '<div class="bbw">'+head+'<ol class="bbl">'+li+'</ol><p class="bbf">Na tablicy: '+rows.length+' '+(rows.length===1?'uczeń':'uczniów')+' · razem '+wcFmtP(tot)+' pkt</p></div>'
+}
 function wbHtml(fixed){
   if(ROLE==='teacher')return '';
   const g=fixed||WB.game,k=g+':'+WB.scope,rows=WB.data[k],q=fixed?"'"+fixed+"'":'';
@@ -2058,10 +2094,10 @@ function wbHtml(fixed){
     const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf, WordClimb, WordHeist).',class:'Suma punktów uczniów z Twojej grupy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej grupy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej grupy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej grupy.'},hs:{week:'Punkty za sprawy z ostatnich 7 dni (najlepszy wynik dnia w każdej sprawie).',all:'Wszystkie punkty zdobyte w WordHeist.',class:'Punkty uczniów z Twojej grupy.'},cl:{week:'Punkty za wspinaczkę z ostatnich 7 dni (najlepszy wynik dnia na każdej górze).',all:'Wszystkie punkty zdobyte w WordClimb.',class:'Punkty uczniów z Twojej grupy.'}}[g][WB.scope];
     if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
     else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej grupie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod grupy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
-    else b='<ol class="cn-lb">'+rows.map(r=>'<li class="'+(r.me?'me':'')+'"><span>'+r.rk+'</span><b>'+esc(r.nick)+'</b><em>'+wcFmtP(r.pts)+' pkt</em></li>').join('')+'</ol>';
-    b='<p class="lg" style="margin:8px 0 0">'+cap+'</p>'+b;
+    else b=wbBoard(rows,g==='sum');
+    b='<p class="lg bbcap">'+cap+'</p>'+b;
   }
-  return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf',cl:'WordClimb',hs:'WordHeist'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
+  return '<div class="panel cn-lbp bb"><h4>'+ic('trophy')+'Ranking punktów'+(fixed?' '+({wl:'WordLinks',el:'WordElf',cl:'WordClimb',hs:'WordHeist'})[fixed]:'')+'</h4>'+sw+tabs+b+'</div>';
 }
 function medalSvg(i,n){const c=TRC[Math.min(4,Math.floor(i*5/n))],id='md'+(++TSV);return'<svg viewBox="0 0 48 58" aria-hidden="true"><defs><radialGradient id="'+id+'" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="'+cmix(c,.6,255)+'"/><stop offset=".55" stop-color="'+c+'"/><stop offset="1" stop-color="'+cmix(c,.32,0)+'"/></radialGradient></defs><path d="M13 30l-6 24 9-5 5 7 6-22z" fill="#cf3f4b"/><path d="M35 30l6 24-9-5-5 7-6-22z" fill="#2457d6"/><ellipse cx="24" cy="46" rx="14" ry="2" fill="#000" opacity=".12"/><circle cx="24" cy="23" r="19" fill="url(#'+id+')"/><circle cx="24" cy="23" r="14.5" fill="none" stroke="'+cmix(c,.4,255)+'" stroke-width="1.6" opacity=".7"/><ellipse cx="17" cy="13" rx="6" ry="3.4" transform="rotate(-35 17 13)" fill="#fff" opacity=".5"/><text x="24" y="29.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#000" opacity=".22">'+(i+1)+'</text><text x="24" y="28.5" text-anchor="middle" font-size="17" font-weight="800" font-family="Figtree,system-ui,sans-serif" fill="#fff">'+(i+1)+'</text></svg>'}
 function rankPanel(p,R,nm,desc){const r=wcRank(p,R);return '<div class="panel rkp"><div class="rkm">'+medalSvg(r.i,(R||WCR).length)+'</div><div class="rkb"><h4>'+ic('star','f pt')+'Ranga '+nm+': '+r.t+'</h4>'+(r.next?'<div class="bar2"><i style="width:'+r.pct+'%"></i></div><p class="lg" style="margin:6px 0 0">Do rangi „'+r.next+'” brakuje '+wcFmtP(r.left)+' pkt. '+desc+'</p>':'<p class="lg" style="margin:0">Najwyższa ranga!</p>')+'</div></div>'}
@@ -2554,7 +2590,7 @@ function helpHTML(){
   const s10=hpSec('punkty',10,'Punkty, rangi, rankingi i trofea',
     '<p>Punkty motywują uczniów do regularnej nauki. Każda gra liczy je trochę inaczej:</p><ul><li><b>WordCraft</b>: 10 pkt za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę w trybie Hard.</li><li><b>WordLinks</b>: do 300 pkt za łamigłówkę (sprint do 900). Im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.</li><li><b>WordElf</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za całą grę, tym więcej, im szybciej.</li><li><b>WordClimb</b>: do 300 (A1), 400 (A2) lub 500 (B1) pkt za trasę. Liczą się odpowiedzi poprawne od razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.</li><li><b>WordHeist</b>: do 300 pkt za sprawę: 100 za rozwiązanie, +80 bez błędu, +60 bez podpowiedzi, +60 za czas poniżej 6 minut. Do rankingu liczy się najlepszy wynik dnia w każdej sprawie.</li></ul>'
     +'<h4>Rangi</h4><p>Za sumę punktów uczeń awansuje na kolejne rangi (osobno w każdej grze i ogólnie):</p>'+hpRanks()
-    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier), WordCraft, WordLinks, WordElf, WordClimb i WordHeist, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja grupa</b>. Ranking grupy pokazuje tylko uczniów z tej samej grupy co oglądający.</p>'
+    +'<h4>Rankingi</h4><p>Na stronie głównej i w profilu jest ranking z przełącznikiem: <b>Razem</b> (suma ze wszystkich gier, w formie szkolnej tablicy: miejsce, nick z rangą i paskiem do następnej, punkty z każdej gry osobno i suma), WordCraft, WordLinks, WordElf, WordClimb i WordHeist, w zakresach <b>Tydzień</b>, <b>Ogółem</b> i <b>Moja grupa</b>. Ranking grupy pokazuje tylko uczniów z tej samej grupy co oglądający.</p>'
     +'<h4>Pokój i trofea</h4>'+hpFig('pokoj','Pokój ucznia z półką pucharów za rangi','Profil ucznia: „Mój pokój”. Każda zdobyta ranga to puchar na półce.')
     +'<p>Suma punktów jest też stale widoczna w górnym menu, obok płomienia z liczbą dni nauki z rzędu.</p>'
     +hpTip('Rankingi działają tylko dla zalogowanych uczniów. Konto korepetytora nie jest w nich uwzględniane.'));
