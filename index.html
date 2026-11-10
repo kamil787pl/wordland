@@ -1025,6 +1025,14 @@ details.grp[open] summary::before{transform:rotate(45deg)}
 .nb,.gc>button,.gbtn,.wod button{min-height:44px}
 .cn-seg button{min-height:44px}
 }
+/* stabilny układ: stały pasek przewijania i stała wysokość pól rankingu, żeby ekran nie skakał przy przeklikiwaniu */
+html{scrollbar-gutter:stable}
+.cn-lbp.bb .bbw{height:min(440px,70vh);overflow:auto;overscroll-behavior:contain}
+.cn-lbp.bb .bbw.bbe{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.bbh{position:sticky;top:0;z-index:1;background:#22453a}
+.bbcap{min-height:2.8em}
+.cn-lbp:not(.bb) .lbfix{height:min(300px,50vh);overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column}
+.cn-lbp:not(.bb) .lbfix>p{margin:auto;text-align:center}
 </style>
 </head>
 <body>
@@ -2114,12 +2122,12 @@ function wbHtml(fixed){
   const sw=fixed?'':'<div class="cn-seg" role="group" aria-label="Gra">'+[['sum','Razem'],['wc','WordCraft'],['wl','WordLinks'],['el','WordElf'],['cl','WordClimb'],['hs','WordHeist']].map(x=>'<button class="'+(g===x[0]?'on':'')+' g-'+x[0]+'" onclick="wbGame(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div> ';
   const tabs='<div class="cn-seg" role="group" aria-label="Zakres rankingu">'+[['week','Tydzień'],['all','Ogółem'],['class','Moja grupa']].map(x=>'<button class="'+(WB.scope===x[0]?'on':'')+'" onclick="wbTab(\''+x[0]+'\''+(fixed?',\''+fixed+'\'':'')+')">'+x[1]+'</button>').join('')+'</div>';
   let b;
-  if(!live())b='<p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button>';
+  if(!live())b='<div class="bbw bbe"><p class="lg">Zaloguj się, żeby zbierać punkty na koncie i zobaczyć ranking.</p><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>';
   else{
     if((!rows&&!WB.l&&!WB.err)||Date.now()-(WB.t[k]||0)>60000)setTimeout(()=>wbLoad(g),0);
     const cap={sum:{week:'Suma punktów ze wszystkich gier z ostatnich 7 dni.',all:'Suma punktów ze wszystkich gier (WordCraft, WordLinks, WordElf, WordClimb, WordHeist).',class:'Suma punktów uczniów z Twojej grupy.'},wc:{week:'Punkty za poprawne odpowiedzi z ostatnich 7 dni.',all:'Punkty za poprawne odpowiedzi i gwiazdki poziomów.',class:'Punkty uczniów z Twojej grupy (odpowiedzi i gwiazdki).'},wl:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia w każdym trybie).',all:'Wszystkie punkty za czas zdobyte w WordLinks.',class:'Punkty za czas uczniów z Twojej grupy.'},el:{week:'Punkty za czas z ostatnich 7 dni (najlepszy wynik dnia na każdym poziomie).',all:'Wszystkie punkty zdobyte w WordElf.',class:'Punkty uczniów z Twojej grupy.'},hs:{week:'Punkty za sprawy z ostatnich 7 dni (najlepszy wynik dnia w każdej sprawie).',all:'Wszystkie punkty zdobyte w WordHeist.',class:'Punkty uczniów z Twojej grupy.'},cl:{week:'Punkty za wspinaczkę z ostatnich 7 dni (najlepszy wynik dnia na każdej górze).',all:'Wszystkie punkty zdobyte w WordClimb.',class:'Punkty uczniów z Twojej grupy.'}}[g][WB.scope];
-    if(!rows)b='<p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
-    else if(!rows.length)b='<p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej grupie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod grupy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p>';
+    if(!rows)b='<div class="bbw bbe"><p class="lg">'+(WB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p></div>';
+    else if(!rows.length)b='<div class="bbw bbe"><p class="lg">'+(WB.scope==='class'?'Brak wyników w Twojej grupie. Jeśli jeszcze do niej nie dołączyłeś, wpisz kod grupy w profilu.':'Nikt jeszcze nie zdobył punktów. Bądź pierwszy!')+'</p></div>';
     else b=wbBoard(rows,g==='sum');
     b='<p class="lg bbcap">'+cap+'</p>'+b;
   }
@@ -2822,6 +2830,7 @@ function cnBoardHtml(){
   else if(!CNB.rows)b='<p>'+(CNB.err?'Nie udało się wczytać rankingu.':'Wczytuję…')+'</p>';
   else if(!CNB.rows.length)b='<p>Nikt jeszcze nie ukończył puzzla dnia w tym okresie. Bądź pierwszy!</p>';
   else b='<ol class="cn-lb">'+CNB.rows.map((r,i)=>'<li class="'+(r.me?'me':'')+'"><span>'+(i+1)+'</span><b>'+esc(r.nick)+'</b><em>'+cnFmt(r.ms)+' '+cnMedal(r.ms)+'</em></li>').join('')+'</ol>';
+  b='<div class="lbfix">'+b+'</div>';
   return '<div class="panel cn-lbp"><h4>'+ic('trophy')+'Ranking puzzla dnia</h4>'+tabs+b+'</div>';
 }
 function cnShareText(){
@@ -2940,7 +2949,7 @@ function renderConn(){
    +'<div class="gs-foot">'+(act?'<span class="cn-info">Błędy '+dots+'</span>':'<span class="cn-info"></span>')+'<div class="cn-msg" role="status" aria-live="polite">'+(fin?(CN.won?'Wszystkie grupy znalezione! Pociąg dojeżdża na stację końcową…':'Koniec szans. Zaraz zobaczysz wszystkie odpowiedzi…'):CN.msg)+'</div></div>'
    +'<div class="gbar">'+(showEnd?acts:'<button onclick="cnHint()"'+(act&&(CN.hints||0)<2?'':' disabled')+'>'+ic('bulb')+'<span class="hl"> Podpowiedź</span> ('+(2-(CN.hints||0))+')</button><button onclick="cnShuffle()"'+(act?'':' disabled')+'>Przetasuj</button><button onclick="cnClear()"'+(act&&CN.sel.length?'':' disabled')+'>Odznacz</button><button class="pri" onclick="cnSubmit()"'+(act&&CN.sel.length===4?'':' disabled')+'>Zatwierdź</button>')+'</div></div>'
    +'<p class="gtips">Cel: znajdź 4 grupy po 4 słówka z tej samej kategorii. Błąd to +10 s, podpowiedź +15 s.</p>'
-   +chal+stats+bd+(!CN.go||showEnd?wbHtml('wl')+cnBoardHtml():'');
+   +chal+stats+bd+wbHtml('wl')+cnBoardHtml();
   CN.fresh=0;CN.conf=0;
 }
 /* ===== WORDELF: skrzat pakuje prezenty ===== */
@@ -3068,7 +3077,7 @@ function renderElf(){
   const start=EL.between?'<div class="el-start"><div class="el-cast m-ok">'+ELF_SVG+'</div><p><b>Runda '+(EL.round+1)+' z '+EL.rounds+' gotowa!</b> Worek się zapełnia. Następna lista ma '+ELN[EL.lvl][EL.round+1]+' pozycji i większą półkę.</p><button class="pri" onclick="elNext()">Dalej</button></div>':wait?'<div class="el-start"><div class="el-cast m-ok">'+ELF_SVG+'</div><p><b>Pomóż skrzatowi!</b> Spakuj prezenty z listy Mikołaja w 3 rundach, zanim sanie odlecą. Błąd to +5 s.</p><button class="pri" onclick="elStart()">Start</button></div>':'';
   const body=EL.over&&!EL.fly?end:'<div class="el-wrap">'+list+shelf+side+'</div>'+start;
   const lights='<svg class="el-lights" viewBox="0 0 400 22" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3Q50 22 100 3T200 3T300 3T400 3" fill="none" stroke="#2a1a0e" stroke-width="1.2" vector-effect="non-scaling-stroke"/>'+Array.from({length:16},(_,i)=>'<circle cx="'+(i*25+12)+'" cy="'+(i%2?13:12)+'" r="3.4" fill="'+['#ff5252','#ffd740','#69f0ae','#40c4ff'][i%4]+'" style="animation-delay:'+(i%4)*.35+'s"/>').join('')+'</svg>';
-  root.innerHTML=head+'<div class="gstage cn-stage el-stage">'+hud+'<div class="gs-body">'+lights+body+sky+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(EL.msg)+'</div></div><div class="gbar">'+(EL.over?'<button class="pri" onclick="elNewR()">Nowa lista</button>':'<button onclick="elNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: w 3 rundach pakuj prezenty z listy do worka. Każda runda jest trudniejsza. Po trzeciej Mikołaj odleci.</p>'+((wait||(EL.over&&!EL.fly))?wbHtml('el'):'');
+  root.innerHTML=head+'<div class="gstage cn-stage el-stage">'+hud+'<div class="gs-body">'+lights+body+sky+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(EL.msg)+'</div></div><div class="gbar">'+(EL.over?'<button class="pri" onclick="elNewR()">Nowa lista</button>':'<button onclick="elNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: w 3 rundach pakuj prezenty z listy do worka. Każda runda jest trudniejsza. Po trzeciej Mikołaj odleci.</p>'+wbHtml('el');
   EL.pop=0;
 }
 setInterval(()=>{if(view==='elf'&&EL&&!EL.over&&EL.t0){const e=document.getElementById('el-time');if(e)e.textContent=cnFmt(elTotal());const q=document.getElementById('el-pts');if(q)q.textContent=elPtsOf(elTotal(),EL.lvl)}},250);
@@ -3243,7 +3252,7 @@ function renderClimb(){
   if(wait)ov='<div class="cl-ov"><svg class="cl-big" viewBox="-26 -40 52 78" aria-hidden="true">'+clMan({st:'wave',lvl:l,arm:1})+'</svg><h3>Zdobądź szczyt!</h3><p>12 kroków w 3 obozach. Wybierz z '+(l==='A1'?'trzech':'czterech')+' chwytów poprawną odpowiedź'+(l==='B1'?'. Odpowiedzi są podchwytliwe, a część pytań to zdania z luką.':'.')+' Pomyłka to tylko poślizg: nic nie tracisz, a słówko trafi do powtórek. Bez limitu czasu.</p><button onclick="clStart()">Start</button></div>';
   else if(CL.between){const n=CL.i/4;ov='<div class="cl-ov side"><h3>Obóz '+n+'!</h3><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+(12-CL.i)+'</b><small>do szczytu</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><p>Odpocznij chwilę i złap oddech.</p><button onclick="clNext()">Dalej</button></div>'}
   else if(CL.over){const mis=CL.words.filter(x=>x.bad).length;ov='<div class="cl-ov side end"><h3>Szczyt zdobyty!</h3><div class="cl-stars">'+[1,2,3].map(i=>ic('star','f '+(i<=CL.stars?'pt':'dim'))).join('')+'</div><div class="cl-tiles"><div><b>'+m+' m</b><small>wysokość</small></div><div><b>'+CL.first+'/12</b><small>od razu dobrze</small></div><div><b>'+CL.slips+'</b><small>poślizgi</small></div></div><div class="cl-pts">'+ic('star','f pt')+'<span>Punkty</span><b>'+CL.pts+'</b></div><small class="cl-gain">'+clAwardHtml()+'</small>'+(mis?'<p class="cl-note">Słówka z poślizgiem ('+mis+') trafiły do powtórek.</p>':'<p class="cl-note">Bez żadnego poślizgu. Świetna robota!</p>')+'</div>'}
-  root.innerHTML=head+'<div class="gstage cn-stage cl-stage'+(CL.over?' over':'')+'">'+hud+'<div class="gs-body">'+clScene(l,from).replace(/<\/div>$/,alt+'</div>')+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–4 też działają.</p>'+((wait||CL.over)?wbHtml('cl'):'');
+  root.innerHTML=head+'<div class="gstage cn-stage cl-stage'+(CL.over?' over':'')+'">'+hud+'<div class="gs-body">'+clScene(l,from).replace(/<\/div>$/,alt+'</div>')+q+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(CL.msg)+'</div></div><div class="gbar">'+(CL.over?'<button class="pri" onclick="clNewR()">Nowa trasa</button>':'<button onclick="clNewR()">Od nowa</button>')+'</div></div><p class="gtips">Cel: wejdź na szczyt w 12 krokach. Wybieraj poprawne tłumaczenie. Klawisze 1–4 też działają.</p>'+wbHtml('cl');
   if(from!==CL.i){requestAnimationFrame(()=>requestAnimationFrame(()=>{const i=CL.i;root.querySelectorAll('[data-f]').forEach(e=>{const f=e.dataset.f;e.style.transform=clTf(f==='w'||f==='g'?f:+f,i)});const b=root.querySelector('.cl-alt .bar i');if(b)b.style.height=(100*i/12)+'%'}))}
   CL.shown=CL.i
 }
@@ -3577,7 +3586,7 @@ function renderHeist(){
   else if(v==='item')bar='<button onclick="hsHint()" '+(canHint?'':'disabled ')+'>'+ic('bulb')+'Podpowiedź</button><button '+(it&&HS.done[it.id]||it&&!it.q?'class="pri" ':'')+'onclick="hsBack()">'+(it&&(HS.done[it.id]||!it.q)?'Dalej':'Zamknij')+'</button>';
   else if(v==='board')bar='<button onclick="hsAsk()">Przesłuchaj'+(HS.sus>=0?': '+HSS[HS.sus].n+' ('+HS.int[HS.sus]+'/3)':'')+'</button><button class="pri" onclick="hsAccuse()">Oskarż'+(HS.sus>=0?': '+HSS[HS.sus].n:'')+'</button><button onclick="hsHint()">'+ic('bulb')+'</button><button onclick="hsBack()">Wróć</button>';
   else bar='<button class="pri" onclick="'+(v==='ask'?"HS.v='board';renderHeist()":'hsBack()')+'">'+(v==='ask'?'Wróć do tablicy':'Zamknij')+'</button>';
-  root.innerHTML=head+'<div class="gstage hs-stage'+(HS.over?' over':'')+'">'+hud+'<div class="gs-body">'+body+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(HS.msg)+'</div></div>'+(bar?'<div class="gbar">'+bar+'</div>':'')+'</div><p class="gtips">Cel: wskaż sprawcę i dowody. Klikaj lupy w pokoju oraz telefon i laptop. W zagadkach klawisze 1–4 też działają.</p>'+((!HS.go||HS.over)?wbHtml('hs'):'')
+  root.innerHTML=head+'<div class="gstage hs-stage'+(HS.over?' over':'')+'">'+hud+'<div class="gs-body">'+body+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(HS.msg)+'</div></div>'+(bar?'<div class="gbar">'+bar+'</div>':'')+'</div><p class="gtips">Cel: wskaż sprawcę i dowody. Klikaj lupy w pokoju oraz telefon i laptop. W zagadkach klawisze 1–4 też działają.</p>'+wbHtml('hs')
 }
 setInterval(()=>{if(view==='heist'&&HS&&HS.go&&!HS.over){const e=document.getElementById('hs-time');if(e)e.textContent=hsFmt(hsSecs());const q=document.getElementById('hs-pts');if(q)q.textContent=hsPts(HS.err,HS.hint,hsSecs())}},500);
 addEventListener('keydown',e=>{
