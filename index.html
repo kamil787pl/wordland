@@ -1237,6 +1237,11 @@ html{scrollbar-gutter:stable}
 .dk-hand .dk-h:hover:not(.off){transform:rotate(0) translateY(-16px);z-index:5}
 @media(max-width:699px){.dk-hand .dk-h{margin:0 -12px}.dk-trk{display:none!important}.dk-pile{width:22px;height:32px;margin:0 2px 0 0}.dk-pile.e{width:17px;height:25px}.dk-pile b{font-size:11px}.dk-cnt em{display:none}.dk-mid{gap:4px}}
 .dk-hand{justify-content:safe center}
+
+/* ręka: bez pasków przewijania; karty same się zagęszczają do szerokości planszy */
+.dk-hand{--cw:92px;container-type:inline-size;overflow:visible;padding:20px 0 8px}
+.dk-hand .dk-h{width:var(--cw);height:150px;margin:0 min(-6px,calc((100cqw - var(--c)*var(--cw) - 8px)/var(--k)/2))}
+@media(max-width:699px){.dk-hand{--cw:78px}.dk-hand .dk-h{height:136px;margin:0 min(-6px,calc((100cqw - var(--c)*var(--cw) - 4px)/var(--k)/2))}}
 </style>
 </head>
 <body>
@@ -4153,7 +4158,7 @@ function renderDeck(){
   const arena='<div class="dk-arena">'+bg+'<div class="dk-row e">'+dkHero(1)+'<div class="dk-fld">'+DK.field[1].map((x,i)=>dkMini(x,i,1)).join('')+'</div></div>'
    +'<div class="dk-mid"><span class="dk-left"><span class="dk-en" title="Energia">'+ic('bolt')+pips+'<b>'+DK.en+'</b></span><span class="dk-str" title="Seria: 3 dobre odpowiedzi od razu pod rząd dają +1 energii">'+[0,1,2].map(k=>'<u class="'+(k<DK.streak?'on':'')+'">'+ic('star')+'</u>').join('')+'</span></span><span class="dk-tc2"><span class="dk-turn">'+(DK.place?'Wybierz miejsce':DK.mv!=null?'Wybierz pole':DK.ph==='b'?'Tura rywala':DK.ph==='x'?'Walka':pl?'Twoja tura':'')+'</span><span class="dk-trk" title="Tura '+DK.turn+' z '+DKTURNS+'">'+trk+'</span></span><span class="dk-cnt" title="Karty w taliach"><span class="dk-pile'+(DK.deck.length?'':' z')+'"><i></i><i></i><i></i><b>'+DK.deck.length+'</b></span><small>Twoja talia</small><em>·</em><span class="dk-pile e'+(DK.bdeck.length?'':' z')+'"><i></i><i></i><i></i><b>'+DK.bdeck.length+'</b></span><small>rywal</small></span></div>'
    +'<div class="dk-row p">'+dkHero(0)+'<div class="dk-fld">'+DK.field[0].map((x,i)=>dkMini(x,i,0)).join('')+'</div></div>'
-   +'<div class="dk-hand">'+DK.hand.map((c,i)=>dkHandCard(c,i,pl&&!DK.task&&!DK.place&&c.cost<=DK.en).replace('<button class="dk-h','<button style="--n:'+i+';--m:'+(DK.hand.length-1)/2+';--d:'+Math.pow(i-(DK.hand.length-1)/2,2)+'" class="dk-h')).join('')+'</div></div>';
+   +'<div class="dk-hand">'+DK.hand.map((c,i)=>dkHandCard(c,i,pl&&!DK.task&&!DK.place&&c.cost<=DK.en).replace('<button class="dk-h','<button style="--n:'+i+';--m:'+(DK.hand.length-1)/2+';--k:'+Math.max(1,DK.hand.length-1)+';--c:'+DK.hand.length+';--d:'+Math.pow(i-(DK.hand.length-1)/2,2)+'" class="dk-h')).join('')+'</div></div>';
   let ov='';
   if(wait)ov='<div class="cn-start dk-start"><div class="dk-cast"><svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="48" r="26" fill="#6b5cff"/><ellipse cx="60" cy="48" rx="46" ry="11" fill="none" stroke="#ffd666" stroke-width="3" transform="rotate(-18 60 48)"/><g transform="translate(14 12) rotate(-14)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#4cc3ff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#4cc3ff"/></g><g transform="translate(78 6) rotate(12)"><rect width="28" height="38" rx="4" fill="#fff" stroke="#c27bff" stroke-width="2.5"/><circle cx="14" cy="19" r="6" fill="#c27bff"/></g></svg></div><p><b>Pojedynek kosmicznych kart!</b> Zagrywaj statki, kosmitów i bazy za energię. Przed każdą kartą odpowiadasz na pytanie ze słówkiem: poprawna odpowiedź daje pełną moc karty, pomyłka ją osłabia. Odbierz rywalowi wszystkie serca w '+DKTURNS+' turach.</p><button class="dk-go" onclick="dkStart()">Start</button><button class="g xit" onclick="show(\'home\')">'+ic('logout')+'Wyjście</button></div>';
   else if(DK.drill)ov=dkDrillH();
