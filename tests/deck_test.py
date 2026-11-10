@@ -96,7 +96,7 @@ with sync_playwright() as pw:
     res['trudne zadanie: odpowiedz to slowo z bazy, nie z karty; pytanie nie zdradza odpowiedzi']=pg.evaluate("(()=>{dkNew('B1');for(let i=0;i<60;i++){const T=dkTask(i%2?'B1':'A2');const h=dkHardQ(T);if(h.ok!==T.w[1])return false;if(!h.gap&&h.q.toLowerCase().includes(h.ok.toLowerCase()))return false;if(h.gap&&!h.q.includes('___'))return false}return true})()")
     res['odpowiedzi zapisuja postep slowka we wspolnej bazie portalu']=pg.evaluate("(()=>{"+ST+"DK.hand[0]=C('Rakieta');dkPlay(0);const w=DK.task.t.w,k=w[0]+'='+w[1],r0=(SV.m[k]||{r:0}).r;dkAns(DK.task.t.ok);dkPlace();return SV.m[k].r===r0+1})()")
     pg.evaluate("dkNew('B1');DK.first=0;DK.go=1;DK.turn=1;DK.ph='p';DK.en=6;DK.hand[0]=DKCARDS.find(c=>c.w==='Rakieta');renderDeck();dkPlay(0)");pg.wait_for_timeout(150)
-    res['nakladka pokazuje zagrywana karte (nazwa kosmiczna)']=pg.locator('.dk-tc strong').inner_text().lower()=='rakieta'
+    res['nakladka pokazuje zagrywana karte (nazwa kosmiczna)']=pg.locator('.dk-tcw .dk-h.big strong').inner_text().lower()=='rakieta'
     for l in ['A1','A2','B1']:
         pg.evaluate("show('deck');dkLvl('%s')"%l);pg.wait_for_timeout(100)
         res['poziom '+l+': talia z kart <= poziomu']=pg.evaluate("DK.deck.concat(DK.hand).every(c=>c.lv<=DKL[DK.lvl])")

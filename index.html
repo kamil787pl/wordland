@@ -1099,7 +1099,7 @@ html{scrollbar-gutter:stable}
 .dk-opts button:hover:not(:disabled){background:rgba(255,255,255,.2)}
 .dk-opts kbd{flex:none;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.2);font:800 12px "Figtree",sans-serif;display:flex;align-items:center;justify-content:center}
 .dk-opts button.ok{background:#1f8f5a;border-color:#6bf0a8}.dk-opts button.bad{background:#a83a3a;border-color:#ff9a9a;opacity:.8}
-.dk-tk>button.g{background:transparent;border:0;color:#b9bff0;font:700 14px "Figtree",sans-serif;cursor:pointer;min-height:40px}
+.dk-tk button.g{background:transparent;border:0;color:#b9bff0;font:700 14px "Figtree",sans-serif;cursor:pointer;min-height:40px}
 .dk-ov.end{flex-direction:column;gap:10px;text-align:center}
 .dk-ov.end h3{margin:0;font:800 clamp(24px,4vw,34px) "Figtree",sans-serif}
 .dk-tiles{display:flex;gap:10px}.dk-tiles div{min-width:92px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.1)}
@@ -1180,12 +1180,36 @@ html{scrollbar-gutter:stable}
 .dk-typ input:focus{outline:2px solid #ffd666;outline-offset:1px}
 .dk-typ button{min-height:48px;padding:0 16px;border-radius:12px;border:0;background:#6b5cff;color:#fff;font:800 15px "Figtree",sans-serif;cursor:pointer}
 .dk-hint{color:#ffd666;font-weight:700}.dk-hint b{color:#6bf0a8}
-.dk-tk>button.g.dk-hardb{display:inline-flex;align-items:center;gap:6px;color:#ffd666}.dk-hardb .i{width:16px;height:16px}
+.dk-tk button.g.dk-hardb{display:inline-flex;align-items:center;gap:6px;color:#ffd666}.dk-hardb .i{width:16px;height:16px}
 .dk-ov.end{overflow:auto}
 .dk-miss{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;max-height:140px;overflow:auto;width:min(100%,520px)}
 .dk-miss li{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.1);font-size:14px;text-align:left}.dk-miss b{color:#ffd666;margin-right:6px}
 .dk-ov.end .dk-go{min-height:46px;padding:0 22px;border:0;border-radius:12px;background:#6b5cff;color:#fff;font:800 16px "Figtree",sans-serif;cursor:pointer;box-shadow:0 3px 0 #3b2fb0}
 @media(max-width:699px){.dk-left{gap:6px}.dk-str .i{width:11px;height:11px}.adv{right:-3px;font-size:10px;min-width:17px;height:16px}}
+/* WordDeck: duża karta w nakładce zadania, grafika zależna od typu */
+.dk-tk.wide{width:min(100%,760px);flex-direction:row;align-items:center;gap:30px}
+.dk-tcw{flex:none;padding:10px 6px}
+.dk-tq{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.dk-h.big{width:178px;height:266px;gap:3px;cursor:default;pointer-events:none;box-shadow:0 0 28px color-mix(in srgb,var(--k) 60%,transparent);animation:dkbig .35s ease-out}
+@keyframes dkbig{from{transform:translateY(14px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@media(min-width:700px){.dk-h.big{zoom:1.14}}
+.dk-h.big .dart{height:106px;margin-top:20px;border-radius:10px}
+.dk-h.big .dart em{font-size:66px}
+.dk-h.big strong{font-size:17px!important;letter-spacing:.04em;margin-top:2px}
+.dk-h.big .drar{font-size:10px}
+.dk-h.big .dfx{font-size:11px;min-height:14px}
+.dk-h.big .dadv{font:700 9.5px "Figtree",sans-serif;color:#b9bff0;line-height:1.2;padding:0 6px}
+.dk-h.big .dorb i{width:9px;height:9px}
+.dk-h.big .dco{width:36px;height:36px;font-size:19px;left:-7px;top:-7px}
+.dk-h.big .dlv{font-size:10px;left:28px;top:9px}
+.dk-h.big .dgem{width:20px;height:20px;top:-10px}
+.dk-h.big .dst{width:calc(100% - 18px)}
+.dk-h.big .dst u{width:54px;height:60px;font-size:24px}
+.dk-h.big .dst u .i{width:16px;height:16px}
+.dk-h.big .dst u.spl{width:auto;min-width:96px;height:44px;font-size:16px}
+.dk-h.big .dcn{inset:6px}
+@media(max-width:699px){.dk-tk.wide{flex-direction:column;gap:4px}.dk-tcw{padding:6px 0 0}.dk-tcw .dk-h.big{zoom:.66}}
+@media(prefers-reduced-motion:reduce){.dk-h.big{animation:none}}
 </style>
 </head>
 <body>
@@ -3974,10 +3998,26 @@ function dkMini(x,i,side){
   return'<div class="dk-m r-'+c.rar+' t-'+c.t+(mvb?' mvb':'')+(mvb&&DK.mv===i?' sel':'')+(mvb&&DK.mv!=null&&DK.mv!==i?' swp':'')+(nw?' nw':'')+(x.frozen?' frz':'')+(x.mode!=='full'?' md-'+x.mode:'')+(A?(A==='go'?' lg':' rc')+(side?'d':'u'):'')+(H?' hit':'')+(x.dead?' dead':'')+'" title="'+esc(c.w+' · '+DKTY[c.t]+(mvb?' · kliknij, aby przesunąć (1 energia, raz na turę)':''))+'"'+(mvb?' role="button" tabindex="0" onclick="dkMove('+i+')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();dkMove('+i+')}"':'')+'><i class="dcn"></i>'+DKGEM+'<u class="tdot"></u><em>'+c.emo+'</em><strong style="font-size:'+(c.w.length>14?9:c.w.length>9?10.5:12.5)+'px">'+esc(c.w)+'</strong><span class="dst"><u class="a">'+x.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h'+(x.hp<x.mhp?' lo':'')+'">'+Math.max(0,x.hp)+'<span class="ico">'+ic('shield')+'</span></u></span>'+(x.mode!=='full'?'<s>'+(x.mode==='half'?'½':'!')+'</s>':'')+(x.frozen?'<s class="fz">'+ic('x')+'</s>':'')+(H?'<b class="dmg">-'+H.d+'</b>':'')+adv+'</div>'
 }
 function dkOrbs(c){return'<span class="dorb" title="Klasa karty: '+c.lv+'/3">'+[1,2,3].map(k=>'<i class="'+(k<=c.lv?'on':'')+'"></i>').join('')+'</span>'}
+function dkArt(c){
+  const t=c.t,E=c.rar==='e'||c.rar==='l',L=c.rar==='l',sc={
+  f:'<g stroke="var(--k)" stroke-linecap="round" fill="none"><path d="M3 38h28M10 44h22M1 31h18" stroke-opacity=".55" stroke-width="1.3"/><path d="M60 46h28M68 51h20" stroke-opacity=".35"/></g>',
+  o:'<g fill="none" stroke="var(--k)"><circle cx="45" cy="30" r="14" stroke-opacity=".5"/><circle cx="45" cy="30" r="22" stroke-opacity=".35" stroke-dasharray="2 3"/><circle cx="45" cy="30" r="31" stroke-opacity=".2"/></g><circle cx="12" cy="14" r="1.7" fill="var(--k)"/><circle cx="79" cy="47" r="2.1" fill="var(--k)"/>',
+  b:'<path d="M-2 56V41Q45 12 92 41V56Z" fill="var(--k)" fill-opacity=".14" stroke="var(--k)" stroke-opacity=".5"/><path d="M0 49h90M20 43v13M45 39v17M70 43v13" stroke="var(--k)" stroke-opacity=".25" fill="none"/>',
+  s:'<path d="M45 3v10M45 47v6M8 28h13M69 28h13M21 11l7 7M69 45l-7-7M69 11l-7 7M21 45l7-7" stroke="var(--k)" stroke-opacity=".6" stroke-width="1.4" stroke-linecap="round" fill="none"/><circle cx="45" cy="28" r="17" fill="none" stroke="var(--k)" stroke-opacity=".5"/>'}[t];
+  return'<svg viewBox="0 0 90 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="dkh'+c.id+'" cx="50%" cy="55%"><stop offset="0" stop-color="var(--k)" stop-opacity=".5"/><stop offset="1" stop-color="var(--k)" stop-opacity="0"/></radialGradient></defs><rect width="90" height="56" fill="url(#dkh'+c.id+')"/>'+sc
+   +'<ellipse cx="45" cy="30" rx="40" ry="11" fill="none" stroke="var(--k)" stroke-opacity=".35" stroke-width="1" transform="rotate(-14 45 30)"/><circle cx="80" cy="9" r="2.6" fill="var(--k)"/><path d="M8 8l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z M74 40l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="#fff"/>'
+   +(E?'<path d="M30 6l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z M62 20l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#ffe27a"/>':'')
+   +(L?'<circle cx="45" cy="29" r="25" fill="none" stroke="var(--k)" stroke-width="1.6" stroke-opacity=".75"/><circle cx="45" cy="29" r="29" fill="none" stroke="var(--k)" stroke-opacity=".35" stroke-dasharray="1.5 3"/>':'')+'</svg>'
+}
+/* duża karta (nakładka zadania): ta sama karta co w ręce, ale większa i z opisem przewag typu */
+function dkBig(c){
+  const sp=dkIsSp(c),adv=sp?'':'<span class="dadv">Bije: '+DKTY[DKADV[c.t]]+' · Słaba wobec: '+DKTY[Object.keys(DKADV).find(k=>DKADV[k]===c.t)]+'</span>';
+  return dkHandCard(c,-1,true).replace(/^<button/,'<div').replace(/ onclick="[^"]*"/,'').replace(/<\/button>$/,'</div>').replace('class="dk-h ','class="dk-h big ').replace('<span class="dst">',adv+'<span class="dst">')
+}
 const DKFXS={ally1:'Sojusz. +1 tarczy',freeze:'Zamraża 2 karty',heal:'Leczy 4 serca',chill:'Zamraża 2 karty',boost:'Karty +2 mocy',zap:'Rani rywala za 3'};
 function dkHandCard(c,i,can){
   const fs=c.w.length>14?9:c.w.length>9?10.5:12.5,sp=dkIsSp(c),inf=sp?'koszt '+c.cost+' energii · '+DKFX[c.fx]+' (działa od razu)':'koszt '+c.cost+' energii, moc '+c.atk+', tarcza '+c.hp+(c.fx?' · '+DKFX[c.fx]:'');
-  return'<button class="dk-h r-'+c.rar+' t-'+(sp?'s sp':c.t)+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', '+(sp?'zaklęcie, ':'')+inf)+'" title="'+esc((sp?'Zaklęcie':DKTY[c.t])+' · '+DKRAR[c.rar]+' · '+inf)+'"><i class="dcn"></i>'+DKGEM+'<b class="dco">'+c.cost+'</b><span class="dlv"><u class="tdot"></u>'+(sp?'Czar':DKTY[c.t])+' · kl. '+c.lv+'</span><div class="dart"><svg viewBox="0 0 90 56" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="45" cy="30" rx="40" ry="11" fill="none" stroke="var(--k)" stroke-opacity=".4" stroke-width="1" transform="rotate(-14 45 30)"/><ellipse cx="45" cy="30" rx="28" ry="7" fill="none" stroke="var(--k)" stroke-opacity=".55" stroke-width="1" transform="rotate(-14 45 30)"/><circle cx="80" cy="9" r="3" fill="var(--k)"/><path d="M8 8l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#fff"/></svg><em>'+c.emo+'</em></div><strong style="font-size:'+fs+'px">'+esc(c.w)+'</strong><span class="drar">'+DKRAR[c.rar]+'</span>'+dkOrbs(c)+'<span class="dfx">'+(c.fx?DKFXS[c.fx]:'')+'</span>'+(sp?'<span class="dst"><u class="spl">'+ic('bolt')+'CZAR</u></span>':'<span class="dst"><u class="a">'+c.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h">'+c.hp+'<span class="ico">'+ic('shield')+'</span></u></span>')+'</button>'
+  return'<button class="dk-h r-'+c.rar+' t-'+(sp?'s sp':c.t)+(can?'':' off')+'" onclick="dkPlay('+i+')" aria-label="'+esc(c.w+', '+(sp?'zaklęcie, ':'')+inf)+'" title="'+esc((sp?'Zaklęcie':DKTY[c.t])+' · '+DKRAR[c.rar]+' · '+inf)+'"><i class="dcn"></i>'+DKGEM+'<b class="dco">'+c.cost+'</b><span class="dlv"><u class="tdot"></u>'+(sp?'Czar':DKTY[c.t])+' · kl. '+c.lv+'</span><div class="dart">'+dkArt(c)+'<em>'+c.emo+'</em></div><strong style="font-size:'+fs+'px">'+esc(c.w)+'</strong><span class="drar">'+DKRAR[c.rar]+'</span>'+dkOrbs(c)+'<span class="dfx">'+(c.fx?DKFXS[c.fx]:'')+'</span>'+(sp?'<span class="dst"><u class="spl">'+ic('bolt')+'CZAR</u></span>':'<span class="dst"><u class="a">'+c.atk+'<span class="ico">'+ic('flame')+'</span></u><u class="h">'+c.hp+'<span class="ico">'+ic('shield')+'</span></u></span>')+'</button>'
 }
 function dkHero(side){const h=DK.hero[side],H=DK.hit&&DK.hit.find(x=>x.side===side&&x.k<0);return'<div class="dk-hb'+(side?' e':'')+(H?' hit':'')+'">'+(H?'<s class="dmg">-'+H.d+'</s>':'')+'<div class="dav">'+(side?'👾':'🧑‍🚀')+'</div><span>'+(side?'Rywal':'Ty')+'</span><div class="bar"><i style="width:'+(100*h/DKHP)+'%"></i></div><b>'+h+'</b></div>'}
 const dkQ=T=>T.gap?esc(T.q).replace('___','<u class="gp">?</u>'):esc(T.q);
@@ -4007,7 +4047,7 @@ function renderDeck(){
     const c=DK.hand[DK.task.i],sp=dkIsSp(c),q=T.hard?(T.h.gap?esc(T.h.q).replace('___','<u class="gp">?</u>'):esc(T.h.q)):dkQ(T);
     const body=T.hard?'<form class="dk-typ" onsubmit="dkTyp(document.getElementById(\'dk-in\').value);return false"><input id="dk-in" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="wpisz odpowiedź" aria-label="Twoja odpowiedź"'+(T.done?' disabled value="'+esc(T.h.ok)+'"':'')+'><button class="pri" type="submit"'+(T.done?' disabled':'')+'>Sprawdź</button></form>'+(T.hint&&!T.done?'<small class="dk-hint">'+esc(T.hint)+'</small>':'')+(T.done==='bad'?'<small class="dk-hint">Poprawnie: <b>'+esc(T.h.ok)+'</b></small>':''):dkOpts(T,'dkAns');
     const extra=T.done?'':(T.tries?'':T.hard?'<button class="g" onclick="dkHard(0)">Wróć do wyboru odpowiedzi</button>':'<button class="g dk-hardb" onclick="dkHard(1)">'+ic('flame')+'Trudniej: wpisz odpowiedź z głowy ('+(sp?'+1 do siły zaklęcia':'+1 moc i +1 tarcza')+')</button>')+'<button class="g" onclick="dkCancel()">Anuluj</button>';
-    ov='<div class="dk-ov"><div class="dk-tk"><div class="dk-tc r-'+c.rar+'"><b class="dco">'+c.cost+'</b><em>'+c.emo+'</em><strong>'+esc(c.w)+'</strong></div>'+(c.fx?'<div class="dk-fx">Efekt: '+DKFX[c.fx]+'</div>':'')+'<div class="dk-q"><small>'+(T.hard?T.h.cap:T.cap)+'</small><b>'+q+'</b></div>'+body+extra+'</div></div>'
+    ov='<div class="dk-ov"><div class="dk-tk wide"><div class="dk-tcw">'+dkBig(c)+'</div><div class="dk-tq"><div class="dk-q"><small>'+(T.hard?T.h.cap:T.cap)+'</small><b>'+q+'</b></div>'+body+extra+'</div></div></div>'
   }
   else if(DK.over)ov='<div class="dk-ov end"><h3>'+(DK.res==='w'?'Zwycięstwo!':DK.res==='l'?'Porażka':'Remis')+'</h3><div class="dk-tiles"><div><b>'+DK.hero[0]+'</b><small>twoje serca</small></div><div><b>'+DK.hero[1]+'</b><small>serca rywala</small></div><div><b>'+DK.st.first+'/'+(DK.st.first+DK.st.half+DK.st.bad)+'</b><small>od razu dobrze</small></div></div>'+(()=>{const ms=Object.values(DK.miss).map(x=>x.w);return ms.length?'<p>Słówka, w których się pomyliłeś (wrócą w powtórkach):</p><ul class="dk-miss">'+ms.map(w=>'<li><b>'+esc(w[1])+'</b> '+esc(w[0])+'</li>').join('')+'</ul><button class="dk-go" onclick="dkDrill()">Powtórz teraz ('+ms.length+')</button>':'<p>Bez ani jednej pomyłki. Świetna robota!</p>'})()+'</div>';
   root.innerHTML=head+'<div class="gstage dk-stage">'+hud+'<div class="gs-body">'+arena+ov+'</div><div class="gs-foot"><span class="cn-info"></span><div class="cn-msg" role="status" aria-live="polite">'+esc(DK.msg)+'</div></div><div class="gbar">'+(DK.over?'<button class="pri" onclick="dkLvl(DKlvl)">Nowy pojedynek</button>':'<button class="pri" onclick="dkEnd()"'+(pl&&!DK.task&&!DK.place?'':' disabled')+'>Zakończ turę</button><button onclick="dkLvl(DKlvl)">Od nowa</button>')+'</div></div><p class="gtips">Cel: odbierz rywalowi wszystkie serca w '+DKTURNS+' turach. Gdy obie strony zagrają, karty biją jednocześnie naprzeciwko siebie; Flota bije Obcych, Obcy biją Bazy, Bazy biją Flotę (+1). Klawisze 1–6 zagrywają karty z ręki. Kliknij swoją kartę na polu, aby ją przesunąć (1 energii, raz na turę). Niebieskie karty to zaklęcia: działają od razu. Trudniejsze zadanie (wpisanie słowa) daje bonus.</p><div class="dk-leg"><b>Jak czytać kartę:</b><span><i class="c">2</i> koszt w energii</span><span><i class="a">'+ic('flame')+'</i> MOC: tyle serc zabiera rywalowi (lub tarczy jego karcie)</span><span><i class="h">'+ic('shield')+'</i> TARCZA: ile zniesie, zanim odpadnie</span><span><i class="o"></i> klasa karty (1–3)</span></div>';
