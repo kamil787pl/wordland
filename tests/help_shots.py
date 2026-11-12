@@ -27,6 +27,6 @@ with sync_playwright() as pw:
         pg.evaluate("DK.hand[0]=DKCARDS.find(c=>c.cost===1&&c.t==='f'&&!DK.field[0].some(x=>x&&x.c.id===c.id));dkPlay(0)");pg.wait_for_timeout(100)
         pg.evaluate("dkAns(DK.task.t.ok)");pg.wait_for_timeout(1000);pg.evaluate("dkPut(DK.field[0].findIndex(x=>!x))");pg.wait_for_timeout(300)
     pg.locator('#v-deck .gstage').screenshot(path=O+'help-deck.png')
-    pg.evaluate("show('prof')");pg.wait_for_timeout(500);pg.locator('#v-prof .room').screenshot(path=O+'help-pokoj.png')
+    pg.evaluate("show('prof');document.querySelector('.pgroom').open=true");pg.wait_for_timeout(500);pg.locator('#v-prof .room').screenshot(path=O+'help-pokoj.png')
     pg.evaluate("show('game');openGame()");pg.wait_for_timeout(800);pg.locator('#v-game').screenshot(path=O+'help-wc.png')
     print('OK',errs)
