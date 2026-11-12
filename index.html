@@ -1293,6 +1293,24 @@ html{scrollbar-gutter:stable}
 #ov .card.wc-intro button.xit{margin:0 auto;width:auto;display:flex}
 /* nawigacja: etykiety tylko przy aktywnej grze, reszta ikony z podpowiedzią (mieści się 8+ gier w jednym wierszu) */
 @media(min-width:700px){.nb.gm:not(.on) .t{display:none}.nb.gm:not(.on){padding:8px 11px}}
+
+/* strona główna: zwarta siatka kart gier 5:3 + kafel Kontynuuj */
+.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.gc.feat,.gc.feat.rev{display:flex;flex-direction:column;grid-column:auto;padding:0;overflow:hidden;gap:6px;position:relative}
+.gc.feat .gimg{grid-column:auto;grid-row:auto;width:100%;height:auto;min-height:0;aspect-ratio:5/3;object-fit:cover;display:block}
+.gc.feat>:not(.gimg):not(.tag),.gc.feat.rev>:not(.gimg):not(.tag){grid-column:auto;margin-left:16px;margin-right:16px}
+.gc.feat>.em{margin-top:-30px;position:relative;z-index:1;box-shadow:0 4px 12px rgba(22,35,59,.18)}
+.gc.feat h4{margin-top:4px}.gc.feat p{font-size:13.5px;line-height:1.45;margin:0}
+.gc.feat>button{margin-top:auto;margin-bottom:16px;width:calc(100% - 32px)}.gc.feat>small{margin-top:2px;text-align:left}
+.gc.feat .tag{right:10px;top:10px;left:auto;z-index:2}
+.gc.soonc{padding:16px;gap:10px;background:var(--pg);border:1px dashed var(--line);box-shadow:none}.gc.soonc h4{margin:0;font-size:15px}
+.gc.soonc .sn{display:flex;gap:10px;align-items:flex-start}.gc.soonc .sn .em{flex:none;width:36px;height:36px;border-radius:10px;background:#fff;color:#8a95ad;display:grid;place-items:center}.gc.soonc .sn b{font-size:14px}.gc.soonc .sn p{margin:2px 0 0;font-size:12.5px;color:var(--mut);line-height:1.4}
+.gc.soonc .tag{position:static;align-self:flex-start}
+.gcont{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:10px 14px 10px 10px;border-radius:16px;background:var(--sf);border:1px solid var(--line);box-shadow:0 1px 0 #dfe6f3}
+.gcont img{width:116px;height:auto;aspect-ratio:5/3;object-fit:cover;border-radius:10px;flex:none}.gcont .ct{flex:1;min-width:0}.gcont .eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pri)}.gcont h4{margin:0;font-size:18px}.gcont small{color:var(--mut)}
+.gcont button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:12px;background:var(--pri);color:#fff;font:800 15px "Figtree",system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+@media(max-width:899px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.cards{grid-template-columns:1fr}.gcont{flex-wrap:wrap}.gcont img{width:84px}.gcont button{width:100%;justify-content:center}.gc.feat,.gc.feat.rev{display:flex}.gc.feat .gimg{height:auto}}
 </style>
 </head>
 <body>
@@ -1991,11 +2009,11 @@ function streakNow(){const st=SV.st;if(!st)return 0;const y=new Date();y.setDate
 function wod(){const all=[];CATS.forEach(c=>{if(c.l)c.w.forEach(w=>all.push(w))});const d=new Date(),n=Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return all[(n*7919)%all.length]}
 function mstat(ws){let m=0,l=0,n=0;ws.forEach(w=>{const x=SV.m[w[0]+'='+w[1]];if(!x||(!x.r&&!x.w))n++;else if(x.b>=4)m++;else l++});return{m,l,n,t:ws.length}}
 const GAMES=[
- {n:'WordCraft',k:'wc',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/card-wc.webp',go:'openGame()'},
- {n:'WordLinks',k:'wl',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/card-wl.webp',go:"show('conn')"},
- {n:'WordElf',k:'el',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/card-el.webp',go:"show('elf')"},
- {n:'WordClimb',k:'cl',e:'peak',d:'Wspinaj się na szczyt: wybieraj dobre tłumaczenia, łap chwyty i unikaj poślizgów. Po drodze czekają obozy!',on:1,feat:1,rev:1,img:'assets/card-cl.webp',go:"show('climb')"},
- {n:'WordHeist',k:'hs',e:'search',d:'Rozwiąż sprawę detektywistyczną po angielsku: czytaj SMS-y i e-maile, słuchaj świadków i wskaż sprawcę.',on:1,feat:1,img:'assets/card-hs.webp',go:"show('heist')"},
+ {n:'WordCraft',k:'wc',v:'game',e:'cube',d:'Kop, skacz i zbieraj słówka w świecie z bloków. Bossowie, jaskinie, quizy i układanie zdań.',on:1,feat:1,img:'assets/card-wc.webp',go:'openGame()'},
+ {n:'WordLinks',k:'wl',v:'conn',e:'grid',d:'Znajdź 4 grupy po 4 słówka z tej samej kategorii. Codziennie nowa łamigłówka i wyzwanie na najlepszy czas.',on:1,feat:1,rev:1,img:'assets/card-wl.webp',go:"show('conn')"},
+ {n:'WordElf',k:'el',v:'elf',e:'gift',d:'Pomóż skrzatowi spakować prezenty z listy Mikołaja. Gdy worek jest pełny, sanie odlatują!',on:1,feat:1,img:'assets/card-el.webp',go:"show('elf')"},
+ {n:'WordClimb',k:'cl',v:'climb',e:'peak',d:'Wspinaj się na szczyt: wybieraj dobre tłumaczenia, łap chwyty i unikaj poślizgów. Po drodze czekają obozy!',on:1,feat:1,rev:1,img:'assets/card-cl.webp',go:"show('climb')"},
+ {n:'WordHeist',k:'hs',v:'heist',e:'search',d:'Rozwiąż sprawę detektywistyczną po angielsku: czytaj SMS-y i e-maile, słuchaj świadków i wskaż sprawcę.',on:1,feat:1,img:'assets/card-hs.webp',go:"show('heist')"},
  {n:'Słowny Ninja',e:'target',d:'Przecinaj palcem właściwe tłumaczenia, zanim spadną.'},
  {n:'Słowostwory',e:'star',d:'Zbieraj stworki za opanowane słówka i walcz nimi z wrogami.'}];
 
@@ -2031,12 +2049,17 @@ HOW.push([['book','Czytaj słówko','Na górze jest słówko, a pod nim cztery o
 HOW.push([['search','Szukaj tropów','Klikaj lupy w pokoju oraz telefon i laptop z ekwipunku. Czytaj SMS-y i e-maile po angielsku.'],['bulb','Rozwiąż zagadki','Każdy trop ma pytanie. Pomyłka odejmuje punkty, a pomaga podpowiedź lub polskie tłumaczenie.'],['flag','Wskaż sprawcę','Przesłuchaj wszystkich podejrzanych, a na tablicy wybierz sprawcę i dwa dowody. Mniej błędów to więcej gwiazdek.']]);
 function howIn(i){return HOW[i].map((x,k)=>'<div class="stp3"><b>'+(k+1)+'</b>'+ic(x[0])+'<h4>'+x[1]+'</h4><p>'+x[2]+'</p></div>').join('')}
 function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNode.querySelectorAll('.hwtabs button').forEach((b,k)=>b.classList.toggle('on',k===i))}
+const gSub=(g,done,tot)=>g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():g.n==='WordClimb'?clHomeSub():cnHomeSub();
+function contHTML(done,tot){
+  const g=GAMES.find(x=>x.v&&x.v===SV.lg);if(!g)return'';
+  return'<div class="gcont g-'+g.k+'"><img src="'+g.img+'" alt="" width="800" height="480" decoding="async"><div class="ct"><span class="eyebrow">Kontynuuj</span><h4>'+g.n+'</h4><small>'+gSub(g,done,tot)+'</small></div><button onclick="'+g.go+'">Wróć do gry '+ic('play','f')+'</button></div>'
+}
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
   const HH=myAsgHTML()+'<div class="hero" id="hero" aria-roledescription="karuzela">'+heroIn(HI)+'<div class="hdots" role="tablist">'+[0,1,2,3,4].map(i=>'<button role="tab" aria-label="Slajd '+(i+1)+'" onclick="heroGo('+i+')"></button>').join('')+'</div></div>'+(U?'':'<div class="panel" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:200px;display:flex;gap:10px;align-items:center">'+ic('cloud')+'<span>Załóż konto, żeby zapisywać postępy na serwerze i uczyć się na każdym urządzeniu.</span></span><button class="gbtn" onclick="goAuth(1)">Załóż konto</button><button class="nb" onclick="goAuth(0)">Zaloguj się</button></div>')
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b data-n="'+st+'">'+st+'</b><span>dni nauki z rzędu</span></div><div class="stat"><div class="ib p">'+ic('target')+'</div><b>'+Math.min(dn,10)+'/10</b><span>odpowiedzi dziś</span><div class="bar2"><i style="width:'+Math.min(100,dn*10)+'%"></i></div></div><div class="stat"><div class="ib a">'+ic('star')+'</div><b data-n="'+stars+'">'+stars+'</b><span>gwiazdek w grach</span></div></div>'
   +'<div class="wod"><h3>Słówko dnia</h3><div class="wd"><b>'+w[1]+'</b> – '+w[0]+'</div>'+(w[2]?'<i>'+w[2].replace('___','<b>'+w[1]+'</b>')+'</i>':'')+'<button data-w="'+w[1]+'" onclick="speak(this.dataset.w)" title="Posłuchaj" aria-label="Posłuchaj">'+ic('volume')+'</button></div>'
-  +'<h3>Gry</h3><div class="cards">'+GAMES.map(g=>'<div class="gc'+(g.k?' g-'+g.k:'')+(g.feat?' feat'+(g.rev?' rev':''):g.on?'':' soon')+'">'+(g.feat?'<img class="gimg" src="'+g.img+'" alt="" loading="lazy" decoding="async" width="800" height="480">':'')+'<span class="tag">'+(g.on?'Dostępna':'Wkrótce')+'</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p>'+(g.on?'<small style="color:var(--mut)">'+(g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():g.n==='WordClimb'?clHomeSub():cnHomeSub())+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button>':'<button disabled>Wkrótce</button>')+'</div>').join('')+'</div>'
+  +'<h3>Gry</h3>'+contHTML(done,tot)+'<div class="cards">'+GAMES.filter(g=>g.on).map(g=>'<div class="gc'+(g.k?' g-'+g.k:'')+' feat"><img class="gimg" src="'+g.img+'" alt="" loading="lazy" decoding="async" width="800" height="480"><span class="tag">Dostępna</span><span class="em">'+ic(g.e)+'</span><h4>'+g.n+'</h4><p>'+g.d+'</p><small style="color:var(--mut)">'+gSub(g,done,tot)+'</small><button onclick="'+g.go+'">Graj '+ic('play','f')+'</button></div>').join('')+'<div class="gc soonc"><span class="tag">Wkrótce</span><h4>W przygotowaniu</h4>'+GAMES.filter(g=>!g.on).map(g=>'<div class="sn"><span class="em">'+ic(g.e)+'</span><div><b>'+g.n+'</b><p>'+g.d+'</p></div></div>').join('')+'</div></div>'
   +wbHtml()+'<h3>Jak to działa</h3><div class="hwtabs" role="tablist"><button class="on" role="tab" onclick="howGo(0)">'+ic('cube')+'WordCraft</button><button role="tab" onclick="howGo(1)">'+ic('grid')+'WordLinks</button><button role="tab" onclick="howGo(2)">'+ic('gift')+'WordElf</button><button role="tab" onclick="howGo(3)">'+ic('peak')+'WordClimb</button><button role="tab" onclick="howGo(4)">'+ic('search')+'WordHeist</button></div><div class="steps" id="how">'+howIn(0)+'</div>'
   +(ROLE!=='teacher'?'':'<h3>Dla korepetytora</h3><div class="panel"><h4>'+ic('tool')+'Własne kategorie słówek</h4><p style="margin:0 0 12px;font-size:14px;color:var(--mut)">Twórz i edytuj kategorie ze zdaniami. Zapisują się w bazie i od razu pojawiają się w grach u wszystkich uczniów.</p><button class="nb" onclick="show(\'teach\')">Otwórz panel korepetytora</button> <button class="nb" onclick="TP.tab=\'help\';show(\'teach\')">'+ic('book')+'Poradnik: jak używać portalu</button></div>')
   +'<footer class="foot"><b>WordLand</b> · nauka angielskiego przez grę · poziomy A1–B1</footer>';
@@ -2075,7 +2098,7 @@ function renderProf(){
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem korepetytorem i mam kod</a></p>':'');
 }
 function show(v){
-  view=v;['prof','auth','conn','elf','climb','heist','deck'].forEach(k=>{if(k!==v){const e=$('v-'+k);if(e&&e.firstChild)e.textContent=''}});/* ukryte widoki nie trzymają DOM; render odtwarza je ze stanu */
+  view=v;if(['game','conn','elf','climb','heist'].includes(v)&&SV.lg!==v){SV.lg=v;try{save()}catch(e){}}['prof','auth','conn','elf','climb','heist','deck'].forEach(k=>{if(k!==v){const e=$('v-'+k);if(e&&e.firstChild)e.textContent=''}});/* ukryte widoki nie trzymają DOM; render odtwarza je ze stanu */
   ['home','prof','game','auth','teach','conn','elf','climb','heist','deck'].forEach(k=>{$('v-'+k).hidden=k!==v;const n=$('nb-'+k);if(n)n.classList.toggle('on',k===v)});$('nb-teach').hidden=ROLE!=='teacher';$('nb-user').innerHTML=U?ic('logout')+'<span class="t">Wyloguj ('+U.nick+')</span>':ic('login')+'<span class="t">Zaloguj</span>';$('nb-user').title=U?'Wyloguj':'Zaloguj';
   if(v!=='game'&&FW.classList.contains('px'))fsOn(false);else if(v==='game')autoFs(true);
   ptsChip();clearKeys();{const f=$('pt-fire'),n=streakNow(),h=ic('flame')+n+'<span class="fd">\u00a0'+(n===1?'dzień':'dni')+'</span>';f.title=f.ariaLabel='Seria nauki: '+n+' '+(n===1?'dzień':'dni')+' z rzędu. Kliknij, aby zobaczyć profil.';if(f.innerHTML!==h){f.innerHTML=h;f.classList.remove('bump');void f.offsetWidth;f.classList.add('bump')}}
