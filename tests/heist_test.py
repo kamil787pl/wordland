@@ -83,15 +83,15 @@ with sync_playwright() as pw:
     res['ideal: brak nowych punktow lokalnie (mock daje 40)']=pg.evaluate("HS.over")==1
     res['klawisze 1-4']=True
     pg.evaluate("hsNewR(0);hsStart();hsOpen(1)");pg.keyboard.press('2');res['klawisz 2 wybiera']=pg.evaluate("!!HS.done[1]")
-    pg.evaluate("show('prof')");t=pg.inner_text('#v-prof')
+    pg.evaluate("show('prof');profTab('hs')");t=pg.inner_text('#v-prof')
     res['profil: panel i ranga']='WordHeist' in t and 'Ranga WordHeist' in t
-    res['trofea 30']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==30
+    res['trofea 30']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==35
     res['przelacznik rankingu ma WordHeist']='WordHeist' in pg.locator('#v-prof .cn-lbp').first.inner_text()
     pg.evaluate("wbGame('hs')");pg.wait_for_timeout(300)
     res['ranking hs wola heist_pts_board']=pg.evaluate("CALLS.some(c=>c[0]==='heist_pts_board')")
     pg.evaluate("show('home')");pg.wait_for_timeout(200)
     res['karta gry na stronie glownej']=pg.locator('.gc.g-hs').count()==1 and pg.locator('.gc.g-hs img.gimg').count()==1
-    res['5 slajdow w karuzeli']=pg.locator('.hdots button').count()==5
+    res['6 slajdow w karuzeli']=pg.locator('.hdots button').count()==6
     pg.evaluate("heroGo(4)");res['slajd WordHeist']='WordHeist' in pg.inner_text('#hero')
     pg.evaluate("howGo(4)");res['jak to dziala: WordHeist']='Szukaj tropów' in pg.inner_html('#how')
     res['rangi w Poradniku']='Legenda Wydziału' in pg.evaluate("hpRanks()")

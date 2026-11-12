@@ -39,9 +39,9 @@ with sync_playwright() as pw:
     pg.evaluate("clLvl('A2');clStart()");pg.keyboard.press('2');pg.wait_for_timeout(100);res['klawisz 2 tapa']=pg.evaluate("CL.lock")==1
     res['punkty lokalne']=pg.evaluate("SV.climb.pts")>0
     res['suma zawiera WordClimb']=pg.evaluate("totalPts()")>=pg.evaluate("SV.climb.pts")
-    pg.evaluate("show('prof')");t=pg.inner_text('#v-prof')
+    pg.evaluate("show('prof');profTab('cl')");t=pg.inner_text('#v-prof')
     res['profil']='WordClimb' in t and 'Ranga WordClimb' in t
-    res['trofea 25']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==30
+    res['trofea 25']=pg.evaluate("document.querySelectorAll('#v-prof .rm-t').length")==35
     res['przelacznik rankingu ma WordClimb']='WordClimb' in pg.locator('#v-prof .cn-lbp').first.inner_text()
     pg.evaluate("wbGame('cl')");pg.wait_for_timeout(300)
     res['ranking cl wola climb_pts_board']=pg.evaluate("CALLS.some(c=>c[0]==='climb_pts_board')")
