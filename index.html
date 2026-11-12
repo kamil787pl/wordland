@@ -475,7 +475,7 @@ details.grp[open]>*:not(summary){animation:rise .25s var(--ease-out) both}
 .hwtabs{display:inline-flex;gap:4px;padding:4px;margin:0 0 10px;background:var(--sf);border:1px solid var(--line);border-radius:12px}
 .hwtabs button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:6px 14px;border:0;border-radius:9px;background:transparent;color:var(--mut);font:700 14px "Figtree",system-ui,sans-serif;cursor:pointer}
 .hwtabs button.on{background:var(--pri);color:#fff}.hwtabs .i{width:16px;height:16px}
-.wlp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}.wlp .stat{display:block;padding:12px}
+.wlp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}.wlp .stat{display:block;padding:12px}
 @media(max-width:640px){.wlp{grid-template-columns:repeat(2,1fr)}}
 .gph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}.gph h4{margin:0;display:flex;align-items:center;gap:8px}.gpb{display:flex;flex-wrap:wrap;gap:8px}
 .cn-bd span[title]{cursor:help}
@@ -1311,6 +1311,7 @@ html{scrollbar-gutter:stable}
 .gcont button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:12px;background:var(--pri);color:#fff;font:800 15px "Figtree",system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 @media(max-width:899px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.cards{grid-template-columns:1fr}.gcont{flex-wrap:wrap}.gcont img{width:84px}.gcont button{width:100%;justify-content:center}.gc.feat,.gc.feat.rev{display:flex}.gc.feat .gimg{height:auto}}
+.ptabs{margin:14px 0 12px;overflow-x:auto;max-width:100%;flex-wrap:nowrap}.ptabs button{white-space:nowrap}.ptab[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -2084,6 +2085,8 @@ function cnProfile(){
    Object.keys(CNBD).map(k=>[CNBD[k][0],CNBD[k][1]+': '+CNBD[k][2],c.bd&&c.bd[k]]),
    '<button class="nb" onclick="show(\'conn\')">Graj</button>');
 }
+let PTAB='all';
+function profTab(k){PTAB=k;document.querySelectorAll('#v-prof .ptab').forEach(e=>e.hidden=e.dataset.t!==k);document.querySelectorAll('#v-prof .ptabs button').forEach(b=>{const on=b.getAttribute('onclick').includes("'"+k+"'");b.classList.toggle('on',on);b.setAttribute('aria-selected',on)})}
 function renderProf(){
   const st=SV.st||{n:0,best:0},tot=SV.tot||0,ok=SV.ok||0,acc=tot?Math.round(100*ok/tot):0,all=[];
   const lv=['A1','A2','B1'].map(L=>{const ws=[];CATS.forEach(c=>{if(c.l===L)c.w.forEach(w=>ws.push(w))});return[L,mstat(ws)]});
@@ -2092,9 +2095,15 @@ function renderProf(){
   const total=lv.reduce((a,x)=>a+x[1].t,0),mast=lv.reduce((a,x)=>a+x[1].m,0),learn=lv.reduce((a,x)=>a+x[1].l,0);
   $('v-prof').innerHTML='<h2>'+ic('user')+'Twój profil</h2>'
   +'<div class="stats3"><div class="stat"><div class="ib a">'+ic('flame')+'</div><b>'+streakNow()+'</b><span>seria dni (rekord: '+(st.best||0)+')</span></div><div class="stat"><div class="ib g">'+ic('check')+'</div><b>'+acc+'%</b><span>trafność ('+ok+'/'+tot+' odpowiedzi)</span></div><div class="stat"><div class="ib p">'+ic('book')+'</div><b>'+mast+'</b><span>opanowanych słówek z '+total+'</span></div></div>'
-  +myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+wbHtml()+cnProfile()+elProfile()+clProfile()+hsProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+rankPanel((SV.heist&&SV.heist.pts)||0,HSR,'WordHeist','Punkty za sprawę: do 300. Liczą się: rozwiązanie (100), brak błędów (+80), brak podpowiedzi (+60) i czas poniżej 6 minut (+60). Do rankingu liczy się najlepszy wynik dnia.')+rankPanel((SV.climb&&SV.climb.pts)||0,CLR,'WordClimb','Punkty za trasę: do 300 (A1), 400 (A2) lub 500 (B1). Liczą się odpowiedzi poprawne od pierwszego razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdej górze.')+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')
+  +'<div class="hwtabs ptabs" role="tablist">'+[['all','user','Przegląd'],['wc','cube','WordCraft'],['wl','grid','WordLinks'],['el','gift','WordElf'],['cl','peak','WordClimb'],['hs','search','WordHeist']].map(x=>'<button role="tab" class="'+(PTAB===x[0]?'on':'')+'" aria-selected="'+(PTAB===x[0])+'" onclick="profTab(\''+x[0]+'\')">'+ic(x[1])+x[2]+'</button>').join('')+'</div>'
+  +'<div class="ptab" data-t="all"'+(PTAB==='all'?'':' hidden')+'>'+myAsgHTML(1)+myClassHTML()+roomHTML()+rankPanel(totalPts(),TR,'ogólna','Suma punktów ze wszystkich gier: '+wcFmtP(totalPts())+'.')+wbHtml()
   +'<div class="panel"><h4>Postęp według poziomów</h4>'+lv.map(x=>{const t=x[1];return'<b>'+x[0]+'</b> <span class="lg">opanowane '+t.m+' · w nauce '+t.l+' · nowe '+t.n+'</span><div class="bar2"><i style="width:'+(100*t.m/t.t)+'%"></i><u style="width:'+(100*t.l/t.t)+'%"></u></div>'}).join('')+'</div>'
-  +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'
+  +'<div class="panel"><h4>Najtrudniejsze słówka</h4>'+(hard.length?hard.map(x=>x.p+' = <b>'+x.e+'</b> <span class="lg">(dobrze: '+x.r+', błędnie: '+x.w+')</span>').join('<br>'):'<span class="lg">Zagraj kilka rund, a tu pojawią się słówka do powtórki.</span>')+'</div>'+'</div>'
+  +'<div class="ptab" data-t="wc"'+(PTAB==='wc'?'':' hidden')+'>'+wcProfile()+rankPanel(wcPts(),WCR,'WordCraft','Punkty: 10 za poprawną odpowiedź, 100 za gwiazdkę poziomu, 150 za gwiazdkę Hard.')+'</div>'
+  +'<div class="ptab" data-t="wl"'+(PTAB==='wl'?'':' hidden')+'>'+cnProfile()+rankPanel((SV.cn&&SV.cn.pts)||0,WLR,'WordLinks','Punkty za czas: do 300 za łamigłówkę (sprint do 900), im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia w każdym trybie.')+'</div>'
+  +'<div class="ptab" data-t="el"'+(PTAB==='el'?'':' hidden')+'>'+elProfile()+rankPanel((SV.elf&&SV.elf.pts)||0,ELR,'WordElf','Punkty za czas: do 300 (A1), 400 (A2) lub 500 (B1) za całą grę, im szybciej, tym więcej. Do rankingu liczy się najlepszy wynik dnia na każdym poziomie.')+'</div>'
+  +'<div class="ptab" data-t="cl"'+(PTAB==='cl'?'':' hidden')+'>'+clProfile()+rankPanel((SV.climb&&SV.climb.pts)||0,CLR,'WordClimb','Punkty za trasę: do 300 (A1), 400 (A2) lub 500 (B1). Liczą się odpowiedzi poprawne od pierwszego razu i premia za szczyt bez poślizgów. Do rankingu liczy się najlepszy wynik dnia na każdej górze.')+'</div>'
+  +'<div class="ptab" data-t="hs"'+(PTAB==='hs'?'':' hidden')+'>'+hsProfile()+rankPanel((SV.heist&&SV.heist.pts)||0,HSR,'WordHeist','Punkty za sprawę: do 300. Liczą się: rozwiązanie (100), brak błędów (+80), brak podpowiedzi (+60) i czas poniżej 6 minut (+60). Do rankingu liczy się najlepszy wynik dnia.')+'</div>'
   +(U&&ROLE!=='teacher'?'<p class="lg" style="text-align:center;margin-top:18px"><a href="#" onclick="show(\'teach\');return false">Jestem korepetytorem i mam kod</a></p>':'');
 }
 function show(v){

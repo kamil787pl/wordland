@@ -27,7 +27,7 @@ with sync_playwright() as pw:
     # wyzwanie nie daje punktow
     pg.evaluate("CN=cnFromObj({g:CN.groups.map(g=>[g.n,g.e,g.w,g.pl]),t:0,f:''});CN.mode='chal';CNmode='chal';renderConn()");pg.click('.cn-start .pri');pg.evaluate(SOLVE);pg.wait_for_timeout(200)
     res['wyzwanie: brak punktow']=pg.evaluate("CN.pts")is None
-    pg.evaluate("show('prof')");res['profil']='Ranga WordLinks' in pg.inner_text('#v-prof')
+    pg.evaluate("show('prof');profTab('wl')");res['profil']='Ranga WordLinks' in pg.inner_text('#v-prof')
     res['errors']=errs;br.close()
 bad=[k for k,v in res.items() if v is False]
 print(json.dumps(res,ensure_ascii=False,indent=1));print('OK',bad)
