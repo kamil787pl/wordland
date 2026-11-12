@@ -1310,7 +1310,7 @@ html{scrollbar-gutter:stable}
 .gc.soonc{padding:16px;gap:10px;background:var(--pg);border:1px dashed var(--line);box-shadow:none}.gc.soonc h4{margin:0;font-size:15px}
 .gc.soonc .sn{display:flex;gap:10px;align-items:flex-start}.gc.soonc .sn .em{flex:none;width:36px;height:36px;border-radius:10px;background:#fff;color:#8a95ad;display:grid;place-items:center}.gc.soonc .sn b{font-size:14px}.gc.soonc .sn p{margin:2px 0 0;font-size:12.5px;color:var(--mut);line-height:1.4}
 .gc.soonc .tag{position:static;align-self:flex-start}
-.gcont{display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:10px 14px 10px 10px;border-radius:16px;background:var(--sf);border:1px solid var(--line);box-shadow:0 1px 0 #dfe6f3}
+.gcont{cursor:pointer;display:flex;align-items:center;gap:14px;margin:0 0 14px;padding:10px 14px 10px 10px;border-radius:16px;background:var(--sf);border:1px solid var(--line);box-shadow:0 1px 0 #dfe6f3}
 .gcont img{width:116px;height:auto;aspect-ratio:5/3;object-fit:cover;border-radius:10px;flex:none}.gcont .ct{flex:1;min-width:0}.gcont .eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pri)}.gcont h4{margin:0;font-size:18px}.gcont small{color:var(--mut)}
 .gcont button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:12px;background:var(--pri);color:#fff;font:800 15px "Figtree",system-ui,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
 @media(max-width:899px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -2061,7 +2061,7 @@ function howGo(i){const h=$('how');if(!h)return;h.innerHTML=howIn(i);h.parentNod
 const gSub=(g,done,tot)=>g.go==='openGame()'?'Ukończone poziomy: '+done+'/'+tot:g.n==='WordElf'?elHomeSub():g.n==='WordClimb'?clHomeSub():g.n==='WordHeist'?hsHomeSub():g.n==='WordDeck'?dkHomeSub():cnHomeSub();
 function contHTML(done,tot){
   const g=GAMES.find(x=>x.v&&x.v===SV.lg);if(!g)return'';
-  return'<div class="gcont g-'+g.k+'"><img src="'+g.img+'" alt="" width="800" height="480" decoding="async"><div class="ct"><span class="eyebrow">Kontynuuj</span><h4>'+g.n+'</h4><small>'+gSub(g,done,tot)+'</small></div><button onclick="'+g.go+'">Wróć do gry '+ic('play','f')+'</button></div>'
+  return'<div class="gcont g-'+g.k+'" role="button" tabindex="0" onclick="'+g.go+'" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();'+g.go+'}"><img src="'+g.img+'" alt="" width="800" height="480" decoding="async"><div class="ct"><span class="eyebrow">Kontynuuj</span><h4>'+g.n+'</h4><small>'+gSub(g,done,tot)+'</small></div></div>'
 }
 function renderHome(){
   const st=streakNow(),dn=SV.d&&SV.d.date===ymd(new Date())?SV.d.n:0,w=wod(),S=SV.s||[],stars=S.reduce((a,b)=>a+(b||0),0),done=S.filter(x=>x>0).length,tot=CATS.filter(c=>!c.tmp).length;
